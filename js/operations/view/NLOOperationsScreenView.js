@@ -9,10 +9,10 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import NumberLineOperationsConstants from '../../common/NumberLineOperationsConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-class NumberLineOperationsScreenView extends ScreenView {
+class NLOOperationsScreenView extends ScreenView {
 
   /**
-   * @param {NumberLineOperationsModel} model
+   * @param {NLOOperationsModel} model
    * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
@@ -52,5 +52,5 @@ class NumberLineOperationsScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NumberLineOperationsScreenView', NumberLineOperationsScreenView );
-export default NumberLineOperationsScreenView;
+numberLineOperations.register( 'NumberLineOperationsScreenView', NLOOperationsScreenView );
+export default NLOOperationsScreenView;

@@ -1,5 +1,14 @@
 {
   "number-line-operations.title": {
     "value": "Number Line: Operations"
+  },
+  "screen.netWorth": {
+    "value": "Explore"
+  },
+  "screen.operations": {
+    "value": "Generic"
+  },
+  "screen.generic": {
+    "value": "Explore"
   }
 }

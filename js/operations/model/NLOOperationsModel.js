@@ -9,7 +9,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 /**
  * @constructor
  */
-class NumberLineOperationsModel {
+class NLOOperationsModel {
 
   /**
    * @param {Tandem} tandem
@@ -36,5 +36,5 @@ class NumberLineOperationsModel {
   }
 }
 
-numberLineOperations.register( 'NumberLineOperationsModel', NumberLineOperationsModel );
-export default NumberLineOperationsModel;
+numberLineOperations.register( 'NumberLineOperationsModel', NLOOperationsModel );
+export default NLOOperationsModel;
