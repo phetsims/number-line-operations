@@ -20,7 +20,7 @@ class NLOGenericScreen extends Screen {
 
     const options = {
       name: numberLineOperationsStrings.screen.generic,
-      backgroundColorProperty: new Property( 'white' ),
+      backgroundColorProperty: new Property( '#f3fffe' ),
       tandem: tandem
     };
 

@@ -20,7 +20,7 @@ class NLOOperationsScreen extends Screen {
 
     const options = {
       name: numberLineOperationsStrings.screen.operations,
-      backgroundColorProperty: new Property( 'white' ),
+      backgroundColorProperty: new Property( '#f8f6fe' ),
       tandem: tandem
     };
 
