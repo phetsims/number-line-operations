@@ -6,6 +6,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
+import RandomIcon from '../common/RandomIcon.js';
 import numberLineOperationsStrings from '../number-line-operations-strings.js';
 import numberLineOperations from '../numberLineOperations.js';
 import NLOGenericModel from './model/NLOGenericModel.js';
@@ -18,8 +19,12 @@ class NLOGenericScreen extends Screen {
    */
   constructor( tandem ) {
 
+    const randomIcon = new RandomIcon( 74113 );
+
     const options = {
       name: numberLineOperationsStrings.screen.generic,
+      homeScreenIcon: randomIcon,
+      navigationBarIcon: randomIcon,
       backgroundColorProperty: new Property( '#f3fffe' ),
       tandem: tandem
     };
