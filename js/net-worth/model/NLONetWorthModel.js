@@ -6,7 +6,9 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import BalanceSheetItem from './BalanceSheetItem.js';
 
 /**
  * @constructor
@@ -22,6 +24,21 @@ class NLONetWorthModel {
     this.netWorthProperty = new NumberProperty( 0, {
       tandem: tandem.createTandem( 'netWorthProperty' )
     } );
+
+    // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
+    this.balanceSheetItems = [
+      new BalanceSheetItem( -400 ),
+      new BalanceSheetItem( -300 ),
+      new BalanceSheetItem( -200 ),
+      new BalanceSheetItem( -100 ),
+      new BalanceSheetItem( 100 ),
+      new BalanceSheetItem( 200 ),
+      new BalanceSheetItem( 300 ),
+      new BalanceSheetItem( 400 )
+    ];
+
+    // TODO - temporary
+    this.balanceSheetItems[ 0 ].teleportTo( new Vector2( 100, 100 ) );
 
     // @public (read-write)
     this.operationLabelsVisibleProperty = new BooleanProperty( true, {

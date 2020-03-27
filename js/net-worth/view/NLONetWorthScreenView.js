@@ -12,6 +12,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperationsStrings from '../../number-line-operations-strings.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 import NetWorthAccordionBox from './NetWorthAccordionBox.js';
 
 class NLONetWorthScreenView extends ScreenView {
@@ -26,7 +27,7 @@ class NLONetWorthScreenView extends ScreenView {
       tandem: tandem
     } );
 
-    // add the check boxes that will control the presentation options
+    // checkboxes that will control the presentation options
     const checkboxes = [
       new Checkbox(
         new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
@@ -60,6 +61,11 @@ class NLONetWorthScreenView extends ScreenView {
       centerX: this.layoutBounds.centerX,
       top: 10
     } ) );
+
+    // add the assets and debts
+    model.balanceSheetItems.forEach( balanceSheetItem => {
+      this.addChild( new BalanceSheetItemNode( balanceSheetItem ) );
+    } );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {
