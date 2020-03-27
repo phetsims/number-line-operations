@@ -12,6 +12,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperationsStrings from '../../number-line-operations-strings.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import NetWorthAccordionBox from './NetWorthAccordionBox.js';
 
 class NLONetWorthScreenView extends ScreenView {
 
@@ -54,6 +55,13 @@ class NLONetWorthScreenView extends ScreenView {
     } );
     this.addChild( checkboxGroup );
 
+    // accordion box that displays the net worth when open
+    this.addChild( new NetWorthAccordionBox( model.netWorthProperty, {
+      centerX: this.layoutBounds.centerX,
+      top: 10
+    } ) );
+
+    // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress

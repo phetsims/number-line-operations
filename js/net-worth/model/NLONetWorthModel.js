@@ -5,6 +5,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 /**
@@ -16,6 +17,11 @@ class NLONetWorthModel {
    * @param {Tandem} tandem
    */
   constructor( tandem ) {
+
+    // @public (read-write) - total net worth, which is total assets minus total liabilities
+    this.netWorthProperty = new NumberProperty( 0, {
+      tandem: tandem.createTandem( 'netWorthProperty' )
+    } );
 
     // @public (read-write)
     this.operationLabelsVisibleProperty = new BooleanProperty( true, {

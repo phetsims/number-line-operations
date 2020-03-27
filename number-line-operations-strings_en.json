@@ -19,5 +19,11 @@
   },
   "tickMarks": {
     "value": "Tick Marks"
+  },
+  "netWorthPattern": {
+    "value": "Net Worth = {{currencyUnits}}{{netWorth}}"
+  },
+  "currencyUnits": {
+    "value": "$"
   }
 }
