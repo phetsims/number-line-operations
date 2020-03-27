@@ -4,6 +4,7 @@
  * @author John Blanco
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 /**
@@ -15,7 +16,21 @@ class NLONetWorthModel {
    * @param {Tandem} tandem
    */
   constructor( tandem ) {
-    //TODO
+
+    // @public (read-write)
+    this.operationLabelsVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'operationLabelsVisibleProperty' )
+    } );
+
+    // @public (read-write)
+    this.operationDescriptionVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'operationDescriptionVisibleProperty' )
+    } );
+
+    // @public (read-write) - whether the tick marks should be visible on the number line
+    this.tickMarksVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'tickMarksVisibleProperty' )
+    } );
   }
 
   /**

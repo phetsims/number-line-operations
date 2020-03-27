@@ -10,5 +10,14 @@
   },
   "screen.generic": {
     "value": "Explore"
+  },
+  "operationLabels": {
+    "value": "Operation Labels"
+  },
+  "operationDescription": {
+    "value": "Operation Description"
+  },
+  "tickMarks": {
+    "value": "Tick Marks"
   }
 }

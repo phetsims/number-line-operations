@@ -6,7 +6,7 @@
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import NumberLineOperationsConstants from '../../common/NumberLineOperationsConstants.js';
+import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 class NLOOperationsScreenView extends ScreenView {
@@ -27,8 +27,8 @@ class NLOOperationsScreenView extends ScreenView {
         model.reset();
         this.reset();
       },
-      right: this.layoutBounds.maxX - NumberLineOperationsConstants.SCREEN_VIEW_X_MARGIN,
-      bottom: this.layoutBounds.maxY - NumberLineOperationsConstants.SCREEN_VIEW_Y_MARGIN,
+      right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
+      bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
