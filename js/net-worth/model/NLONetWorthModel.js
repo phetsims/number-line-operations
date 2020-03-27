@@ -9,6 +9,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import BalanceSheetItem from './BalanceSheetItem.js';
+import BalanceSheetItemBox from './BalanceSheetItemBox.js';
 
 /**
  * @constructor
@@ -37,8 +38,16 @@ class NLONetWorthModel {
       new BalanceSheetItem( 400 )
     ];
 
-    // TODO - temporary
-    this.balanceSheetItems[ 0 ].teleportTo( new Vector2( 100, 100 ) );
+    // add the storage areas for the balance sheet items
+    const balanceItemBoxesTop = 300;
+    this.assetsBox = new BalanceSheetItemBox(
+      new Vector2( 750, balanceItemBoxesTop ),
+      this.balanceSheetItems.filter( item => item.value > 0 )
+    );
+    this.debtsBox = new BalanceSheetItemBox(
+      new Vector2( 50, balanceItemBoxesTop ),
+      this.balanceSheetItems.filter( item => item.value < 0 )
+    );
 
     // @public (read-write)
     this.operationLabelsVisibleProperty = new BooleanProperty( true, {

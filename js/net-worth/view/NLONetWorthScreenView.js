@@ -12,6 +12,7 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperationsStrings from '../../number-line-operations-strings.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import BalanceSheetItemBoxNode from './BalanceSheetItemBoxNode.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 import NetWorthAccordionBox from './NetWorthAccordionBox.js';
 
@@ -61,6 +62,10 @@ class NLONetWorthScreenView extends ScreenView {
       centerX: this.layoutBounds.centerX,
       top: 10
     } ) );
+
+    // add the view representation for the storage areas where the assets and debts will be when not in use
+    this.addChild( new BalanceSheetItemBoxNode( model.assetsBox ) );
+    this.addChild( new BalanceSheetItemBoxNode( model.debtsBox ) );
 
     // add the assets and debts
     model.balanceSheetItems.forEach( balanceSheetItem => {
