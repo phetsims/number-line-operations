@@ -49,7 +49,7 @@ class NLONetWorthModel {
       new Vector2( 50, balanceItemBoxesTop ),
       this.balanceSheetItems.filter( item => item.value < 0 )
     );
-    const storageBoxes = [ this.assetsBox, this.debtsBox ];
+    this.storageBoxes = [ this.assetsBox, this.debtsBox ];
 
     // add the asset and debt bags
     const balanceItemBagsCenterY = 460;
@@ -59,7 +59,7 @@ class NLONetWorthModel {
     this.assetsBag = new BalanceSheetItemBag( new Vector2( 620, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
     } );
-    const bags = [ this.debtsBag, this.assetsBag ];
+    this.bags = [ this.debtsBag, this.assetsBag ];
 
     // @public (read-write)
     this.operationLabelsVisibleProperty = new BooleanProperty( true, {
@@ -83,7 +83,7 @@ class NLONetWorthModel {
         if ( isDragging ) {
 
           // if the item was in one of the bags, remove it and update the net worth
-          bags.forEach( bag => {
+          this.bags.forEach( bag => {
             if ( bag.containsItem( balanceSheetItem ) ) {
               bag.removeItem( balanceSheetItem );
             }
@@ -93,14 +93,14 @@ class NLONetWorthModel {
 
           // The item was released by the user.  Add it to a bag or return it to the appropriate storage area.
           let addedToBag = false;
-          bags.forEach( bag => {
+          this.bags.forEach( bag => {
             if ( bag.acceptsItem( balanceSheetItem ) && bag.isWithinCaptureRange( balanceSheetItem ) ) {
               bag.addItem( balanceSheetItem );
               addedToBag = true;
             }
           } );
           if ( !addedToBag ) {
-            storageBoxes.forEach( storageBox => {
+            this.storageBoxes.forEach( storageBox => {
               if ( storageBox.holdsItem( balanceSheetItem ) ) {
                 storageBox.returnItem( balanceSheetItem, true );
               }
@@ -121,7 +121,33 @@ class NLONetWorthModel {
    * @public
    */
   reset() {
-    //TODO
+
+    this.operationDescriptionVisibleProperty.reset();
+    this.operationLabelsVisibleProperty.reset();
+    this.tickMarksVisibleProperty.reset();
+
+    // reset initial state of all balance sheet items
+    this.balanceSheetItems.forEach( balanceSheetItem => {
+
+      // see if this item is in a bag and remove it if so
+      let itemRemovedFromBag = false;
+      this.bags.forEach( bag => {
+        if ( bag.containsItem( balanceSheetItem ) ) {
+          bag.removeItem( balanceSheetItem );
+          itemRemovedFromBag = true;
+        }
+      } );
+
+      // if it was removed from a bag, add it back to its storage box
+      if ( itemRemovedFromBag ) {
+        this.storageBoxes.forEach( storageBox => {
+          if ( storageBox.holdsItem( balanceSheetItem ) ) {
+            storageBox.returnItem( balanceSheetItem, true );
+          }
+        } );
+      }
+    } );
+
   }
 
   /**

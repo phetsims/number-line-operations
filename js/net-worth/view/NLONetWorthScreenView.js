@@ -82,21 +82,12 @@ class NLONetWorthScreenView extends ScreenView {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         model.reset();
-        this.reset();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
-  }
-
-  /**
-   * Resets the view.
-   * @public
-   */
-  reset() {
-    //TODO
   }
 
   /**
