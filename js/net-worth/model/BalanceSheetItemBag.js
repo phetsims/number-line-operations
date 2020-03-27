@@ -85,7 +85,7 @@ class BalanceSheetItemBag {
    * @public
    */
   getTotalValue() {
-    return this.containedItemList.reduce( ( total, value ) => total + value );
+    return this.containedItemList.reduce( ( total, item ) => total + item.value, 0 );
   }
 
   /**

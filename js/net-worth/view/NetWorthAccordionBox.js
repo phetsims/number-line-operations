@@ -9,7 +9,7 @@ import numberLineOperationsStrings from '../../number-line-operations-strings.js
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const DEFAULT_WIDTH = 200; // empirically determined to look decent
+const DEFAULT_WIDTH = 300; // empirically determined to look decent
 
 class NetWorthAccordionBox extends AccordionBox {
 

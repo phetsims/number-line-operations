@@ -49,6 +49,7 @@ class NLONetWorthModel {
       new Vector2( 50, balanceItemBoxesTop ),
       this.balanceSheetItems.filter( item => item.value < 0 )
     );
+    const storageBoxes = [ this.assetsBox, this.debtsBox ];
 
     // add the asset and debt bags
     const balanceItemBagsCenterY = 460;
@@ -58,6 +59,7 @@ class NLONetWorthModel {
     this.assetsBag = new BalanceSheetItemBag( new Vector2( 620, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
     } );
+    const bags = [ this.debtsBag, this.assetsBag ];
 
     // @public (read-write)
     this.operationLabelsVisibleProperty = new BooleanProperty( true, {
@@ -73,6 +75,45 @@ class NLONetWorthModel {
     this.tickMarksVisibleProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'tickMarksVisibleProperty' )
     } );
+
+    // Monitor the isDragging state of each balance sheet item and, when it transitions to false, either add it to a
+    // bag or return it to a storage box based on where it was dropped.
+    this.balanceSheetItems.forEach( balanceSheetItem => {
+      balanceSheetItem.isDraggingProperty.lazyLink( isDragging => {
+        if ( isDragging ) {
+
+          // if the item was in one of the bags, remove it and update the net worth
+          bags.forEach( bag => {
+            if ( bag.containsItem( balanceSheetItem ) ) {
+              bag.removeItem( balanceSheetItem );
+            }
+          } );
+        }
+        else {
+
+          // The item was released by the user.  Add it to a bag or return it to the appropriate storage area.
+          let addedToBag = false;
+          bags.forEach( bag => {
+            if ( bag.acceptsItem( balanceSheetItem ) && bag.isWithinCaptureRange( balanceSheetItem ) ) {
+              bag.addItem( balanceSheetItem );
+              addedToBag = true;
+            }
+          } );
+          if ( !addedToBag ) {
+            storageBoxes.forEach( storageBox => {
+              if ( storageBox.holdsItem( balanceSheetItem ) ) {
+                storageBox.returnItem( balanceSheetItem, true );
+              }
+            } );
+          }
+        }
+        this.updateNetWorth();
+      } );
+    } );
+  }
+
+  updateNetWorth() {
+    this.netWorthProperty.set( this.assetsBag.getTotalValue() + this.debtsBag.getTotalValue() );
   }
 
   /**

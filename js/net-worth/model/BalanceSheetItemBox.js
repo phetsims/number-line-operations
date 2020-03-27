@@ -56,6 +56,15 @@ class BalanceSheetItemBox {
       item.teleportTo( storagePosition );
     }
   }
+
+  /**
+   * returns true if this box holds the item, regardless of whether the item is currently being held
+   * @param {BalanceSheetItem} item
+   * @returns {boolean}
+   */
+  holdsItem( item ) {
+    return this.mapOfItemsToStoragePositions.get( item ) !== undefined;
+  }
 }
 
 numberLineOperations.register( 'BalanceSheetItemBox', BalanceSheetItemBox );
