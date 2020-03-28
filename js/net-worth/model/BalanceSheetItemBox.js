@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const DIMENSIONS = new Dimension2( 200, 300 );
+const DIMENSIONS = new Dimension2( 150, 280 );
 
 class BalanceSheetItemBox {
 

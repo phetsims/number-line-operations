@@ -42,7 +42,7 @@ class NLONetWorthModel {
     // add the storage areas for the balance sheet items - this is where they reside when not in use
     const balanceItemBoxesTop = 300;
     this.assetsBox = new BalanceSheetItemBox(
-      new Vector2( 750, balanceItemBoxesTop ),
+      new Vector2( 800, balanceItemBoxesTop ),
       this.balanceSheetItems.filter( item => item.value > 0 )
     );
     this.debtsBox = new BalanceSheetItemBox(
@@ -53,10 +53,10 @@ class NLONetWorthModel {
 
     // add the asset and debt bags
     const balanceItemBagsCenterY = 460;
-    this.debtsBag = new BalanceSheetItemBag( new Vector2( 380, balanceItemBagsCenterY ), {
+    this.debtsBag = new BalanceSheetItemBag( new Vector2( 360, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_DEBTS
     } );
-    this.assetsBag = new BalanceSheetItemBag( new Vector2( 620, balanceItemBagsCenterY ), {
+    this.assetsBag = new BalanceSheetItemBag( new Vector2( 640, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
     } );
     this.bags = [ this.debtsBag, this.assetsBag ];

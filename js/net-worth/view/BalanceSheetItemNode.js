@@ -27,10 +27,10 @@ import debt400Image from '../../../images/debt-400_png.js';
 // of lack of support in IE).  The width is the only size provided, and the aspect ratio of the image ends up defining
 // the height in the view.
 const MAP_OF_VALUES_TO_IMAGE_INFO = new Map(); // Map<key:<number>,value:<{image:{imageInfo},width:{number}}>
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, { image: asset100Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, { image: asset100Image, width: 70 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, { image: asset200Image, width: 80 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, { image: asset300Image, width: 70 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, { image: asset400Image, width: 40 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, { image: asset300Image, width: 80 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, { image: asset400Image, width: 50 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, { image: debt100Image, width: 60 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, { image: debt200Image, width: 60 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, { image: debt300Image, width: 60 } );
