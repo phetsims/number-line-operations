@@ -27,6 +27,26 @@ class NLONetWorthModel {
       tandem: tandem.createTandem( 'netWorthProperty' )
     } );
 
+    // @public (read-write)
+    this.operationLabelsVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'operationLabelsVisibleProperty' )
+    } );
+
+    // @public (read-write)
+    this.operationDescriptionVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'operationDescriptionVisibleProperty' )
+    } );
+
+    // @public (read-write) - whether the tick marks should be visible on the number line
+    this.tickMarksVisibleProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'tickMarksVisibleProperty' )
+    } );
+
+    // @public (read-write)
+    this.netWorthAccordionBoxExpandedProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'netWorthAccordionBoxExpandedProperty' )
+    } );
+
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
     this.balanceSheetItems = [
       new BalanceSheetItem( -400 ),
@@ -60,21 +80,6 @@ class NLONetWorthModel {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
     } );
     this.bags = [ this.debtsBag, this.assetsBag ];
-
-    // @public (read-write)
-    this.operationLabelsVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'operationLabelsVisibleProperty' )
-    } );
-
-    // @public (read-write)
-    this.operationDescriptionVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'operationDescriptionVisibleProperty' )
-    } );
-
-    // @public (read-write) - whether the tick marks should be visible on the number line
-    this.tickMarksVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'tickMarksVisibleProperty' )
-    } );
 
     // Monitor the isDragging state of each balance sheet item and, when it transitions to false, either add it to a
     // bag or return it to a storage box based on where it was dropped.
@@ -125,6 +130,7 @@ class NLONetWorthModel {
     this.operationDescriptionVisibleProperty.reset();
     this.operationLabelsVisibleProperty.reset();
     this.tickMarksVisibleProperty.reset();
+    this.netWorthAccordionBoxExpandedProperty.reset();
 
     // reset initial state of all balance sheet items
     this.balanceSheetItems.forEach( balanceSheetItem => {
@@ -148,6 +154,7 @@ class NLONetWorthModel {
       }
     } );
 
+    this.updateNetWorth();
   }
 
   /**

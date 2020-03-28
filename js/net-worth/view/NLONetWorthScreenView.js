@@ -60,6 +60,7 @@ class NLONetWorthScreenView extends ScreenView {
 
     // accordion box that displays the net worth when open
     this.addChild( new NetWorthAccordionBox( model.netWorthProperty, {
+      expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
       top: 10
     } ) );
