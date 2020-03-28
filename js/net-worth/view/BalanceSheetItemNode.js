@@ -31,9 +31,9 @@ MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, { image: asset100Image, width: 70 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, { image: asset200Image, width: 80 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, { image: asset300Image, width: 80 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, { image: asset400Image, width: 50 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, { image: debt100Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, { image: debt100Image, width: 55 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, { image: debt200Image, width: 60 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, { image: debt300Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, { image: debt300Image, width: 55 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, { image: debt400Image, width: 60 } );
 
 class BalanceSheetItemNode extends Image {
