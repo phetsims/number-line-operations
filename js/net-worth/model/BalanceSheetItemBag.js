@@ -100,20 +100,23 @@ class BalanceSheetItemBag {
   }
 
   /**
-   * position the items that are in this bag, spreading some out so that they don't overlap too much
+   * Position the items that are in this bag, spreading some out so that they don't overlap too much.  This method it
+   * optimized to work with the image artwork for this sim, and may need to be adjusted if that artwork changes.
    * @private
    */
   positionContainedItems() {
 
     if ( this.containedItemList.length === 1 ) {
-      this.containedItemList[ 0 ].animateTo( this.position );
+      this.containedItemList[ 0 ].animateTo( this.position.plusXY( 0, this.radius / 3 ) );
     }
     else {
-      const distanceFromCenter = this.radius / 3; // empirically chosen
+      // visually, the center point where items look best is a little below the model center position
+      const centerForPositioning = this.position.plusXY( 0, this.radius / 5 );
+      const distanceFromCenter = this.radius * 0.4; // empirically chosen
       const angleBetweenItems = 2 * Math.PI / this.containedItemList.length;
       let vectorFromCenter = new Vector2( distanceFromCenter, 0 );
       this.containedItemList.forEach( balanceSheetItem => {
-        balanceSheetItem.animateTo( this.position.plus( vectorFromCenter ) );
+        balanceSheetItem.animateTo( centerForPositioning.plus( vectorFromCenter ) );
         vectorFromCenter = vectorFromCenter.rotated( angleBetweenItems );
       } );
     }
