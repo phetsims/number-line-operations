@@ -24,7 +24,7 @@
     "value": "Net Worth"
   },
   "netWorthPattern": {
-    "value": "{{netWorthString}} = {{currencyUnits}}{{netWorthValue}}"
+    "value": "{{netWorthString}} = {{sign}}{{currencyUnits}}{{netWorthValue}}"
   },
   "currencyUnits": {
     "value": "$"
