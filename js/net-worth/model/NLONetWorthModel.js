@@ -43,11 +43,11 @@ class NLONetWorthModel {
     const balanceItemBoxesTop = 300;
     this.assetsBox = new BalanceSheetItemBox(
       new Vector2( 800, balanceItemBoxesTop ),
-      this.balanceSheetItems.filter( item => item.value > 0 )
+      this.balanceSheetItems.filter( item => item.value > 0 ).sort()
     );
     this.debtsBox = new BalanceSheetItemBox(
       new Vector2( 50, balanceItemBoxesTop ),
-      this.balanceSheetItems.filter( item => item.value < 0 )
+      this.balanceSheetItems.filter( item => item.value < 0 ).sort( ( a, b ) => b.value - a.value )
     );
     this.storageBoxes = [ this.assetsBox, this.debtsBox ];
 
