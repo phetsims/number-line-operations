@@ -14,7 +14,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import Animation from '../../../../twixt/js/Animation.js';
-import merge from '../../../../phet-core/js/merge.js';
 
 // constants
 const AVERAGE_ANIMATION_SPEED = 1000; // screen coordinates per second
@@ -22,17 +21,10 @@ const MIN_ANIMATION_TIME = 0.3; // in seconds
 
 class BalanceSheetItem {
 
-  constructor( value, options ) {
-
-    options = merge( {
-      width: 80 // in model coordinates, which in this sim are the same as screen coordinates
-    }, options );
+  constructor( value ) {
 
     // @public (read-only)
     this.value = value;
-
-    // @public (read-only)
-    this.width = options.width; // note that there is no height - that is left to the image used in the view
 
     // @public (read-only) - position in model space, don't set directly - use methods on this class
     this.positionProperty = new Vector2Property( Vector2.ZERO );

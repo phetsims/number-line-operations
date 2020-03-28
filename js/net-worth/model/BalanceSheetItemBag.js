@@ -6,6 +6,7 @@
  * are factored in to the total net worth.
  */
 
+import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -59,6 +60,7 @@ class BalanceSheetItemBag {
     assert( this.containedItemList.indexOf( item ) === -1, 'item is already in bag' );
     this.containedItemList.push( item );
     item.animateTo( this.position );
+    this.positionContainedItems();
   }
 
   /**
@@ -69,6 +71,7 @@ class BalanceSheetItemBag {
   removeItem( item ) {
     assert( this.containedItemList.indexOf( item ) !== -1, 'item is not in bag' );
     this.containedItemList = _.without( this.containedItemList, item );
+    this.positionContainedItems();
   }
 
   /**
@@ -94,6 +97,26 @@ class BalanceSheetItemBag {
    */
   isWithinCaptureRange( item ) {
     return item.positionProperty.value.distance( this.position ) <= this.radius;
+  }
+
+  /**
+   * position the items that are in this bag, spreading some out so that they don't overlap too much
+   * @private
+   */
+  positionContainedItems() {
+
+    if ( this.containedItemList.length === 1 ) {
+      this.containedItemList[ 0 ].animateTo( this.position );
+    }
+    else {
+      const distanceFromCenter = this.radius / 3; // empirically chosen
+      const angleBetweenItems = 2 * Math.PI / this.containedItemList.length;
+      let vectorFromCenter = new Vector2( distanceFromCenter, 0 );
+      this.containedItemList.forEach( balanceSheetItem => {
+        balanceSheetItem.animateTo( this.position.plus( vectorFromCenter ) );
+        vectorFromCenter = vectorFromCenter.rotated( angleBetweenItems );
+      } );
+    }
   }
 }
 

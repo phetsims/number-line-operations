@@ -20,9 +20,20 @@ class NetWorthAccordionBox extends AccordionBox {
   constructor( netWorthProperty, options ) {
 
     options = merge( {
+      titleNode: new Text( numberLineOperationsStrings.netWorth, { font: new PhetFont( 18 ) } ),
+      fill: 'white',
+      showTitleWhenExpanded: false,
       minWidth: DEFAULT_WIDTH,
       maxWidth: DEFAULT_WIDTH,
-      cornerRadius: 5
+      cornerRadius: 5,
+      buttonXMargin: 8,
+      buttonYMargin: 6,
+      expandCollapseButtonOptions: {
+        touchAreaXDilation: 15,
+        touchAreaYDilation: 15,
+        mouseAreaXDilation: 5,
+        mouseAreaYDilation: 5
+      }
     }, options );
 
     const netWorthText = new Text( '', {
@@ -32,8 +43,9 @@ class NetWorthAccordionBox extends AccordionBox {
 
     netWorthProperty.link( netWorth => {
       netWorthText.text = StringUtils.fillIn( numberLineOperationsStrings.netWorthPattern, {
+        netWorthString: numberLineOperationsStrings.netWorth,
         currencyUnits: numberLineOperationsStrings.currencyUnits,
-        netWorth: netWorth
+        netWorthValue: netWorth
       } );
     } );
 

@@ -3,13 +3,13 @@
     "value": "Number Line: Operations"
   },
   "screen.netWorth": {
-    "value": "Explore"
+    "value": "Net Worth"
   },
   "screen.operations": {
-    "value": "Generic"
+    "value": "Operations"
   },
   "screen.generic": {
-    "value": "Explore"
+    "value": "Generic"
   },
   "operationLabels": {
     "value": "Operation Labels"
@@ -20,8 +20,11 @@
   "tickMarks": {
     "value": "Tick Marks"
   },
+  "netWorth": {
+    "value": "Net Worth"
+  },
   "netWorthPattern": {
-    "value": "Net Worth = {{currencyUnits}}{{netWorth}}"
+    "value": "{{netWorthString}} = {{currencyUnits}}{{netWorthValue}}"
   },
   "currencyUnits": {
     "value": "$"

@@ -23,16 +23,18 @@ import debt400Image from '../../../images/debt-400_png.js';
 // constants
 //---------------------------------------------------------------------------------------------------------------------
 
-// map of asset/debt values to the images that go with each (not using Map constructor because of lack of support in IE)
-const MAP_OF_VALUES_TO_IMAGES = new Map();
-MAP_OF_VALUES_TO_IMAGES.set( 100, asset100Image );
-MAP_OF_VALUES_TO_IMAGES.set( 200, asset200Image );
-MAP_OF_VALUES_TO_IMAGES.set( 300, asset300Image );
-MAP_OF_VALUES_TO_IMAGES.set( 400, asset400Image );
-MAP_OF_VALUES_TO_IMAGES.set( -100, debt100Image );
-MAP_OF_VALUES_TO_IMAGES.set( -200, debt200Image );
-MAP_OF_VALUES_TO_IMAGES.set( -300, debt300Image );
-MAP_OF_VALUES_TO_IMAGES.set( -400, debt400Image );
+// Create a map of asset/debt values to the images and their sizes that go with each (not using Map constructor because
+// of lack of support in IE).  The width is the only size provided, and the aspect ratio of the image ends up defining
+// the height in the view.
+const MAP_OF_VALUES_TO_IMAGE_INFO = new Map(); // Map<key:<number>,value:<{image:{imageInfo},width:{number}}>
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, { image: asset100Image, width: 70 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, { image: asset200Image, width: 80 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, { image: asset300Image, width: 70 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, { image: asset400Image, width: 40 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, { image: debt100Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, { image: debt200Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, { image: debt300Image, width: 60 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, { image: debt400Image, width: 60 } );
 
 class BalanceSheetItemNode extends Image {
 
@@ -41,13 +43,13 @@ class BalanceSheetItemNode extends Image {
    */
   constructor( balanceSheetItem ) {
 
-    // get the image that is associated with this balance sheet item's value
-    const image = MAP_OF_VALUES_TO_IMAGES.get( balanceSheetItem.value );
-    assert( image, 'no image found for value ' + balanceSheetItem.value );
+    // get the imageInfo that is associated with this balance sheet item's value
+    const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
+    assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
 
-    super( image, {
+    super( imageInfo.image, {
       cursor: 'pointer',
-      maxWidth: balanceSheetItem.width
+      maxWidth: imageInfo.width
     } );
 
     // Position this node based on the model element position.  Note that there is no model-view transform, since we are
@@ -71,6 +73,7 @@ class BalanceSheetItemNode extends Image {
         balanceSheetItem.isDraggingProperty.value = true;
         const dragStartPoint = this.globalToParentPoint( event.pointer.point ); // point in parent frame
         dragOffset = balanceSheetItem.positionProperty.value.minus( dragStartPoint );
+        this.moveToFront(); // move to the front of the z-order in whatever layer this node is in
       },
 
       drag: event => {
