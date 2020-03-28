@@ -28,5 +28,11 @@
   },
   "currencyUnits": {
     "value": "$"
+  },
+  "assets": {
+    "value": "Assets"
+  },
+  "debts": {
+    "value": "Debts"
   }
 }

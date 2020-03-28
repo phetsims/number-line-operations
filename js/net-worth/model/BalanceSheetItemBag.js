@@ -110,8 +110,9 @@ class BalanceSheetItemBag {
       this.containedItemList[ 0 ].animateTo( this.position.plusXY( 0, this.radius / 3 ) );
     }
     else {
+
       // visually, the center point where items look best is a little below the model center position
-      const centerForPositioning = this.position.plusXY( 0, this.radius / 5 );
+      const centerForPositioning = this.position.plusXY( 0, this.radius * 0.22 );
       const distanceFromCenter = this.radius * 0.4; // empirically chosen
       const angleBetweenItems = 2 * Math.PI / this.containedItemList.length;
       let vectorFromCenter = new Vector2( distanceFromCenter, 0 );
