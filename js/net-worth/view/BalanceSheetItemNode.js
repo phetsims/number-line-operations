@@ -45,7 +45,7 @@ class BalanceSheetItemNode extends Image {
 
     // get the imageInfo that is associated with this balance sheet item's value
     const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
-    assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
+    assert && assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
 
     super( imageInfo.image, {
       cursor: 'pointer',

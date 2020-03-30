@@ -56,8 +56,8 @@ class BalanceSheetItemBag {
    * @public
    */
   addItem( item ) {
-    assert( this.itemAcceptanceTest( item ), 'this bag does not accept this type of balance sheet item' );
-    assert( this.containedItemList.indexOf( item ) === -1, 'item is already in bag' );
+    assert && assert( this.itemAcceptanceTest( item ), 'this bag does not accept this type of balance sheet item' );
+    assert && assert( this.containedItemList.indexOf( item ) === -1, 'item is already in bag' );
     this.containedItemList.push( item );
     item.animateTo( this.position );
     this.positionContainedItems();
@@ -69,7 +69,7 @@ class BalanceSheetItemBag {
    * @public
    */
   removeItem( item ) {
-    assert( this.containedItemList.indexOf( item ) !== -1, 'item is not in bag' );
+    assert && assert( this.containedItemList.indexOf( item ) !== -1, 'item is not in bag' );
     this.containedItemList = _.without( this.containedItemList, item );
     this.positionContainedItems();
   }

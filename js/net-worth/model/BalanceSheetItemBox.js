@@ -48,7 +48,7 @@ class BalanceSheetItemBox {
   returnItem( item, animate ) {
 
     const storagePosition = this.mapOfItemsToStoragePositions.get( item );
-    assert( storagePosition, 'the provided item does not go in this box' );
+    assert && assert( storagePosition, 'the provided item does not go in this box' );
     if ( animate ) {
       item.animateTo( storagePosition );
     }
