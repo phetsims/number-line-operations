@@ -11,7 +11,7 @@ import SimLauncher from '../../joist/js/SimLauncher.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import NLOGenericScreen from './generic/NLOGenericScreen.js';
 import NLONetWorthScreen from './net-worth/NLONetWorthScreen.js';
-import numberLineOperationsStrings from './number-line-operations-strings.js';
+import numberLineOperationsStrings from './numberLineOperationsStrings.js';
 import NLOOperationsScreen from './operations/NLOOperationsScreen.js';
 
 const numberLineOperationsTitleString = numberLineOperationsStrings[ 'number-line-operations' ].title;

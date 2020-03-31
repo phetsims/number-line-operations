@@ -6,7 +6,7 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import numberLineOperationsStrings from '../../number-line-operations-strings.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants

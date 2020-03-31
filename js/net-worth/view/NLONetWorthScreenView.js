@@ -10,7 +10,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperationsStrings from '../../number-line-operations-strings.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import BalanceSheetItemBagNode from './BalanceSheetItemBagNode.js';
 import BalanceSheetItemBoxNode from './BalanceSheetItemBoxNode.js';

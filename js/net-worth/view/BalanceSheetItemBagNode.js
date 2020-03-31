@@ -9,7 +9,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import numberLineOperationsStrings from '../../number-line-operations-strings.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import assetsBagImage from '../../../images/assets-bag_png.js';
 import debtsBagImage from '../../../images/debts-bag_png.js';
