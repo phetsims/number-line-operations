@@ -25,7 +25,7 @@ class NLOOperationsScreen extends Screen {
       name: numberLineOperationsStrings.screen.operations,
       homeScreenIcon: randomIcon,
       navigationBarIcon: randomIcon,
-      backgroundColorProperty: new Property( '#f8f6fe' ),
+      backgroundColorProperty: new Property( '#fffef3' ),
       tandem: tandem
     };
 

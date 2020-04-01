@@ -25,7 +25,7 @@ class NLONetWorthScreen extends Screen {
       name: numberLineOperationsStrings.screen.netWorth,
       homeScreenIcon: randomIcon,
       navigationBarIcon: randomIcon,
-      backgroundColorProperty: new Property( '#fffef3' ),
+      backgroundColorProperty: new Property( '#f8f6fe' ),
       tandem: tandem
     };
 
