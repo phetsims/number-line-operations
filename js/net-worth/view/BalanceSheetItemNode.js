@@ -11,6 +11,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
+import HBox from '../../../../scenery/js/nodes/HBox.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -53,17 +54,17 @@ class BalanceSheetItemNode extends Node {
     const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
     assert && assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
 
-    // large image - shown when the balance sheet item is not in the balance sheet item bag
+    // large image - shown when the balance sheet item is not in a balance sheet item bag
     const largeImageNode = new Image( imageInfo.image, {
       cursor: 'pointer',
-      maxWidth: imageInfo.width
+      maxWidth: imageInfo.width,
+      center: Vector2.ZERO
     } );
 
-    // small image - shown when the balance sheet item is in the balance sheet item bag
+    // small image - shown when the balance sheet item is in a balance sheet item bag
     const smallImageNode = new Image( imageInfo.image, {
       cursor: 'pointer',
-      maxWidth: imageInfo.width * 0.5,
-      center: largeImageNode.center
+      maxWidth: imageInfo.width * 0.6  // multiplier empirically determined
     } );
 
     const labelNode = new Text(
@@ -77,8 +78,15 @@ class BalanceSheetItemNode extends Node {
       }
     );
 
+    // node that contains a small image and a textual label, used when the item is in a bag
+    const inBagRepresentationNode = new HBox( {
+      children: [ smallImageNode, labelNode ],
+      spacing: 10,
+      center: largeImageNode.center
+    } );
+
     super( {
-      children: [ largeImageNode, smallImageNode, labelNode ],
+      children: [ largeImageNode, inBagRepresentationNode ],
       cursor: 'pointer'
     } );
 
@@ -87,22 +95,10 @@ class BalanceSheetItemNode extends Node {
       this.pickable = inProgressAnimation === null;
     } );
 
-    // update the position of the label based on whether this item is in an asset/debt bag
+    // update the visibility of the representations based on whether this item is in a balance sheet item bag
     balanceSheetItem.inBagProperty.link( inBag => {
-
-      // main image visibility
       largeImageNode.visible = !inBag;
-      smallImageNode.visible = inBag;
-
-      // label node visibility and positioning
-      labelNode.visible = inBag;
-      labelNode.centerY = largeImageNode.centerY;
-      if ( inBag ) {
-        labelNode.left = smallImageNode.right + 10;
-      }
-      else {
-        labelNode.centerX = smallImageNode.centerX;
-      }
+      inBagRepresentationNode.visible = inBag;
     } );
 
     // drag handler
@@ -131,8 +127,7 @@ class BalanceSheetItemNode extends Node {
     // Position this node based on the model element position.  Note that there is no model-view transform, since we are
     // using the same coordinate system in both the model and view.
     balanceSheetItem.positionProperty.link( position => {
-      this.centerY = position.y;
-      this.left = position.x - largeImageNode.centerX;
+      this.center = position;
     } );
   }
 }

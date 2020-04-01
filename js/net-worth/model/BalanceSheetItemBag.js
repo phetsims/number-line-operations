@@ -108,8 +108,8 @@ class BalanceSheetItemBag {
   positionContainedItems() {
     assert && assert( this.containedItemList.length <= 4, 'too many items in bag' );
     this.containedItemList.forEach( ( item, index ) => {
-      const xPosition = this.position.x - this.radius * 0.2;
-      const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.25;
+      const xPosition = this.position.x;
+      const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.3;
       item.animateTo( new Vector2( xPosition, yPosition ) );
     } );
   }
