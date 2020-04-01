@@ -12,7 +12,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const DIMENSIONS = new Dimension2( 150, 280 );
+const DIMENSIONS = new Dimension2( 120, 280 );
 
 class BalanceSheetItemBox {
 
@@ -23,7 +23,12 @@ class BalanceSheetItemBox {
   constructor( position, items ) {
 
     // @public (read-only)
-    this.rectangleBounds = new Bounds2( position.x, position.y, position.x + DIMENSIONS.width, position.y + DIMENSIONS.height );
+    this.rectangleBounds = new Bounds2(
+      position.x,
+      position.y,
+      position.x + DIMENSIONS.width,
+      position.y + DIMENSIONS.height
+    );
 
     // map of items to storage positions, populated below
     this.mapOfItemsToStoragePositions = new Map();

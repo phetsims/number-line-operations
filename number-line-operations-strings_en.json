@@ -34,5 +34,8 @@
   },
   "debts": {
     "value": "Debts"
+  },
+  "monetaryValuePattern": {
+    "value": "{{sign}}{{currencyUnits}}{{value}}"
   }
 }

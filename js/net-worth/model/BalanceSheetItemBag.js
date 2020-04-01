@@ -59,7 +59,7 @@ class BalanceSheetItemBag {
     assert && assert( this.itemAcceptanceTest( item ), 'this bag does not accept this type of balance sheet item' );
     assert && assert( this.containedItemList.indexOf( item ) === -1, 'item is already in bag' );
     this.containedItemList.push( item );
-    item.animateTo( this.position );
+    item.inBagProperty.set( true );
     this.positionContainedItems();
   }
 
@@ -71,6 +71,7 @@ class BalanceSheetItemBag {
   removeItem( item ) {
     assert && assert( this.containedItemList.indexOf( item ) !== -1, 'item is not in bag' );
     this.containedItemList = _.without( this.containedItemList, item );
+    item.inBagProperty.set( false );
     this.positionContainedItems();
   }
 
@@ -100,27 +101,17 @@ class BalanceSheetItemBag {
   }
 
   /**
-   * Position the items that are in this bag, spreading some out so that they don't overlap too much.  This method it
-   * optimized to work with the image artwork for this sim, and may need to be adjusted if that artwork changes.
+   * Position the items that are in this bag.  This method is optimized to work with the image artwork for this sim and
+   * makes assumptions about how many items can be added, it will need to be adjusted if any of this changes.
    * @private
    */
   positionContainedItems() {
-
-    if ( this.containedItemList.length === 1 ) {
-      this.containedItemList[ 0 ].animateTo( this.position.plusXY( 0, this.radius / 3 ) );
-    }
-    else {
-
-      // visually, the center point where items look best is a little below the model center position
-      const centerForPositioning = this.position.plusXY( 0, this.radius * 0.22 );
-      const distanceFromCenter = this.radius * 0.4; // empirically chosen
-      const angleBetweenItems = 2 * Math.PI / this.containedItemList.length;
-      let vectorFromCenter = new Vector2( distanceFromCenter, 0 );
-      this.containedItemList.forEach( balanceSheetItem => {
-        balanceSheetItem.animateTo( centerForPositioning.plus( vectorFromCenter ) );
-        vectorFromCenter = vectorFromCenter.rotated( angleBetweenItems );
-      } );
-    }
+    assert && assert( this.containedItemList.length <= 4, 'too many items in bag' );
+    this.containedItemList.forEach( ( item, index ) => {
+      const xPosition = this.position.x - this.radius * 0.2;
+      const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.25;
+      item.animateTo( new Vector2( xPosition, yPosition ) );
+    } );
   }
 }
 

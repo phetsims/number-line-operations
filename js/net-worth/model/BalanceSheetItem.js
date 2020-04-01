@@ -34,6 +34,9 @@ class BalanceSheetItem {
 
     // @public (read-only) {Animation|null} - animation that is currently in progress, null if there isn't one
     this.inProgressAnimationProperty = new Property( null );
+
+    // @public (read-write) - flag that indicates whether this item is in a balance sheet item bag
+    this.inBagProperty = new BooleanProperty( false );
   }
 
   /**
