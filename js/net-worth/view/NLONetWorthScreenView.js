@@ -5,6 +5,7 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -43,7 +44,7 @@ class NLONetWorthScreenView extends ScreenView {
       ),
       new Checkbox(
         new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.tickMarksVisibleProperty,
+        model.numberLine.showTickMarksProperty,
         NLOConstants.CHECKBOX_OPTIONS
       )
     ];
@@ -63,6 +64,13 @@ class NLONetWorthScreenView extends ScreenView {
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
       top: 10
+    } ) );
+
+    // number line node
+    this.addChild( new SpatializedNumberLineNode( model.numberLine, {
+      pointNodeOptions: {
+        radius: 6
+      }
     } ) );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
