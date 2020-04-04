@@ -38,12 +38,12 @@ class NLONetWorthScreenView extends ScreenView {
     const checkboxes = [
       new Checkbox(
         new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.operationLabelsVisibleProperty,
+        model.numberLine.showOperationLabelsProperty,
         NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
         new Text( numberLineOperationsStrings.operationDescription, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.operationDescriptionVisibleProperty,
+        model.numberLine.showOperationDescriptionsProperty,
         NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
@@ -78,12 +78,23 @@ class NLONetWorthScreenView extends ScreenView {
     } ) );
 
     // piggy bank that displays the net worth and moves as the value changes
-    this.addChild( new NetWorthPiggyBankNode(
+    const netWorthPiggyBankNode = new NetWorthPiggyBankNode(
       model.netWorthProperty,
-      model.netWorthPoint,
-      model.numberLine.centerPosition.y + 80,
-      NLONetWorthModel.NET_WORTH_RANGE
-    ) );
+      NLONetWorthModel.NET_WORTH_RANGE,
+      { centerY: model.numberLine.centerPosition.y + 75 }
+    );
+    this.addChild( netWorthPiggyBankNode );
+
+    // update the position of the piggy bank node as operations occur on the number line that update the net worth
+    model.numberLine.operationsListProperty.link( () => {
+      const currentEndValue = model.numberLine.getCurrentEndValue();
+      const currentEndPoint = model.numberLine.getPointsAt( currentEndValue )[ 0 ];
+
+      // this 'if' clause is necessary to property handle reset
+      if ( currentEndPoint ) {
+        netWorthPiggyBankNode.centerX = currentEndPoint.getPositionInModelSpace().x;
+      }
+    } );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
     this.addChild( new BalanceSheetItemBoxNode( model.assetsBox ) );

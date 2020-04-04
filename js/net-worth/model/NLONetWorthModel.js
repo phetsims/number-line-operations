@@ -8,9 +8,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
-import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
-import Color from '../../../../scenery/js/util/Color.js';
+import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import BalanceSheetItem from './BalanceSheetItem.js';
@@ -36,36 +34,22 @@ class NLONetWorthModel {
     } );
 
     // @public (read-write)
-    this.operationLabelsVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'operationLabelsVisibleProperty' )
-    } );
-
-    // @public (read-write)
-    this.operationDescriptionVisibleProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'operationDescriptionVisibleProperty' )
-    } );
-
-    // @public (read-write)
     this.netWorthAccordionBoxExpandedProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'netWorthAccordionBoxExpandedProperty' )
     } );
 
     // @public (read-only) - the number line upon which the net worth and the various operation will be portrayed
-    this.numberLine = new SpatializedNumberLine( NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ), {
-      initialDisplayedRange: NET_WORTH_RANGE,
+    this.numberLine = new OperationTrackingNumberLine(
+      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ),
+      this.netWorthProperty.value,
+      1,
+      {
+        initialDisplayedRange: NET_WORTH_RANGE,
 
-      // width of the number line in model space, number empirically determined to make it look good
-      widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
-    } );
-
-    // @public (read-only) - the point on the number line that corresponds to the current net worth
-    this.netWorthPoint = new NumberLinePoint( this.netWorthProperty.value, Color.BLUE, this.numberLine );
-    this.numberLine.addPoint( this.netWorthPoint );
-
-    // update the net worth point's value as the net worth changes
-    this.netWorthProperty.link( netWorth => {
-      this.netWorthPoint.proposeValue( netWorth );
-    } );
+        // width of the number line in model space, number empirically determined to make it look good
+        widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
+      }
+    );
 
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
     this.balanceSheetItems = [
@@ -107,10 +91,11 @@ class NLONetWorthModel {
       balanceSheetItem.isDraggingProperty.lazyLink( isDragging => {
         if ( isDragging ) {
 
-          // if the item was in one of the bags, remove it and update the net worth
+          // if the item was in one of the bags, remove it
           this.bags.forEach( bag => {
             if ( bag.containsItem( balanceSheetItem ) ) {
               bag.removeItem( balanceSheetItem );
+              this.numberLine.subtract( balanceSheetItem.value );
             }
           } );
         }
@@ -122,6 +107,7 @@ class NLONetWorthModel {
             if ( bag.acceptsItem( balanceSheetItem ) && bag.isWithinCaptureRange( balanceSheetItem ) ) {
               bag.addItem( balanceSheetItem );
               addedToBag = true;
+              this.numberLine.add( balanceSheetItem.value );
             }
           } );
           if ( !addedToBag ) {
@@ -132,13 +118,8 @@ class NLONetWorthModel {
             } );
           }
         }
-        this.updateNetWorth();
       } );
     } );
-  }
-
-  updateNetWorth() {
-    this.netWorthProperty.set( this.assetsBag.getTotalValue() + this.debtsBag.getTotalValue() );
   }
 
   /**
@@ -147,10 +128,8 @@ class NLONetWorthModel {
    */
   reset() {
 
-    this.operationDescriptionVisibleProperty.reset();
-    this.operationLabelsVisibleProperty.reset();
     this.netWorthAccordionBoxExpandedProperty.reset();
-    this.numberLine.showTickMarksProperty.reset();
+    this.numberLine.reset();
 
     // reset initial state of all balance sheet items
     this.balanceSheetItems.forEach( balanceSheetItem => {
@@ -173,17 +152,6 @@ class NLONetWorthModel {
         } );
       }
     } );
-
-    this.updateNetWorth();
-  }
-
-  /**
-   * Steps the model.
-   * @param {number} dt - time step, in seconds
-   * @public
-   */
-  step( dt ) {
-    //TODO
   }
 }
 

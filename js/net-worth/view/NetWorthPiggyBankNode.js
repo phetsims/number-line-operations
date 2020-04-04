@@ -5,6 +5,7 @@
  * position, label, and fill of the piggy bank changes as the net worth value changes.
  */
 
+import merge from '../../../../phet-core/js/merge.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
@@ -28,17 +29,14 @@ class NetWorthPiggyBankNode extends Node {
 
   /**
    * @param {NumberProperty} netWorthProperty
-   * @param {NumberLinePoint} netWorthPoint
-   * @param {number} yPosition
    * @param {Range} range
+   * @param {Object} [options]
    */
-  constructor( netWorthProperty, netWorthPoint, yPosition, range ) {
+  constructor( netWorthProperty, range, options ) {
 
     const piggyBankNode = new PiggyBankNode( {
       decorationType: PiggyBankDecoration.LIGHTNING,
-      maxWidth: 90,
-      centerY: yPosition,
-      centerX: 100
+      maxWidth: 90
     } );
 
     // label the represent the value
@@ -50,7 +48,7 @@ class NetWorthPiggyBankNode extends Node {
       maxWidth: 65
     } );
 
-    super( { children: [ piggyBankNode, labelNode ] } );
+    super( merge( { children: [ piggyBankNode, labelNode ] }, options ) );
 
     // update the fill and label as the net worth value changes
     netWorthProperty.link( netWorth => {
@@ -77,12 +75,6 @@ class NetWorthPiggyBankNode extends Node {
       }
       piggyBankNode.fill = piggyBankFill;
     } );
-
-    // update the position as the net worth point position changes
-    netWorthPoint.valueProperty.link( () => {
-      this.centerX = netWorthPoint.getPositionInModelSpace().x;
-    } );
-
   }
 }
 
