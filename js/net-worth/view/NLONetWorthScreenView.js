@@ -6,6 +6,7 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -34,19 +35,19 @@ class NLONetWorthScreenView extends ScreenView {
     // checkboxes that will control the presentation options
     const checkboxes = [
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
         model.operationLabelsVisibleProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+        NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationDescription, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationDescription, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
         model.operationDescriptionVisibleProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+        NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showTickMarksProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+        NLCConstants.CHECKBOX_OPTIONS
       )
     ];
     const checkboxGroup = new VBox( {
