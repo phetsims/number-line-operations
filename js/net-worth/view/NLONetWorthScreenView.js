@@ -15,10 +15,12 @@ import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import NLONetWorthModel from '../model/NLONetWorthModel.js';
 import BalanceSheetItemBagNode from './BalanceSheetItemBagNode.js';
 import BalanceSheetItemBoxNode from './BalanceSheetItemBoxNode.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 import NetWorthAccordionBox from './NetWorthAccordionBox.js';
+import NetWorthPiggyBankNode from './NetWorthPiggyBankNode.js';
 
 class NLONetWorthScreenView extends ScreenView {
 
@@ -74,6 +76,14 @@ class NLONetWorthScreenView extends ScreenView {
         radius: 6
       }
     } ) );
+
+    // piggy bank that displays the net worth and moves as the value changes
+    this.addChild( new NetWorthPiggyBankNode(
+      model.netWorthProperty,
+      model.netWorthPoint,
+      model.numberLine.centerPosition.y + 80,
+      NLONetWorthModel.NET_WORTH_RANGE
+    ) );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
     this.addChild( new BalanceSheetItemBoxNode( model.assetsBox ) );

@@ -17,6 +17,9 @@ import BalanceSheetItem from './BalanceSheetItem.js';
 import BalanceSheetItemBag from './BalanceSheetItemBag.js';
 import BalanceSheetItemBox from './BalanceSheetItemBox.js';
 
+// constants
+const NET_WORTH_RANGE = new Range( -1000, 1000 );
+
 /**
  * @constructor
  */
@@ -49,19 +52,19 @@ class NLONetWorthModel {
 
     // @public (read-only) - the number line upon which the net worth and the various operation will be portrayed
     this.numberLine = new SpatializedNumberLine( NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ), {
-      initialDisplayedRange: new Range( -1000, 1000 ),
+      initialDisplayedRange: NET_WORTH_RANGE,
 
       // width of the number line in model space, number empirically determined to make it look good
       widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
     } );
 
     // @public (read-only) - the point on the number line that corresponds to the current net worth
-    const netWorthPoint = new NumberLinePoint( this.netWorthProperty.value, Color.BLUE, this.numberLine );
-    this.numberLine.addPoint( netWorthPoint );
+    this.netWorthPoint = new NumberLinePoint( this.netWorthProperty.value, Color.BLUE, this.numberLine );
+    this.numberLine.addPoint( this.netWorthPoint );
 
     // update the net worth point's value as the net worth changes
     this.netWorthProperty.link( netWorth => {
-      netWorthPoint.proposeValue( netWorth );
+      this.netWorthPoint.proposeValue( netWorth );
     } );
 
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
@@ -183,6 +186,9 @@ class NLONetWorthModel {
     //TODO
   }
 }
+
+// statics
+NLONetWorthModel.NET_WORTH_RANGE = NET_WORTH_RANGE;
 
 numberLineOperations.register( 'NLONetWorthModel', NLONetWorthModel );
 export default NLONetWorthModel;
