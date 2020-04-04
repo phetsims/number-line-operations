@@ -1,6 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
  * @author John Blanco
  */
 
@@ -54,7 +55,7 @@ class NLONetWorthScreenView extends ScreenView {
       align: 'left',
 
       // position - empirically determined to look decent
-      left: this.layoutBounds.maxX - 220,
+      left: this.layoutBounds.minX + 40,
       top: this.layoutBounds.minY + 10
     } );
     this.addChild( checkboxGroup );
