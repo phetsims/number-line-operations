@@ -32,6 +32,10 @@
         "grunt": "~1.0.0"
       },
       "phet": {
+        "phetLibs": [
+          "number-line-common",
+          "twixt"
+        ],
         "requirejsNamespace": "NUMBER_LINE_OPERATIONS",
         "simulation": true,
         "runnable": true,
@@ -66,16 +70,16 @@
       {
         "repo": "tambo",
         "requirejsNamespace": "TAMBO"
+      },
+      {
+        "repo": "twixt",
+        "requirejsNamespace": "TWIXT"
       }
     ];
 
   // Identify the brand (assume generated brand if not provided with query parameters)
   const brandMatch = location.search.match( /brand=([^&]+)/ );
   const brand = brandMatch ? decodeURIComponent( brandMatch[ 1 ] ) : 'adapted-from-phet';
-
-  // Cache busting is applied by default, but can be disabled via ?cacheBust=false, see initialize-globals.js
-  const isCacheBustDisabled = /(^|\?|&)cacheBust=false/.test( location.search );
-  const queryAppend = isCacheBustDisabled ? '' : `?bust=${Date.now()}`;
 
   // Preloads, with more included for phet-io brand
   let preloads = [
@@ -115,7 +119,7 @@
   const loadURL = ( preloadURL, type = 'text/javascript' ) => {
     const script = document.createElement( 'script' );
     script.type = type;
-    script.src = preloadURL + queryAppend;
+    script.src = preloadURL;
     script.async = false;
     document.head.appendChild( script );
   };
