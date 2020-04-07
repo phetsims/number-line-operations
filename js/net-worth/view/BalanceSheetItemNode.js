@@ -8,7 +8,6 @@
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -69,7 +68,7 @@ class BalanceSheetItemNode extends Node {
 
     const labelNode = new Text(
       StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
-        sign: balanceSheetItem.value < 0 ? MathSymbols.UNARY_MINUS : '',
+        sign: '', // don't show minus sign for debts, since that would be a sort of double negative
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( balanceSheetItem.value )
       } ),
