@@ -118,6 +118,7 @@ class NLONetWorthModel {
             } );
           }
         }
+        this.netWorthProperty.set( this.assetsBag.getTotalValue() + this.debtsBag.getTotalValue() );
       } );
     } );
   }
@@ -127,9 +128,6 @@ class NLONetWorthModel {
    * @public
    */
   reset() {
-
-    this.netWorthAccordionBoxExpandedProperty.reset();
-    this.numberLine.reset();
 
     // reset initial state of all balance sheet items
     this.balanceSheetItems.forEach( balanceSheetItem => {
@@ -152,6 +150,10 @@ class NLONetWorthModel {
         } );
       }
     } );
+
+    this.netWorthAccordionBoxExpandedProperty.reset();
+    this.numberLine.reset();
+    this.netWorthProperty.reset();
   }
 }
 

@@ -35,7 +35,7 @@ class NetWorthPiggyBankNode extends Node {
   constructor( netWorthProperty, range, options ) {
 
     const piggyBankNode = new PiggyBankNode( {
-      decorationType: PiggyBankDecoration.LIGHTNING,
+      decorationType: PiggyBankDecoration.NONE,
       maxWidth: 90
     } );
 

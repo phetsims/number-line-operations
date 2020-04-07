@@ -85,15 +85,10 @@ class NLONetWorthScreenView extends ScreenView {
     );
     this.addChild( netWorthPiggyBankNode );
 
-    // update the position of the piggy bank node as operations occur on the number line that update the net worth
-    model.numberLine.operationsListProperty.link( () => {
-      const currentEndValue = model.numberLine.getCurrentEndValue();
-      const currentEndPoint = model.numberLine.getPointsAt( currentEndValue )[ 0 ];
-
-      // this 'if' clause is necessary to property handle reset
-      if ( currentEndPoint ) {
-        netWorthPiggyBankNode.centerX = currentEndPoint.getPositionInModelSpace().x;
-      }
+    // update the position of the piggy bank node when the net worth changes
+    model.netWorthProperty.link( netWorth => {
+      const currentEndPoint = model.numberLine.getPointsAt( netWorth )[ 0 ];
+      netWorthPiggyBankNode.centerX = currentEndPoint.getPositionInModelSpace().x;
     } );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
