@@ -42,8 +42,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     this.historyLength = historyLength;
     this.initialValue = initialValue;
 
-    // add the initial point
-    this.addPoint( new NumberLinePoint( initialValue, Color.BLACK, this ) );
+    // There is always at least one point that serves as the starting point from which the operation act upon, so add it
+    // now.
+    this.startingPoint = new NumberLinePoint( initialValue, Color.BLUE, this );
+    this.addPoint( this.startingPoint );
   }
 
   /**
@@ -53,6 +55,11 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * @public
    */
   performOperation( operationType, amount ) {
+
+    assert && assert(
+      operationType === Operations.ADDITION || operationType === Operations.SUBTRACTION,
+      'only addition and subtraction are currently supported'
+    );
 
     const currentValue = this.getCurrentEndValue();
 
@@ -69,11 +76,28 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // add the new operation to the list
     operationsList.push( new Operation( currentValue, operationType, amount ) );
 
-    // update the points on this number line
-    this.removeAllPoints();
-    this.addPoint( new NumberLinePoint( operationsList[ 0 ].startValue, Color.BLACK, this ) );
+    // set the value of the starting point
+    this.startingPoint.valueProperty.set( operationsList[ 0 ].startValue );
+
+    // go through the operations, adjusting or adding points as needed
+    const usedPoints = [ this.startingPoint ];
     operationsList.forEach( operation => {
-      this.addPoint( new NumberLinePoint( operation.getEndValue(), Color.BLUE, this ) );
+
+      // Is there an unused point available?
+      const unusedPoint = _.find( this.residentPoints.getArray(), item => usedPoints.indexOf( item ) === -1 );
+      if ( !unusedPoint ) {
+
+        // add a new point
+        const newPoint = new NumberLinePoint( operation.getEndValue(), Color.BLUE, this );
+        this.addPoint( newPoint );
+        usedPoints.push( newPoint );
+      }
+      else {
+
+        // update this point
+        unusedPoint.valueProperty.set( operation.getEndValue() );
+        usedPoints.push( unusedPoint );
+      }
     } );
 
     // update the list property
@@ -113,7 +137,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   reset() {
     super.reset();
     this.operationsListProperty.set( [] );
-    this.addPoint( new NumberLinePoint( this.initialValue, Color.BLACK, this ) );
+
+    // resetting the number line removes all points, so add the start point back
+    this.startingPoint.valueProperty.reset();
+    this.addPoint( this.startingPoint );
   }
 }
 
