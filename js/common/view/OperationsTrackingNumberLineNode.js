@@ -5,6 +5,8 @@
  * labeled operations that have occurred between the points on the number line.
  */
 
+import Easing from '../../../../twixt/js/Easing.js';
+import Animation from '../../../../twixt/js/Animation.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
@@ -162,13 +164,50 @@ class OperationArrowNode extends Node {
     const operationDescriptionTextNode = new Text( operationDescriptionText, {
       font: new PhetFont( 20 )
     } );
+    const descriptionBottomWhenLabelVisible = operationLabel.top;
+    const descriptionBottomWhenLabelNotVisible = operationLabel.bottom;
     const operationDescription = new BackgroundNode( operationDescriptionTextNode, {
       centerX: arcNode.centerX,
-      bottom: operationLabel.top
+      bottom: showLabelProperty.value ? descriptionBottomWhenLabelVisible : descriptionBottomWhenLabelNotVisible
     } );
     showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
 
+    // Position the operation description above/below the label when the label is visible, or in the label's spot when
+    // the label is invisible.  Use an animation to make it look pro.
+    let descriptionMovementAnimation = null;
+    const commonAnimationOptions = {
+      duration: 0.25,
+      easing: Easing.CUBIC_IN_OUT,
+      setValue: value => { operationDescription.bottom = value; }
+    };
+    showLabelProperty.lazyLink( labelVisible => {
+      if ( labelVisible && operationDescription.bottom !== descriptionBottomWhenLabelVisible ) {
+        descriptionMovementAnimation && descriptionMovementAnimation.stop();
+        descriptionMovementAnimation = new Animation( merge( {
+          from: operationDescription.bottom,
+          to: descriptionBottomWhenLabelVisible
+        }, commonAnimationOptions ) );
+        descriptionMovementAnimation.start();
+      }
+      else if ( !labelVisible && operationDescription.bottom !== descriptionBottomWhenLabelNotVisible ) {
+        descriptionMovementAnimation && descriptionMovementAnimation.stop();
+        descriptionMovementAnimation = new Animation( merge( {
+          from: operationDescription.bottom,
+          to: descriptionBottomWhenLabelNotVisible
+        }, commonAnimationOptions ) );
+        descriptionMovementAnimation.start();
+      }
+      descriptionMovementAnimation && descriptionMovementAnimation.endedEmitter.addListener( () => {
+        descriptionMovementAnimation = null;
+      } );
+    } );
+
     super( { children: [ arcNode, arrowheadNode, operationLabel, operationDescription ] } );
+
+    this.disposeOperationArrowNode = () => {
+      // TODO: Fill this in, add a dispose function, call it above.
+
+    };
   }
 }
 
