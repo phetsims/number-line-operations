@@ -10,9 +10,14 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import merge from '../../../../phet-core/js/merge.js';
+import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
+import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import Operations from '../model/Operations.js';
 
 //---------------------------------------------------------------------------------------------------------------------
 // constants
@@ -77,7 +82,9 @@ class OperationArrowNode extends Node {
    */
   constructor( operation, showLabelProperty, showDescriptionProperty, numberLine ) {
 
-    // TODO: Check for horizontal, since that's all that is currently supported.
+    // Make sure the number line is in the horizontal orientation.  While it wouldn't be too difficult to generalize
+    // this class to handle the vertical orientation, to date it hasn't been needed, so it hasn't been done.
+    assert && assert( numberLine.isHorizontal, 'this class is not generalized to handle vertical number lines ' );
 
     const arrowStartPoint = numberLine.valueToModelPosition( operation.startValue );
     const arrowEndPoint = numberLine.valueToModelPosition( operation.getEndValue() );
@@ -128,7 +135,20 @@ class OperationArrowNode extends Node {
       { x: arrowEndPoint.x, y: arrowEndPoint.y }
     );
 
-    super( { children: [ arcNode, arrowheadNode ] } );
+    // operation label
+    const operationChar = operation.operationType === Operations.ADDITION ? '+' : '-';
+    const unarySignChar = operation.amount < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
+    const operationText = operationChar + ' ' + unarySignChar + Math.abs( operation.amount ).toString( 10 );
+    const operationLabelTextNode = new Text( operationText, {
+      font: new PhetFont( 20 )
+    } );
+    const operationLabel = new BackgroundNode( operationLabelTextNode, {
+      centerX: arcNode.centerX,
+      bottom: arcNode.top
+    } );
+    showLabelProperty.linkAttribute( operationLabel, 'visible' );
+
+    super( { children: [ arcNode, arrowheadNode, operationLabel ] } );
   }
 }
 
