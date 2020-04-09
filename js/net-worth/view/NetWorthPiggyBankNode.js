@@ -24,6 +24,7 @@ const MOST_POSITIVE_FILL = Color.toColor( '#1fb493' );
 const LEAST_POSITIVE_FILL = Color.toColor( '#a5e1d4' );
 const MOST_NEGATIVE_FILL = Color.toColor( '#fb1d25' );
 const LEAST_NEGATIVE_FILL = Color.toColor( '#fda5a8' );
+const PIGGY_BANK_IMAGE_WIDTH = 90;
 
 class NetWorthPiggyBankNode extends Node {
 
@@ -36,7 +37,7 @@ class NetWorthPiggyBankNode extends Node {
 
     const piggyBankNode = new PiggyBankNode( {
       decorationType: PiggyBankDecoration.NONE,
-      maxWidth: 90
+      maxWidth: PIGGY_BANK_IMAGE_WIDTH
     } );
 
     // label the represent the value
@@ -52,12 +53,18 @@ class NetWorthPiggyBankNode extends Node {
 
     // update the fill and label as the net worth value changes
     netWorthProperty.link( netWorth => {
+
+      // update value
       labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
         sign: netWorth < 0 ? MathSymbols.UNARY_MINUS : '',
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( netWorth )
       } );
-      labelNode.center = piggyBankNode.center;
+
+      // reposition the label - this is tweaked a bit to look centered on the artwork of the piggy bank
+      labelNode.centerX = piggyBankNode.centerX - PIGGY_BANK_IMAGE_WIDTH * 0.1;
+
+      // set the fill
       let piggyBankFill = ZERO_FILL;
       if ( netWorth < 0 ) {
         piggyBankFill = Color.interpolateRGBA(
