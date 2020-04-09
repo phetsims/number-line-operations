@@ -7,12 +7,12 @@
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
-import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import OperationsTrackingNumberLineNode from '../../common/view/OperationsTrackingNumberLineNode.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NLONetWorthModel from '../model/NLONetWorthModel.js';
@@ -71,7 +71,7 @@ class NLONetWorthScreenView extends ScreenView {
     } ) );
 
     // number line node
-    this.addChild( new SpatializedNumberLineNode( model.numberLine, {
+    this.addChild( new OperationsTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
       }
@@ -87,8 +87,7 @@ class NLONetWorthScreenView extends ScreenView {
 
     // update the position of the piggy bank node when the net worth changes
     model.netWorthProperty.link( netWorth => {
-      const currentEndPoint = model.numberLine.getPointsAt( netWorth )[ 0 ];
-      netWorthPiggyBankNode.centerX = currentEndPoint.getPositionInModelSpace().x;
+      netWorthPiggyBankNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
