@@ -45,6 +45,8 @@ class NLONetWorthModel {
       1,
       {
         initialDisplayedRange: NET_WORTH_RANGE,
+        tickMarksInitiallyVisible: true,
+        preventOverlap: false,
 
         // width of the number line in model space, number empirically determined to make it look good
         widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200

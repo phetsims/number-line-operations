@@ -20,7 +20,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 
 // an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, length normalized to 1
 const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
-  .moveTo( 0, 0 ) // is this needed?
+  .moveTo( 0, 0 ) // TODO - is this needed?
   .lineTo( -0.4, 1.14 )
   .lineTo( 0, 1 )
   .lineTo( 0.4, 1.14 )
@@ -50,6 +50,9 @@ class OperationsTrackingNumberLineNode extends SpatializedNumberLineNode {
       );
       this.addChild( operationArrowNode );
       mapOfOperationsToOperationNodes.set( addedOperation, operationArrowNode );
+
+      // put the arrow node at the back of the z-order so that it is behind the points
+      operationArrowNode.moveToBack();
     } );
     numberLine.operationsList.addItemRemovedListener( removedOperation => {
       const operationNode = mapOfOperationsToOperationNodes.get( removedOperation );

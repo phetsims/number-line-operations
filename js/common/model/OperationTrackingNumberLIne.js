@@ -44,7 +44,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     // There is always at least one point that serves as the starting point from which the operation act upon, so add it
     // now.
-    this.startingPoint = new NumberLinePoint( initialValue, Color.BLUE, this );
+    this.startingPoint = new NumberLinePoint( initialValue, new Color( 0x4ddff ), this );
     this.addPoint( this.startingPoint );
 
     // Monitor the operations list and add, remove, and update points as needed.  The operations list is a permanent
