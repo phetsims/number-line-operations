@@ -137,6 +137,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     super.reset();
 
+    // reset the properties that were defined in this subclass
+    this.showOperationLabelsProperty.reset();
+    this.showOperationDescriptionsProperty.reset();
+
     // resetting the number line removes all points, so add the start point back
     this.addPoint( this.startingPoint );
   }
