@@ -10,6 +10,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import merge from '../../../../phet-core/js/merge.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -17,6 +18,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import Operations from '../model/Operations.js';
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -144,11 +146,29 @@ class OperationArrowNode extends Node {
     } );
     const operationLabel = new BackgroundNode( operationLabelTextNode, {
       centerX: arcNode.centerX,
-      bottom: arcNode.top
+      bottom: arcNode.top - 3
     } );
     showLabelProperty.linkAttribute( operationLabel, 'visible' );
 
-    super( { children: [ arcNode, arrowheadNode, operationLabel ] } );
+    // operation description
+    const operationDescriptionText = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+      addOrRemove: operation.operationType === Operations.ADDITION ?
+                   numberLineOperationsStrings.add :
+                   numberLineOperationsStrings.remove,
+      assetOrDebt: operation.amount > 0 ? numberLineOperationsStrings.asset : numberLineOperationsStrings.debt,
+      currencyUnits: numberLineOperationsStrings.currencyUnits,
+      value: Math.abs( operation.amount )
+    } );
+    const operationDescriptionTextNode = new Text( operationDescriptionText, {
+      font: new PhetFont( 20 )
+    } );
+    const operationDescription = new BackgroundNode( operationDescriptionTextNode, {
+      centerX: arcNode.centerX,
+      bottom: operationLabel.top
+    } );
+    showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
+
+    super( { children: [ arcNode, arrowheadNode, operationLabel, operationDescription ] } );
   }
 }
 

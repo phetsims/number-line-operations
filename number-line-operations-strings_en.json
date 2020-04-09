@@ -32,10 +32,25 @@
   "assets": {
     "value": "Assets"
   },
+  "asset": {
+    "value": "asset"
+  },
   "debts": {
     "value": "Debts"
   },
+  "debt": {
+    "value": "debt"
+  },
   "monetaryValuePattern": {
     "value": "{{sign}}{{currencyUnits}}{{value}}"
+  },
+  "add": {
+    "value": "add"
+  },
+  "remove": {
+    "value": "remove"
+  },
+  "addRemoveAssetDebtPattern": {
+    "value": "{{addOrRemove}} {{assetOrDebt}} of {{currencyUnits}}{{value}}"
   }
 }
