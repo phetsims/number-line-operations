@@ -67,6 +67,7 @@ class OperationsTrackingNumberLineNode extends SpatializedNumberLineNode {
       const operationNode = mapOfOperationsToOperationNodes.get( removedOperation );
       assert && assert( operationNode, 'no operation node found for removed operation' );
       this.removeChild( operationNode );
+      operationNode.dispose();
     } );
   }
 }
@@ -150,7 +151,7 @@ class OperationArrowNode extends Node {
       centerX: arcNode.centerX,
       bottom: arcNode.top - 3
     } );
-    showLabelProperty.linkAttribute( operationLabel, 'visible' );
+    const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
 
     // operation description
     const operationDescriptionText = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
@@ -170,7 +171,7 @@ class OperationArrowNode extends Node {
       centerX: arcNode.centerX,
       bottom: showLabelProperty.value ? descriptionBottomWhenLabelVisible : descriptionBottomWhenLabelNotVisible
     } );
-    showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
+    const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
 
     // Position the operation description above/below the label when the label is visible, or in the label's spot when
     // the label is invisible.  Use an animation to make it look pro.
@@ -204,10 +205,19 @@ class OperationArrowNode extends Node {
 
     super( { children: [ arcNode, arrowheadNode, operationLabel, operationDescription ] } );
 
+    // @private - dispose function
     this.disposeOperationArrowNode = () => {
-      // TODO: Fill this in, add a dispose function, call it above.
-
+      showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
+      showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );
     };
+  }
+
+  /**
+   * @public
+   */
+  dispose() {
+    this.disposeOperationArrowNode();
+    super.dispose();
   }
 }
 
