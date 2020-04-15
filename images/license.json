@@ -78,5 +78,13 @@
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
     "notes": "created by Megan Lai for use by PhET"
+  },
+  "operations-screen-mockup.png": {
+    "text": [
+      "Copyright 2020 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "created by Amanda McGarry for use by PhET"
   }
 }

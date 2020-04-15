@@ -6,14 +6,16 @@
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import OperationsTrackingNumberLineNode from '../../common/view/OperationsTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import mockupImage from '../../../images/operations-screen-mockup_png.js';
 
 class NLOOperationsScreenView extends ScreenView {
 
   /**
    * @param {NLOOperationsModel} model
-   * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
 
@@ -21,6 +23,22 @@ class NLOOperationsScreenView extends ScreenView {
       tandem: tandem
     } );
 
+    // mockup - temporary, for design and layout
+    this.addChild( new Image( mockupImage, {
+      center: NLOConstants.LAYOUT_BOUNDS.center,
+      minWidth: NLOConstants.LAYOUT_BOUNDS.width,
+      maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
+      opacity: 0.2
+    } ) );
+
+    // number line node
+    this.addChild( new OperationsTrackingNumberLineNode( model.numberLine, {
+      pointNodeOptions: {
+        radius: 6
+      }
+    } ) );
+
+    // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
