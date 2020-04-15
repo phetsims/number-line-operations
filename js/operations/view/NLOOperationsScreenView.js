@@ -5,6 +5,7 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Carousel from '../../../../sun/js/Carousel.js';
@@ -35,11 +36,20 @@ class NLOOperationsScreenView extends ScreenView {
     } ) );
 
     // number line node
-    this.addChild( new OperationTrackingNumberLineNode( model.numberLine, {
+    const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
       }
-    } ) );
+    } );
+    this.addChild( numberLineNode );
+
+    // erase button
+    const eraserButton = new EraserButton( {
+      iconWidth: 36,
+      left: numberLineNode.right + 8,
+      centerY: model.numberLine.centerPosition.y
+    } );
+    this.addChild( eraserButton );
 
     // operation entry controls
     const operationEntryControls = [
