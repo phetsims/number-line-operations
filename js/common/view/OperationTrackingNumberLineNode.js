@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * OperationsTrackingNumberLineNode is a specialization of SpatializedNumberLineNode that adds the ability to depict
+ * OperationTrackingNumberLineNode is a specialization of SpatializedNumberLineNode that adds the ability to depict
  * labeled operations that have occurred between the points on the number line.
  */
 
@@ -27,9 +27,8 @@ import Operations from '../model/Operations.js';
 // constants
 //---------------------------------------------------------------------------------------------------------------------
 
-// an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, length normalized to 1
+// an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, height normalized to 1
 const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
-  .moveTo( 0, 0 ) // TODO - is this needed?
   .lineTo( -0.4, 1.14 )
   .lineTo( 0, 1 )
   .lineTo( 0.4, 1.14 )
@@ -37,7 +36,7 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
 
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 
-class OperationsTrackingNumberLineNode extends SpatializedNumberLineNode {
+class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
   /**
    * {OperationTrackingNumberLine} numberLine - model of a number line
@@ -246,5 +245,5 @@ class ArrowheadNode extends Path {
   }
 }
 
-numberLineOperations.register( 'OperationsTrackingNumberLineNode', OperationsTrackingNumberLineNode );
-export default OperationsTrackingNumberLineNode;
+numberLineOperations.register( 'OperationTrackingNumberLineNode', OperationTrackingNumberLineNode );
+export default OperationTrackingNumberLineNode;

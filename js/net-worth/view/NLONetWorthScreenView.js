@@ -12,7 +12,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import OperationsTrackingNumberLineNode from '../../common/view/OperationsTrackingNumberLineNode.js';
+import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NLONetWorthModel from '../model/NLONetWorthModel.js';
@@ -71,7 +71,7 @@ class NLONetWorthScreenView extends ScreenView {
     } ) );
 
     // number line node
-    this.addChild( new OperationsTrackingNumberLineNode( model.numberLine, {
+    this.addChild( new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
       }

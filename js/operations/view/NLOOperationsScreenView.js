@@ -8,9 +8,10 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import OperationsTrackingNumberLineNode from '../../common/view/OperationsTrackingNumberLineNode.js';
+import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
+import OperationEntryControl from './OperationEntryControl.js';
 
 class NLOOperationsScreenView extends ScreenView {
 
@@ -32,11 +33,21 @@ class NLOOperationsScreenView extends ScreenView {
     } ) );
 
     // number line node
-    this.addChild( new OperationsTrackingNumberLineNode( model.numberLine, {
+    this.addChild( new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
       }
     } ) );
+
+    // operation entry controls
+    const operationEntryControls = [
+      new OperationEntryControl( model.numberLine ),
+      new OperationEntryControl( model.numberLine )
+    ];
+    operationEntryControls.forEach( ( oec, index ) => {
+      this.addChild( oec );
+      oec.left = 400 * index;
+    } );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {

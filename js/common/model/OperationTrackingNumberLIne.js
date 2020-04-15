@@ -78,6 +78,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * perform the provided operation on the number line
    * @param {Operations} operationType
    * @param {number} amount
+   * @returns {Operation} - the operation that was created and added
    * @public
    */
   performOperation( operationType, amount ) {
@@ -88,30 +89,44 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     );
 
     // add the new operation to the list
-    this.operationsList.push( new Operation( this.getCurrentEndValue(), operationType, amount ) );
+    const operation = new Operation( this.getCurrentEndValue(), operationType, amount );
+    this.operationsList.push( operation );
 
     // if the history is maxed out, remove the oldest value
     if ( this.operationsList.length > this.historyLength ) {
       this.operationsList.remove( this.operationsList.get( 0 ) );
     }
+
+    return operation;
   }
 
   /**
    * perform an addition operation on this number line
    * @param {number} amount
+   * @returns {Operation} - the operation that was created and added
    * @public
    */
   add( amount ) {
-    this.performOperation( Operations.ADDITION, amount );
+    return this.performOperation( Operations.ADDITION, amount );
   }
 
   /**
    * perform a subtraction operation on this number line
    * @param {number} amount
+   * @returns {Operation} - the operation that was created and added
    * @public
    */
   subtract( amount ) {
-    this.performOperation( Operations.SUBTRACTION, amount );
+    return this.performOperation( Operations.SUBTRACTION, amount );
+  }
+
+  /**
+   * remove the provided operation from the number line
+   * @param {Operation} operation
+   */
+  removeOperation( operation ) {
+    assert && assert( this.operationsList.contains( operation ), 'operation not on this number line' );
+    this.operationsList.remove( operation );
   }
 
   /**
