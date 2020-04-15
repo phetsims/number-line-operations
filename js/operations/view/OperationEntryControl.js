@@ -1,5 +1,6 @@
 // Copyright 2020, University of Colorado Boulder
 
+import merge from '../../../../phet-core/js/merge.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
@@ -17,7 +18,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
-import Panel from '../../../../sun/js/Panel.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -38,7 +38,7 @@ const NORMALIZED_ENTER_ARROW_SHAPE = new Shape()
   .lineTo( 0, 0.2 )
   .lineTo( 0, 0 );
 
-class OperationEntryControl extends Panel {
+class OperationEntryControl extends HBox {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
@@ -110,19 +110,16 @@ class OperationEntryControl extends Panel {
     } );
     buttonRootNode.addChild( eraserButton );
 
-    // horizontal box with the three main elements of this control
-    const hBox = new HBox( {
-      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ],
-      spacing: 25
-    } );
-
     // control which of the two buttons is visible based on whether an operation has been added to the number line
     addedOperationProperty.link( addedOperation => {
       enterButton.visible = addedOperation === null;
       eraserButton.visible = addedOperation !== null;
     } );
 
-    super( hBox, options );
+    super( merge( {
+      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ],
+      spacing: 25
+    }, options ) );
   }
 }
 

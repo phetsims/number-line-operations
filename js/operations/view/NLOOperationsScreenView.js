@@ -7,6 +7,8 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
+import Carousel from '../../../../sun/js/Carousel.js';
+import PageControl from '../../../../sun/js/PageControl.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -44,10 +46,22 @@ class NLOOperationsScreenView extends ScreenView {
       new OperationEntryControl( model.numberLine ),
       new OperationEntryControl( model.numberLine )
     ];
-    operationEntryControls.forEach( ( oec, index ) => {
-      this.addChild( oec );
-      oec.left = 400 * index;
+
+    // carousel in which the operation entry controls reside
+    const operationEntryCarousel = new Carousel( operationEntryControls, {
+      orientation: 'horizontal',
+      itemsPerPage: 1,
+      right: this.layoutBounds.maxX - 50,
+      top: 15
     } );
+    this.addChild( operationEntryCarousel );
+
+    // page indicator
+    this.addChild( new PageControl( operationEntryCarousel.numberOfPages, operationEntryCarousel.pageNumberProperty, {
+      orientation: 'horizontal',
+      centerX: operationEntryCarousel.centerX,
+      top: operationEntryCarousel.bottom + 10
+    } ) );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {
