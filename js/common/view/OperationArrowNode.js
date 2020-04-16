@@ -33,7 +33,7 @@ const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 
 const APEX_DISTANCE_FROM_NUMBER_LINE = 20; // empirically chosen to look good
 
-const Orientation = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
+const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 
 /**
  * OperationArrowNode (sounds like a movie title, no?) is used to depict an operation on a number line as an arrow from
@@ -47,9 +47,14 @@ class OperationArrowNode extends Node {
    * @param {BooleanProperty} showLabelProperty
    * @param {BooleanProperty} showDescriptionProperty
    * @param {SpatializedNumberLine} numberLine
-   * @param {Orientation} orientation
+   * @param {Object} [options]
    */
-  constructor( operation, showLabelProperty, showDescriptionProperty, numberLine, orientation ) {
+  constructor( operation, showLabelProperty, showDescriptionProperty, numberLine, options ) {
+
+    options = merge( {
+
+      relativePosition: RelativePositions.ABOVE_NUMBER_LINE
+    }, options );
 
     // Make sure the number line is in the horizontal orientation.  While it wouldn't be too difficult to generalize
     // this class to handle the vertical orientation, to date it hasn't been needed, so it hasn't been done.
@@ -66,7 +71,7 @@ class OperationArrowNode extends Node {
                            APEX_DISTANCE_FROM_NUMBER_LINE / 2;
 
     // convenience var
-    const aboveNumberLine = orientation === Orientation.ABOVE_NUMBER_LINE;
+    const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
     const circleYPosition = aboveNumberLine ?
                             arrowStartPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle :
@@ -130,7 +135,7 @@ class OperationArrowNode extends Node {
     const unarySignChar = operation.amount < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
     const operationText = operationChar + ' ' + unarySignChar + Math.abs( operation.amount ).toString( 10 );
     const operationLabelTextNode = new Text( operationText, {
-      font: new PhetFont( 20 )
+      font: new PhetFont( 18 )
     } );
     const operationLabel = new BackgroundNode( operationLabelTextNode, { centerX: arcNode.centerX } );
     if ( aboveNumberLine ) {
@@ -151,7 +156,7 @@ class OperationArrowNode extends Node {
       value: Math.abs( operation.amount )
     } );
     const operationDescriptionTextNode = new Text( operationDescriptionText, {
-      font: new PhetFont( 20 )
+      font: new PhetFont( 18 )
     } );
     const operationDescription = new BackgroundNode( operationDescriptionTextNode, { center: arcNode.center } );
     const descriptionCenterYWhenLabelVisible = aboveNumberLine ?
@@ -241,7 +246,7 @@ class ArrowheadNode extends Path {
 }
 
 // statics
-OperationArrowNode.Orientation = Orientation;
+OperationArrowNode.RelativePositions = RelativePositions;
 
 numberLineOperations.register( 'OperationArrowNode', OperationArrowNode );
 export default OperationArrowNode;

@@ -14,11 +14,17 @@ class Operation {
    * @param {number} startValue
    * @param {Operations} operationType
    * @param {number} amount
+   * @param {Object} [options]
    */
-  constructor( startValue, operationType, amount ) {
+  constructor( startValue, operationType, amount, options ) {
     this.startValue = startValue;
     this.operationType = operationType;
     this.amount = amount;
+
+    // If a relative position was specified for the view depiction of this operation, set it as a field.
+    if ( options && options.depictionRelativePosition ) {
+      this.depictionRelativePosition = options.depictionRelativePosition;
+    }
   }
 
   /**

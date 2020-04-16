@@ -18,7 +18,9 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
+import Operation from '../../common/model/Operation.js';
 import Operations from '../../common/model/Operations.js';
+import OperationArrowNode from '../../common/view/OperationArrowNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
@@ -46,6 +48,15 @@ class OperationEntryControl extends HBox {
    * @public
    */
   constructor( numberLine, options ) {
+
+    options = merge( {
+      spacing: 25,
+
+      // Relative position of the depiction of the operations that are created by this controller, i.e. above or below
+      // the number line.
+      depictionRelativePosition: OperationArrowNode.RelativePositions.ABOVE_NUMBER_LINE
+
+    }, options );
 
     // internal state
     const selectedOperationProperty = new EnumerationProperty( Operations, Operations.ADDITION );
@@ -106,8 +117,14 @@ class OperationEntryControl extends HBox {
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
-        const addedOperation = numberLine.performOperation( selectedOperationProperty.value, operationAmountProperty.value );
-        addedOperationProperty.set( addedOperation );
+        const arithmeticOperation = new Operation(
+          numberLine.getCurrentEndValue(),
+          selectedOperationProperty.value,
+          operationAmountProperty.value,
+          { depictionRelativePosition: options.depictionRelativePosition }
+        );
+        numberLine.addOperation( arithmeticOperation );
+        addedOperationProperty.set( arithmeticOperation );
       },
       content: enterArrowNode,
       radius: 30
@@ -140,8 +157,7 @@ class OperationEntryControl extends HBox {
     } );
 
     super( merge( {
-      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ],
-      spacing: 25
+      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ]
     }, options ) );
   }
 

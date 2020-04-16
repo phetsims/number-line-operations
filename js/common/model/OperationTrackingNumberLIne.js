@@ -90,13 +90,9 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     // add the new operation to the list
     const operation = new Operation( this.getCurrentEndValue(), operationType, amount );
-    this.operationsList.push( operation );
+    this.addOperation( operation );
 
-    // if the history is maxed out, remove the oldest value
-    if ( this.operationsList.length > this.historyLength ) {
-      this.operationsList.remove( this.operationsList.get( 0 ) );
-    }
-
+    // return what was created
     return operation;
   }
 
@@ -118,6 +114,20 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    */
   subtract( amount ) {
     return this.performOperation( Operations.SUBTRACTION, amount );
+  }
+
+  /**
+   * add the provided operation to the list, remove the oldest one if the history length is exceeded
+   * @param {Operation} operation
+   * @public
+   */
+  addOperation( operation ) {
+    this.operationsList.push( operation );
+
+    // if the history is maxed out, remove the oldest operation
+    if ( this.operationsList.length > this.historyLength ) {
+      this.operationsList.remove( this.operationsList.get( 0 ) );
+    }
   }
 
   /**
