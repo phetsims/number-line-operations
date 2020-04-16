@@ -25,9 +25,9 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
     numberLine.operationsList.addItemAddedListener( addedOperation => {
 
       // The first operation goes above, the second one goes below.
-      const arrowNodeOrientation = numberLine.operationsList.length === 1 ?
-                                   OperationArrowNode.Orientation.ABOVE_NUMBER_LINE :
-                                   OperationArrowNode.Orientation.BELOW_NUMBER_LINE;
+      const arrowNodeOrientation = numberLine.historyLength > 1 && numberLine.operationsList.length % 2 === 0 ?
+                                   OperationArrowNode.Orientation.BELOW_NUMBER_LINE :
+                                   OperationArrowNode.Orientation.ABOVE_NUMBER_LINE;
       const operationArrowNode = new OperationArrowNode(
         addedOperation,
         numberLine.showOperationLabelsProperty,

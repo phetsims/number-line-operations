@@ -37,7 +37,7 @@ class NLOOperationsScreenView extends ScreenView {
       center: NLOConstants.LAYOUT_BOUNDS.center,
       minWidth: NLOConstants.LAYOUT_BOUNDS.width,
       maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      opacity: 0.2
+      opacity: 0.0
     } ) );
 
     // number line node
