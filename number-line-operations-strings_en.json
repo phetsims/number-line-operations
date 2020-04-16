@@ -52,5 +52,8 @@
   },
   "addRemoveAssetDebtPattern": {
     "value": "{{addOrRemove}} {{assetOrDebt}} of {{currencyUnits}}{{value}}"
+  },
+  "pointLabels": {
+    "value": "Point Labels"
   }
 }

@@ -5,15 +5,20 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Carousel from '../../../../sun/js/Carousel.js';
+import Checkbox from '../../../../sun/js/Checkbox.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import OperationEntryControl from './OperationEntryControl.js';
 
 class NLOOperationsScreenView extends ScreenView {
@@ -42,6 +47,40 @@ class NLOOperationsScreenView extends ScreenView {
       }
     } );
     this.addChild( numberLineNode );
+
+    // checkboxes that will control the presentation options
+    const checkboxes = [
+      new Checkbox(
+        new Text( numberLineOperationsStrings.pointLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        model.numberLine.showPointLabelsProperty,
+        NLCConstants.CHECKBOX_OPTIONS
+      ),
+      new Checkbox(
+        new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        model.numberLine.showOperationLabelsProperty,
+        NLCConstants.CHECKBOX_OPTIONS
+      ),
+      new Checkbox(
+        new Text( numberLineOperationsStrings.operationDescription, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        model.numberLine.showOperationDescriptionsProperty,
+        NLCConstants.CHECKBOX_OPTIONS
+      ),
+      new Checkbox(
+        new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        model.numberLine.showTickMarksProperty,
+        NLCConstants.CHECKBOX_OPTIONS
+      )
+    ];
+    const checkboxGroup = new VBox( {
+      children: checkboxes,
+      spacing: 18,
+      align: 'left',
+
+      // position - empirically determined to look decent
+      left: this.layoutBounds.minX + 40,
+      top: this.layoutBounds.minY + 30
+    } );
+    this.addChild( checkboxGroup );
 
     // operation entry controls
     const operationEntryControls = [
