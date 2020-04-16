@@ -71,7 +71,6 @@ class OperationArrowNode extends Node {
     const circleYPosition = aboveNumberLine ?
                             arrowStartPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle :
                             arrowStartPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle;
-    console.log( 'circleYPosition = ' + circleYPosition );
     const centerOfCircle = new Vector2( ( arrowStartPoint.x + arrowEndPoint.x ) / 2, circleYPosition );
 
     const startAngle = arrowStartPoint.minus( centerOfCircle ).getAngle();

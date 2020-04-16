@@ -123,10 +123,19 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * remove the provided operation from the number line
    * @param {Operation} operation
+   * @public
    */
   removeOperation( operation ) {
     assert && assert( this.operationsList.contains( operation ), 'operation not on this number line' );
     this.operationsList.remove( operation );
+  }
+
+  /**
+   * remove all operations, does nothing if there are none
+   * @public
+   */
+  removeAllOperations() {
+    this.operationsList.clear();
   }
 
   /**

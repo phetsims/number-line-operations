@@ -50,6 +50,9 @@ class OperationEntryControl extends HBox {
     // internal state
     const selectedOperationProperty = new EnumerationProperty( Operations, Operations.ADDITION );
     const operationAmountProperty = new NumberProperty( 100 );
+
+    // @private {Operation|null} - An operation that was added by this controller to the number line, null if none has
+    // been added or if the operation was removed.
     const addedOperationProperty = new Property( null );
 
     // plus/minus operation selector
@@ -74,8 +77,20 @@ class OperationEntryControl extends HBox {
       operationAmountProperty,
       new Property( new Range( -800, 800 ) ),
       {
-        upFunction: value => value + 100,
-        downFunction: value => value - 100,
+        upFunction: value => {
+          let newValue = value + 100;
+          if ( newValue === 0 ) {
+            newValue += 100;
+          }
+          return newValue;
+        },
+        downFunction: value => {
+          let newValue = value - 100;
+          if ( newValue === 0 ) {
+            newValue -= 100;
+          }
+          return newValue;
+        },
         yMargin: 10,
         arrowHeight: 10,
         color: Color.BLACK,
@@ -116,10 +131,26 @@ class OperationEntryControl extends HBox {
       eraserButton.visible = addedOperation !== null;
     } );
 
+    // Monitor the number line and if the operation that was added by this controller is removed, clear our local
+    // reference.
+    numberLine.operationsList.addItemRemovedListener( removedOperation => {
+      if ( removedOperation === addedOperationProperty.value ) {
+        addedOperationProperty.set( null );
+      }
+    } );
+
     super( merge( {
       children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ],
       spacing: 25
     }, options ) );
+  }
+
+  /**
+   * Clear the current operation, if any.  Does nothing if not.  This does not remove the operation from the number
+   * line.  Also, this method does not reset to the default operation or value.
+   */
+  clearOperation() {
+
   }
 }
 

@@ -43,14 +43,6 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( numberLineNode );
 
-    // erase button
-    const eraserButton = new EraserButton( {
-      iconWidth: 36,
-      left: numberLineNode.right + 8,
-      centerY: model.numberLine.centerPosition.y
-    } );
-    this.addChild( eraserButton );
-
     // operation entry controls
     const operationEntryControls = [
       new OperationEntryControl( model.numberLine ),
@@ -66,6 +58,13 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( operationEntryCarousel );
 
+    // automatically advance the carousel when the first operation is added
+    model.numberLine.operationsList.lengthProperty.link( numberOfOperations => {
+      if ( numberOfOperations === 1 && operationEntryCarousel.pageNumberProperty.value === 0 ) {
+        operationEntryCarousel.pageNumberProperty.value += 1;
+      }
+    } );
+
     // page indicator
     this.addChild( new PageControl( operationEntryCarousel.numberOfPages, operationEntryCarousel.pageNumberProperty, {
       orientation: 'horizontal',
@@ -73,35 +72,32 @@ class NLOOperationsScreenView extends ScreenView {
       top: operationEntryCarousel.bottom + 10
     } ) );
 
+    // erase button
+    const eraserButton = new EraserButton( {
+      iconWidth: 36,
+      left: numberLineNode.right + 8,
+      centerY: model.numberLine.centerPosition.y,
+      listener: () => {
+        model.numberLine.removeAllOperations();
+        operationEntryCarousel.pageNumberProperty.reset();
+      }
+    } );
+    this.addChild( eraserButton );
+
+
     // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         model.reset();
-        this.reset();
+        operationEntryCarousel.pageNumberProperty.reset();
+        model.numberLine.removeAllOperations();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
-  }
-
-  /**
-   * Resets the view.
-   * @public
-   */
-  reset() {
-    //TODO
-  }
-
-  /**
-   * Steps the view.
-   * @param {number} dt - time step, in seconds
-   * @public
-   */
-  step( dt ) {
-    //TODO
   }
 }
 
