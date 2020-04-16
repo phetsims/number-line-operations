@@ -44,7 +44,7 @@ class NLOOperationsModel {
    * @public
    */
   reset() {
-    //TODO
+    this.numberLine.reset();
   }
 
   /**
