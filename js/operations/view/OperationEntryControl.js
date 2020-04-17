@@ -88,20 +88,8 @@ class OperationEntryControl extends HBox {
       operationAmountProperty,
       new Property( new Range( -800, 800 ) ),
       {
-        upFunction: value => {
-          let newValue = value + 100;
-          if ( newValue === 0 ) {
-            newValue += 100;
-          }
-          return newValue;
-        },
-        downFunction: value => {
-          let newValue = value - 100;
-          if ( newValue === 0 ) {
-            newValue -= 100;
-          }
-          return newValue;
-        },
+        upFunction: value => value + 100,
+        downFunction: value => value - 100,
         yMargin: 10,
         arrowHeight: 10,
         color: Color.BLACK,
