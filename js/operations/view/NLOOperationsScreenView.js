@@ -8,6 +8,7 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -46,6 +47,10 @@ class NLOOperationsScreenView extends ScreenView {
     const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
+      },
+      numberLineOperationNodeOptions: {
+        operationLabelFont: new PhetFont( 22 ),
+        labelDistanceFromApex: 20
       }
     } );
     this.addChild( numberLineNode );

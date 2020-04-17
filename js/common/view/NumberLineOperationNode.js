@@ -37,6 +37,7 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
+const DISTANCE_BETWEEN_LABELS = 3; // in screen coords
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line as an arrow from the point (0,0) to the
@@ -61,8 +62,10 @@ class NumberLineOperationNode extends Node {
     assert && assert( numberLine.isHorizontal, 'this class is not generalized to handle vertical number lines ' );
 
     options = merge( {
-
-      relativePosition: RelativePositions.ABOVE_NUMBER_LINE
+      relativePosition: RelativePositions.ABOVE_NUMBER_LINE,
+      operationLabelFont: new PhetFont( 18 ),
+      operationDescriptionFont: new PhetFont( 18 ),
+      labelDistanceFromApex: 3
     }, options );
 
     super( options );
@@ -71,27 +74,24 @@ class NumberLineOperationNode extends Node {
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
     // create the operation label
-    // TODO can the text be nothing to start with?
-    const operationLabelTextNode = new Text( 'initially stubbed TODO - can this be nothing?', {
-      font: new PhetFont( 18 )
+    const operationLabelTextNode = new Text( '', {
+      font: options.operationLabelFont
     } );
     const operationLabel = new BackgroundNode( operationLabelTextNode );
     const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
     this.addChild( operationLabel );
 
     // operation description
-    const operationDescriptionTextNode = new Text( 'TODO stubbed', {
-      font: new PhetFont( 18 )
+    const operationDescriptionTextNode = new Text( '', {
+      font: options.operationDescriptionFont
     } );
     const operationDescription = new BackgroundNode( operationDescriptionTextNode );
     const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
     this.addChild( operationDescription );
 
     // variables used to position the operation description, since it needs to move based on whether the label is visible
-    let descriptionCenterYWhenLabelVisible = aboveNumberLine ?
-                                             operationLabel.top - operationDescription.height / 2 :
-                                             operationLabel.bottom + operationDescription.height / 2;
-    let descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
+    let descriptionCenterYWhenLabelVisible;
+    let descriptionCenterYWhenLabelNotVisible;
 
     // the node that looks like a curved arrow that spans from the start point to the endpoint of the operation
     let arrowNode;
@@ -117,10 +117,10 @@ class NumberLineOperationNode extends Node {
                                       Math.abs( operation.amountProperty.value ).toString( 10 );
         operationLabel.centerX = arrowNode.centerX;
         if ( aboveNumberLine ) {
-          operationLabel.bottom = arrowNode.top - 3;
+          operationLabel.bottom = arrowNode.top - options.labelDistanceFromApex;
         }
         else {
-          operationLabel.top = arrowNode.bottom + 3;
+          operationLabel.top = arrowNode.bottom + options.labelDistanceFromApex;
         }
 
         // update the operation description
@@ -135,8 +135,8 @@ class NumberLineOperationNode extends Node {
           value: Math.abs( operation.amountProperty.value )
         } );
         descriptionCenterYWhenLabelVisible = aboveNumberLine ?
-                                             operationLabel.top - operationDescription.height / 2 :
-                                             operationLabel.bottom + operationDescription.height / 2;
+                                             operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
+                                             operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
         descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
         operationDescription.centerX = arrowNode.centerX;
         operationDescription.centerY = showLabelProperty.value ?

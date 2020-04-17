@@ -8,6 +8,7 @@
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationNode from './NumberLineOperationNode.js';
+import merge from '../../../../phet-core/js/merge.js';
 
 class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
@@ -17,6 +18,12 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
    * @public
    */
   constructor( numberLine, options ) {
+
+    options = merge( {
+
+      // this is here essentially as documentation, so that clients know options are passed through
+      numberLineOperationNodeOptions: {}
+    }, options );
 
     super( numberLine, options );
 
@@ -32,23 +39,23 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     numberLine.operationsList.addItemAddedListener( addedOperation => {
 
-      const arrowNodeOptions =
+      const operationNodeOptions =
         addedOperation.depictionRelativePosition ?
           { relativePosition: addedOperation.depictionRelativePosition } :
           {};
 
-      const operationArrowNode = new NumberLineOperationNode(
+      const numberLineOperationNode = new NumberLineOperationNode(
         addedOperation,
         numberLine.showOperationLabelsProperty,
         numberLine.showOperationDescriptionsProperty,
         numberLine,
-        arrowNodeOptions
+        merge( operationNodeOptions, options.numberLineOperationNodeOptions )
       );
-      this.addChild( operationArrowNode );
-      mapOfOperationsToOperationNodes.set( addedOperation, operationArrowNode );
+      this.addChild( numberLineOperationNode );
+      mapOfOperationsToOperationNodes.set( addedOperation, numberLineOperationNode );
 
       // put the arrow node at the back of the z-order so that it is behind the points
-      operationArrowNode.moveToBack();
+      numberLineOperationNode.moveToBack();
 
       updateOperationNodePositions();
     } );
