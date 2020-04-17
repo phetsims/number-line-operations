@@ -13,12 +13,11 @@ import Operations from './Operations.js';
 class NumberLineOperation {
 
   /**
-   * @param {number} initialStartValue
    * @param {Operations} initialOperationType
    * @param {number} initialAmount
    * @param {Object} [options]
    */
-  constructor( initialStartValue, initialOperationType, initialAmount, options ) {
+  constructor( initialOperationType, initialAmount, options ) {
 
     // @public
     this.operationTypeProperty = new EnumerationProperty( Operations, initialOperationType );

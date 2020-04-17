@@ -1,11 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
-/**
- * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a history of addition and
- * subtraction operations so that they can be depicted on a number line.
- */
-
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
@@ -14,16 +10,19 @@ import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperation from './NumberLineOperation.js';
 import Operations from './Operations.js';
 
+/**
+ * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and
+ * subtraction operations so that they can be depicted on a number line.
+ */
 class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * {Vector2} zeroPosition - the location in model space of the zero point on the number line
    * {number} initialValue - initial value, all operations will build from this
-   * {number} historyLength - number of operations to keep track of
    * {Object} [options]
    * @public
    */
-  constructor( zeroPosition, initialValue, historyLength, options ) {
+  constructor( zeroPosition, initialValue, options ) {
 
     super( zeroPosition, options );
 
@@ -33,22 +32,24 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write)
     this.showOperationDescriptionsProperty = new BooleanProperty( true );
 
-    // @public (read-only) {ObservableArray<NumberLineOperation>} - an observable list that tracks addition and
-    // subtraction operations.  Its length will generally be less than or equal to historyLength, but may briefly exceed
-    // it by 1. This list is ordered, with the oldest operations at the front and the newest at the back (FIFO).
-    this.operationsList = new ObservableArray();
+    // @public (read-write) - the starting value from which the added operations add and/or subtract
+    this.startingValueProperty = new NumberProperty( initialValue );
 
-    // @private
-    this.historyLength = historyLength;
-    this.initialValue = initialValue;
+    // @public (read-only) {ObservableArray<NumberLineOperation>} - an observable list that tracks addition and
+    // subtraction operations.   This list is ordered, with the oldest operations at the front and the newest at the
+    // back (FIFO).
+    this.operationsList = new ObservableArray();
 
     // There is always at least one point that serves as the starting point from which the operation act upon, so add it
     // now.
-    this.startingPoint = new NumberLinePoint( initialValue, new Color( 0x4ddff ), this );
+    this.startingPoint = new NumberLinePoint( this.startingValueProperty.value, new Color( 0x4ddff ), this );
     this.addPoint( this.startingPoint );
 
     // function closure that updates the points on the number line when an operation is added, removed, or changed
     const updatePoints = () => {
+
+      // Make sure the starting point is where it should be.
+      this.startingPoint.valueProperty.set( this.startingValueProperty.value );
 
       // There should be one more points than there are operations, if not, adjust the quantity.
       const changeToNumberOfPoints = ( this.operationsList.length + 1 ) - this.residentPoints.length;
@@ -76,6 +77,9 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         availablePoints.shift();
       } );
     };
+
+    // Update the points when the starting value changes.
+    this.startingValueProperty.lazyLink( updatePoints );
 
     // Monitor the operations list and add, remove, and update points as needed.  The operations list is a permanent
     // part of this type, no dispose function is needed.
@@ -106,7 +110,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     );
 
     // add the new operation to the list
-    const operation = new NumberLineOperation( this.getCurrentEndValue(), operationType, amount );
+    const operation = new NumberLineOperation( operationType, amount );
     this.addOperation( operation );
 
     // return what was created
@@ -134,17 +138,12 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * add the provided operation to the list, remove the oldest one if the history length is exceeded
+   * add the provided operation to the list
    * @param {NumberLineOperation} operation
    * @public
    */
   addOperation( operation ) {
     this.operationsList.push( operation );
-
-    // if the history is maxed out, remove the oldest operation
-    if ( this.operationsList.length > this.historyLength ) {
-      this.operationsList.remove( this.operationsList.get( 0 ) );
-    }
   }
 
   /**
@@ -170,7 +169,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * @returns {number}
    */
   getCurrentEndValue() {
-    let value = this.initialValue;
+    let value = this.startingValueProperty.value;
     if ( this.operationsList.length > 0 ) {
       value = this.operationsList.get( this.operationsList.length - 1 ).getResult( value );
     }
@@ -179,17 +178,18 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * get the value after this operation and all those that precede it on the operations list have been applied
-   * @param operation
+   * @param {NumberLineOperation} operation
    * @returns {number}
    */
   getOperationResult( operation ) {
-    const indexOfOperation = this.operationsList.indexOf( operation );
-    assert && assert( indexOfOperation !== -1, 'provided operation is not on this number line' );
-    let resultantValue = this.initialValue;
-    for ( let i = 0; i <= indexOfOperation; i++ ) {
-      resultantValue = this.operationsList.get( i ).getResult( resultantValue );
-    }
-    return resultantValue;
+    assert && assert(
+      operation.operationTypeProperty.value === Operations.ADDITION || operation.operationTypeProperty.value === Operations.SUBTRACTION,
+      'unrecognized operation type'
+    );
+    const startValue = this.getOperationStartValue( operation );
+    return operation.operationTypeProperty.value === Operations.ADDITION ?
+           startValue + operation.amountProperty.value :
+           startValue - operation.amountProperty.value;
   }
 
   /**
@@ -201,7 +201,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   getOperationStartValue( operation ) {
     const indexOfOperation = this.operationsList.indexOf( operation );
     assert && assert( indexOfOperation !== -1, 'provided operation is not on this number line' );
-    let resultantValue = this.initialValue;
+    let resultantValue = this.startingValueProperty.value;
     for ( let i = 0; i <= indexOfOperation - 1; i++ ) {
       resultantValue = this.operationsList.get( i ).getResult( resultantValue );
     }
@@ -210,12 +210,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   reset() {
 
-    // Remove all the operations.  The 'clear' method of ObservableArray removes items from the back (LIFO), we need to
-    // remove them from the front instead (FIFO).
-    const operationsListCopy = this.operationsList.getArray().slice();
-    operationsListCopy.forEach( operation => {
-      this.operationsList.remove( operation );
-    } );
+    this.removeAllOperations();
+    this.startingValueProperty.reset();
 
     super.reset();
 

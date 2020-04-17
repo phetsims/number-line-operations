@@ -20,6 +20,7 @@ import OperationTrackingNumberLineNode from '../../common/view/OperationTracking
 import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
 import OperationEntryControl from './OperationEntryControl.js';
 
 class NLOOperationsScreenView extends ScreenView {
@@ -38,7 +39,7 @@ class NLOOperationsScreenView extends ScreenView {
       center: NLOConstants.LAYOUT_BOUNDS.center,
       minWidth: NLOConstants.LAYOUT_BOUNDS.width,
       maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      opacity: 0.0
+      opacity: 0.2
     } ) );
 
     // number line node
@@ -130,6 +131,11 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( eraserButton );
 
+    // initial net worth control
+    this.addChild( new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty, {
+      centerX: this.layoutBounds.centerX,
+      top: this.layoutBounds.maxY - 180
+    } ) );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {

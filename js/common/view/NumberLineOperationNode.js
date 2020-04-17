@@ -199,7 +199,8 @@ class NumberLineOperationNode extends Node {
 
     if ( operation.amountProperty.value !== 0 ) {
 
-      const xDistanceBetweenPoints = numberLine.valueToModelPosition( operation.amountProperty.value ).x -
+      const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
+      const xDistanceBetweenPoints = numberLine.valueToModelPosition( sign * operation.amountProperty.value ).x -
                                      numberLine.valueToModelPosition( 0 ).x;
       const arrowStartPoint = Vector2.ZERO;
       const arrowEndPoint = new Vector2( xDistanceBetweenPoints, 0 );

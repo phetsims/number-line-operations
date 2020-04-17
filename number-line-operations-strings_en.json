@@ -55,5 +55,8 @@
   },
   "pointLabels": {
     "value": "Point Labels"
+  },
+  "initialNetWorth": {
+    "value": "Initial<br>Net Worth"
   }
 }

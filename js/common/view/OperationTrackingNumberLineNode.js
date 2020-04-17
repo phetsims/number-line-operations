@@ -22,9 +22,16 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     const mapOfOperationsToOperationNodes = new Map();
 
+    // function closure for updating the position of the remaining operation nodes
+    const updateOperationNodePositions = () => {
+      numberLine.operationsList.forEach( operation => {
+        const operationNode = mapOfOperationsToOperationNodes.get( operation );
+        operationNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+      } );
+    };
+
     numberLine.operationsList.addItemAddedListener( addedOperation => {
 
-      // TODO: Can the translation be an option to this?
       const arrowNodeOptions =
         addedOperation.depictionRelativePosition ?
           { relativePosition: addedOperation.depictionRelativePosition } :
@@ -37,12 +44,13 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
         numberLine,
         arrowNodeOptions
       );
-      operationArrowNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( addedOperation ) );
       this.addChild( operationArrowNode );
       mapOfOperationsToOperationNodes.set( addedOperation, operationArrowNode );
 
       // put the arrow node at the back of the z-order so that it is behind the points
       operationArrowNode.moveToBack();
+
+      updateOperationNodePositions();
     } );
     numberLine.operationsList.addItemRemovedListener( removedOperation => {
 
@@ -51,13 +59,9 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       assert && assert( operationNode, 'no operation node found for removed operation' );
       this.removeChild( operationNode );
       operationNode.dispose();
-
-      // update the position of the remaining operation nodes
-      numberLine.operationsList.forEach( operation => {
-        const operationNode = mapOfOperationsToOperationNodes.get( operation );
-        operationNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
-      } );
+      updateOperationNodePositions();
     } );
+    numberLine.startingValueProperty.link( updateOperationNodePositions );
   }
 }
 

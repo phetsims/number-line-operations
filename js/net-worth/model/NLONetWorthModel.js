@@ -8,6 +8,8 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import NumberLineOperation from '../../common/model/NumberLineOperation.js';
+import Operations from '../../common/model/Operations.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -42,7 +44,6 @@ class NLONetWorthModel {
     this.numberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ),
       this.netWorthProperty.value,
-      1,
       {
         initialDisplayedRange: NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
@@ -97,7 +98,12 @@ class NLONetWorthModel {
           this.bags.forEach( bag => {
             if ( bag.containsItem( balanceSheetItem ) ) {
               bag.removeItem( balanceSheetItem );
-              this.numberLine.subtract( balanceSheetItem.value );
+
+              // update the operation on the number line to reflect this latest transaction
+              this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
+              const operation = this.numberLine.operationsList.get( 0 );
+              operation.operationTypeProperty.set( Operations.SUBTRACTION );
+              operation.amountProperty.set( balanceSheetItem.value );
             }
           } );
         }
@@ -109,7 +115,20 @@ class NLONetWorthModel {
             if ( bag.acceptsItem( balanceSheetItem ) && bag.isWithinCaptureRange( balanceSheetItem ) ) {
               bag.addItem( balanceSheetItem );
               addedToBag = true;
-              this.numberLine.add( balanceSheetItem.value );
+
+              this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
+              if ( this.numberLine.operationsList.length === 0 ) {
+
+                // there was no operation on the number line, so add one
+                this.numberLine.addOperation( new NumberLineOperation( Operations.ADDITION, balanceSheetItem.value ) );
+              }
+              else {
+
+                // update the operation on the number line
+                const operation = this.numberLine.operationsList.get( 0 );
+                operation.operationTypeProperty.set( Operations.ADDITION );
+                operation.amountProperty.set( balanceSheetItem.value );
+              }
             }
           } );
           if ( !addedToBag ) {
