@@ -135,6 +135,9 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( eraserButton );
 
+    // erase is disabled if there are no operations
+    model.numberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
+
     // initial net worth control
     this.addChild( new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty, {
       centerX: this.layoutBounds.centerX,
