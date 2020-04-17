@@ -1,14 +1,14 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * Operation is a very simple class used to track arithmetic operations of addition and subtraction that have been
+ * NumberLineOperation is a class used to track arithmetic operations of addition and subtraction that have been
  * performed on an operation-tracking number line.
  */
 
 import numberLineOperations from '../../numberLineOperations.js';
 import Operations from './Operations.js';
 
-class Operation {
+class NumberLineOperation {
 
   /**
    * @param {number} startValue
@@ -43,5 +43,5 @@ class Operation {
   }
 }
 
-numberLineOperations.register( 'Operation', Operation );
-export default Operation;
+numberLineOperations.register( 'NumberLineOperation', NumberLineOperation );
+export default NumberLineOperation;

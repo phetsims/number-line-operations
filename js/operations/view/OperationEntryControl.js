@@ -18,7 +18,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
-import Operation from '../../common/model/Operation.js';
+import NumberLineOperation from '../../common/model/NumberLineOperation.js';
 import Operations from '../../common/model/Operations.js';
 import OperationArrowNode from '../../common/view/OperationArrowNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -62,8 +62,8 @@ class OperationEntryControl extends HBox {
     const selectedOperationProperty = new EnumerationProperty( Operations, Operations.ADDITION );
     const operationAmountProperty = new NumberProperty( 100 );
 
-    // @private {Operation|null} - An operation that was added by this controller to the number line, null if none has
-    // been added or if the operation was removed.
+    // @private {NumberLineOperation|null} - An operation that was added by this controller to the number line, null if
+    // none has been added or if the operation was removed.
     const addedOperationProperty = new Property( null );
 
     // plus/minus operation selector
@@ -105,7 +105,7 @@ class OperationEntryControl extends HBox {
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
-        const arithmeticOperation = new Operation(
+        const arithmeticOperation = new NumberLineOperation(
           numberLine.getCurrentEndValue(),
           selectedOperationProperty.value,
           operationAmountProperty.value,

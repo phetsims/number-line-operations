@@ -11,7 +11,7 @@ import NumberLinePoint from '../../../../number-line-common/js/common/model/Numb
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import Operation from './Operation.js';
+import NumberLineOperation from './NumberLineOperation.js';
 import Operations from './Operations.js';
 
 class OperationTrackingNumberLine extends SpatializedNumberLine {
@@ -33,9 +33,9 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write)
     this.showOperationDescriptionsProperty = new BooleanProperty( true );
 
-    // @public (read-only) {ObservableArray<Operation>} - an observable list that tracks addition and subtraction
-    // operations.  Its length will generally be less than or equal to historyLength, but may briefly exceed it by 1.
-    // This list is ordered, with the oldest operations at the front and the newest at the back (FIFO).
+    // @public (read-only) {ObservableArray<NumberLineOperation>} - an observable list that tracks addition and
+    // subtraction operations.  Its length will generally be less than or equal to historyLength, but may briefly exceed
+    // it by 1. This list is ordered, with the oldest operations at the front and the newest at the back (FIFO).
     this.operationsList = new ObservableArray();
 
     // @private
@@ -78,7 +78,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * perform the provided operation on the number line
    * @param {Operations} operationType
    * @param {number} amount
-   * @returns {Operation} - the operation that was created and added
+   * @returns {NumberLineOperation} - the operation that was created and added
    * @public
    */
   performOperation( operationType, amount ) {
@@ -89,7 +89,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     );
 
     // add the new operation to the list
-    const operation = new Operation( this.getCurrentEndValue(), operationType, amount );
+    const operation = new NumberLineOperation( this.getCurrentEndValue(), operationType, amount );
     this.addOperation( operation );
 
     // return what was created
@@ -99,7 +99,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * perform an addition operation on this number line
    * @param {number} amount
-   * @returns {Operation} - the operation that was created and added
+   * @returns {NumberLineOperation} - the operation that was created and added
    * @public
    */
   add( amount ) {
@@ -109,7 +109,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * perform a subtraction operation on this number line
    * @param {number} amount
-   * @returns {Operation} - the operation that was created and added
+   * @returns {NumberLineOperation} - the operation that was created and added
    * @public
    */
   subtract( amount ) {
@@ -118,7 +118,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * add the provided operation to the list, remove the oldest one if the history length is exceeded
-   * @param {Operation} operation
+   * @param {NumberLineOperation} operation
    * @public
    */
   addOperation( operation ) {
@@ -132,7 +132,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * remove the provided operation from the number line
-   * @param {Operation} operation
+   * @param {NumberLineOperation} operation
    * @public
    */
   removeOperation( operation ) {

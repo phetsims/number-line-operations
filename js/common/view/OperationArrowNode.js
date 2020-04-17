@@ -35,7 +35,7 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
 
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 
-const APEX_DISTANCE_FROM_NUMBER_LINE = 30; // in screen coordinates, empirically chosen to look good
+const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 
@@ -47,7 +47,7 @@ const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMB
 class OperationArrowNode extends Node {
 
   /**
-   * @param {Operation} operation
+   * @param {NumberLineOperation} operation
    * @param {BooleanProperty} showLabelProperty
    * @param {BooleanProperty} showDescriptionProperty
    * @param {SpatializedNumberLine} numberLine
