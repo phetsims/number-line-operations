@@ -46,6 +46,14 @@ class NumberLineOperation {
     }
     return value;
   }
+
+  /**
+   * @public
+   */
+  reset() {
+    this.operationTypeProperty.reset();
+    this.amountProperty.reset();
+  }
 }
 
 numberLineOperations.register( 'NumberLineOperation', NumberLineOperation );

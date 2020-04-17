@@ -88,7 +88,10 @@ class NLOOperationsScreenView extends ScreenView {
     const operationEntryControls = [
       new OperationEntryControl(
         model.numberLine,
-        { depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE }
+        {
+          depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
+          initialValue: 100
+        }
       ),
       new OperationEntryControl(
         model.numberLine,
@@ -127,6 +130,7 @@ class NLOOperationsScreenView extends ScreenView {
       listener: () => {
         model.numberLine.removeAllOperations();
         operationEntryCarousel.pageNumberProperty.reset();
+        operationEntryControls.forEach( control => {control.clear(); } );
       }
     } );
     this.addChild( eraserButton );
@@ -144,6 +148,7 @@ class NLOOperationsScreenView extends ScreenView {
         model.reset();
         operationEntryCarousel.pageNumberProperty.reset();
         model.numberLine.removeAllOperations();
+        operationEntryControls.forEach( control => { control.reset(); } );
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,

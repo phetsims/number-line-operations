@@ -50,6 +50,7 @@ class OperationEntryControl extends HBox {
 
     options = merge( {
       spacing: 25,
+      initialValue: 0,
 
       // Relative position of the depiction of the operations that are created by this controller, i.e. above or below
       // the number line.
@@ -60,7 +61,7 @@ class OperationEntryControl extends HBox {
     // operation managed by this control
     const operation = new NumberLineOperation(
       Operations.ADDITION,
-      100,
+      options.initialValue,
       { depictionRelativePosition: options.depictionRelativePosition }
     );
 
@@ -141,14 +142,20 @@ class OperationEntryControl extends HBox {
     super( merge( {
       children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ]
     }, options ) );
+
+    this.operation = operation;
   }
 
   /**
-   * Clear the current operation, if any.  Does nothing if not.  This does not remove the operation from the number
-   * line.  Also, this method does not reset to the default operation or value.
+   * @public
    */
-  clearOperation() {
+  clear() {
+    this.operation.operationTypeProperty.reset();
+    this.operation.amountProperty.set( 0 );
+  }
 
+  reset() {
+    this.operation.reset();
   }
 }
 
