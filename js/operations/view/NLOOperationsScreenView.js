@@ -108,7 +108,7 @@ class NLOOperationsScreenView extends ScreenView {
     const operationEntryCarousel = new Carousel( operationEntryControls, {
       orientation: 'horizontal',
       itemsPerPage: 1,
-      right: this.layoutBounds.maxX - 50,
+      right: this.layoutBounds.maxX - 40,
       top: 15
     } );
     this.addChild( operationEntryCarousel );

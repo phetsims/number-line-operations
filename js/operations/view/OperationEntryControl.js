@@ -88,7 +88,7 @@ class OperationEntryControl extends HBox {
     // amount selector
     const operationAmountPicker = new NumberPicker(
       operation.amountProperty,
-      new Property( new Range( -800, 800 ) ),
+      new Property( new Range( -1000, 1000 ) ),
       {
         upFunction: value => value + 100,
         downFunction: value => value - 100,
