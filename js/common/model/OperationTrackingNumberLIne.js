@@ -47,30 +47,47 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     this.startingPoint = new NumberLinePoint( initialValue, new Color( 0x4ddff ), this );
     this.addPoint( this.startingPoint );
 
+    // function closure that updates the points on the number line when an operation is added, removed, or changed
+    const updatePoints = () => {
+
+      // There should be one more points than there are operations, if not, adjust the quantity.
+      const changeToNumberOfPoints = ( this.operationsList.length + 1 ) - this.residentPoints.length;
+
+      if ( changeToNumberOfPoints > 0 ) {
+        _.times( changeToNumberOfPoints, () => {
+
+          // add a point at an arbitrary location, its value will be updated below
+          this.addPoint( new NumberLinePoint( 0, Color.BLUE, this ) );
+        } );
+      }
+      else if ( changeToNumberOfPoints < 0 ) {
+
+        // remove points, but make sure that the starting point stays
+        const eligiblePointsForRemoval = this.residentPoints.getArray().filter( item => item !== this.startingPoint );
+        const numberOfPointsToRemove = Math.abs( changeToNumberOfPoints );
+        assert && assert( eligiblePointsForRemoval.length >= numberOfPointsToRemove );
+        _.times( numberOfPointsToRemove, index => { this.removePoint( eligiblePointsForRemoval[ index ] ); } );
+      }
+
+      // Update the positions of the points based on the initial value and the list of operations.
+      const availablePoints = this.residentPoints.getArray().filter( item => item !== this.startingPoint );
+      this.operationsList.forEach( operation => {
+        availablePoints[ 0 ].valueProperty.set( this.getOperationResult( operation ) );
+        availablePoints.shift();
+      } );
+    };
+
     // Monitor the operations list and add, remove, and update points as needed.  The operations list is a permanent
     // part of this type, no dispose function is needed.
     this.operationsList.addItemAddedListener( addedOperation => {
-
-      // add a new point to the number line for the end point of this operation
-      this.addPoint( new NumberLinePoint( addedOperation.getEndValue(), Color.BLUE, this ) );
-
-      // update the value of the starting point
-      this.startingPoint.valueProperty.set( this.operationsList.get( 0 ).startValue );
+      updatePoints();
+      addedOperation.amountProperty.lazyLink( updatePoints );
+      addedOperation.operationTypeProperty.lazyLink( updatePoints );
     } );
     this.operationsList.addItemRemovedListener( removedOperation => {
-
-      // remove the point that corresponded to the result of this operation
-      const pointsAtEndOfOperation = this.getPointsAt( removedOperation.getEndValue() );
-      assert && assert( pointsAtEndOfOperation.length > 0, 'no point found at result of operation' );
-      this.removePoint( pointsAtEndOfOperation[ 0 ] );
-
-      // update the value of the starting point
-      if ( this.operationsList.length > 0 ) {
-        this.startingPoint.valueProperty.set( this.operationsList.get( 0 ).startValue );
-      }
-      else {
-        this.startingPoint.valueProperty.set( initialValue );
-      }
+      updatePoints();
+      removedOperation.amountProperty.unlink( updatePoints );
+      removedOperation.operationTypeProperty.unlink( updatePoints );
     } );
   }
 
@@ -155,9 +172,40 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   getCurrentEndValue() {
     let value = this.initialValue;
     if ( this.operationsList.length > 0 ) {
-      value = this.operationsList.get( this.operationsList.length - 1 ).getEndValue();
+      value = this.operationsList.get( this.operationsList.length - 1 ).getResult( value );
     }
     return value;
+  }
+
+  /**
+   * get the value after this operation and all those that precede it on the operations list have been applied
+   * @param operation
+   * @returns {number}
+   */
+  getOperationResult( operation ) {
+    const indexOfOperation = this.operationsList.indexOf( operation );
+    assert && assert( indexOfOperation !== -1, 'provided operation is not on this number line' );
+    let resultantValue = this.initialValue;
+    for ( let i = 0; i <= indexOfOperation; i++ ) {
+      resultantValue = this.operationsList.get( i ).getResult( resultantValue );
+    }
+    return resultantValue;
+  }
+
+  /**
+   * Get the start value of this operation by starting from the initial value and executing all operations that precede
+   * it.
+   * @param operation
+   * @returns {number}
+   */
+  getOperationStartValue( operation ) {
+    const indexOfOperation = this.operationsList.indexOf( operation );
+    assert && assert( indexOfOperation !== -1, 'provided operation is not on this number line' );
+    let resultantValue = this.initialValue;
+    for ( let i = 0; i <= indexOfOperation - 1; i++ ) {
+      resultantValue = this.operationsList.get( i ).getResult( resultantValue );
+    }
+    return resultantValue;
   }
 
   reset() {

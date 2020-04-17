@@ -15,7 +15,7 @@ import Carousel from '../../../../sun/js/Carousel.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import OperationArrowNode from '../../common/view/OperationArrowNode.js';
+import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
@@ -87,11 +87,11 @@ class NLOOperationsScreenView extends ScreenView {
     const operationEntryControls = [
       new OperationEntryControl(
         model.numberLine,
-        { depictionRelativePosition: OperationArrowNode.RelativePositions.ABOVE_NUMBER_LINE }
+        { depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE }
       ),
       new OperationEntryControl(
         model.numberLine,
-        { depictionRelativePosition: OperationArrowNode.RelativePositions.BELOW_NUMBER_LINE }
+        { depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE }
       )
     ];
 

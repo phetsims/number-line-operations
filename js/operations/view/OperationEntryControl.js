@@ -1,10 +1,9 @@
 // Copyright 2020, University of Colorado Boulder
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Shape from '../../../../kite/js/Shape.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
@@ -20,7 +19,7 @@ import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
 import NumberLineOperation from '../../common/model/NumberLineOperation.js';
 import Operations from '../../common/model/Operations.js';
-import OperationArrowNode from '../../common/view/OperationArrowNode.js';
+import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
@@ -54,21 +53,24 @@ class OperationEntryControl extends HBox {
 
       // Relative position of the depiction of the operations that are created by this controller, i.e. above or below
       // the number line.
-      depictionRelativePosition: OperationArrowNode.RelativePositions.ABOVE_NUMBER_LINE
+      depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE
 
     }, options );
 
-    // internal state
-    const selectedOperationProperty = new EnumerationProperty( Operations, Operations.ADDITION );
-    const operationAmountProperty = new NumberProperty( 100 );
+    // operation managed by this control
+    const operation = new NumberLineOperation(
+      0,
+      Operations.ADDITION,
+      100,
+      { depictionRelativePosition: options.depictionRelativePosition }
+    );
 
-    // @private {NumberLineOperation|null} - An operation that was added by this controller to the number line, null if
-    // none has been added or if the operation was removed.
-    const addedOperationProperty = new Property( null );
+    // property that keeps track of whether or not this control's operation is on the number line
+    const operationOnNumberLineProperty = new BooleanProperty( false );
 
     // plus/minus operation selector
     const operationSelectorRadioButtonGroup = new RadioButtonGroup(
-      selectedOperationProperty,
+      operation.operationTypeProperty,
       [
         { value: Operations.ADDITION, node: new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
         { value: Operations.SUBTRACTION, node: new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
@@ -85,7 +87,7 @@ class OperationEntryControl extends HBox {
 
     // amount selector
     const operationAmountPicker = new NumberPicker(
-      operationAmountProperty,
+      operation.amountProperty,
       new Property( new Range( -800, 800 ) ),
       {
         upFunction: value => value + 100,
@@ -105,14 +107,8 @@ class OperationEntryControl extends HBox {
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
-        const arithmeticOperation = new NumberLineOperation(
-          numberLine.getCurrentEndValue(),
-          selectedOperationProperty.value,
-          operationAmountProperty.value,
-          { depictionRelativePosition: options.depictionRelativePosition }
-        );
-        numberLine.addOperation( arithmeticOperation );
-        addedOperationProperty.set( arithmeticOperation );
+        numberLine.addOperation( operation );
+        operationOnNumberLineProperty.set( true );
       },
       content: enterArrowNode,
       radius: 30
@@ -122,8 +118,8 @@ class OperationEntryControl extends HBox {
     // eraser button
     const eraserButton = new EraserButton( {
       listener: () => {
-        numberLine.removeOperation( addedOperationProperty.value );
-        addedOperationProperty.set( null );
+        numberLine.removeOperation( operation );
+        operationOnNumberLineProperty.set( false );
       },
       iconWidth: 30,
       center: enterButton.center
@@ -131,16 +127,15 @@ class OperationEntryControl extends HBox {
     buttonRootNode.addChild( eraserButton );
 
     // control which of the two buttons is visible based on whether an operation has been added to the number line
-    addedOperationProperty.link( addedOperation => {
-      enterButton.visible = addedOperation === null;
-      eraserButton.visible = addedOperation !== null;
+    operationOnNumberLineProperty.link( operationOnNumberLine => {
+      enterButton.visible = !operationOnNumberLine;
+      eraserButton.visible = operationOnNumberLine;
     } );
 
-    // Monitor the number line and if the operation that was added by this controller is removed, clear our local
-    // reference.
+    // Monitor the number line and if the operation that was added by this controller is removed, update state.
     numberLine.operationsList.addItemRemovedListener( removedOperation => {
-      if ( removedOperation === addedOperationProperty.value ) {
-        addedOperationProperty.set( null );
+      if ( removedOperation === operation ) {
+        operationOnNumberLineProperty.set( false );
       }
     } );
 

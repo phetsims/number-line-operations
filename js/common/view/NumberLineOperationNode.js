@@ -1,5 +1,6 @@
 // Copyright 2020, University of Colorado Boulder
 
+import Property from '../../../../axon/js/Property.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Animation from '../../../../twixt/js/Animation.js';
@@ -34,45 +35,174 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
   .lineTo( 0, 0 );
 
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
-
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
-
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 
 /**
- * OperationArrowNode (sounds like a movie title, no?) is used to depict an operation on a number line as an arrow from
- * the starting value to the ending value.  It looks like a curved arrow, and has a label and a description that can
- * be optionally shown.
+ * NumberLineOperationNode is used to depict an operation on a number line as an arrow from the point (0,0) to the
+ * relative ending value.  It looks like a curved arrow, and has a label and a description that can be optionally shown.
+ * It must be positioned by the client such that the node's (x,y) position is where the starting point is in view space.
+ *
+ * This node updates itself as the attributes of the underlying operation change.
  */
-class OperationArrowNode extends Node {
+class NumberLineOperationNode extends Node {
 
   /**
    * @param {NumberLineOperation} operation
    * @param {BooleanProperty} showLabelProperty
    * @param {BooleanProperty} showDescriptionProperty
-   * @param {SpatializedNumberLine} numberLine
+   * @param {OperationTrackingNumberLine} numberLine
    * @param {Object} [options]
    */
   constructor( operation, showLabelProperty, showDescriptionProperty, numberLine, options ) {
+
+    // Make sure the number line is in the horizontal orientation.  While it wouldn't be too difficult to generalize
+    // this class to handle the vertical orientation, to date it hasn't been needed, so it hasn't been done.
+    assert && assert( numberLine.isHorizontal, 'this class is not generalized to handle vertical number lines ' );
 
     options = merge( {
 
       relativePosition: RelativePositions.ABOVE_NUMBER_LINE
     }, options );
 
-    let curvedLineNode;
-    let arrowheadNode;
+    super( options );
 
     // convenience var
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
-    // Make sure the number line is in the horizontal orientation.  While it wouldn't be too difficult to generalize
-    // this class to handle the vertical orientation, to date it hasn't been needed, so it hasn't been done.
-    assert && assert( numberLine.isHorizontal, 'this class is not generalized to handle vertical number lines ' );
+    // create the operation label
+    // TODO can the text be nothing to start with?
+    const operationLabelTextNode = new Text( 'initially stubbed TODO - can this be nothing?', {
+      font: new PhetFont( 18 )
+    } );
+    const operationLabel = new BackgroundNode( operationLabelTextNode );
+    const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
+    this.addChild( operationLabel );
 
-    if ( operation.amount !== 0 ) {
-      const arrowStartPoint = numberLine.valueToModelPosition( operation.startValue );
-      const arrowEndPoint = numberLine.valueToModelPosition( operation.getEndValue() );
+    // operation description
+    const operationDescriptionTextNode = new Text( 'TODO stubbed', {
+      font: new PhetFont( 18 )
+    } );
+    const operationDescription = new BackgroundNode( operationDescriptionTextNode );
+    const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
+    this.addChild( operationDescription );
+
+    // variables used to position the operation description, since it needs to move based on whether the label is visible
+    let descriptionCenterYWhenLabelVisible = aboveNumberLine ?
+                                             operationLabel.top - operationDescription.height / 2 :
+                                             operationLabel.bottom + operationDescription.height / 2;
+    let descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
+
+    // the node that looks like a curved arrow that spans from the start point to the endpoint of the operation
+    let arrowNode;
+
+    // update the arrow, labels, and label positions with the attributes of the operation change
+    const updateMultilink = Property.multilink(
+      [ operation.operationTypeProperty, operation.amountProperty ],
+      () => {
+
+        // update the arrow node
+        if ( arrowNode ) {
+          this.removeChild( arrowNode );
+        }
+        arrowNode = this.createArrowNode( operation, numberLine, aboveNumberLine );
+        this.addChild( arrowNode );
+
+        // update the operation label
+        const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
+        const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
+        operationLabelTextNode.text = operationChar +
+                                      ' ' +
+                                      unarySignChar +
+                                      Math.abs( operation.amountProperty.value ).toString( 10 );
+        operationLabel.centerX = arrowNode.centerX;
+        if ( aboveNumberLine ) {
+          operationLabel.bottom = arrowNode.top - 3;
+        }
+        else {
+          operationLabel.top = arrowNode.bottom + 3;
+        }
+
+        // update the operation description
+        operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+          addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
+                       numberLineOperationsStrings.add :
+                       numberLineOperationsStrings.remove,
+          assetOrDebt: operation.amountProperty.value > 0 ?
+                       numberLineOperationsStrings.asset :
+                       numberLineOperationsStrings.debt,
+          currencyUnits: numberLineOperationsStrings.currencyUnits,
+          value: Math.abs( operation.amountProperty.value )
+        } );
+        descriptionCenterYWhenLabelVisible = aboveNumberLine ?
+                                             operationLabel.top - operationDescription.height / 2 :
+                                             operationLabel.bottom + operationDescription.height / 2;
+        descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
+        operationDescription.centerX = arrowNode.centerX;
+        operationDescription.centerY = showLabelProperty.value ?
+                                       descriptionCenterYWhenLabelVisible :
+                                       descriptionCenterYWhenLabelNotVisible;
+      }
+    );
+
+    // Update the position of the operation description based on the visibility of the operation label.  An animation is
+    // used to make this look cool.
+    let descriptionMovementAnimation = null;
+    const commonAnimationOptions = {
+      duration: 0.25,
+      easing: Easing.CUBIC_IN_OUT,
+      setValue: value => { operationDescription.centerY = value; }
+    };
+    showLabelProperty.lazyLink( labelVisible => {
+
+      // stop any in-progress animations
+      descriptionMovementAnimation && descriptionMovementAnimation.stop();
+
+      if ( labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelVisible ) {
+
+        descriptionMovementAnimation = new Animation( merge( {
+          from: operationDescription.centerY,
+          to: descriptionCenterYWhenLabelVisible
+        }, commonAnimationOptions ) );
+        descriptionMovementAnimation.start();
+      }
+      else if ( !labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelNotVisible ) {
+        descriptionMovementAnimation = new Animation( merge( {
+          from: operationDescription.centerY,
+          to: descriptionCenterYWhenLabelNotVisible
+        }, commonAnimationOptions ) );
+        descriptionMovementAnimation.start();
+      }
+      descriptionMovementAnimation && descriptionMovementAnimation.endedEmitter.addListener( () => {
+        descriptionMovementAnimation = null;
+      } );
+    } );
+
+    // @private - dispose function
+    this.disposeOperationArrowNode = () => {
+      updateMultilink.dispose();
+      showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
+      showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );
+    };
+  }
+
+  /**
+   * @param {NumberLineOperation} operation
+   * @param {OperationTrackingNumberLine} numberLine
+   * @param {boolean} aboveNumberLine
+   * @returns {Node}
+   * @private
+   */
+  createArrowNode( operation, numberLine, aboveNumberLine ) {
+    let curvedLineNode;
+    let arrowheadNode;
+
+    if ( operation.amountProperty.value !== 0 ) {
+
+      const xDistanceBetweenPoints = numberLine.valueToModelPosition( operation.amountProperty.value ).x -
+                                     numberLine.valueToModelPosition( 0 ).x;
+      const arrowStartPoint = Vector2.ZERO;
+      const arrowEndPoint = new Vector2( xDistanceBetweenPoints, 0 );
 
       // Calculate the radius of the circle that will be used to define this arrow's path using the distance between the
       // points and the distance of the top of the arc from the number line.  I (jbphet) derived this myself because I
@@ -137,7 +267,7 @@ class OperationArrowNode extends Node {
       // However, add shapes were produced when trying to loop to and from the exact same point, so there are some
       // small offsets used in the X direction.
       // TODO: follow up with JO as to whether the need for adjustment is actually a bug
-      const loopStartAndEndPoint = numberLine.valueToModelPosition( operation.startValue );
+      const loopStartAndEndPoint = Vector2.ZERO;
       const adjustmentAmount = 1; // in screen coordinates
       const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
       const adjustedEndPoint = loopStartAndEndPoint.plusXY( adjustmentAmount / 2, 0 );
@@ -162,7 +292,7 @@ class OperationArrowNode extends Node {
       // loop changes.
       let arrowheadAngle;
       const multiplier = 0.02;
-      if ( operation.operationType === Operations.ADDITION ) {
+      if ( operation.operationTypeProperty.value === Operations.ADDITION ) {
         if ( aboveNumberLine ) {
           arrowheadAngle = Math.PI + curvedLineNode.width * multiplier;
         }
@@ -182,84 +312,7 @@ class OperationArrowNode extends Node {
       arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, arrowheadAngle, { translation: loopStartAndEndPoint } );
     }
 
-    // operation label
-    const operationChar = operation.operationType === Operations.ADDITION ? '+' : '-';
-    const unarySignChar = operation.amount < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
-    const operationText = operationChar + ' ' + unarySignChar + Math.abs( operation.amount ).toString( 10 );
-    const operationLabelTextNode = new Text( operationText, {
-      font: new PhetFont( 18 )
-    } );
-    const operationLabel = new BackgroundNode( operationLabelTextNode, { centerX: curvedLineNode.centerX } );
-    if ( aboveNumberLine ) {
-      operationLabel.bottom = curvedLineNode.top - 3;
-    }
-    else {
-      operationLabel.top = curvedLineNode.bottom + 3;
-    }
-    const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
-
-    // operation description
-    const operationDescriptionText = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-      addOrRemove: operation.operationType === Operations.ADDITION ?
-                   numberLineOperationsStrings.add :
-                   numberLineOperationsStrings.remove,
-      assetOrDebt: operation.amount > 0 ? numberLineOperationsStrings.asset : numberLineOperationsStrings.debt,
-      currencyUnits: numberLineOperationsStrings.currencyUnits,
-      value: Math.abs( operation.amount )
-    } );
-    const operationDescriptionTextNode = new Text( operationDescriptionText, {
-      font: new PhetFont( 18 )
-    } );
-    const operationDescription = new BackgroundNode( operationDescriptionTextNode, { center: curvedLineNode.center } );
-    const descriptionCenterYWhenLabelVisible = aboveNumberLine ?
-                                               operationLabel.top - operationDescription.height / 2 :
-                                               operationLabel.bottom + operationDescription.height / 2;
-    const descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
-    operationDescription.centerY = showLabelProperty.value ?
-                                   descriptionCenterYWhenLabelVisible :
-                                   descriptionCenterYWhenLabelNotVisible;
-    const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
-
-    // Position the operation description above/below the label when the label is visible, or in the label's spot when
-    // the label is invisible.  Use an animation to make it look pro.
-    let descriptionMovementAnimation = null;
-    const commonAnimationOptions = {
-      duration: 0.25,
-      easing: Easing.CUBIC_IN_OUT,
-      setValue: value => { operationDescription.centerY = value; }
-    };
-    showLabelProperty.lazyLink( labelVisible => {
-
-      // stop any in-progress animations
-      descriptionMovementAnimation && descriptionMovementAnimation.stop();
-
-      if ( labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelVisible ) {
-
-        descriptionMovementAnimation = new Animation( merge( {
-          from: operationDescription.centerY,
-          to: descriptionCenterYWhenLabelVisible
-        }, commonAnimationOptions ) );
-        descriptionMovementAnimation.start();
-      }
-      else if ( !labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelNotVisible ) {
-        descriptionMovementAnimation = new Animation( merge( {
-          from: operationDescription.centerY,
-          to: descriptionCenterYWhenLabelNotVisible
-        }, commonAnimationOptions ) );
-        descriptionMovementAnimation.start();
-      }
-      descriptionMovementAnimation && descriptionMovementAnimation.endedEmitter.addListener( () => {
-        descriptionMovementAnimation = null;
-      } );
-    } );
-
-    super( { children: [ curvedLineNode, arrowheadNode, operationLabel, operationDescription ] } );
-
-    // @private - dispose function
-    this.disposeOperationArrowNode = () => {
-      showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
-      showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );
-    };
+    return new Node( { children: [ curvedLineNode, arrowheadNode ] } );
   }
 
   /**
@@ -298,7 +351,7 @@ class ArrowheadNode extends Path {
 }
 
 // statics
-OperationArrowNode.RelativePositions = RelativePositions;
+NumberLineOperationNode.RelativePositions = RelativePositions;
 
-numberLineOperations.register( 'OperationArrowNode', OperationArrowNode );
-export default OperationArrowNode;
+numberLineOperations.register( 'NumberLineOperationNode', NumberLineOperationNode );
+export default NumberLineOperationNode;

@@ -7,7 +7,7 @@
 
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import OperationArrowNode from './OperationArrowNode.js';
+import NumberLineOperationNode from './NumberLineOperationNode.js';
 
 class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
@@ -24,18 +24,20 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     numberLine.operationsList.addItemAddedListener( addedOperation => {
 
+      // TODO: Can the translation be an option to this?
       const arrowNodeOptions =
         addedOperation.depictionRelativePosition ?
           { relativePosition: addedOperation.depictionRelativePosition } :
           {};
 
-      const operationArrowNode = new OperationArrowNode(
+      const operationArrowNode = new NumberLineOperationNode(
         addedOperation,
         numberLine.showOperationLabelsProperty,
         numberLine.showOperationDescriptionsProperty,
         numberLine,
         arrowNodeOptions
       );
+      operationArrowNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( addedOperation ) );
       this.addChild( operationArrowNode );
       mapOfOperationsToOperationNodes.set( addedOperation, operationArrowNode );
 
@@ -43,10 +45,18 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       operationArrowNode.moveToBack();
     } );
     numberLine.operationsList.addItemRemovedListener( removedOperation => {
+
+      // remove the node that corresponds to the removed operation
       const operationNode = mapOfOperationsToOperationNodes.get( removedOperation );
       assert && assert( operationNode, 'no operation node found for removed operation' );
       this.removeChild( operationNode );
       operationNode.dispose();
+
+      // update the position of the remaining operation nodes
+      numberLine.operationsList.forEach( operation => {
+        const operationNode = mapOfOperationsToOperationNodes.get( operation );
+        operationNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+      } );
     } );
   }
 }
