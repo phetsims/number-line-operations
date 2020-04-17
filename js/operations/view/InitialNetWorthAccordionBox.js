@@ -2,6 +2,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberPicker from '../../../../scenery-phet/js/NumberPicker.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -23,7 +24,8 @@ class InitialNetWorthAccordionBox extends AccordionBox {
 
     options = merge( {
       fill: Color.WHITE,
-      showTitleWhenExpanded: false
+      showTitleWhenExpanded: false,
+      cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS
     }, options );
 
     const label = new RichText( numberLineOperationsStrings.initialNetWorth, {

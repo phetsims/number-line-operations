@@ -56,6 +56,9 @@
   "pointLabels": {
     "value": "Point Labels"
   },
+  "simplify": {
+    "value": "Simplify"
+  },
   "initialNetWorth": {
     "value": "Initial<br>Net Worth"
   }
