@@ -6,6 +6,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
+import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import RandomIcon from '../common/RandomIcon.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 import numberLineOperations from '../numberLineOperations.js';
@@ -23,8 +24,14 @@ class NLONetWorthScreen extends Screen {
 
     const options = {
       name: numberLineOperationsStrings.screen.netWorth,
-      homeScreenIcon: randomIcon,
-      navigationBarIcon: randomIcon,
+      homeScreenIcon: new ScreenIcon( randomIcon, {
+        maxIconWidthProportion: 1,
+        maxIconHeightProportion: 1
+      } ),
+      navigationBarIcon: new ScreenIcon( randomIcon, {
+        maxIconWidthProportion: 1,
+        maxIconHeightProportion: 1
+      } ),
       backgroundColorProperty: new Property( '#f8f6fe' ),
       tandem: tandem
     };
