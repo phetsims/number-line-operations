@@ -170,9 +170,9 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    */
   getCurrentEndValue() {
     let value = this.startingValueProperty.value;
-    if ( this.operationsList.length > 0 ) {
-      value = this.operationsList.get( this.operationsList.length - 1 ).getResult( value );
-    }
+    this.operationsList.forEach( operation => {
+      value = operation.getResult( value );
+    } );
     return value;
   }
 

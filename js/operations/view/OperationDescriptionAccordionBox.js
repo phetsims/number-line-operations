@@ -9,6 +9,7 @@ import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -26,6 +27,7 @@ class OperationDescriptionAccordionBox extends AccordionBox {
   /**
    * @param {OperationTrackingNumberLine} numberLine
    * @param {Object} [options]
+   * @public
    */
   constructor( numberLine, options ) {
 
@@ -35,6 +37,7 @@ class OperationDescriptionAccordionBox extends AccordionBox {
       cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS
     }, options );
 
+    // Create a transparent background that will serve as the root node.  Everything should be made to fit within this.
     const contentRoot = new Rectangle( 0, 0, CONTENT_DIMENSIONS.width, CONTENT_DIMENSIONS.height, 5, 5, {
       fill: Color.TRANSPARENT
     } );
@@ -50,8 +53,19 @@ class OperationDescriptionAccordionBox extends AccordionBox {
       }
     ) );
 
+    // evaluate button
+    const evaluateProperty = new BooleanProperty( false );
+    contentRoot.addChild( new RectangularMomentaryButton( false, true, evaluateProperty, {
+      content: new Text( MathSymbols.EQUAL_TO, { font: new PhetFont( 20 ) } ),
+      baseColor: new Color( 0xfdfd96 ),
+      xMargin: 5,
+      yMargin: 1,
+      right: CONTENT_DIMENSIONS.width,
+      bottom: CONTENT_DIMENSIONS.height
+    } ) );
+
     // math sentence
-    const mathSentence = new OperationMathSentence( numberLine, simplifyProperty, { top: 0 } );
+    const mathSentence = new OperationMathSentence( numberLine, simplifyProperty, evaluateProperty, { top: 0 } );
     contentRoot.addChild( mathSentence );
     mathSentence.boundsProperty.link( () => {
       mathSentence.centerX = CONTENT_DIMENSIONS.width / 2;
@@ -59,6 +73,17 @@ class OperationDescriptionAccordionBox extends AccordionBox {
     } );
 
     super( contentRoot, options );
+
+    // @private - make this available so it can be reset
+    this.simplifyProperty = simplifyProperty;
+  }
+
+  /**
+   * restore initial state
+   * @public
+   */
+  reset() {
+    this.simplifyProperty.reset();
   }
 }
 
@@ -70,37 +95,74 @@ class OperationMathSentence extends Text {
   /**
    * @param {OperationTrackingNumberLine} numberLine
    * @param {BooleanProperty} simplifyProperty
+   * @param {BooleanProperty} evaluateProperty
    * @param {Object} [options]
+   * @public
    */
-  constructor( numberLine, simplifyProperty, options ) {
+  constructor( numberLine, simplifyProperty, evaluateProperty, options ) {
     options = merge( { font: new PhetFont( 30 ) }, options );
     super( '', options );
 
     // function closure to update the text
     const update = () => {
 
-      // make a list of all the values and operations
-      const valuesAndOperations = [];
-      valuesAndOperations.push( numberLine.startingValueProperty.value );
-      numberLine.operationsList.forEach( operation => {
-        valuesAndOperations.push( operation.operationTypeProperty.value );
-        valuesAndOperations.push( operation.amountProperty.value );
-      } );
+      if ( evaluateProperty.value || numberLine.operationsList.length === 0 ) {
+        this.text = numberLine.getCurrentEndValue();
+      }
+      else {
 
-      let mathSentence = '';
-      valuesAndOperations.forEach( valueOrOperation => {
-        if ( typeof valueOrOperation === 'number' ) {
-          mathSentence += valueOrOperation;
-        }
-        else {
-          const operationChar = valueOrOperation === Operations.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
-          mathSentence += ' ' + operationChar + ' ';
-        }
-      } );
+        // make a list of all the values and operations
+        const valuesAndOperations = [];
 
-      this.text = mathSentence;
+        // determine whether the initial value and first operation should be included
+        const firstOperationType = numberLine.operationsList.get( 0 ).operationTypeProperty.value;
+        if ( numberLine.startingValueProperty.value !== 0 || firstOperationType === Operations.SUBTRACTION ) {
+          valuesAndOperations.push( numberLine.startingValueProperty.value );
+        }
+
+        // go through the operations, adding the values and operation types to the list
+        numberLine.operationsList.forEach( ( operation, index ) => {
+
+          // the first operation is a special case - it's not included if the starting value was left off
+          if ( index > 0 || valuesAndOperations.length > 0 ) {
+            valuesAndOperations.push( operation.operationTypeProperty.value );
+          }
+          valuesAndOperations.push( operation.amountProperty.value );
+        } );
+
+        if ( simplifyProperty.value ) {
+
+          // if simplifying, replace subtraction of a negative with addition and addition of a negative with subtraction
+          for ( let i = 1; i < valuesAndOperations.length; i++ ) {
+            if ( typeof valuesAndOperations[ i ] === 'number' && valuesAndOperations[ i ] < 0 ) {
+              valuesAndOperations[ i ] = Math.abs( valuesAndOperations[ i ] );
+              if ( valuesAndOperations[ i - 1 ] === Operations.ADDITION ) {
+                valuesAndOperations[ i - 1 ] = Operations.SUBTRACTION;
+              }
+              else {
+                valuesAndOperations[ i - 1 ] = Operations.ADDITION;
+              }
+            }
+          }
+        }
+
+        let mathSentence = '';
+        valuesAndOperations.forEach( valueOrOperation => {
+          if ( typeof valueOrOperation === 'number' ) {
+            mathSentence += valueOrOperation;
+          }
+          else {
+            const operationChar = valueOrOperation === Operations.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
+            mathSentence += ' ' + operationChar + ' ';
+          }
+        } );
+        this.text = mathSentence;
+      }
     };
 
+    // Hook up the various properties that should trigger an update.
+    evaluateProperty.link( update );
+    simplifyProperty.link( update );
     numberLine.startingValueProperty.link( update );
     numberLine.operationsList.addItemAddedListener( addedOperation => {
       update();

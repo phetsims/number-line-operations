@@ -91,10 +91,11 @@ class NLOOperationsScreenView extends ScreenView {
     this.addChild( checkboxGroup );
 
     // accordion box containing a mathematical description of the operations on the number line
-    this.addChild( new OperationDescriptionAccordionBox( model.numberLine, {
+    const operationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
       top: 20
-    } ) );
+    } );
+    this.addChild( operationDescriptionAccordionBox );
 
     // operation entry controls
     const operationEntryControls = [
@@ -160,6 +161,7 @@ class NLOOperationsScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
+        operationDescriptionAccordionBox.reset();
         model.reset();
         operationEntryCarousel.pageNumberProperty.reset();
         model.numberLine.removeAllOperations();
