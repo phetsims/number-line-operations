@@ -36,13 +36,15 @@ class NLOOperationsScreenView extends ScreenView {
       tandem: tandem
     } );
 
-    // mockup - temporary, for design and layout
-    this.addChild( new Image( mockupImage, {
+    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
+    const mockup = new Image( mockupImage, {
       center: NLOConstants.LAYOUT_BOUNDS.center,
       minWidth: NLOConstants.LAYOUT_BOUNDS.width,
       maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      opacity: 0.0
-    } ) );
+      opacity: window.phet.mockupOpacityProperty.value
+    } );
+    this.addChild( mockup );
+    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // number line node
     const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {

@@ -6,6 +6,8 @@
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
+import mockupImage from '../../../images/generic-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -20,6 +22,16 @@ class NLOGenericScreenView extends ScreenView {
     super( {
       tandem: tandem
     } );
+
+    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
+    const mockup = new Image( mockupImage, {
+      center: this.layoutBounds.center,
+      minWidth: this.layoutBounds.width,
+      maxWidth: this.layoutBounds.width,
+      opacity: window.phet.mockupOpacityProperty.value
+    } );
+    this.addChild( mockup );
+    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     const resetAllButton = new ResetAllButton( {
       listener: () => {

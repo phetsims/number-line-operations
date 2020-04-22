@@ -8,9 +8,11 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
+import mockupImage from '../../../images/net-worth-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
@@ -33,6 +35,16 @@ class NLONetWorthScreenView extends ScreenView {
     super( {
       tandem: tandem
     } );
+
+    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
+    const mockup = new Image( mockupImage, {
+      center: NLOConstants.LAYOUT_BOUNDS.center,
+      minWidth: NLOConstants.LAYOUT_BOUNDS.width,
+      maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
+      opacity: window.phet.mockupOpacityProperty.value
+    } );
+    this.addChild( mockup );
+    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // checkboxes that will control the presentation options
     const checkboxes = [

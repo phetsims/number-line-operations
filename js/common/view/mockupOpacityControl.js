@@ -1,0 +1,74 @@
+// Copyright 2020, University of Colorado Boulder
+
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
+import Range from '../../../../dot/js/Range.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import HBox from '../../../../scenery/js/nodes/HBox.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import VBox from '../../../../scenery/js/nodes/VBox.js';
+import HSlider from '../../../../sun/js/HSlider.js';
+import numberLineOperations from '../../numberLineOperations.js';
+
+// constants
+const LABEL_FONT = new PhetFont( 20 );
+
+/**
+ * MockupOpacityControl defines a control that sets a global variable that can be used to control the opacity of the
+ * mockups that are often used during early development of a sim for getting the layout right.
+ *
+ * Here is an example of the code to add to the ScreenView instance where the mockup should appear:
+ *
+ * @example
+ * const mockup = new Image( mockupImage, {
+ *   center: this.layoutBounds.center,
+ *   minWidth: this.layoutBounds.width,
+ *   maxWidth: this.layoutBounds.width,
+ *   opacity: window.phet.mockupOpacityProperty.value
+ * } );
+ * this.addChild( mockup );
+ * window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
+ */
+class MockupOpacityControl extends VBox {
+
+  constructor() {
+
+    const mockupOpacityProperty = new NumberProperty( 0 );
+
+    // slider
+    const slider = new HSlider(
+      mockupOpacityProperty,
+      new Range( 0, 1 ), {
+        trackSize: new Dimension2( 200, 5 ),
+        thumbSize: new Dimension2( 20, 40 )
+      }
+    );
+
+    // put the slider together with labels
+    const sliderAndLabels = new HBox( {
+      children: [
+        new Text( '0', { font: LABEL_FONT } ),
+        slider,
+        new Text( '1', { font: LABEL_FONT } )
+      ],
+      spacing: 10
+    } );
+
+
+    super( {
+      children: [
+        new Text( 'Mockup Opacities (All Screens)', { font: new PhetFont( 22 ) } ),
+        sliderAndLabels
+      ],
+      spacing: 10
+    } );
+
+    // make the property globally available
+    window.phet.mockupOpacityProperty = mockupOpacityProperty;
+  }
+}
+
+const mockupOpacityControl = new MockupOpacityControl();
+
+numberLineOperations.register( 'mockupOpacityControl', mockupOpacityControl );
+export default mockupOpacityControl;
