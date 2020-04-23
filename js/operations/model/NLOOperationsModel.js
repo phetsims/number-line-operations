@@ -11,7 +11,7 @@ import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 /**
- * @constructor
+ * primary model class for the "Operations" screen
  */
 class NLOOperationsModel {
 
@@ -40,7 +40,7 @@ class NLOOperationsModel {
   }
 
   /**
-   * Resets the model.
+   * resets the model
    * @public
    */
   reset() {
