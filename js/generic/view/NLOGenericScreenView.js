@@ -4,17 +4,14 @@
  * @author John Blanco
  */
 
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
-import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import PageControl from '../../../../sun/js/PageControl.js';
@@ -26,20 +23,12 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import OperationDescriptionAccordionBox from '../../operations/view/OperationDescriptionAccordionBox.js';
 import OperationEntryControl from '../../operations/view/OperationEntryControl.js';
-
-// constants
-const ARROW_ICON_LENGTH = 35;
-const ARROW_ICON_OPTIONS = {
-  doubleHead: true,
-  headHeight: 8,
-  headWidth: 8,
-  tailWidth: 1
-};
+import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
 
 class NLOGenericScreenView extends ScreenView {
 
   /**
-   * @param {NLOOperationsModel} model
+   * @param {NLOGenericModel} model
    * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
@@ -59,7 +48,7 @@ class NLOGenericScreenView extends ScreenView {
     window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // number line node
-    const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {
+    const numberLineNode = new OperationTrackingNumberLineNode( model.primaryNumberLine, {
       pointNodeOptions: {
         radius: 6
       },
@@ -74,17 +63,17 @@ class NLOGenericScreenView extends ScreenView {
     const checkboxes = [
       new Checkbox(
         new Text( numberLineOperationsStrings.pointLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showPointLabelsProperty,
+        model.primaryNumberLine.showPointLabelsProperty,
         NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
         new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showOperationLabelsProperty,
+        model.primaryNumberLine.showOperationLabelsProperty,
         NLCConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
         new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showTickMarksProperty,
+        model.primaryNumberLine.showTickMarksProperty,
         NLCConstants.CHECKBOX_OPTIONS
       )
     ];
@@ -100,7 +89,7 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( checkboxGroup );
 
     // accordion box containing a mathematical description of the operations on the number line
-    const operationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.numberLine, {
+    const operationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.primaryNumberLine, {
       centerX: this.layoutBounds.centerX,
       top: 20
     } );
@@ -109,14 +98,14 @@ class NLOGenericScreenView extends ScreenView {
     // operation entry controls for the upper number line
     const operationEntryControls = [
       new OperationEntryControl(
-        model.numberLine,
+        model.primaryNumberLine,
         {
           depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
           initialValue: 100
         }
       ),
       new OperationEntryControl(
-        model.numberLine,
+        model.primaryNumberLine,
         { depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE }
       )
     ];
@@ -131,7 +120,7 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( operationEntryCarousel );
 
     // automatically advance the carousel when the first operation is added
-    model.numberLine.operationsList.lengthProperty.link( numberOfOperations => {
+    model.primaryNumberLine.operationsList.lengthProperty.link( numberOfOperations => {
       if ( numberOfOperations === 1 && operationEntryCarousel.pageNumberProperty.value === 0 ) {
         operationEntryCarousel.pageNumberProperty.value += 1;
       }
@@ -148,9 +137,9 @@ class NLOGenericScreenView extends ScreenView {
     const eraserButton = new EraserButton( {
       iconWidth: 36,
       left: numberLineNode.right + 8,
-      centerY: model.numberLine.centerPosition.y,
+      centerY: model.primaryNumberLine.centerPosition.y,
       listener: () => {
-        model.numberLine.removeAllOperations();
+        model.primaryNumberLine.removeAllOperations();
         operationEntryCarousel.pageNumberProperty.reset();
         operationEntryControls.forEach( control => {control.clear(); } );
       }
@@ -158,50 +147,13 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( eraserButton );
 
     // erase is disabled if there are no operations
-    model.numberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
+    model.primaryNumberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
 
-    // create the orientation selection icons
-    const singleNumberLineIcon = new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS );
-    const dualNumberLineIcon = new VBox( {
-      children: [
-        new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS ),
-        new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS )
-      ],
-      spacing: 10
-    } );
-
-    // map the orientation icons to their enum values
-    const singleVersusDualNumberLineIcons = [
-      {
-        value: 1,
-        node: singleNumberLineIcon
-      },
-      {
-        value: 2,
-        node: dualNumberLineIcon
-      }
-    ];
-
-    // selector buttons for one versus two number lines
-    const singleVersusDualRadioButtonGroup = new RadioButtonGroup(
-      new NumberProperty( 1 ),  // temporary
-      singleVersusDualNumberLineIcons,
-      {
-        buttonContentXMargin: 5,
-        buttonContentYMargin: 10,
-        left: checkboxGroup.left,
-        bottom: this.layoutBounds.maxY - 50,
-        baseColor: 'white',
-        selectedLineWidth: 2,
-        deselectedLineWidth: .5,
-        deselectedButtonOpacity: 0.25,
-        orientation: 'horizontal',
-        spacing: 8,
-        touchAreaXDilation: 2,
-        touchAreaYDilation: 2
-      }
-    );
-    this.addChild( singleVersusDualRadioButtonGroup );
+    // add the selector used to show/hide the second number line
+    this.addChild( new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
+      left: checkboxGroup.left,
+      bottom: this.layoutBounds.maxY - 50
+    } ) );
 
     // reset all
     const resetAllButton = new ResetAllButton( {
