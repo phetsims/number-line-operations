@@ -70,7 +70,7 @@ class NLONetWorthScreenView extends ScreenView {
       align: 'left',
 
       // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 40,
+      left: this.layoutBounds.minX + 30,
       top: this.layoutBounds.minY + 10
     } );
     this.addChild( checkboxGroup );
