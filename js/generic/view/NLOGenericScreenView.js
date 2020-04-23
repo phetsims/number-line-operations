@@ -6,6 +6,7 @@
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
+import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -23,8 +24,12 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import OperationDescriptionAccordionBox from '../../operations/view/OperationDescriptionAccordionBox.js';
 import OperationEntryControl from '../../operations/view/OperationEntryControl.js';
+import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
 
+/**
+ * main screen view for the "Generic" screen
+ */
 class NLOGenericScreenView extends ScreenView {
 
   /**
@@ -150,10 +155,22 @@ class NLOGenericScreenView extends ScreenView {
     model.primaryNumberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
 
     // add the selector used to show/hide the second number line
-    this.addChild( new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
+    const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
       left: checkboxGroup.left,
       bottom: this.layoutBounds.maxY - 50
-    } ) );
+    } );
+    this.addChild( singleDualNumberLineSelector );
+
+    // add the number line range selector
+    this.addChild( new NumberLineRangeSelector(
+      model.primaryNumberLine.displayedRangeProperty,
+      NLOGenericModel.NUMBER_LINE_RANGES,
+      this,
+      {
+        left: singleDualNumberLineSelector.left,
+        bottom: singleDualNumberLineSelector.top - 20
+      }
+    ) );
 
     // reset all
     const resetAllButton = new ResetAllButton( {

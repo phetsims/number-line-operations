@@ -21,6 +21,10 @@ const ARROW_ICON_OPTIONS = {
  */
 class SingleDualNumberLineSelector extends RadioButtonGroup {
 
+  /**
+   * @param {BooleanProperty} secondNumberLineVisibleProperty
+   * @param {Object} [options]
+   */
   constructor( secondNumberLineVisibleProperty, options ) {
 
     options = merge( {
@@ -29,7 +33,7 @@ class SingleDualNumberLineSelector extends RadioButtonGroup {
       baseColor: 'white',
       selectedLineWidth: 2,
       deselectedLineWidth: 0.5,
-      deselectedButtonOpacity: 0.25,
+      deselectedButtonOpacity: 0.5,
       orientation: 'horizontal',
       spacing: 8,
       touchAreaXDilation: 2,

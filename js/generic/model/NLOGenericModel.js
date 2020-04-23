@@ -11,6 +11,13 @@ import OperationTrackingNumberLine from '../../common/model/OperationTrackingNum
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
+// constants
+const NUMBER_LINE_RANGES = [
+  new Range( -1000, 1000 ),
+  new Range( -100, 100 ),
+  new Range( -10, 10 )
+];
+
 /**
  * primary model for the "Generic" screen
  */
@@ -32,7 +39,7 @@ class NLOGenericModel {
       NLOConstants.LAYOUT_BOUNDS.center,
       this.initialValueProperty.value,
       {
-        initialDisplayedRange: new Range( -1000, 1000 ),
+        initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
@@ -47,7 +54,7 @@ class NLOGenericModel {
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 100 ),
       this.initialValueProperty.value,
       {
-        initialDisplayedRange: new Range( -1000, 1000 ),
+        initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
@@ -66,6 +73,9 @@ class NLOGenericModel {
     this.primaryNumberLine.reset();
   }
 }
+
+// statics
+NLOGenericModel.NUMBER_LINE_RANGES = NUMBER_LINE_RANGES;
 
 numberLineOperations.register( 'NLOGenericModel', NLOGenericModel );
 export default NLOGenericModel;
