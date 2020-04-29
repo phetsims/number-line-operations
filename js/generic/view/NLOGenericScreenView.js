@@ -7,6 +7,7 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
+import merge from '../../../../phet-core/js/merge.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -16,6 +17,8 @@ import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import PageControl from '../../../../sun/js/PageControl.js';
+import Animation from '../../../../twixt/js/Animation.js';
+import Easing from '../../../../twixt/js/Easing.js';
 import mockupImage from '../../../images/generic-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
@@ -26,6 +29,17 @@ import OperationDescriptionAccordionBox from '../../operations/view/OperationDes
 import OperationEntryControl from '../../operations/view/OperationEntryControl.js';
 import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
+
+// constants
+const NUMBER_LINE_NODE_OPTIONS = {
+  pointNodeOptions: {
+    radius: 6
+  },
+  numberLineOperationNodeOptions: {
+    operationLabelFont: new PhetFont( 22 ),
+    labelDistanceFromApex: 20
+  }
+};
 
 /**
  * main screen view for the "Generic" screen
@@ -52,17 +66,19 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( mockup );
     window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
-    // number line node
-    const primaryNumberLineNode = new OperationTrackingNumberLineNode( model.primaryNumberLine, {
-      pointNodeOptions: {
-        radius: 6
-      },
-      numberLineOperationNodeOptions: {
-        operationLabelFont: new PhetFont( 22 ),
-        labelDistanceFromApex: 20
-      }
-    } );
+    // primary number line node
+    const primaryNumberLineNode = new OperationTrackingNumberLineNode(
+      model.primaryNumberLine,
+      NUMBER_LINE_NODE_OPTIONS
+    );
     this.addChild( primaryNumberLineNode );
+
+    // secondary number line node
+    const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
+      model.secondaryNumberLine,
+      merge( { opacity: 0 }, NUMBER_LINE_NODE_OPTIONS )
+    );
+    this.addChild( secondaryNumberLineNode );
 
     // checkboxes that will control the presentation options
     const checkboxes = [
@@ -138,7 +154,7 @@ class NLOGenericScreenView extends ScreenView {
       top: operationEntryCarousel.bottom + 10
     } ) );
 
-    // erase button
+    // erase button for primary number line
     const primaryNumberLineEraserButton = new EraserButton( {
       iconWidth: 36,
       left: primaryNumberLineNode.right + 8,
@@ -160,12 +176,59 @@ class NLOGenericScreenView extends ScreenView {
       primaryNumberLineEraserButton.centerY = position.y;
     } );
 
+    // erase button for primary number line
+    const secondaryNumberLineEraserButton = new EraserButton( {
+      iconWidth: 36,
+      left: secondaryNumberLineNode.right + 8,
+      centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
+      opacity: 0, // initially hidden
+      listener: () => {
+        model.secondaryNumberLine.removeAllOperations();
+        // operationEntryCarousel.pageNumberProperty.reset();
+        // operationEntryControls.forEach( control => {control.clear(); } );
+      }
+    } );
+    this.addChild( secondaryNumberLineEraserButton );
+
+    // erase is disabled if there are no operations
+    model.primaryNumberLine.operationsList.lengthProperty.link(
+      length => { secondaryNumberLineEraserButton.enabled = length > 0; }
+    );
+
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
       left: checkboxGroup.left,
       bottom: this.layoutBounds.maxY - 50
     } );
     this.addChild( singleDualNumberLineSelector );
+
+    // the second number line is only visible when enabled
+    let secondaryNumberLineFadeAnimation = null;
+    model.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
+      const targetOpacity = secondNumberLineVisible ? 1 : 0;
+      if ( secondaryNumberLineNode.opacity !== targetOpacity || secondaryNumberLineEraserButton.opacity !== targetOpacity ) {
+
+        // stop any previous animation
+        if ( secondaryNumberLineFadeAnimation ) {
+          secondaryNumberLineFadeAnimation.stop();
+        }
+
+        secondaryNumberLineFadeAnimation = new Animation( {
+          duration: 0.5,
+          from: secondaryNumberLineNode.opacity,
+          to: targetOpacity,
+          easing: Easing.CUBIC_IN_OUT,
+          setValue: value => {
+            secondaryNumberLineNode.opacity = value;
+            secondaryNumberLineEraserButton.opacity = value;
+          }
+        } );
+        secondaryNumberLineFadeAnimation.start();
+        secondaryNumberLineFadeAnimation.endedEmitter.addListener( () => {
+          secondaryNumberLineFadeAnimation = null;
+        } );
+      }
+    } );
 
     // add the number line range selector
     this.addChild( new NumberLineRangeSelector(

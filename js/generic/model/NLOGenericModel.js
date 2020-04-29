@@ -7,6 +7,8 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Animation from '../../../../twixt/js/Animation.js';
+import Easing from '../../../../twixt/js/Easing.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -52,15 +54,9 @@ class NLOGenericModel {
       }
     );
 
-    // position the primary number line based on whether the secondary number line is visible
-    this.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
-      const position = secondNumberLineVisible ? PRIMARY_NUMBER_LINE_UPPER_POSITION : PRIMARY_NUMBER_LINE_LOWER_POSITION;
-      this.primaryNumberLine.centerPositionProperty.set( position );
-    } );
-
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user
     this.secondaryNumberLine = new OperationTrackingNumberLine(
-      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 100 ),
+      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 75 ),
       this.initialValueProperty.value,
       {
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
@@ -72,6 +68,38 @@ class NLOGenericModel {
         widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
       }
     );
+
+    // animation to move the primary number line around based on with the secondary is being shown
+    this.primaryNumberLineAnimation = null;
+
+    // position the primary number line based on whether the secondary number line is visible
+    this.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
+      const destination = secondNumberLineVisible ?
+                          PRIMARY_NUMBER_LINE_UPPER_POSITION :
+                          PRIMARY_NUMBER_LINE_LOWER_POSITION;
+      if ( !this.primaryNumberLine.centerPositionProperty.value.equals( destination ) ) {
+
+        // stop any previous animation
+        if ( this.primaryNumberLineAnimation ) {
+          this.primaryNumberLineAnimation.stop();
+        }
+
+        // start an animation to move the number line to the desired position
+        this.primaryNumberLineAnimation = new Animation( {
+          duration: 0.5,
+          targets: [
+            {
+              property: this.primaryNumberLine.centerPositionProperty,
+              easing: Easing.CUBIC_IN_OUT,
+              to: destination
+            } ]
+        } );
+        this.primaryNumberLineAnimation.start();
+        this.primaryNumberLineAnimation.endedEmitter.addListener( () => {
+          this.primaryNumberLineAnimation = null;
+        } );
+      }
+    } );
   }
 
   /**
