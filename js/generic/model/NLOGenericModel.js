@@ -17,6 +17,9 @@ const NUMBER_LINE_RANGES = [
   new Range( -100, 100 ),
   new Range( -10, 10 )
 ];
+const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
+const PRIMARY_NUMBER_LINE_LOWER_POSITION = MODEL_BOUNDS.center;
+const PRIMARY_NUMBER_LINE_UPPER_POSITION = MODEL_BOUNDS.center.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
 
 /**
  * primary model for the "Generic" screen
@@ -36,7 +39,7 @@ class NLOGenericModel {
 
     // @public - the primary operation-tracking number line, which is always visible
     this.primaryNumberLine = new OperationTrackingNumberLine(
-      NLOConstants.LAYOUT_BOUNDS.center,
+      PRIMARY_NUMBER_LINE_LOWER_POSITION,
       this.initialValueProperty.value,
       {
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
@@ -48,6 +51,12 @@ class NLOGenericModel {
         widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
       }
     );
+
+    // position the primary number line based on whether the secondary number line is visible
+    this.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
+      const position = secondNumberLineVisible ? PRIMARY_NUMBER_LINE_UPPER_POSITION : PRIMARY_NUMBER_LINE_LOWER_POSITION;
+      this.primaryNumberLine.centerPositionProperty.set( position );
+    } );
 
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user
     this.secondaryNumberLine = new OperationTrackingNumberLine(
@@ -71,6 +80,8 @@ class NLOGenericModel {
    */
   reset() {
     this.primaryNumberLine.reset();
+    this.secondaryNumberLine.reset();
+    this.secondNumberLineVisibleProperty.reset();
   }
 }
 

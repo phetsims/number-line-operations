@@ -141,7 +141,7 @@ class NLOOperationsScreenView extends ScreenView {
     const eraserButton = new EraserButton( {
       iconWidth: 36,
       left: numberLineNode.right + 8,
-      centerY: model.numberLine.centerPosition.y,
+      centerY: model.numberLine.centerPositionProperty.value.y,
       listener: () => {
         model.numberLine.removeAllOperations();
         operationEntryCarousel.pageNumberProperty.reset();

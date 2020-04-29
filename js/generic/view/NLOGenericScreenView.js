@@ -53,7 +53,7 @@ class NLOGenericScreenView extends ScreenView {
     window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // number line node
-    const numberLineNode = new OperationTrackingNumberLineNode( model.primaryNumberLine, {
+    const primaryNumberLineNode = new OperationTrackingNumberLineNode( model.primaryNumberLine, {
       pointNodeOptions: {
         radius: 6
       },
@@ -62,7 +62,7 @@ class NLOGenericScreenView extends ScreenView {
         labelDistanceFromApex: 20
       }
     } );
-    this.addChild( numberLineNode );
+    this.addChild( primaryNumberLineNode );
 
     // checkboxes that will control the presentation options
     const checkboxes = [
@@ -139,20 +139,26 @@ class NLOGenericScreenView extends ScreenView {
     } ) );
 
     // erase button
-    const eraserButton = new EraserButton( {
+    const primaryNumberLineEraserButton = new EraserButton( {
       iconWidth: 36,
-      left: numberLineNode.right + 8,
-      centerY: model.primaryNumberLine.centerPosition.y,
+      left: primaryNumberLineNode.right + 8,
       listener: () => {
         model.primaryNumberLine.removeAllOperations();
         operationEntryCarousel.pageNumberProperty.reset();
         operationEntryControls.forEach( control => {control.clear(); } );
       }
     } );
-    this.addChild( eraserButton );
+    this.addChild( primaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
-    model.primaryNumberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
+    model.primaryNumberLine.operationsList.lengthProperty.link(
+      length => { primaryNumberLineEraserButton.enabled = length > 0; }
+    );
+
+    // reposition the primary eraser button if the primary number line moves
+    model.primaryNumberLine.centerPositionProperty.link( position => {
+      primaryNumberLineEraserButton.centerY = position.y;
+    } );
 
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {

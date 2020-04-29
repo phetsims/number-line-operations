@@ -93,7 +93,7 @@ class NLONetWorthScreenView extends ScreenView {
     const netWorthPiggyBankNode = new NetWorthPiggyBankNode(
       model.netWorthProperty,
       NLONetWorthModel.NET_WORTH_RANGE,
-      { centerY: model.numberLine.centerPosition.y + 75 }
+      { centerY: model.numberLine.centerPositionProperty.value.y + 75 }
     );
     this.addChild( netWorthPiggyBankNode );
 

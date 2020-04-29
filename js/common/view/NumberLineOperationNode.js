@@ -40,9 +40,8 @@ const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMB
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coords
 
 /**
- * NumberLineOperationNode is used to depict an operation on a number line as an arrow from the point (0,0) to the
- * relative ending value.  It looks like a curved arrow, and has a label and a description that can be optionally shown.
- * It must be positioned by the client such that the node's (x,y) position is where the starting point is in view space.
+ * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
+ * label and a description that can be optionally shown. It must be positioned by the client such that the node's (x,y) position is where the starting point is in view space.
  *
  * This node updates itself as the attributes of the underlying operation change.
  */

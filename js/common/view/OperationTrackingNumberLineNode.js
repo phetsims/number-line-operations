@@ -29,7 +29,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     const mapOfOperationsToOperationNodes = new Map();
 
-    // function closure for updating the position of the remaining operation nodes
+    // function closure for updating the positions of the operation nodes
     const updateOperationNodePositions = () => {
       numberLine.operationsList.forEach( operation => {
         const operationNode = mapOfOperationsToOperationNodes.get( operation );
@@ -37,6 +37,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       } );
     };
 
+    // add operation nodes as operations are added to the number line
     numberLine.operationsList.addItemAddedListener( addedOperation => {
 
       const operationNodeOptions =
@@ -59,6 +60,8 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
       updateOperationNodePositions();
     } );
+
+    // remove operation nodes when operations are removed from the number line
     numberLine.operationsList.addItemRemovedListener( removedOperation => {
 
       // remove the node that corresponds to the removed operation
@@ -68,7 +71,10 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       operationNode.dispose();
       updateOperationNodePositions();
     } );
+
+    // update the operation positions if things change about the number line that might affect them
     numberLine.startingValueProperty.link( updateOperationNodePositions );
+    numberLine.centerPositionProperty.link( updateOperationNodePositions );
   }
 }
 
