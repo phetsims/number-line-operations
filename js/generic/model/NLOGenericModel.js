@@ -6,6 +6,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import Range from '../../../../dot/js/Range.js';
 import LockToNumberLine from '../../../../number-line-integers/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-integers/js/common/model/PointController.js';
@@ -25,6 +26,7 @@ const NUMBER_LINE_RANGES = [
 const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = MODEL_BOUNDS.center;
 const PRIMARY_NUMBER_LINE_UPPER_POSITION = MODEL_BOUNDS.center.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
+const PRIMARY_NUMBER_LINE_POINTS_COLOR = Color.BLUE;
 
 /**
  * primary model for the "Generic" screen
@@ -62,10 +64,35 @@ class NLOGenericModel {
     // are others that can come and go.
     assert && assert( this.primaryNumberLine.residentPoints.length === 1, 'expected only one point on the number line' );
     this.primaryLineInitialValuePointController = new PointController( {
-      color: new Color( 'blue' ),
+      color: PRIMARY_NUMBER_LINE_POINTS_COLOR,
       numberLines: [ this.primaryNumberLine ],
       numberLinePoints: [ this.primaryNumberLine.startingPoint ],
       lockToNumberLine: LockToNumberLine.ALWAYS
+    } );
+
+    // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for this number line.
+    // These come and go as points come and go.
+    this.primaryNumberLinePointControllers = new ObservableArray();
+    this.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
+
+      // add a point controller for the newly added point
+      const pointController = new PointController( {
+        color: PRIMARY_NUMBER_LINE_POINTS_COLOR,
+        numberLines: [ this.primaryNumberLine ],
+        numberLinePoints: [ addedPoint ],
+        lockToNumberLine: LockToNumberLine.ALWAYS
+      } );
+      this.primaryNumberLinePointControllers.push( pointController );
+
+      // remove the point controller when the associated point goes away
+      const removalListener = removedPoint => {
+        if ( removedPoint === addedPoint ) {
+          this.primaryNumberLinePointControllers.remove( pointController );
+          pointController.dispose();
+          this.primaryNumberLine.residentPoints.removeItemRemovedListener( removalListener );
+        }
+      };
+      this.primaryNumberLine.residentPoints.addItemRemovedListener( removalListener );
     } );
 
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user

@@ -4,6 +4,7 @@
  * @author John Blanco
  */
 
+import Range from '../../../../dot/js/Range.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
@@ -41,6 +42,7 @@ const NUMBER_LINE_NODE_OPTIONS = {
     labelDistanceFromApex: 20
   }
 };
+const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
 
 /**
  * main screen view for the "Generic" screen
@@ -74,8 +76,22 @@ class NLOGenericScreenView extends ScreenView {
     );
     this.addChild( primaryNumberLineNode );
 
-    // point controllers for the primary number line
+    // point controller for the starting point on the primary number line, which is always present
     this.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
+
+    // add and remove nodes for the point controllers that come and go from the primary number line
+    model.primaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
+      const pointControllerNode = new PointControllerNode( addedPointController );
+      this.addChild( pointControllerNode );
+      const removalListener = removedPointController => {
+        if ( removedPointController === addedPointController ) {
+          this.removeChild( pointControllerNode );
+          pointControllerNode.dispose();
+          model.primaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
+        }
+      };
+      model.primaryNumberLinePointControllers.addItemRemovedListener( removalListener );
+    } );
 
     // secondary number line node
     const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
@@ -126,12 +142,18 @@ class NLOGenericScreenView extends ScreenView {
         model.primaryNumberLine,
         {
           depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
-          initialValue: 100
+          initialValue: 1,
+          range: OPERATION_ENTRY_CONTROL_RANGE,
+          increment: 1
         }
       ),
       new OperationEntryControl(
         model.primaryNumberLine,
-        { depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE }
+        {
+          depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE,
+          range: OPERATION_ENTRY_CONTROL_RANGE,
+          increment: 1
+        }
       )
     ];
 

@@ -51,6 +51,8 @@ class OperationEntryControl extends HBox {
     options = merge( {
       spacing: 25,
       initialValue: 0,
+      increment: 100,
+      range: new Range( -1000, 1000 ),
 
       // Relative position of the depiction of the operations that are created by this controller, i.e. above or below
       // the number line.
@@ -88,10 +90,10 @@ class OperationEntryControl extends HBox {
     // amount selector
     const operationAmountPicker = new NumberPicker(
       operation.amountProperty,
-      new Property( new Range( -1000, 1000 ) ),
+      new Property( options.range ),
       {
-        upFunction: value => value + 100,
-        downFunction: value => value - 100,
+        upFunction: value => value + options.increment,
+        downFunction: value => value - options.increment,
         yMargin: 10,
         arrowHeight: 10,
         color: Color.BLACK,
