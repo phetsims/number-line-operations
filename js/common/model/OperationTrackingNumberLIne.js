@@ -5,6 +5,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperation from './NumberLineOperation.js';
@@ -18,13 +19,26 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * {Vector2} zeroPosition - the location in model space of the zero point on the number line
-   * {number} initialValue - initial value, all operations will build from this
+   * {NumberProperty} startingValueProperty - the starting value from which all operations will build
    * {Object} [options]
    * @public
    */
-  constructor( zeroPosition, initialValue, options ) {
+  constructor( zeroPosition, options ) {
+
+    options = merge( {
+
+      // {NumberProperty} - the value from which the operations will start, created if not supplied
+      startingValueProperty: null
+
+    }, options );
 
     super( zeroPosition, options );
+
+    // @public (read-write) - the starting value from which the added operations add and/or subtract
+    this.startingValueProperty = options.startingValueProperty;
+    if ( !this.startingValueProperty ) {
+      this.startingValueProperty = new NumberProperty( 0 );
+    }
 
     // @public (read-write)
     this.showOperationLabelsProperty = new BooleanProperty( true );
@@ -32,17 +46,16 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write)
     this.showOperationDescriptionsProperty = new BooleanProperty( true );
 
-    // @public (read-write) - the starting value from which the added operations add and/or subtract
-    this.startingValueProperty = new NumberProperty( initialValue );
-
     // @public (read-only) {ObservableArray<NumberLineOperation>} - an observable list that tracks addition and
     // subtraction operations.   This list is ordered, with the oldest operations at the front and the newest at the
     // back (FIFO).
     this.operationsList = new ObservableArray();
 
-    // There is always at least one point that serves as the starting point from which the operation act upon, so add it
-    // now.
-    this.startingPoint = new NumberLinePoint( this.startingValueProperty.value, new Color( 0x4ddff ), this );
+    // @public (read-write) - the point that matches up with the starting value
+    this.startingPoint = new NumberLinePoint( this, {
+      valueProperty: this.startingValueProperty,
+      initialColor: new Color( 0x4ddff )
+    } );
     this.addPoint( this.startingPoint );
 
     // function closure that updates the points on the number line when an operation is added, removed, or changed
@@ -57,8 +70,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       if ( changeToNumberOfPoints > 0 ) {
         _.times( changeToNumberOfPoints, () => {
 
-          // add a point at an arbitrary location, its value will be updated below
-          this.addPoint( new NumberLinePoint( 0, Color.BLUE, this ) );
+          // add a point, its value will be updated below
+          this.addPoint( new NumberLinePoint( this, { initialColor: Color.BLUE } ) );
         } );
       }
       else if ( changeToNumberOfPoints < 0 ) {
@@ -208,6 +221,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     return resultantValue;
   }
 
+  /**
+   * restore initial state
+   * @public
+   */
   reset() {
 
     this.removeAllOperations();

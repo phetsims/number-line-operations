@@ -6,7 +6,9 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Range from '../../../../dot/js/Range.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import LockToNumberLine from '../../../../number-line-integers/js/common/model/LockToNumberLine.js';
+import PointController from '../../../../number-line-integers/js/common/model/PointController.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
@@ -33,16 +35,12 @@ class NLOGenericModel {
    */
   constructor( tandem ) {
 
-    // @public (read-write) - the initial value from which all operations are added and/subtracted
-    this.initialValueProperty = new NumberProperty( 0 );
-
     // @public (read-write) - whether or not the 2nd number line is visible to the user
     this.secondNumberLineVisibleProperty = new BooleanProperty( false );
 
     // @public - the primary operation-tracking number line, which is always visible
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
-      this.initialValueProperty.value,
       {
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
@@ -54,10 +52,20 @@ class NLOGenericModel {
       }
     );
 
+    // @public (read-only) - Associate a point controller with the point that represents the initial value on the
+    // operation tracking number line.  This point controller will always be present on the number line, whereas there
+    // are others that can come and go.
+    assert && assert( this.primaryNumberLine.residentPoints.length === 1, 'expected only one point on the number line' );
+    this.primaryLineInitialValuePointController = new PointController( {
+      color: new Color( 'blue' ),
+      numberLines: [ this.primaryNumberLine ],
+      numberLinePoints: [ this.primaryNumberLine.startingPoint ],
+      lockToNumberLine: LockToNumberLine.ALWAYS
+    } );
+
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user
     this.secondaryNumberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 75 ),
-      this.initialValueProperty.value,
       {
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,

@@ -26,8 +26,8 @@ class NLOOperationsModel {
     // @public - the number line upon which the operations are tracked
     this.numberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center,
-      this.initialValueProperty.value,
       {
+        startingValueProperty: this.initialValueProperty,
         initialDisplayedRange: new Range( -1000, 1000 ),
         tickMarksInitiallyVisible: true,
         preventOverlap: false,

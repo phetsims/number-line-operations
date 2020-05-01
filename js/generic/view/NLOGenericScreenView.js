@@ -7,6 +7,7 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
+import PointControllerNode from '../../../../number-line-integers/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -72,6 +73,9 @@ class NLOGenericScreenView extends ScreenView {
       NUMBER_LINE_NODE_OPTIONS
     );
     this.addChild( primaryNumberLineNode );
+
+    // point controllers for the primary number line
+    this.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
 
     // secondary number line node
     const secondaryNumberLineNode = new OperationTrackingNumberLineNode(

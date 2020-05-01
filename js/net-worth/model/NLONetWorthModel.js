@@ -31,9 +31,7 @@ class NLONetWorthModel {
   constructor( tandem ) {
 
     // @public (read-write) - total net worth, which is total assets minus total liabilities
-    this.netWorthProperty = new NumberProperty( 0, {
-      tandem: tandem.createTandem( 'netWorthProperty' )
-    } );
+    this.netWorthProperty = new NumberProperty( 0 );
 
     // @public (read-write)
     this.netWorthAccordionBoxExpandedProperty = new BooleanProperty( true, {
@@ -43,7 +41,6 @@ class NLONetWorthModel {
     // @public (read-only) - the number line upon which the net worth and the various operation will be portrayed
     this.numberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ),
-      this.netWorthProperty.value,
       {
         initialDisplayedRange: NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
