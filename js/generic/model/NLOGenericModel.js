@@ -5,6 +5,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import LockToNumberLine from '../../../../number-line-integers/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-integers/js/common/model/PointController.js';
@@ -17,9 +18,9 @@ import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const NUMBER_LINE_RANGES = [
-  new Range( -1000, 1000 ),
+  new Range( -10, 10 ),
   new Range( -100, 100 ),
-  new Range( -10, 10 )
+  new Range( -1000, 1000 )
 ];
 const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = MODEL_BOUNDS.center;
@@ -38,10 +39,14 @@ class NLOGenericModel {
     // @public (read-write) - whether or not the 2nd number line is visible to the user
     this.secondNumberLineVisibleProperty = new BooleanProperty( false );
 
+    // the starting value for the primary number line
+    const primaryStartingValue = new NumberProperty( 1 );
+
     // @public - the primary operation-tracking number line, which is always visible
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       {
+        startingValueProperty: primaryStartingValue,
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
