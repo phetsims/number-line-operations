@@ -51,6 +51,9 @@ class NLONetWorthModel {
       }
     );
 
+    // this model only manipulates one operation property on the number line, so get a reference to it
+    const operationProperty = this.numberLine.operationProperties[ 0 ];
+
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
     this.balanceSheetItems = [
       new BalanceSheetItem( -400 ),
@@ -98,7 +101,7 @@ class NLONetWorthModel {
 
               // update the operation on the number line to reflect this latest transaction
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
-              const operation = this.numberLine.operationsList.get( 0 );
+              const operation = this.numberLine.operationProperties[ 0 ].value;
               operation.operationTypeProperty.set( Operations.SUBTRACTION );
               operation.amountProperty.set( balanceSheetItem.value );
             }
@@ -114,15 +117,15 @@ class NLONetWorthModel {
               addedToBag = true;
 
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
-              if ( this.numberLine.operationsList.length === 0 ) {
+              const operation = operationProperty.value;
+              if ( !operation ) {
 
-                // there was no operation on the number line, so add one
-                this.numberLine.addOperation( new NumberLineOperation( Operations.ADDITION, balanceSheetItem.value ) );
+                // the operation was not active, so activate it
+                operationProperty.set( new NumberLineOperation( Operations.ADDITION, balanceSheetItem.value ) );
               }
               else {
 
-                // update the operation on the number line
-                const operation = this.numberLine.operationsList.get( 0 );
+                // update the operation
                 operation.operationTypeProperty.set( Operations.ADDITION );
                 operation.amountProperty.set( balanceSheetItem.value );
               }

@@ -103,6 +103,7 @@ class NLOOperationsScreenView extends ScreenView {
     const operationEntryControls = [
       new OperationEntryControl(
         model.numberLine,
+        0,
         {
           depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
           initialValue: 100
@@ -110,6 +111,7 @@ class NLOOperationsScreenView extends ScreenView {
       ),
       new OperationEntryControl(
         model.numberLine,
+        1,
         { depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE }
       )
     ];
@@ -124,9 +126,9 @@ class NLOOperationsScreenView extends ScreenView {
     this.addChild( operationEntryCarousel );
 
     // automatically advance the carousel when the first operation is added
-    model.numberLine.operationsList.lengthProperty.link( numberOfOperations => {
-      if ( numberOfOperations === 1 && operationEntryCarousel.pageNumberProperty.value === 0 ) {
-        operationEntryCarousel.pageNumberProperty.value += 1;
+    model.numberLine.operationProperties[ 0 ].link( operation => {
+      if ( operation ) {
+        operationEntryCarousel.pageNumberProperty.value = 1;
       }
     } );
 
@@ -151,7 +153,11 @@ class NLOOperationsScreenView extends ScreenView {
     this.addChild( eraserButton );
 
     // erase is disabled if there are no operations
-    model.numberLine.operationsList.lengthProperty.link( length => { eraserButton.enabled = length > 0; } );
+    model.numberLine.operationProperties.forEach( operationProperty => {
+      operationProperty.link( () => {
+        eraserButton.enabled = model.numberLine.getActiveOperations().length > 0;
+      } );
+    } );
 
     // initial net worth control
     this.addChild( new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty, {

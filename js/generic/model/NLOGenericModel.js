@@ -48,6 +48,7 @@ class NLOGenericModel {
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       {
+        numberOfOperationsTracked: 2,
         startingValueProperty: primaryStartingValue,
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
@@ -99,6 +100,7 @@ class NLOGenericModel {
     this.secondaryNumberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 75 ),
       {
+        numberOfOperationsTracked: 2,
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,

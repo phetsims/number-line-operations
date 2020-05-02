@@ -19,7 +19,6 @@ import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
 import NumberLineOperation from '../../common/model/NumberLineOperation.js';
 import Operations from '../../common/model/Operations.js';
-import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
@@ -43,21 +42,17 @@ class OperationEntryControl extends HBox {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
+   * @param {number} controlledOperationIndex - index of the operation on the number line that this controls
    * @param {Object} [options]
    * @public
    */
-  constructor( numberLine, options ) {
+  constructor( numberLine, controlledOperationIndex, options ) {
 
     options = merge( {
       spacing: 25,
       initialValue: 0,
       increment: 100,
-      range: new Range( -1000, 1000 ),
-
-      // Relative position of the depiction of the operations that are created by this controller, i.e. above or below
-      // the number line.
-      depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE
-
+      range: new Range( -1000, 1000 )
     }, options );
 
     // operation managed by this control
@@ -109,7 +104,7 @@ class OperationEntryControl extends HBox {
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
-        numberLine.addOperation( operation );
+        numberLine.operationProperties[ controlledOperationIndex ].set( operation );
         operationOnNumberLineProperty.set( true );
       },
       content: enterArrowNode,
@@ -120,7 +115,9 @@ class OperationEntryControl extends HBox {
     // eraser button
     const eraserButton = new EraserButton( {
       listener: () => {
-        numberLine.removeOperation( operation );
+
+        // remove our operation from the number line
+        numberLine.operationProperties[ controlledOperationIndex ].set( null );
         operationOnNumberLineProperty.set( false );
       },
       iconWidth: 30,
@@ -135,8 +132,8 @@ class OperationEntryControl extends HBox {
     } );
 
     // Monitor the number line and if the operation that was added by this controller is removed, update state.
-    numberLine.operationsList.addItemRemovedListener( removedOperation => {
-      if ( removedOperation === operation ) {
+    numberLine.operationProperties[ controlledOperationIndex ].link( operation => {
+      if ( !operation ) {
         operationOnNumberLineProperty.set( false );
       }
     } );

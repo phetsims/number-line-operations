@@ -140,6 +140,7 @@ class NLOGenericScreenView extends ScreenView {
     const operationEntryControls = [
       new OperationEntryControl(
         model.primaryNumberLine,
+        0,
         {
           depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
           initialValue: 1,
@@ -149,6 +150,7 @@ class NLOGenericScreenView extends ScreenView {
       ),
       new OperationEntryControl(
         model.primaryNumberLine,
+        1,
         {
           depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE,
           range: OPERATION_ENTRY_CONTROL_RANGE,
@@ -167,9 +169,9 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( operationEntryCarousel );
 
     // automatically advance the carousel when the first operation is added
-    model.primaryNumberLine.operationsList.lengthProperty.link( numberOfOperations => {
-      if ( numberOfOperations === 1 && operationEntryCarousel.pageNumberProperty.value === 0 ) {
-        operationEntryCarousel.pageNumberProperty.value += 1;
+    model.primaryNumberLine.operationProperties[ 0 ].link( operation => {
+      if ( operation ) {
+        operationEntryCarousel.pageNumberProperty.value = 1;
       }
     } );
 
@@ -193,9 +195,11 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( primaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
-    model.primaryNumberLine.operationsList.lengthProperty.link(
-      length => { primaryNumberLineEraserButton.enabled = length > 0; }
-    );
+    model.primaryNumberLine.operationProperties.forEach( operationProperty => {
+      operationProperty.link( () => {
+        primaryNumberLineEraserButton.enabled = model.primaryNumberLine.getActiveOperations().length > 0;
+      } );
+    } );
 
     // reposition the primary eraser button if the primary number line moves
     model.primaryNumberLine.centerPositionProperty.link( position => {
@@ -217,9 +221,11 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( secondaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
-    model.primaryNumberLine.operationsList.lengthProperty.link(
-      length => { secondaryNumberLineEraserButton.enabled = length > 0; }
-    );
+    model.secondaryNumberLine.operationProperties.forEach( operationProperty => {
+      operationProperty.link( () => {
+        primaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
+      } );
+    } );
 
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {

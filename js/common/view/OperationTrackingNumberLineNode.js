@@ -31,45 +31,51 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     // function closure for updating the positions of the operation nodes
     const updateOperationNodePositions = () => {
-      numberLine.operationsList.forEach( operation => {
-        const operationNode = mapOfOperationsToOperationNodes.get( operation );
-        operationNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+      numberLine.operationProperties.forEach( operationProperty => {
+        const operation = operationProperty.value;
+        if ( operation ) {
+          const operationNode = mapOfOperationsToOperationNodes.get( operation );
+          operationNode.translation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+        }
       } );
     };
 
-    // add operation nodes as operations are added to the number line
-    numberLine.operationsList.addItemAddedListener( addedOperation => {
+    // add and remove operation nodes as operations come and go from the number line
+    numberLine.operationProperties.forEach( ( operationProperty, index ) => {
+      operationProperty.link( ( operation, previousOperation ) => {
+        if ( operation ) {
 
-      const operationNodeOptions =
-        addedOperation.depictionRelativePosition ?
-          { relativePosition: addedOperation.depictionRelativePosition } :
-          {};
+          // The nodes for even-indexed operations go on top of the number line, odd on the bottom.
+          const operationNodeOptions = index % 2 === 1 ?
+            { relativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE } :
+            {};
 
-      const numberLineOperationNode = new NumberLineOperationNode(
-        addedOperation,
-        numberLine.showOperationLabelsProperty,
-        numberLine.showOperationDescriptionsProperty,
-        numberLine,
-        merge( operationNodeOptions, options.numberLineOperationNodeOptions )
-      );
-      this.addChild( numberLineOperationNode );
-      mapOfOperationsToOperationNodes.set( addedOperation, numberLineOperationNode );
+          // add the node
+          const numberLineOperationNode = new NumberLineOperationNode(
+            operation,
+            numberLine.showOperationLabelsProperty,
+            numberLine.showOperationDescriptionsProperty,
+            numberLine,
+            merge( operationNodeOptions, options.numberLineOperationNodeOptions )
+          );
+          this.addChild( numberLineOperationNode );
+          mapOfOperationsToOperationNodes.set( operation, numberLineOperationNode );
 
-      // put the arrow node at the back of the z-order so that it is behind the points
-      numberLineOperationNode.moveToBack();
+          // Add a listener to the operation properties that will update operation node positions on changes.
+          operation.amountProperty.link( updateOperationNodePositions );
+          operation.operationTypeProperty.link( updateOperationNodePositions );
+        }
 
-      updateOperationNodePositions();
-    } );
-
-    // remove operation nodes when operations are removed from the number line
-    numberLine.operationsList.addItemRemovedListener( removedOperation => {
-
-      // remove the node that corresponds to the removed operation
-      const operationNode = mapOfOperationsToOperationNodes.get( removedOperation );
-      assert && assert( operationNode, 'no operation node found for removed operation' );
-      this.removeChild( operationNode );
-      operationNode.dispose();
-      updateOperationNodePositions();
+        // The presence of a value for the previous operation indicates that an operation was removed from the number
+        // line.
+        if ( previousOperation ) {
+          this.removeChild( mapOfOperationsToOperationNodes.get( previousOperation ) );
+          mapOfOperationsToOperationNodes.delete( previousOperation );
+          updateOperationNodePositions();
+          previousOperation.amountProperty.unlink( updateOperationNodePositions );
+          previousOperation.operationTypeProperty.unlink( updateOperationNodePositions );
+        }
+      } );
     } );
 
     // update the operation positions if things change about the number line that might affect them

@@ -106,7 +106,15 @@ class OperationMathSentence extends Text {
     // function closure to update the text
     const update = () => {
 
-      if ( evaluateProperty.value || numberLine.operationsList.length === 0 ) {
+      // make a list of the active operations on the number line
+      const activeOperations = [];
+      numberLine.operationProperties.forEach( operationProperty => {
+        if ( operationProperty.value ) {
+          activeOperations.push( operationProperty.value );
+        }
+      } );
+
+      if ( evaluateProperty.value || activeOperations.length === 0 ) {
         this.text = numberLine.getCurrentEndValue();
       }
       else {
@@ -115,13 +123,13 @@ class OperationMathSentence extends Text {
         const valuesAndOperations = [];
 
         // determine whether the initial value and first operation should be included
-        const firstOperationType = numberLine.operationsList.get( 0 ).operationTypeProperty.value;
+        const firstOperationType = activeOperations[ 0 ].operationTypeProperty.value;
         if ( numberLine.startingValueProperty.value !== 0 || firstOperationType === Operations.SUBTRACTION ) {
           valuesAndOperations.push( numberLine.startingValueProperty.value );
         }
 
         // go through the operations, adding the values and operation types to the list
-        numberLine.operationsList.forEach( ( operation, index ) => {
+        activeOperations.forEach( ( operation, index ) => {
 
           // the first operation is a special case - it's not included if the starting value was left off
           if ( index > 0 || valuesAndOperations.length > 0 ) {
@@ -164,15 +172,17 @@ class OperationMathSentence extends Text {
     evaluateProperty.link( update );
     simplifyProperty.link( update );
     numberLine.startingValueProperty.link( update );
-    numberLine.operationsList.addItemAddedListener( addedOperation => {
-      update();
-      addedOperation.operationTypeProperty.lazyLink( update );
-      addedOperation.amountProperty.lazyLink( update );
-    } );
-    numberLine.operationsList.addItemRemovedListener( removedOperation => {
-      update();
-      removedOperation.operationTypeProperty.unlink( update );
-      removedOperation.amountProperty.unlink( update );
+    numberLine.operationProperties.forEach( operationProperty => {
+      operationProperty.link( ( operation, previousOperation ) => {
+        if ( operation ) {
+          operation.operationTypeProperty.link( update );
+          operation.amountProperty.link( update );
+        }
+        if ( previousOperation ) {
+          previousOperation.operationTypeProperty.unlink( update );
+          previousOperation.amountProperty.unlink( update );
+        }
+      } );
     } );
   }
 }

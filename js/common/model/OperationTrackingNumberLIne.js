@@ -2,7 +2,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import Property from '../../../../axon/js/Property.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -13,7 +13,9 @@ import Operations from './Operations.js';
 
 /**
  * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and
- * subtraction operations so that they can be depicted on a number line.
+ * subtraction operations so that they can be depicted on a number line.  It is important to note that the operation
+ * order matters in how they are depicted, so this is designed with that assumption in mind.  In other words, it is
+ * *not* designed such that it can handle an arbitrary number of operations in any order.
  */
 class OperationTrackingNumberLine extends SpatializedNumberLine {
 
@@ -26,6 +28,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   constructor( zeroPosition, options ) {
 
     options = merge( {
+
+      numberOfOperationsTracked: 1,
 
       // {NumberProperty} - the value from which the operations will start, created if not supplied
       startingValueProperty: null
@@ -46,65 +50,109 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write)
     this.showOperationDescriptionsProperty = new BooleanProperty( true );
 
-    // @public (read-only) {ObservableArray<NumberLineOperation>} - an observable list that tracks addition and
-    // subtraction operations.   This list is ordered, with the oldest operations at the front and the newest at the
-    // back (FIFO).
-    this.operationsList = new ObservableArray();
+    // @public (read-only) {<Property.<NumberLineOperation|null>>[]} - An array of Property instances that track the
+    // operations.  The order matters in how changes are processed and how things are portrayed in the view.  The
+    // Property instances are set to null for inactive operations and an instance of NumberLineOperation when active.
+    this.operationProperties = [];
+    _.times( options.numberOfOperationsTracked, () => {
+      this.operationProperties.push( new Property( null ) );
+    } );
 
-    // @public (read-write) - the point that matches up with the starting value
+    // @public (read-write) - the number line point that corresponds with the starting value, this is always present
     this.startingPoint = new NumberLinePoint( this, {
       valueProperty: this.startingValueProperty,
       initialColor: new Color( 0x4ddff )
     } );
     this.addPoint( this.startingPoint );
 
-    // function closure that updates the points on the number line when an operation is added, removed, or changed
-    const updatePoints = () => {
+    // @public (read-only) {<Property<NumberLinePoint|null>>[]}- The endpoints for each operation.  There is one
+    // endpoint for each operation and these come and go with the operations.  The position in the array identifies
+    // the operation to which the endpoint corresponds.
+    this.endpointProperties = [];
+    _.times( options.numberOfOperationsTracked, () => {
+      this.endpointProperties.push( new Property( null ) );
+    } );
 
-      // Make sure the starting point is where it should be.
-      this.startingPoint.valueProperty.set( this.startingValueProperty.value );
+    // function closure to update endpoint values as operations change
+    const updateEndpointValues = () => {
 
-      // There should be one more points than there are operations, if not, adjust the quantity.
-      const changeToNumberOfPoints = ( this.operationsList.length + 1 ) - this.residentPoints.length;
+      // All operations must be cycled through because if a middle operation has changed the result of later operations
+      // will be affected.
+      this.operationProperties.forEach( ( operationProperty, index ) => {
+        const operation = operationProperty.value;
+        const endpoint = this.endpointProperties[ index ].value;
+        if ( operation ) {
 
-      if ( changeToNumberOfPoints > 0 ) {
-        _.times( changeToNumberOfPoints, () => {
+          // state checking
+          assert && assert( endpoint, 'there is no endpoint for this operation, internal state is incorrect' );
 
-          // add a point, its value will be updated below
-          this.addPoint( new NumberLinePoint( this, { initialColor: Color.BLUE } ) );
-        } );
-      }
-      else if ( changeToNumberOfPoints < 0 ) {
+          // Update the value of the endpoint to the result of this operation EXCEPT when the endpoint is being dragged,
+          // since in that case it is probably the dragging that caused the change to the operation.
+          if ( !endpoint.isDraggingProperty.value ) {
+            endpoint.valueProperty.set( this.getOperationResult( operation ) );
+          }
+        }
+        else {
 
-        // remove points, but make sure that the starting point stays
-        const eligiblePointsForRemoval = this.residentPoints.getArray().filter( item => item !== this.startingPoint );
-        const numberOfPointsToRemove = Math.abs( changeToNumberOfPoints );
-        assert && assert( eligiblePointsForRemoval.length >= numberOfPointsToRemove );
-        _.times( numberOfPointsToRemove, index => { this.removePoint( eligiblePointsForRemoval[ index ] ); } );
-      }
-
-      // Update the positions of the points based on the initial value and the list of operations.
-      const availablePoints = this.residentPoints.getArray().filter( item => item !== this.startingPoint );
-      this.operationsList.forEach( operation => {
-        availablePoints[ 0 ].valueProperty.set( this.getOperationResult( operation ) );
-        availablePoints.shift();
+          // state checking
+          assert && assert( !endpoint, 'there is an endpoint for a nonexistent operation, internal state is incorrect' );
+        }
       } );
     };
 
-    // Update the points when the starting value changes.
-    this.startingValueProperty.lazyLink( updatePoints );
+    // function closure to update operations as endpoints are changed from being dragged
+    const updateOperationWhenEndpointDragged = () => {
 
-    // Monitor the operations list and add, remove, and update points as needed.  The operations list is a permanent
-    // part of this type, no dispose function is needed.
-    this.operationsList.addItemAddedListener( addedOperation => {
-      updatePoints();
-      addedOperation.amountProperty.lazyLink( updatePoints );
-      addedOperation.operationTypeProperty.lazyLink( updatePoints );
-    } );
-    this.operationsList.addItemRemovedListener( removedOperation => {
-      updatePoints();
-      removedOperation.amountProperty.unlink( updatePoints );
-      removedOperation.operationTypeProperty.unlink( updatePoints );
+      this.endpointProperties.forEach( ( endpointProperty, index ) => {
+
+        const endpoint = endpointProperty.value;
+        if ( endpoint && endpoint.isDraggingProperty.value ) {
+
+          // The value of this endpoint was changed by the user dragging it.  Update the amount of the corresponding
+          // operation to match.
+          const operation = this.operationProperties[ index ].value;
+          assert && assert( operation, 'can\'t find operation for this endpoint' );
+          operation.amountProperty.set( endpoint.valueProperty.value - this.getOperationStartValue( operation ) );
+        }
+      } );
+    };
+
+    // update the endpoints if the starting point moves
+    this.startingValueProperty.link( updateEndpointValues );
+
+    // Listen to the Properties that describe the operations and add, remove, or modify endpoints as changes occur.
+    this.operationProperties.forEach( ( operationProperty, index ) => {
+      operationProperty.link( ( operation, previousOperation ) => {
+        if ( operation ) {
+
+          // A new operation has been added - create an endpoint if there isn't one already.  Its value will be set later.
+          if ( this.endpointProperties[ index ].value === null ) {
+            const endpoint = new NumberLinePoint( this, { initialColor: Color.BLUE } );
+            endpoint.valueProperty.link( updateOperationWhenEndpointDragged );
+            this.endpointProperties[ index ].set( endpoint );
+            this.addPoint( endpoint );
+          }
+
+          // Set up listeners that will update the endpoint values if the attributes of the operation change.
+          operation.amountProperty.link( updateEndpointValues );
+          operation.operationTypeProperty.link( updateEndpointValues );
+        }
+        if ( previousOperation ) {
+
+          // remove the endpoint associated with this operation
+          const endpoint = this.endpointProperties[ index ].value;
+          endpoint.valueProperty.unlink( updateOperationWhenEndpointDragged );
+          this.removePoint( endpoint );
+          this.endpointProperties[ index ].set( null );
+
+          // If this was an intermediate operation, its removal could have affected the values of other endpoints.
+          updateEndpointValues();
+
+          // Remove previously added listeners.
+          previousOperation.amountProperty.unlink( updateEndpointValues );
+          previousOperation.operationTypeProperty.unlink( updateEndpointValues );
+        }
+      } );
     } );
   }
 
@@ -151,30 +199,13 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * add the provided operation to the list
-   * @param {NumberLineOperation} operation
-   * @public
-   */
-  addOperation( operation ) {
-    this.operationsList.push( operation );
-  }
-
-  /**
-   * remove the provided operation from the number line
-   * @param {NumberLineOperation} operation
-   * @public
-   */
-  removeOperation( operation ) {
-    assert && assert( this.operationsList.contains( operation ), 'operation not on this number line' );
-    this.operationsList.remove( operation );
-  }
-
-  /**
    * remove all operations, does nothing if there are none
    * @public
    */
   removeAllOperations() {
-    this.operationsList.clear();
+    this.operationProperties.forEach( operationProperty => {
+      operationProperty.set( null );
+    } );
   }
 
   /**
@@ -183,8 +214,11 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    */
   getCurrentEndValue() {
     let value = this.startingValueProperty.value;
-    this.operationsList.forEach( operation => {
-      value = operation.getResult( value );
+    this.operationProperties.forEach( operationProperty => {
+      const operation = operationProperty.value;
+      if ( operation ) {
+        value = operation.getResult( value );
+      }
     } );
     return value;
   }
@@ -195,14 +229,28 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * @returns {number}
    */
   getOperationResult( operation ) {
+
     assert && assert(
-      operation.operationTypeProperty.value === Operations.ADDITION || operation.operationTypeProperty.value === Operations.SUBTRACTION,
+      operation.operationTypeProperty.value === Operations.ADDITION ||
+      operation.operationTypeProperty.value === Operations.SUBTRACTION,
       'unrecognized operation type'
     );
-    const startValue = this.getOperationStartValue( operation );
-    return operation.operationTypeProperty.value === Operations.ADDITION ?
-           startValue + operation.amountProperty.value :
-           startValue - operation.amountProperty.value;
+
+    // Go through the list of operations modifying the end value based on the result of each until the requested
+    // operation result has been processed.
+    let value = this.startingValueProperty.value;
+    for ( let i = 0; i < this.operationProperties.length; i++ ) {
+      const nextOperation = this.operationProperties[ i ].value;
+      if ( nextOperation !== null ) {
+        value = nextOperation.getResult( value );
+      }
+
+      // test if we're done
+      if ( nextOperation === operation ) {
+        break;
+      }
+    }
+    return value;
   }
 
   /**
@@ -210,15 +258,52 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * it.
    * @param operation
    * @returns {number}
+   * @public
    */
   getOperationStartValue( operation ) {
-    const indexOfOperation = this.operationsList.indexOf( operation );
-    assert && assert( indexOfOperation !== -1, 'provided operation is not on this number line' );
-    let resultantValue = this.startingValueProperty.value;
-    for ( let i = 0; i <= indexOfOperation - 1; i++ ) {
-      resultantValue = this.operationsList.get( i ).getResult( resultantValue );
+    let value = this.startingValueProperty.value;
+    for ( let i = 0; i < this.operationProperties.length; i++ ) {
+      const currentOperation = this.operationProperties[ i ].value;
+      if ( currentOperation !== null ) {
+        if ( currentOperation === operation ) {
+          break;
+        }
+        else {
+          value = currentOperation.getResult( value );
+        }
+      }
     }
-    return resultantValue;
+    return value;
+  }
+
+  /**
+   * Get an array of the operations that are currently active on the number line.
+   * @returns {NumberLineOperations[]}
+   */
+  getActiveOperations() {
+    const list = [];
+    this.operationProperties.forEach( operationProperty => {
+      if ( operationProperty.value !== null ) {
+        list.push( operationProperty.value );
+      }
+    } );
+    return list;
+  }
+
+  /**
+   * Get the number of points that are being dragged by the user.  This is useful for determining when something is
+   * being changed due to the dragging of points versus other means.
+   * @returns {number}
+   * @private
+   */
+  getNumberOfDraggingPoints() {
+    let numberOfDraggingPoints = 0;
+    this.residentPoints.forEach( point => {
+      if ( point.isDraggingProperty.value ) {
+        numberOfDraggingPoints++;
+      }
+    } );
+    return numberOfDraggingPoints;
   }
 
   /**
