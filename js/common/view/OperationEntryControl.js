@@ -58,8 +58,7 @@ class OperationEntryControl extends HBox {
     // operation managed by this control
     const operation = new NumberLineOperation(
       Operations.ADDITION,
-      options.initialValue,
-      { depictionRelativePosition: options.depictionRelativePosition }
+      options.initialValue
     );
 
     // property that keeps track of whether or not this control's operation is on the number line

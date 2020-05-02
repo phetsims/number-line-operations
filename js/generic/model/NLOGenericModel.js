@@ -71,8 +71,8 @@ class NLOGenericModel {
       lockToNumberLine: LockToNumberLine.ALWAYS
     } );
 
-    // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for this number line.
-    // These come and go as points come and go.
+    // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for the primary number
+    // line. These come and go as points come and go.
     this.primaryNumberLinePointControllers = new ObservableArray();
     this.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
@@ -110,6 +110,42 @@ class NLOGenericModel {
         widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
       }
     );
+
+    // @public (read-only) - Associate a point controller with the point that represents the initial value on the
+    // operation tracking number line.  This point controller will always be present on the number line, whereas there
+    // are others that can come and go.
+    assert && assert( this.secondaryNumberLine.residentPoints.length === 1, 'expected only one point on the number line' );
+    this.secondaryLineInitialValuePointController = new PointController( {
+      color: PRIMARY_NUMBER_LINE_POINTS_COLOR,
+      numberLines: [ this.secondaryNumberLine ],
+      numberLinePoints: [ this.secondaryNumberLine.startingPoint ],
+      lockToNumberLine: LockToNumberLine.ALWAYS
+    } );
+
+    // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for the secondary number
+    // line. These come and go as points come and go.
+    this.secondaryNumberLinePointControllers = new ObservableArray();
+    this.secondaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
+
+      // add a point controller for the newly added point
+      const pointController = new PointController( {
+        color: PRIMARY_NUMBER_LINE_POINTS_COLOR,
+        numberLines: [ this.secondaryNumberLine ],
+        numberLinePoints: [ addedPoint ],
+        lockToNumberLine: LockToNumberLine.ALWAYS
+      } );
+      this.secondaryNumberLinePointControllers.push( pointController );
+
+      // remove the point controller when the associated point goes away
+      const removalListener = removedPoint => {
+        if ( removedPoint === addedPoint ) {
+          this.secondaryNumberLinePointControllers.remove( pointController );
+          pointController.dispose();
+          this.secondaryNumberLine.residentPoints.removeItemRemovedListener( removalListener );
+        }
+      };
+      this.secondaryNumberLine.residentPoints.addItemRemovedListener( removalListener );
+    } );
 
     // animation to move the primary number line around based on with the secondary is being shown
     this.primaryNumberLineAnimation = null;

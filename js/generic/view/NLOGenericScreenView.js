@@ -4,7 +4,6 @@
  * @author John Blanco
  */
 
-import Range from '../../../../dot/js/Range.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
@@ -14,21 +13,19 @@ import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Carousel from '../../../../sun/js/Carousel.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import PageControl from '../../../../sun/js/PageControl.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import mockupImage from '../../../images/generic-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
+import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import OperationDescriptionAccordionBox from '../../operations/view/OperationDescriptionAccordionBox.js';
-import OperationEntryControl from '../../operations/view/OperationEntryControl.js';
 import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
 
@@ -42,7 +39,9 @@ const NUMBER_LINE_NODE_OPTIONS = {
     labelDistanceFromApex: 20
   }
 };
-const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
+
+// TODO: incorporate ranges
+// const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
 
 /**
  * main screen view for the "Generic" screen
@@ -68,37 +67,6 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( mockup );
     window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
-
-    // primary number line node
-    const primaryNumberLineNode = new OperationTrackingNumberLineNode(
-      model.primaryNumberLine,
-      NUMBER_LINE_NODE_OPTIONS
-    );
-    this.addChild( primaryNumberLineNode );
-
-    // point controller for the starting point on the primary number line, which is always present
-    this.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
-
-    // add and remove nodes for the point controllers that come and go from the primary number line
-    model.primaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
-      const pointControllerNode = new PointControllerNode( addedPointController );
-      this.addChild( pointControllerNode );
-      const removalListener = removedPointController => {
-        if ( removedPointController === addedPointController ) {
-          this.removeChild( pointControllerNode );
-          pointControllerNode.dispose();
-          model.primaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
-        }
-      };
-      model.primaryNumberLinePointControllers.addItemRemovedListener( removalListener );
-    } );
-
-    // secondary number line node
-    const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
-      model.secondaryNumberLine,
-      merge( { opacity: 0 }, NUMBER_LINE_NODE_OPTIONS )
-    );
-    this.addChild( secondaryNumberLineNode );
 
     // checkboxes that will control the presentation options
     const checkboxes = [
@@ -129,58 +97,45 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( checkboxGroup );
 
+    // primary number line node
+    const primaryNumberLineNode = new OperationTrackingNumberLineNode(
+      model.primaryNumberLine,
+      NUMBER_LINE_NODE_OPTIONS
+    );
+    this.addChild( primaryNumberLineNode );
+
+    // point controller for the starting point on the primary number line, which is always present
+    this.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
+
+    // add and remove nodes for the point controllers that come and go from the primary number line
+    model.primaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
+      const pointControllerNode = new PointControllerNode( addedPointController );
+      this.addChild( pointControllerNode );
+      const removalListener = removedPointController => {
+        if ( removedPointController === addedPointController ) {
+          this.removeChild( pointControllerNode );
+          pointControllerNode.dispose();
+          model.primaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
+        }
+      };
+      model.primaryNumberLinePointControllers.addItemRemovedListener( removalListener );
+    } );
+
     // accordion box containing a mathematical description of the operations on the number line
-    const operationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.primaryNumberLine, {
+    const primaryOperationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.primaryNumberLine, {
       centerX: this.layoutBounds.centerX,
       top: 20
     } );
-    this.addChild( operationDescriptionAccordionBox );
-
-    // operation entry controls for the upper number line
-    const operationEntryControls = [
-      new OperationEntryControl(
-        model.primaryNumberLine,
-        0,
-        {
-          depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
-          initialValue: 1,
-          range: OPERATION_ENTRY_CONTROL_RANGE,
-          increment: 1
-        }
-      ),
-      new OperationEntryControl(
-        model.primaryNumberLine,
-        1,
-        {
-          depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE,
-          range: OPERATION_ENTRY_CONTROL_RANGE,
-          increment: 1
-        }
-      )
-    ];
+    this.addChild( primaryOperationDescriptionAccordionBox );
 
     // carousel in which the operation entry controls for the upper number line reside
-    const operationEntryCarousel = new Carousel( operationEntryControls, {
-      orientation: 'horizontal',
-      itemsPerPage: 1,
-      right: this.layoutBounds.maxX - 40,
+    const primaryOperationEntryCarousel = new OperationEntryCarousel( model.primaryNumberLine, {
+      entryControlInitialValue: 1,
+      entryControlIncrement: 1,
+      right: this.layoutBounds.maxX - 60,
       top: 15
     } );
-    this.addChild( operationEntryCarousel );
-
-    // automatically advance the carousel when the first operation is added
-    model.primaryNumberLine.operationProperties[ 0 ].link( operation => {
-      if ( operation ) {
-        operationEntryCarousel.pageNumberProperty.value = 1;
-      }
-    } );
-
-    // page indicator
-    this.addChild( new PageControl( operationEntryCarousel.numberOfPages, operationEntryCarousel.pageNumberProperty, {
-      orientation: 'horizontal',
-      centerX: operationEntryCarousel.centerX,
-      top: operationEntryCarousel.bottom + 10
-    } ) );
+    this.addChild( primaryOperationEntryCarousel );
 
     // erase button for primary number line
     const primaryNumberLineEraserButton = new EraserButton( {
@@ -188,8 +143,7 @@ class NLOGenericScreenView extends ScreenView {
       left: primaryNumberLineNode.right + 8,
       listener: () => {
         model.primaryNumberLine.removeAllOperations();
-        operationEntryCarousel.pageNumberProperty.reset();
-        operationEntryControls.forEach( control => {control.clear(); } );
+        primaryOperationEntryCarousel.reset();
       }
     } );
     this.addChild( primaryNumberLineEraserButton );
@@ -206,24 +160,67 @@ class NLOGenericScreenView extends ScreenView {
       primaryNumberLineEraserButton.centerY = position.y;
     } );
 
-    // erase button for primary number line
+    // layer where the secondary number line will live, here so that it can be shown and hidden
+    const secondaryNumberLineLayer = new Node( { opacity: 0 } );
+    this.addChild( secondaryNumberLineLayer );
+
+    // secondary number line node
+    const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
+      model.secondaryNumberLine,
+      merge( { opacity: 0 }, NUMBER_LINE_NODE_OPTIONS )
+    );
+    secondaryNumberLineLayer.addChild( secondaryNumberLineNode );
+
+    // point controller for the starting point on the secondary number line, which is always present
+    secondaryNumberLineLayer.addChild( new PointControllerNode( model.secondaryLineInitialValuePointController ) );
+
+    // add and remove nodes for the point controllers that come and go from the secondary number line
+    model.secondaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
+      const pointControllerNode = new PointControllerNode( addedPointController );
+      secondaryNumberLineLayer.addChild( pointControllerNode );
+      const removalListener = removedPointController => {
+        if ( removedPointController === addedPointController ) {
+          secondaryNumberLineLayer.removeChild( pointControllerNode );
+          pointControllerNode.dispose();
+          model.secondaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
+        }
+      };
+      model.secondaryNumberLinePointControllers.addItemRemovedListener( removalListener );
+    } );
+
+    // accordion box containing a mathematical description of the operations on the number line
+    const secondaryOperationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.secondaryNumberLine, {
+      centerX: this.layoutBounds.centerX,
+      bottom: this.layoutBounds.maxY - 20
+    } );
+    secondaryNumberLineLayer.addChild( secondaryOperationDescriptionAccordionBox );
+
+    // carousel in which the operation entry controls for the upper number line reside
+    const secondaryOperationEntryCarousel = new OperationEntryCarousel( model.secondaryNumberLine, {
+      entryControlInitialValue: 1,
+      entryControlIncrement: 1,
+      right: this.layoutBounds.maxX - 60,
+      bottom: this.layoutBounds.maxY - 4
+    } );
+    secondaryNumberLineLayer.addChild( secondaryOperationEntryCarousel );
+
+    // erase button for secondary number line
     const secondaryNumberLineEraserButton = new EraserButton( {
       iconWidth: 36,
       left: secondaryNumberLineNode.right + 8,
       centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
-      opacity: 0, // initially hidden
       listener: () => {
         model.secondaryNumberLine.removeAllOperations();
-        // operationEntryCarousel.pageNumberProperty.reset();
+        // primaryOperationEntryCarousel.pageNumberProperty.reset();
         // operationEntryControls.forEach( control => {control.clear(); } );
       }
     } );
-    this.addChild( secondaryNumberLineEraserButton );
+    secondaryNumberLineLayer.addChild( secondaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
     model.secondaryNumberLine.operationProperties.forEach( operationProperty => {
       operationProperty.link( () => {
-        primaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
+        secondaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
       } );
     } );
 
@@ -238,7 +235,7 @@ class NLOGenericScreenView extends ScreenView {
     let secondaryNumberLineFadeAnimation = null;
     model.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
       const targetOpacity = secondNumberLineVisible ? 1 : 0;
-      if ( secondaryNumberLineNode.opacity !== targetOpacity || secondaryNumberLineEraserButton.opacity !== targetOpacity ) {
+      if ( secondaryNumberLineLayer.opacity !== targetOpacity ) {
 
         // stop any previous animation
         if ( secondaryNumberLineFadeAnimation ) {
@@ -247,12 +244,11 @@ class NLOGenericScreenView extends ScreenView {
 
         secondaryNumberLineFadeAnimation = new Animation( {
           duration: 0.5,
-          from: secondaryNumberLineNode.opacity,
+          from: secondaryNumberLineLayer.opacity,
           to: targetOpacity,
           easing: Easing.CUBIC_IN_OUT,
           setValue: value => {
-            secondaryNumberLineNode.opacity = value;
-            secondaryNumberLineEraserButton.opacity = value;
+            secondaryNumberLineLayer.opacity = value;
           }
         } );
         secondaryNumberLineFadeAnimation.start();
@@ -277,31 +273,14 @@ class NLOGenericScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
+        primaryOperationEntryCarousel.reset();
         model.reset();
-        this.reset();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
-  }
-
-  /**
-   * Resets the view.
-   * @public
-   */
-  reset() {
-    //TODO
-  }
-
-  /**
-   * Steps the view.
-   * @param {number} dt - time step, in seconds
-   * @public
-   */
-  step( dt ) {
-    //TODO
   }
 }
 

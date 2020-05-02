@@ -12,18 +12,15 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Carousel from '../../../../sun/js/Carousel.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
-import PageControl from '../../../../sun/js/PageControl.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import NumberLineOperationNode from '../../common/view/NumberLineOperationNode.js';
+import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
 import OperationDescriptionAccordionBox from './OperationDescriptionAccordionBox.js';
-import OperationEntryControl from './OperationEntryControl.js';
 
 class NLOOperationsScreenView extends ScreenView {
 
@@ -99,45 +96,12 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( operationDescriptionAccordionBox );
 
-    // operation entry controls
-    const operationEntryControls = [
-      new OperationEntryControl(
-        model.numberLine,
-        0,
-        {
-          depictionRelativePosition: NumberLineOperationNode.RelativePositions.ABOVE_NUMBER_LINE,
-          initialValue: 100
-        }
-      ),
-      new OperationEntryControl(
-        model.numberLine,
-        1,
-        { depictionRelativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE }
-      )
-    ];
-
-    // carousel in which the operation entry controls reside
-    const operationEntryCarousel = new Carousel( operationEntryControls, {
-      orientation: 'horizontal',
-      itemsPerPage: 1,
-      right: this.layoutBounds.maxX - 40,
-      top: 15
+    // carousel with the operation entry controls
+    const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
+      right: this.layoutBounds.maxX - 35,
+      top: 20
     } );
     this.addChild( operationEntryCarousel );
-
-    // automatically advance the carousel when the first operation is added
-    model.numberLine.operationProperties[ 0 ].link( operation => {
-      if ( operation ) {
-        operationEntryCarousel.pageNumberProperty.value = 1;
-      }
-    } );
-
-    // page indicator
-    this.addChild( new PageControl( operationEntryCarousel.numberOfPages, operationEntryCarousel.pageNumberProperty, {
-      orientation: 'horizontal',
-      centerX: operationEntryCarousel.centerX,
-      top: operationEntryCarousel.bottom + 10
-    } ) );
 
     // erase button
     const eraserButton = new EraserButton( {
@@ -146,8 +110,7 @@ class NLOOperationsScreenView extends ScreenView {
       centerY: model.numberLine.centerPositionProperty.value.y,
       listener: () => {
         model.numberLine.removeAllOperations();
-        operationEntryCarousel.pageNumberProperty.reset();
-        operationEntryControls.forEach( control => {control.clear(); } );
+        operationEntryCarousel.reset();
       }
     } );
     this.addChild( eraserButton );
@@ -170,10 +133,9 @@ class NLOOperationsScreenView extends ScreenView {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         operationDescriptionAccordionBox.reset();
+        operationEntryCarousel.reset();
         model.reset();
-        operationEntryCarousel.pageNumberProperty.reset();
         model.numberLine.removeAllOperations();
-        operationEntryControls.forEach( control => { control.reset(); } );
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,

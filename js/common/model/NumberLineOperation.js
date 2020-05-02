@@ -15,18 +15,12 @@ class NumberLineOperation {
   /**
    * @param {Operations} initialOperationType
    * @param {number} initialAmount
-   * @param {Object} [options]
    */
-  constructor( initialOperationType, initialAmount, options ) {
+  constructor( initialOperationType, initialAmount ) {
 
     // @public
     this.operationTypeProperty = new EnumerationProperty( Operations, initialOperationType );
     this.amountProperty = new NumberProperty( initialAmount );
-
-    // If a relative position was specified for the view depiction of this operation, set it as a field.
-    if ( options && options.depictionRelativePosition ) {
-      this.depictionRelativePosition = options.depictionRelativePosition;
-    }
   }
 
   /**
