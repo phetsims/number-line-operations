@@ -38,7 +38,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     super( zeroPosition, options );
 
-    // @public (read-write) - the starting value from which the added operations add and/or subtract
+    // @public (read-write) - the starting value from which the added operations add and/or subtract, created if not
+    // supplied
     this.startingValueProperty = options.startingValueProperty;
     if ( !this.startingValueProperty ) {
       this.startingValueProperty = new NumberProperty( 0 );
