@@ -1,6 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
@@ -105,15 +106,7 @@ class OperationMathSentence extends Text {
 
     // function closure to update the text
     const update = () => {
-
-      // make a list of the active operations on the number line
-      const activeOperations = [];
-      numberLine.operationProperties.forEach( operationProperty => {
-        if ( operationProperty.value ) {
-          activeOperations.push( operationProperty.value );
-        }
-      } );
-
+      const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
         this.text = numberLine.getCurrentEndValue();
       }
@@ -172,17 +165,11 @@ class OperationMathSentence extends Text {
     evaluateProperty.link( update );
     simplifyProperty.link( update );
     numberLine.startingValueProperty.link( update );
-    numberLine.operationProperties.forEach( operationProperty => {
-      operationProperty.link( ( operation, previousOperation ) => {
-        if ( operation ) {
-          operation.operationTypeProperty.link( update );
-          operation.amountProperty.link( update );
-        }
-        if ( previousOperation ) {
-          previousOperation.operationTypeProperty.unlink( update );
-          previousOperation.amountProperty.unlink( update );
-        }
-      } );
+    numberLine.operations.forEach( operation => {
+      Property.multilink(
+        [ operation.isActiveProperty, operation.amountProperty, operation.operationTypeProperty ],
+        update
+      );
     } );
   }
 }

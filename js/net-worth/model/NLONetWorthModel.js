@@ -8,7 +8,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import NumberLineOperation from '../../common/model/NumberLineOperation.js';
 import Operations from '../../common/model/Operations.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
 import NLOConstants from '../../common/NLOConstants.js';
@@ -51,8 +50,8 @@ class NLONetWorthModel {
       }
     );
 
-    // this model only manipulates one operation property on the number line, so get a reference to it
-    const operationProperty = this.numberLine.operationProperties[ 0 ];
+    // convenience variable (note that there is only one operation shown on this number line)
+    const operation = this.numberLine.operations[ 0 ];
 
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
     this.balanceSheetItems = [
@@ -101,7 +100,6 @@ class NLONetWorthModel {
 
               // update the operation on the number line to reflect this latest transaction
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
-              const operation = this.numberLine.operationProperties[ 0 ].value;
               operation.operationTypeProperty.set( Operations.SUBTRACTION );
               operation.amountProperty.set( balanceSheetItem.value );
             }
@@ -117,18 +115,15 @@ class NLONetWorthModel {
               addedToBag = true;
 
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
-              const operation = operationProperty.value;
-              if ( !operation ) {
+              if ( !operation.isActiveProperty.value ) {
 
                 // the operation was not active, so activate it
-                operationProperty.set( new NumberLineOperation( Operations.ADDITION, balanceSheetItem.value ) );
+                operation.isActiveProperty.set( true );
               }
-              else {
 
-                // update the operation
-                operation.operationTypeProperty.set( Operations.ADDITION );
-                operation.amountProperty.set( balanceSheetItem.value );
-              }
+              // update the operation
+              operation.operationTypeProperty.set( Operations.ADDITION );
+              operation.amountProperty.set( balanceSheetItem.value );
             }
           } );
           if ( !addedToBag ) {

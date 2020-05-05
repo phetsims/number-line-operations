@@ -1,6 +1,8 @@
 Implementation Overview
 =======================
 
+Note: There a lots of links for things that are permanent, it seemed excessive to comment them all.
+
 Net Worth Screen
 ----------------
 

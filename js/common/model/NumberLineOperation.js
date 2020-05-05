@@ -5,22 +5,41 @@
  * performed on an operation-tracking number line.
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import Operations from './Operations.js';
 
 class NumberLineOperation {
 
   /**
-   * @param {Operations} initialOperationType
-   * @param {number} initialAmount
+   * @param {Object} [options]
    */
-  constructor( initialOperationType, initialAmount ) {
+  constructor( options ) {
 
-    // @public
-    this.operationTypeProperty = new EnumerationProperty( Operations, initialOperationType );
-    this.amountProperty = new NumberProperty( initialAmount );
+    options = merge( {
+
+      // {Operations}
+      initialOperationType: Operations.ADDITION,
+
+      // {number}
+      initialAmount: 0,
+
+      // {boolean}
+      initiallyActive: false
+    }, options );
+
+    // @public {Property<OperationType>} - type of operation, e.g. addition or subtraction
+    this.operationTypeProperty = new EnumerationProperty( Operations, options.initialOperationType );
+
+    // @public - amount of the operation
+    this.amountProperty = new NumberProperty( options.initialAmount );
+
+    // @public - whether or not this property is "active", meaning it is shown on the number line and considered in
+    // calculations
+    this.isActiveProperty = new BooleanProperty( options.initiallyActive );
   }
 
   /**

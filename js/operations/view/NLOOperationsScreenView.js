@@ -109,15 +109,15 @@ class NLOOperationsScreenView extends ScreenView {
       left: numberLineNode.right + 8,
       centerY: model.numberLine.centerPositionProperty.value.y,
       listener: () => {
-        model.numberLine.removeAllOperations();
+        model.numberLine.deactivateAllOperations();
         operationEntryCarousel.reset();
       }
     } );
     this.addChild( eraserButton );
 
     // erase is disabled if there are no operations
-    model.numberLine.operationProperties.forEach( operationProperty => {
-      operationProperty.link( () => {
+    model.numberLine.operations.forEach( operation => {
+      operation.isActiveProperty.link( () => {
         eraserButton.enabled = model.numberLine.getActiveOperations().length > 0;
       } );
     } );
@@ -135,7 +135,7 @@ class NLOOperationsScreenView extends ScreenView {
         operationDescriptionAccordionBox.reset();
         operationEntryCarousel.reset();
         model.reset();
-        model.numberLine.removeAllOperations();
+        model.numberLine.deactivateAllOperations();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,

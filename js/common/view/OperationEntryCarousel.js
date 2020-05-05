@@ -46,8 +46,8 @@ class OperationEntryCarousel extends Node {
     } );
 
     // automatically advance the carousel when the first operation is added
-    numberLine.operationProperties[ 0 ].link( operation => {
-      if ( operation ) {
+    numberLine.operations[ 0 ].isActiveProperty.link( isActive => {
+      if ( isActive ) {
         this.operationEntryCarousel.pageNumberProperty.value = 1;
       }
     } );

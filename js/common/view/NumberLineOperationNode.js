@@ -69,6 +69,9 @@ class NumberLineOperationNode extends Node {
 
     super( options );
 
+    // hook up the visibility attribute
+    const visibilityLinkage = operation.isActiveProperty.linkAttribute( this, 'visible' );
+
     // convenience var
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
@@ -179,6 +182,7 @@ class NumberLineOperationNode extends Node {
 
     // @private - dispose function
     this.disposeOperationArrowNode = () => {
+      operation.isActiveProperty.unlinkAttribute( visibilityLinkage );
       updateMultilink.dispose();
       showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
       showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );

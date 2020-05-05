@@ -142,15 +142,15 @@ class NLOGenericScreenView extends ScreenView {
       iconWidth: 36,
       left: primaryNumberLineNode.right + 8,
       listener: () => {
-        model.primaryNumberLine.removeAllOperations();
+        model.primaryNumberLine.deactivateAllOperations();
         primaryOperationEntryCarousel.reset();
       }
     } );
     this.addChild( primaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
-    model.primaryNumberLine.operationProperties.forEach( operationProperty => {
-      operationProperty.link( () => {
+    model.primaryNumberLine.operations.forEach( operation => {
+      operation.isActiveProperty.link( () => {
         primaryNumberLineEraserButton.enabled = model.primaryNumberLine.getActiveOperations().length > 0;
       } );
     } );
@@ -210,7 +210,7 @@ class NLOGenericScreenView extends ScreenView {
       left: secondaryNumberLineNode.right + 8,
       centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
       listener: () => {
-        model.secondaryNumberLine.removeAllOperations();
+        model.secondaryNumberLine.deactivateAllOperations();
         // primaryOperationEntryCarousel.pageNumberProperty.reset();
         // operationEntryControls.forEach( control => {control.clear(); } );
       }
@@ -218,8 +218,8 @@ class NLOGenericScreenView extends ScreenView {
     secondaryNumberLineLayer.addChild( secondaryNumberLineEraserButton );
 
     // erase is disabled if there are no operations
-    model.secondaryNumberLine.operationProperties.forEach( operationProperty => {
-      operationProperty.link( () => {
+    model.secondaryNumberLine.operations.forEach( operation => {
+      operation.isActiveProperty.link( () => {
         secondaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
       } );
     } );

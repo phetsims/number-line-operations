@@ -1,6 +1,5 @@
 // Copyright 2020, University of Colorado Boulder
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
@@ -17,7 +16,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
-import NumberLineOperation from '../../common/model/NumberLineOperation.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -42,7 +40,7 @@ class OperationEntryControl extends HBox {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
-   * @param {number} controlledOperationIndex - index of the operation on the number line that this controls
+   * @param {number} controlledOperationIndex - index of the operation on the number line that this will control
    * @param {Object} [options]
    * @public
    */
@@ -55,18 +53,12 @@ class OperationEntryControl extends HBox {
       range: new Range( -1000, 1000 )
     }, options );
 
-    // operation managed by this control
-    const operation = new NumberLineOperation(
-      Operations.ADDITION,
-      options.initialValue
-    );
-
-    // property that keeps track of whether or not this control's operation is on the number line
-    const operationOnNumberLineProperty = new BooleanProperty( false );
+    // @private {NumberLineOperation} - operation managed by this control
+    const controlledOperation = numberLine.operations[ controlledOperationIndex ];
 
     // plus/minus operation selector
     const operationSelectorRadioButtonGroup = new RadioButtonGroup(
-      operation.operationTypeProperty,
+      controlledOperation.operationTypeProperty,
       [
         { value: Operations.ADDITION, node: new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
         { value: Operations.SUBTRACTION, node: new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
@@ -83,7 +75,7 @@ class OperationEntryControl extends HBox {
 
     // amount selector
     const operationAmountPicker = new NumberPicker(
-      operation.amountProperty,
+      controlledOperation.amountProperty,
       new Property( options.range ),
       {
         upFunction: value => value + options.increment,
@@ -103,8 +95,7 @@ class OperationEntryControl extends HBox {
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
-        numberLine.operationProperties[ controlledOperationIndex ].set( operation );
-        operationOnNumberLineProperty.set( true );
+        controlledOperation.isActiveProperty.set( true );
       },
       content: enterArrowNode,
       radius: 30
@@ -115,45 +106,38 @@ class OperationEntryControl extends HBox {
     const eraserButton = new EraserButton( {
       listener: () => {
 
-        // remove our operation from the number line
-        numberLine.operationProperties[ controlledOperationIndex ].set( null );
-        operationOnNumberLineProperty.set( false );
+        // deactive our operation so that it will no longer appear on the number line
+        controlledOperation.isActiveProperty.set( false );
       },
       iconWidth: 30,
       center: enterButton.center
     } );
     buttonRootNode.addChild( eraserButton );
 
-    // control which of the two buttons is visible based on whether an operation has been added to the number line
-    operationOnNumberLineProperty.link( operationOnNumberLine => {
-      enterButton.visible = !operationOnNumberLine;
-      eraserButton.visible = operationOnNumberLine;
-    } );
-
-    // Monitor the number line and if the operation that was added by this controller is removed, update state.
-    numberLine.operationProperties[ controlledOperationIndex ].link( operation => {
-      if ( !operation ) {
-        operationOnNumberLineProperty.set( false );
-      }
+    // control the visibility of the "enter" and "erase" buttons based on whether or not the operation is active
+    controlledOperation.isActiveProperty.link( operationIsActive => {
+      enterButton.visible = !operationIsActive;
+      eraserButton.visible = operationIsActive;
     } );
 
     super( merge( {
       children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ]
     }, options ) );
 
-    this.operation = operation;
+    // @private - now that the constructor has been called, make the controlled operation available to the methods
+    this.controlledOperation = controlledOperation;
   }
 
   /**
    * @public
    */
   clear() {
-    this.operation.operationTypeProperty.reset();
-    this.operation.amountProperty.set( 0 );
+    this.controlledOperation.operationTypeProperty.reset();
+    this.controlledOperation.amountProperty.set( 0 );
   }
 
   reset() {
-    this.operation.reset();
+    this.controlledOperation.reset();
   }
 }
 
