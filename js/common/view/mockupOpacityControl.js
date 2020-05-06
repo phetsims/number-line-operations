@@ -12,6 +12,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const LABEL_FONT = new PhetFont( 20 );
+const QUERY_PARAMETER = 'mockupOpacity';
 
 /**
  * MockupOpacityControl defines a control that sets a global variable that can be used to control the opacity of the
@@ -33,7 +34,11 @@ class MockupOpacityControl extends VBox {
 
   constructor() {
 
-    const mockupOpacityProperty = new NumberProperty( 0 );
+    let initialOpacity = 0;
+    if ( QueryStringMachine.containsKey( QUERY_PARAMETER ) ) {
+      initialOpacity = QueryStringMachine.get( QUERY_PARAMETER, { type: 'number' } );
+    }
+    const mockupOpacityProperty = new NumberProperty( initialOpacity );
 
     // slider
     const slider = new HSlider(
