@@ -19,7 +19,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
-import OperationDescriptionAccordionBox from './OperationDescriptionAccordionBox.js';
+import NumericalExpressionAccordionBox from './NumericalExpressionAccordionBox.js';
 
 class NLOOperationsScreenView extends ScreenView {
 
@@ -89,11 +89,11 @@ class NLOOperationsScreenView extends ScreenView {
     this.addChild( checkboxGroup );
 
     // accordion box containing a mathematical description of the operations on the number line
-    const operationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.numberLine, {
+    const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
       top: 20
     } );
-    this.addChild( operationDescriptionAccordionBox );
+    this.addChild( numericalExpressionAccordionBox );
 
     // carousel with the operation entry controls
     const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
@@ -131,7 +131,7 @@ class NLOOperationsScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
-        operationDescriptionAccordionBox.reset();
+        numericalExpressionAccordionBox.reset();
         operationEntryCarousel.reset();
         model.reset();
         model.numberLine.deactivateAllOperations();

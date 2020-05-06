@@ -23,7 +23,7 @@ const CONTENT_DIMENSIONS = new Dimension2( 230, 60 ); // size based on design do
 /**
  * accordion box that contains a mathematical description of the operations on a number line
  */
-class OperationDescriptionAccordionBox extends AccordionBox {
+class NumericalExpressionAccordionBox extends AccordionBox {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
@@ -65,12 +65,12 @@ class OperationDescriptionAccordionBox extends AccordionBox {
       bottom: CONTENT_DIMENSIONS.height
     } ) );
 
-    // math sentence
-    const mathSentence = new OperationMathSentence( numberLine, simplifyProperty, evaluateProperty, { top: 0 } );
-    contentRoot.addChild( mathSentence );
-    mathSentence.boundsProperty.link( () => {
-      mathSentence.centerX = CONTENT_DIMENSIONS.width / 2;
-      mathSentence.top = 0;
+    // numerical expression
+    const numericalExpression = new NumericalExpression( numberLine, simplifyProperty, evaluateProperty, { top: 0 } );
+    contentRoot.addChild( numericalExpression );
+    numericalExpression.boundsProperty.link( () => {
+      numericalExpression.centerX = CONTENT_DIMENSIONS.width / 2;
+      numericalExpression.top = 0;
     } );
 
     super( contentRoot, options );
@@ -89,9 +89,9 @@ class OperationDescriptionAccordionBox extends AccordionBox {
 }
 
 /**
- * mathematical "sentence" that describes the operations
+ * a numerical expression that describes the operations on the number line
  */
-class OperationMathSentence extends Text {
+class NumericalExpression extends Text {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
@@ -147,17 +147,17 @@ class OperationMathSentence extends Text {
           }
         }
 
-        let mathSentence = '';
+        let numericalExpression = '';
         valuesAndOperations.forEach( valueOrOperation => {
           if ( typeof valueOrOperation === 'number' ) {
-            mathSentence += valueOrOperation;
+            numericalExpression += valueOrOperation;
           }
           else {
             const operationChar = valueOrOperation === Operations.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
-            mathSentence += ' ' + operationChar + ' ';
+            numericalExpression += ' ' + operationChar + ' ';
           }
         } );
-        this.text = mathSentence;
+        this.text = numericalExpression;
       }
     };
 
@@ -174,5 +174,5 @@ class OperationMathSentence extends Text {
   }
 }
 
-numberLineOperations.register( 'OperationDescriptionAccordionBox', OperationDescriptionAccordionBox );
-export default OperationDescriptionAccordionBox;
+numberLineOperations.register( 'NumericalExpressionAccordionBox', NumericalExpressionAccordionBox );
+export default NumericalExpressionAccordionBox;

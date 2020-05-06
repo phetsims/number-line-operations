@@ -24,7 +24,7 @@ import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js'
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import OperationDescriptionAccordionBox from '../../operations/view/OperationDescriptionAccordionBox.js';
+import NumericalExpressionAccordionBox from '../../operations/view/NumericalExpressionAccordionBox.js';
 import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
 
@@ -125,11 +125,11 @@ class NLOGenericScreenView extends ScreenView {
     } );
 
     // accordion box containing a mathematical description of the operations on the number line
-    const primaryOperationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.primaryNumberLine, {
+    const primaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.primaryNumberLine, {
       centerX: this.layoutBounds.centerX,
       top: 20
     } );
-    this.addChild( primaryOperationDescriptionAccordionBox );
+    this.addChild( primaryNumericalExpressionAccordionBox );
 
     // carousel in which the operation entry controls for the upper number line reside
     const primaryOperationEntryCarousel = new OperationEntryCarousel( model.primaryNumberLine, {
@@ -196,11 +196,11 @@ class NLOGenericScreenView extends ScreenView {
     } );
 
     // accordion box containing a mathematical description of the operations on the number line
-    const secondaryOperationDescriptionAccordionBox = new OperationDescriptionAccordionBox( model.secondaryNumberLine, {
+    const secondaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.secondaryNumberLine, {
       centerX: this.layoutBounds.centerX,
       bottom: this.layoutBounds.maxY - 20
     } );
-    secondaryNumberLineLayer.addChild( secondaryOperationDescriptionAccordionBox );
+    secondaryNumberLineLayer.addChild( secondaryNumericalExpressionAccordionBox );
 
     // carousel in which the operation entry controls for the upper number line reside
     const secondaryOperationEntryCarousel = new OperationEntryCarousel( model.secondaryNumberLine, {
