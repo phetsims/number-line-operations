@@ -24,7 +24,7 @@ const MOST_POSITIVE_FILL = Color.toColor( '#1fb493' );
 const LEAST_POSITIVE_FILL = Color.toColor( '#a5e1d4' );
 const MOST_NEGATIVE_FILL = Color.toColor( '#fb1d25' );
 const LEAST_NEGATIVE_FILL = Color.toColor( '#fda5a8' );
-const PIGGY_BANK_IMAGE_WIDTH = 90;
+const PIGGY_BANK_IMAGE_WIDTH = 85; // empirically determined to match design doc
 
 class NetWorthPiggyBankNode extends Node {
 

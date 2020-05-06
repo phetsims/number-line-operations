@@ -6,7 +6,6 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -49,29 +48,29 @@ class NLONetWorthScreenView extends ScreenView {
     // checkboxes that will control the presentation options
     const checkboxes = [
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showOperationLabelsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationDescription, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationDescription, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showOperationDescriptionsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showTickMarksProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       )
     ];
     const checkboxGroup = new VBox( {
       children: checkboxes,
-      spacing: 15,
+      spacing: 11,
       align: 'left',
 
       // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 30,
-      top: this.layoutBounds.minY + 10
+      left: this.layoutBounds.minX + 33,
+      top: this.layoutBounds.minY + 32
     } );
     this.addChild( checkboxGroup );
 
@@ -93,7 +92,7 @@ class NLONetWorthScreenView extends ScreenView {
     const netWorthPiggyBankNode = new NetWorthPiggyBankNode(
       model.netWorthProperty,
       NLONetWorthModel.NET_WORTH_RANGE,
-      { centerY: model.numberLine.centerPositionProperty.value.y + 75 }
+      { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
     );
     this.addChild( netWorthPiggyBankNode );
 

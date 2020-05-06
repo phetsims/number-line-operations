@@ -11,7 +11,7 @@ import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const RADIUS = 120;
+const RADIUS = 125;
 const ACCEPT_EVERYTHING = () => true;
 const ACCEPT_ONLY_ASSETS = balanceSheetItem => balanceSheetItem.value > 0;
 const ACCEPT_ONLY_DEBTS = balanceSheetItem => balanceSheetItem.value < 0;

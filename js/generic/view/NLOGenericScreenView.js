@@ -5,7 +5,6 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
 import PointControllerNode from '../../../../number-line-integers/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -71,19 +70,19 @@ class NLOGenericScreenView extends ScreenView {
     // checkboxes that will control the presentation options
     const checkboxes = [
       new Checkbox(
-        new Text( numberLineOperationsStrings.pointLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.pointLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.primaryNumberLine.showPointLabelsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.primaryNumberLine.showOperationLabelsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.primaryNumberLine.showTickMarksProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       )
     ];
     const checkboxGroup = new VBox( {

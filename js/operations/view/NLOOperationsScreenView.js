@@ -5,7 +5,6 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
-import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -58,24 +57,24 @@ class NLOOperationsScreenView extends ScreenView {
     // checkboxes that will control the presentation options
     const checkboxes = [
       new Checkbox(
-        new Text( numberLineOperationsStrings.pointLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.pointLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showPointLabelsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showOperationLabelsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.operationDescription, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.operationDescription, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showOperationDescriptionsProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       ),
       new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLCConstants.CHECKBOX_TEXT_OPTIONS ),
+        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
         model.numberLine.showTickMarksProperty,
-        NLCConstants.CHECKBOX_OPTIONS
+        NLOConstants.CHECKBOX_OPTIONS
       )
     ];
     const checkboxGroup = new VBox( {

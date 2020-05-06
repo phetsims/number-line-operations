@@ -39,7 +39,7 @@ class NLONetWorthModel {
 
     // @public (read-only) - the number line upon which the net worth and the various operation will be portrayed
     this.numberLine = new OperationTrackingNumberLine(
-      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, -150 ),
+      NLOConstants.LAYOUT_BOUNDS.center.minusXY( 0, 110 ),
       {
         initialDisplayedRange: NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
@@ -66,23 +66,23 @@ class NLONetWorthModel {
     ];
 
     // add the storage areas for the balance sheet items - this is where they reside when not in use
-    const balanceItemBoxesTop = 300;
+    const balanceItemBoxesTop = 310;
+    this.debtsBox = new BalanceSheetItemBox(
+      new Vector2( 105, balanceItemBoxesTop ),
+      this.balanceSheetItems.filter( item => item.value < 0 ).sort( ( a, b ) => b.value - a.value )
+    );
     this.assetsBox = new BalanceSheetItemBox(
       new Vector2( 800, balanceItemBoxesTop ),
       this.balanceSheetItems.filter( item => item.value > 0 ).sort()
     );
-    this.debtsBox = new BalanceSheetItemBox(
-      new Vector2( 50, balanceItemBoxesTop ),
-      this.balanceSheetItems.filter( item => item.value < 0 ).sort( ( a, b ) => b.value - a.value )
-    );
     this.storageBoxes = [ this.assetsBox, this.debtsBox ];
 
     // add the asset and debt bags
-    const balanceItemBagsCenterY = 460;
-    this.debtsBag = new BalanceSheetItemBag( new Vector2( 360, balanceItemBagsCenterY ), {
+    const balanceItemBagsCenterY = 475;
+    this.debtsBag = new BalanceSheetItemBag( new Vector2( 380, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_DEBTS
     } );
-    this.assetsBag = new BalanceSheetItemBag( new Vector2( 640, balanceItemBagsCenterY ), {
+    this.assetsBag = new BalanceSheetItemBag( new Vector2( 645, balanceItemBagsCenterY ), {
       itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
     } );
     this.bags = [ this.debtsBag, this.assetsBag ];
