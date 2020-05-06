@@ -9,4 +9,6 @@
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-export default numberLineOperations.register( 'PiggyBankDecoration', Enumeration.byKeys( [ 'ADDITION', 'SUBTRACTION' ] ) );
+const Operations = Enumeration.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
+numberLineOperations.register( 'Operations', Operations );
+export default Operations;
