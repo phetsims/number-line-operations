@@ -104,7 +104,7 @@ class NumericalExpression extends Text {
     options = merge( { font: new PhetFont( 30 ) }, options );
     super( '', options );
 
-    // function closure to update the text
+    // function closure to update the text that defines the expression
     const update = () => {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
@@ -115,11 +115,8 @@ class NumericalExpression extends Text {
         // make a list of all the values and operations
         const valuesAndOperations = [];
 
-        // determine whether the initial value and first operation should be included
-        const firstOperationType = activeOperations[ 0 ].operationTypeProperty.value;
-        if ( numberLine.startingValueProperty.value !== 0 || firstOperationType === Operations.SUBTRACTION ) {
-          valuesAndOperations.push( numberLine.startingValueProperty.value );
-        }
+        // add the starting value
+        valuesAndOperations.push( numberLine.startingValueProperty.value );
 
         // go through the operations, adding the values and operation types to the list
         activeOperations.forEach( ( operation, index ) => {
