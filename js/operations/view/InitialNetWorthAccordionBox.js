@@ -23,12 +23,13 @@ class InitialNetWorthAccordionBox extends AccordionBox {
   constructor( initialNetWorthProperty, options ) {
 
     options = merge( {
+      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, { font: new PhetFont( 18 ) } ),
       fill: Color.WHITE,
       showTitleWhenExpanded: false,
       cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS
     }, options );
 
-    const label = new RichText( numberLineOperationsStrings.initialNetWorth, {
+    const label = new RichText( numberLineOperationsStrings.initialNetWorthWithBreak, {
       align: 'center',
       font: new PhetFont( 24 )
     } );

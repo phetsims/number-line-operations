@@ -33,6 +33,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
   constructor( numberLine, options ) {
 
     options = merge( {
+      titleNode: new Text( numberLineOperationsStrings.netWorth, { font: new PhetFont( 18 ) } ),
       fill: Color.WHITE,
       showTitleWhenExpanded: false,
       cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS

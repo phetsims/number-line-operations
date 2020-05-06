@@ -60,6 +60,9 @@
     "value": "Simplify"
   },
   "initialNetWorth": {
+    "value": "Initial Net Worth"
+  },
+  "initialNetWorthWithBreak": {
     "value": "Initial<br>Net Worth"
   }
 }
