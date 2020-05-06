@@ -38,6 +38,7 @@ const NUMBER_LINE_NODE_OPTIONS = {
     labelDistanceFromApex: 20
   }
 };
+const NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE = 16;
 
 // TODO: incorporate ranges
 // const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
@@ -87,12 +88,12 @@ class NLOGenericScreenView extends ScreenView {
     ];
     const checkboxGroup = new VBox( {
       children: checkboxes,
-      spacing: 18,
+      spacing: 13,
       align: 'left',
 
       // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 30,
-      top: this.layoutBounds.minY + 30
+      left: this.layoutBounds.minX + 28,
+      top: this.layoutBounds.minY + 22
     } );
     this.addChild( checkboxGroup );
 
@@ -127,7 +128,7 @@ class NLOGenericScreenView extends ScreenView {
     // accordion box containing a mathematical description of the operations on the number line
     const primaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.primaryNumberLine, {
       centerX: this.layoutBounds.centerX,
-      top: 20
+      top: 14
     } );
     this.addChild( primaryNumericalExpressionAccordionBox );
 
@@ -136,14 +137,14 @@ class NLOGenericScreenView extends ScreenView {
       entryControlInitialValue: 1,
       entryControlIncrement: 1,
       right: this.layoutBounds.maxX - 60,
-      top: 15
+      top: primaryNumericalExpressionAccordionBox.top
     } );
     this.addChild( primaryOperationEntryCarousel );
 
     // erase button for primary number line
     const primaryNumberLineEraserButton = new EraserButton( {
       iconWidth: 36,
-      left: primaryNumberLineNode.right + 8,
+      left: primaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
       listener: () => {
         model.primaryNumberLine.deactivateAllOperations();
         primaryOperationEntryCarousel.reset();
@@ -198,7 +199,7 @@ class NLOGenericScreenView extends ScreenView {
     // accordion box containing a mathematical description of the operations on the number line
     const secondaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.secondaryNumberLine, {
       centerX: this.layoutBounds.centerX,
-      bottom: this.layoutBounds.maxY - 20
+      bottom: this.layoutBounds.maxY - 34
     } );
     secondaryNumberLineLayer.addChild( secondaryNumericalExpressionAccordionBox );
 
@@ -207,14 +208,14 @@ class NLOGenericScreenView extends ScreenView {
       entryControlInitialValue: 1,
       entryControlIncrement: 1,
       right: this.layoutBounds.maxX - 60,
-      bottom: this.layoutBounds.maxY - 4
+      bottom: secondaryNumericalExpressionAccordionBox.bottom + 17
     } );
     secondaryNumberLineLayer.addChild( secondaryOperationEntryCarousel );
 
     // erase button for secondary number line
     const secondaryNumberLineEraserButton = new EraserButton( {
       iconWidth: 36,
-      left: secondaryNumberLineNode.right + 8,
+      left: secondaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
       centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
       listener: () => {
         model.secondaryNumberLine.deactivateAllOperations();
@@ -234,7 +235,7 @@ class NLOGenericScreenView extends ScreenView {
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
       left: checkboxGroup.left,
-      bottom: this.layoutBounds.maxY - 50
+      bottom: this.layoutBounds.maxY - 46
     } );
     this.addChild( singleDualNumberLineSelector );
 

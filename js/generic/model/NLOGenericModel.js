@@ -8,6 +8,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../../axon/js/ObservableArray.js';
 import Range from '../../../../dot/js/Range.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import LockToNumberLine from '../../../../number-line-integers/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-integers/js/common/model/PointController.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -24,10 +25,12 @@ const NUMBER_LINE_RANGES = [
   new Range( -1000, 1000 )
 ];
 const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
-const PRIMARY_NUMBER_LINE_LOWER_POSITION = MODEL_BOUNDS.center;
-const PRIMARY_NUMBER_LINE_UPPER_POSITION = MODEL_BOUNDS.center.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
+const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX - 18; // matches design doc layout
+const PRIMARY_NUMBER_LINE_LOWER_POSITION = new Vector2( NUMBER_LINE_CENTER_X, MODEL_BOUNDS.centerY );
+const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
 const PRIMARY_NUMBER_LINE_POINTS_COLOR = Color.BLUE;
 const SECONDARY_NUMBER_LINE_POINTS_COLOR = Color.MAGENTA;
+const NUMBER_LINE_WIDTH = MODEL_BOUNDS.width * 0.81; // empirically determined to match spec
 
 /**
  * primary model for the "Generic" screen
@@ -55,9 +58,7 @@ class NLOGenericModel {
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
-
-        // width of the number line in model space, number empirically determined to make it look good
-        widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
+        widthInModelSpace: NUMBER_LINE_WIDTH
       }
     );
 
@@ -99,7 +100,7 @@ class NLOGenericModel {
 
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user
     this.secondaryNumberLine = new OperationTrackingNumberLine(
-      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 75 ),
+      this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
       {
         numberOfOperationsTracked: 2,
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
@@ -108,9 +109,7 @@ class NLOGenericModel {
         labelsInitiallyVisible: true,
         startingPointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
         endpointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
-
-        // width of the number line in model space, number empirically determined to make it look good
-        widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
+        widthInModelSpace: NUMBER_LINE_WIDTH
       }
     );
 

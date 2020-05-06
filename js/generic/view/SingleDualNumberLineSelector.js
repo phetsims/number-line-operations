@@ -28,8 +28,8 @@ class SingleDualNumberLineSelector extends RadioButtonGroup {
   constructor( secondNumberLineVisibleProperty, options ) {
 
     options = merge( {
-      buttonContentXMargin: 5,
-      buttonContentYMargin: 10,
+      buttonContentXMargin: 7,
+      buttonContentYMargin: 12,
       baseColor: 'white',
       selectedLineWidth: 2,
       deselectedLineWidth: 0.5,
