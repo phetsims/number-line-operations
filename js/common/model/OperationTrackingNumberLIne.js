@@ -33,7 +33,13 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       numberOfOperationsTracked: 1,
 
       // {NumberProperty} - the value from which the operations will start, created if not supplied
-      startingValueProperty: null
+      startingValueProperty: null,
+
+      // {Color} - color used for the point that represents the starting value
+      startingPointColor: Color.BLUE,
+
+      // {Color} - color used for endpoints of operations
+      endpointColor: Color.BLUE
 
     }, options );
 
@@ -68,7 +74,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write) - the number line point that corresponds with the starting value, this is always present
     this.startingPoint = new NumberLinePoint( this, {
       valueProperty: this.startingValueProperty,
-      initialColor: new Color( 0x4ddff )
+      initialColor: options.startingPointColor
     } );
     this.addPoint( this.startingPoint );
 
@@ -77,7 +83,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // inactive.  The position in the array identifies the operation to which the endpoint corresponds.
     this.endpoints = [];
     _.times( options.numberOfOperationsTracked, () => {
-      this.endpoints.push( new NumberLinePoint( this, { initialColor: Color.BLUE } ) );
+      this.endpoints.push( new NumberLinePoint( this, { initialColor: options.endpointColor } ) );
     } );
 
     // function closure to update endpoint values as operations change

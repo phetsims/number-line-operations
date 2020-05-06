@@ -96,6 +96,10 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( checkboxGroup );
 
+    // layer where the point controllers for the primary number line go so that they stay behind the points
+    const primaryPointControllerLayer = new Node();
+    this.addChild( primaryPointControllerLayer );
+
     // primary number line node
     const primaryNumberLineNode = new OperationTrackingNumberLineNode(
       model.primaryNumberLine,
@@ -104,15 +108,15 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( primaryNumberLineNode );
 
     // point controller for the starting point on the primary number line, which is always present
-    this.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
+    primaryPointControllerLayer.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
 
     // add and remove nodes for the point controllers that come and go from the primary number line
     model.primaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
       const pointControllerNode = new PointControllerNode( addedPointController );
-      this.addChild( pointControllerNode );
+      primaryPointControllerLayer.addChild( pointControllerNode );
       const removalListener = removedPointController => {
         if ( removedPointController === addedPointController ) {
-          this.removeChild( pointControllerNode );
+          primaryPointControllerLayer.removeChild( pointControllerNode );
           pointControllerNode.dispose();
           model.primaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
         }
@@ -163,6 +167,10 @@ class NLOGenericScreenView extends ScreenView {
     const secondaryNumberLineLayer = new Node( { opacity: 0 } );
     this.addChild( secondaryNumberLineLayer );
 
+    // sub-layer where point controllers go so that they stay behind the points
+    const secondaryPointControllerLayer = new Node();
+    secondaryNumberLineLayer.addChild( secondaryPointControllerLayer );
+
     // secondary number line node
     const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
       model.secondaryNumberLine,
@@ -171,15 +179,15 @@ class NLOGenericScreenView extends ScreenView {
     secondaryNumberLineLayer.addChild( secondaryNumberLineNode );
 
     // point controller for the starting point on the secondary number line, which is always present
-    secondaryNumberLineLayer.addChild( new PointControllerNode( model.secondaryLineInitialValuePointController ) );
+    secondaryPointControllerLayer.addChild( new PointControllerNode( model.secondaryLineInitialValuePointController ) );
 
     // add and remove nodes for the point controllers that come and go from the secondary number line
     model.secondaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
       const pointControllerNode = new PointControllerNode( addedPointController );
-      secondaryNumberLineLayer.addChild( pointControllerNode );
+      secondaryPointControllerLayer.addChild( pointControllerNode );
       const removalListener = removedPointController => {
         if ( removedPointController === addedPointController ) {
-          secondaryNumberLineLayer.removeChild( pointControllerNode );
+          secondaryPointControllerLayer.removeChild( pointControllerNode );
           pointControllerNode.dispose();
           model.secondaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
         }

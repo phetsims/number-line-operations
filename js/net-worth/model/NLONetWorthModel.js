@@ -8,6 +8,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Operations from '../../common/model/Operations.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
 import NLOConstants from '../../common/NLOConstants.js';
@@ -44,8 +45,9 @@ class NLONetWorthModel {
         initialDisplayedRange: NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
+        startingPointColor: new Color( 0x4ddff ),
 
-        // width of the number line in model space, number empirically determined to make it look good
+        // width of the number line in model space, number empirically determined to match design
         widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
       }
     );
