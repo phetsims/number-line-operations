@@ -50,7 +50,8 @@ class OperationEntryControl extends HBox {
       spacing: 25,
       initialValue: 0,
       increment: 100,
-      range: new Range( -1000, 1000 )
+      range: new Range( -1000, 1000 ),
+      buttonBaseColor: new Color( 153, 206, 255 )
     }, options );
 
     // @private {NumberLineOperation} - operation managed by this control
@@ -98,7 +99,8 @@ class OperationEntryControl extends HBox {
         controlledOperation.isActiveProperty.set( true );
       },
       content: enterArrowNode,
-      radius: 30
+      radius: 30,
+      baseColor: options.buttonBaseColor
     } );
     buttonRootNode.addChild( enterButton );
 
