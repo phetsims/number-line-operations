@@ -15,6 +15,7 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
@@ -39,6 +40,7 @@ const NUMBER_LINE_NODE_OPTIONS = {
   }
 };
 const NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE = 16;
+const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
 
 // TODO: incorporate ranges
 // const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
@@ -134,8 +136,14 @@ class NLOGenericScreenView extends ScreenView {
 
     // carousel in which the operation entry controls for the upper number line reside
     const primaryOperationEntryCarousel = new OperationEntryCarousel( model.primaryNumberLine, {
-      entryControlInitialValue: 1,
-      entryControlIncrement: 1,
+      entryControl1Options: {
+        initialValue: 1,
+        increment: 1
+      },
+      entryControl2Options: {
+        initialValue: 1,
+        increment: 1
+      },
       right: this.layoutBounds.maxX - 60,
       top: primaryNumericalExpressionAccordionBox.top
     } );
@@ -205,8 +213,16 @@ class NLOGenericScreenView extends ScreenView {
 
     // carousel in which the operation entry controls for the upper number line reside
     const secondaryOperationEntryCarousel = new OperationEntryCarousel( model.secondaryNumberLine, {
-      entryControlInitialValue: 1,
-      entryControlIncrement: 1,
+      entryControl1Options: {
+        initialValue: 1,
+        increment: 1,
+        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR
+      },
+      entryControl2Options: {
+        initialValue: 1,
+        increment: 1,
+        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR
+      },
       right: this.layoutBounds.maxX - 60,
       bottom: secondaryNumericalExpressionAccordionBox.bottom + 17
     } );

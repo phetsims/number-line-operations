@@ -15,8 +15,8 @@ class OperationEntryCarousel extends Node {
   constructor( numberLine, options ) {
 
     options = merge( {
-      entryControlInitialValue: 100,
-      entryControlIncrement: 100
+      entryControl1Options: {},
+      entryControl2Options: {}
     }, options );
 
     // @private {OperationEntryControl[]} - operation entry controls
@@ -24,18 +24,12 @@ class OperationEntryCarousel extends Node {
       new OperationEntryControl(
         numberLine,
         0,
-        {
-          initialValue: options.entryControlInitialValue,
-          increment: options.entryControlIncrement
-        }
+        options.entryControl1Options
       ),
       new OperationEntryControl(
         numberLine,
         1,
-        {
-          initialValue: options.entryControlInitialValue,
-          increment: options.entryControlIncrement
-        }
+        options.entryControl2Options
       )
     ];
 
