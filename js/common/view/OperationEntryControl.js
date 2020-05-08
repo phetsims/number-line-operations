@@ -81,6 +81,9 @@ class OperationEntryControl extends HBox {
       }
     );
 
+    // set the initial operation amount
+    controlledOperation.amountProperty.set( options.initialValue );
+
     // amount selector
     const operationAmountPicker = new NumberPicker(
       controlledOperation.amountProperty,

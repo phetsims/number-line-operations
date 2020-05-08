@@ -45,15 +45,12 @@ class NLOGenericModel {
     // @public (read-write) - whether or not the 2nd number line is visible to the user
     this.secondNumberLineVisibleProperty = new BooleanProperty( false );
 
-    // the starting value for the primary number line
-    const primaryStartingValue = new NumberProperty( 1 );
-
     // @public - the primary operation-tracking number line, which is always visible
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       {
         numberOfOperationsTracked: 2,
-        startingValueProperty: primaryStartingValue,
+        startingValueProperty: new NumberProperty( 1 ),
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
@@ -103,6 +100,7 @@ class NLOGenericModel {
       this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
       {
         numberOfOperationsTracked: 2,
+        startingValueProperty: new NumberProperty( 1 ),
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
         preventOverlap: false,

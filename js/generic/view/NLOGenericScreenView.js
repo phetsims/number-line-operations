@@ -41,6 +41,7 @@ const NUMBER_LINE_NODE_OPTIONS = {
 };
 const NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE = 16;
 const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
+const ERASER_BUTTON_ICON_WIDTH = 36;
 
 // TODO: incorporate ranges
 // const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
@@ -151,7 +152,7 @@ class NLOGenericScreenView extends ScreenView {
 
     // erase button for primary number line
     const primaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: 36,
+      iconWidth: ERASER_BUTTON_ICON_WIDTH,
       left: primaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
       listener: () => {
         model.primaryNumberLine.deactivateAllOperations();
@@ -232,13 +233,12 @@ class NLOGenericScreenView extends ScreenView {
 
     // erase button for secondary number line
     const secondaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: 36,
+      iconWidth: ERASER_BUTTON_ICON_WIDTH,
       left: secondaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
       centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
       listener: () => {
         model.secondaryNumberLine.deactivateAllOperations();
-        // primaryOperationEntryCarousel.pageNumberProperty.reset();
-        // operationEntryControls.forEach( control => {control.clear(); } );
+        secondaryOperationEntryCarousel.reset();
       }
     } );
     secondaryNumberLineLayer.addChild( secondaryNumberLineEraserButton );
@@ -300,6 +300,7 @@ class NLOGenericScreenView extends ScreenView {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         primaryOperationEntryCarousel.reset();
+        secondaryOperationEntryCarousel.reset();
         model.reset();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
