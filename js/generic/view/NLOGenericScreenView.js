@@ -216,12 +216,14 @@ class NLOGenericScreenView extends ScreenView {
       entryControl1Options: {
         initialValue: 1,
         increment: 1,
-        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR
+        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
+        arrowDirection: 'up'
       },
       entryControl2Options: {
         initialValue: 1,
         increment: 1,
-        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR
+        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
+        arrowDirection: 'up'
       },
       right: this.layoutBounds.maxX - 60,
       bottom: secondaryNumericalExpressionAccordionBox.bottom + 17

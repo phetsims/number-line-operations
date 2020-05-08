@@ -35,6 +35,7 @@ const NORMALIZED_ENTER_ARROW_SHAPE = new Shape()
   .lineTo( 0.25, 0.2 )
   .lineTo( 0, 0.2 )
   .lineTo( 0, 0 );
+const FULL_SIZE_ARROW_SHAPE = NORMALIZED_ENTER_ARROW_SHAPE.transformed( Matrix3.scale( 28 ) ); // scale empirically chosen
 
 class OperationEntryControl extends HBox {
 
@@ -51,8 +52,14 @@ class OperationEntryControl extends HBox {
       initialValue: 0,
       increment: 100,
       range: new Range( -1000, 1000 ),
-      buttonBaseColor: new Color( 153, 206, 255 )
+      buttonBaseColor: new Color( 153, 206, 255 ),
+
+      // {String} - specifies the way the arrow should point, valid values are 'up' and 'down'
+      arrowDirection: 'down'
     }, options );
+
+    // options checking
+    assert && assert( options.arrowDirection === 'up' || options.arrowDirection === 'down' );
 
     // @private {NumberLineOperation} - operation managed by this control
     const controlledOperation = numberLine.operations[ controlledOperationIndex ];
@@ -92,7 +99,13 @@ class OperationEntryControl extends HBox {
     const buttonRootNode = new Node();
 
     // enter button
-    const enterArrowShape = NORMALIZED_ENTER_ARROW_SHAPE.transformed( Matrix3.scale( 28 ) ); // scale empirically chosen
+    let enterArrowShape;
+    if ( options.arrowDirection === 'down' ) {
+      enterArrowShape = FULL_SIZE_ARROW_SHAPE;
+    }
+    else {
+      enterArrowShape = FULL_SIZE_ARROW_SHAPE.transformed( Matrix3.scale( 1, -1 ) );
+    }
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
       listener: () => {
