@@ -144,5 +144,5 @@ class NLOOperationsScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NumberLineOperationsScreenView', NLOOperationsScreenView );
+numberLineOperations.register( 'NLOOperationsScreenView', NLOOperationsScreenView );
 export default NLOOperationsScreenView;

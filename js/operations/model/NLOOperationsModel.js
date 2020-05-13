@@ -58,5 +58,5 @@ class NLOOperationsModel {
   }
 }
 
-numberLineOperations.register( 'NumberLineOperationsModel', NLOOperationsModel );
+numberLineOperations.register( 'NLOOperationsModel', NLOOperationsModel );
 export default NLOOperationsModel;
