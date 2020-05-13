@@ -137,7 +137,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
             operation.isActiveProperty.value,
             'state error - it should not be possible to update an inactive operation via dragging'
           );
-          operation.amountProperty.set( endpoint.valueProperty.value - this.getOperationStartValue( operation ) );
+          const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
+          operation.amountProperty.set(
+            sign * ( endpoint.valueProperty.value - this.getOperationStartValue( operation ) )
+          );
         }
       } );
     };
