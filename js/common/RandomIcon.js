@@ -159,5 +159,5 @@ class RandomIcon extends Node {
   }
 }
 
-numberLineOperations.register( 'RandomIconFactory', RandomIcon );
+numberLineOperations.register( 'RandomIcon', RandomIcon );
 export default RandomIcon;
