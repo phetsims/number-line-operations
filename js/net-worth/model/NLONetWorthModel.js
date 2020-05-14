@@ -100,10 +100,13 @@ class NLONetWorthModel {
             if ( bag.containsItem( balanceSheetItem ) ) {
               bag.removeItem( balanceSheetItem );
 
-              // update the operation on the number line to reflect this latest transaction
+              // Update the operation on the number line to reflect this latest transaction.  Cycle the inactive state
+              // to trigger the animation in the view.
+              operation.isActiveProperty.set( false );
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
               operation.operationTypeProperty.set( Operations.SUBTRACTION );
               operation.amountProperty.set( balanceSheetItem.value );
+              operation.isActiveProperty.set( true );
             }
           } );
         }
@@ -117,15 +120,12 @@ class NLONetWorthModel {
               addedToBag = true;
 
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
-              if ( !operation.isActiveProperty.value ) {
 
-                // the operation was not active, so activate it
-                operation.isActiveProperty.set( true );
-              }
-
-              // update the operation
+              // Update the operation.  The "active" state is cycled in order to trigger animation in the view.
+              operation.isActiveProperty.set( false );
               operation.operationTypeProperty.set( Operations.ADDITION );
               operation.amountProperty.set( balanceSheetItem.value );
+              operation.isActiveProperty.set( true );
             }
           } );
           if ( !addedToBag ) {

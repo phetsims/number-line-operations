@@ -40,10 +40,10 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       } );
     };
 
-    // create an operation node for each operation on the number line and hook up listeners to keep it in position
+    // create an operation node for each operation on the number line
     numberLine.operations.forEach( ( operation, index ) => {
 
-      // nodes for even-indexed operations go on top of the number line, odd on the bottom
+      // nodes for even-indexed operations go above the number line, odd below
       const operationNodeOptions = index % 2 === 1 ?
         { relativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE } :
         {};

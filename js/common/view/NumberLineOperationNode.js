@@ -37,7 +37,7 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
-const DISTANCE_BETWEEN_LABELS = 3; // in screen coords
+const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
@@ -64,7 +64,10 @@ class NumberLineOperationNode extends Node {
       relativePosition: RelativePositions.ABOVE_NUMBER_LINE,
       operationLabelFont: new PhetFont( 18 ),
       operationDescriptionFont: new PhetFont( 18 ),
-      labelDistanceFromApex: 3
+      labelDistanceFromApex: 3,
+
+      // {boolean} - animate the drawing of the arrow when it transitions from inactive to active
+      animateOnActive: true
     }, options );
 
     super( options );
@@ -95,55 +98,96 @@ class NumberLineOperationNode extends Node {
     let descriptionCenterYWhenLabelVisible;
     let descriptionCenterYWhenLabelNotVisible;
 
-    // the node that looks like a curved arrow that spans from the start point to the endpoint of the operation
-    let arrowNode;
+    // Indicates whether this is armed for animation, meaning that the next inactive-to-active change should be animated
+    // rather than drawn immediately.
+    let armedForAnimation = false;
+
+    operation.isActiveProperty.lazyLink( isActive => {
+      if ( isActive && options.animateOnActive ) {
+        armedForAnimation = true;
+      }
+    } );
+
+    // animation that is in progress, null when none (i.e. most of the time)
+    let inProgressAnimation = null;
+
+    // @private {Path} - the Node that makes up the curved line portion of the arrow, updated when the operation changes
+    this.curvedLineNode = new Path( null, CURVED_LINE_OPTIONS );
+    this.addChild( this.curvedLineNode );
+
+    // @private {ArrowHeadNode} - head of the arrow
+    this.arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, 0 );
+    this.addChild( this.arrowheadNode );
 
     // update the arrow, labels, and label positions with the attributes of the operation change
     const updateMultilink = Property.multilink(
-      [ operation.operationTypeProperty, operation.amountProperty ],
-      () => {
+      [ operation.isActiveProperty, operation.operationTypeProperty, operation.amountProperty ],
+      isActive => {
 
-        // update the arrow node
-        if ( arrowNode ) {
-          this.removeChild( arrowNode );
-        }
-        arrowNode = this.createArrowNode( operation, numberLine, aboveNumberLine );
-        this.addChild( arrowNode );
+        const operationStartLocation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+        const operationEndLocation = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
 
-        // update the operation label
-        const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
-        const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
-        operationLabelTextNode.text = operationChar +
-                                      ' ' +
-                                      unarySignChar +
-                                      Math.abs( operation.amountProperty.value ).toString( 10 );
-        operationLabel.centerX = arrowNode.centerX;
-        if ( aboveNumberLine ) {
-          operationLabel.bottom = arrowNode.top - options.labelDistanceFromApex;
-        }
-        else {
-          operationLabel.top = arrowNode.bottom + options.labelDistanceFromApex;
-        }
+        if ( isActive ) {
 
-        // update the operation description
-        operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-          addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
-                       numberLineOperationsStrings.add :
-                       numberLineOperationsStrings.remove,
-          assetOrDebt: operation.amountProperty.value > 0 ?
-                       numberLineOperationsStrings.asset :
-                       numberLineOperationsStrings.debt,
-          currencyUnits: numberLineOperationsStrings.currencyUnits,
-          value: Math.abs( operation.amountProperty.value )
-        } );
-        descriptionCenterYWhenLabelVisible = aboveNumberLine ?
-                                             operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
-                                             operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
-        descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
-        operationDescription.centerX = arrowNode.centerX;
-        operationDescription.centerY = showLabelProperty.value ?
-                                       descriptionCenterYWhenLabelVisible :
-                                       descriptionCenterYWhenLabelNotVisible;
+          if ( armedForAnimation ) {
+
+            // create an animation to make the change
+            inProgressAnimation = new Animation( {
+              duration: 0.7,
+              from: 0,
+              to: 1,
+              easing: Easing.CUBIC_IN_OUT,
+              setValue: value => {
+                this.updateArrow( operation, numberLine, aboveNumberLine, value );
+              }
+            } );
+            inProgressAnimation.start();
+
+            // clear the flag until another transition occurs
+            armedForAnimation = false;
+          }
+          else {
+
+            // make the change instantaneously
+            this.updateArrow( operation, numberLine, aboveNumberLine, 1 );
+          }
+
+          // update the operation label
+          const operationCenterX = ( operationEndLocation.x - operationStartLocation.x ) / 2;
+          const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
+          const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
+          operationLabelTextNode.text = operationChar +
+                                        ' ' +
+                                        unarySignChar +
+                                        Math.abs( operation.amountProperty.value ).toString( 10 );
+          operationLabel.centerX = operationCenterX;
+          if ( aboveNumberLine ) {
+            operationLabel.bottom = -APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
+          }
+          else {
+            operationLabel.top = APEX_DISTANCE_FROM_NUMBER_LINE + options.labelDistanceFromApex;
+          }
+
+          // update the operation description
+          operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+            addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
+                         numberLineOperationsStrings.add :
+                         numberLineOperationsStrings.remove,
+            assetOrDebt: operation.amountProperty.value > 0 ?
+                         numberLineOperationsStrings.asset :
+                         numberLineOperationsStrings.debt,
+            currencyUnits: numberLineOperationsStrings.currencyUnits,
+            value: Math.abs( operation.amountProperty.value )
+          } );
+          descriptionCenterYWhenLabelVisible = aboveNumberLine ?
+                                               operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
+                                               operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
+          descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
+          operationDescription.centerX = operationCenterX;
+          operationDescription.centerY = showLabelProperty.value ?
+                                         descriptionCenterYWhenLabelVisible :
+                                         descriptionCenterYWhenLabelNotVisible;
+        }
       }
     );
 
@@ -193,46 +237,52 @@ class NumberLineOperationNode extends Node {
    * @param {NumberLineOperation} operation
    * @param {OperationTrackingNumberLine} numberLine
    * @param {boolean} aboveNumberLine
-   * @returns {Node}
+   * @param {number} proportion - proportion to draw, from 0 to 1, used for animation and partial drawing
    * @private
    */
-  createArrowNode( operation, numberLine, aboveNumberLine ) {
-    let curvedLineNode;
-    let arrowheadNode;
+  updateArrow( operation, numberLine, aboveNumberLine, proportion ) {
+
+    let lineShape;
+    let arrowheadAngle;
+    let arrowheadTranslation;
 
     if ( operation.amountProperty.value !== 0 ) {
 
       const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
-      const xDistanceBetweenPoints = numberLine.valueToModelPosition( sign * operation.amountProperty.value ).x -
-                                     numberLine.valueToModelPosition( 0 ).x;
-      const arrowStartPoint = Vector2.ZERO;
-      const arrowEndPoint = new Vector2( xDistanceBetweenPoints, 0 );
+      const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
+                       numberLine.valueToModelPosition( 0 ).x ) * sign;
+      const curvedLineStartPoint = Vector2.ZERO;
+      const curvedLineEndPoint = new Vector2( deltaX, 0 );
 
       // Calculate the radius of the circle that will be used to define this arrow's path using the distance between the
       // points and the distance of the top of the arc from the number line.  I (jbphet) derived this myself because I
       // couldn't easily find a description online, and it appears to work.
-      const radiusOfCircle = Math.pow( arrowStartPoint.distance( arrowEndPoint ), 2 ) /
+      const radiusOfCircle = Math.pow( curvedLineStartPoint.distance( curvedLineEndPoint ), 2 ) /
                              ( 8 * APEX_DISTANCE_FROM_NUMBER_LINE ) +
                              APEX_DISTANCE_FROM_NUMBER_LINE / 2;
 
+      // Calculate the center Y position of the circle.  For the angle calculations to work, the center of the circle
+      // must always be a little above the number line when the line is above and below when below, hence the min and
+      // max operations.
       const circleYPosition = aboveNumberLine ?
-                              arrowStartPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle :
-                              arrowStartPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle;
-      const centerOfCircle = new Vector2( ( arrowStartPoint.x + arrowEndPoint.x ) / 2, circleYPosition );
+                              Math.max( curvedLineStartPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle, 0.1 ) :
+                              Math.min( curvedLineStartPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle, -0.1 );
+      const centerOfCircle = new Vector2( ( curvedLineStartPoint.x + curvedLineEndPoint.x ) / 2, circleYPosition );
 
-      const startAngle = arrowStartPoint.minus( centerOfCircle ).getAngle();
-      const endAngle = arrowEndPoint.minus( centerOfCircle ).getAngle();
+      const startAngle = curvedLineStartPoint.minus( centerOfCircle ).getAngle();
+      const completeArcEndAngle = curvedLineEndPoint.minus( centerOfCircle ).getAngle();
+      const endAngle = startAngle + ( completeArcEndAngle - startAngle ) * proportion;
 
       let drawArcAnticlockwise;
       if ( aboveNumberLine ) {
-        drawArcAnticlockwise = arrowStartPoint.x > arrowEndPoint.x;
+        drawArcAnticlockwise = curvedLineStartPoint.x > curvedLineEndPoint.x;
       }
       else {
-        drawArcAnticlockwise = arrowEndPoint.x > arrowStartPoint.x;
+        drawArcAnticlockwise = curvedLineEndPoint.x > curvedLineStartPoint.x;
       }
 
       // create the arc
-      const arcShape = Shape.arc(
+      lineShape = Shape.arc(
         centerOfCircle.x,
         centerOfCircle.y,
         radiusOfCircle,
@@ -240,30 +290,27 @@ class NumberLineOperationNode extends Node {
         endAngle,
         drawArcAnticlockwise
       );
-      curvedLineNode = new Path( arcShape, CURVED_LINE_OPTIONS );
 
       // Create the arrowhead.  The angle is calculated by using the angle at the starting point and then moving back a
       // bit along the circle to the head of the arrow.
-      let arrowheadAngle;
       const compensationAngle = ARROWHEAD_LENGTH / ( 2 * radiusOfCircle );
-      // TODO: This can be simpler.  Set to point down number line, then add or subtract rotation amount.
       if ( aboveNumberLine ) {
-        if ( arrowStartPoint.x > arrowEndPoint.x ) {
+        if ( curvedLineStartPoint.x > curvedLineEndPoint.x ) {
           arrowheadAngle = Math.PI - startAngle + compensationAngle;
         }
         else {
-          arrowheadAngle = Math.PI + endAngle - compensationAngle;
+          arrowheadAngle = Math.PI + completeArcEndAngle - compensationAngle;
         }
       }
       else {
-        if ( arrowStartPoint.x > arrowEndPoint.x ) {
+        if ( curvedLineStartPoint.x > curvedLineEndPoint.x ) {
           arrowheadAngle = -startAngle - compensationAngle;
         }
         else {
-          arrowheadAngle = endAngle + compensationAngle;
+          arrowheadAngle = completeArcEndAngle + compensationAngle;
         }
       }
-      arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, arrowheadAngle, { translation: arrowEndPoint } );
+      arrowheadTranslation = curvedLineEndPoint;
     }
     else {
 
@@ -284,39 +331,41 @@ class NumberLineOperationNode extends Node {
         loopStartAndEndPoint.x + 0.6 * APEX_DISTANCE_FROM_NUMBER_LINE,
         loopStartAndEndPoint.y + yAddFactor
       );
-      const loopShape = new Shape()
+      lineShape = new Shape()
         .moveToPoint( adjustedStartPoint )
         .cubicCurveToPoint( controlPoint1, controlPoint2, adjustedEndPoint );
-
-      curvedLineNode = new Path( loopShape, CURVED_LINE_OPTIONS );
 
       // The formula for the arrowhead angle was determined through trial and error, which isn't a great way to do it
       // because it may not work if significant changes are made to the shape of the loop, but evaluating the Bezier
       // curve for this short distance proved difficult.  This may require adjustment if the size or orientations of the
       // loop changes.
-      let arrowheadAngle;
       const multiplier = 0.02;
+      const loopWidth = lineShape.bounds.width;
       if ( operation.operationTypeProperty.value === Operations.ADDITION ) {
         if ( aboveNumberLine ) {
-          arrowheadAngle = Math.PI + curvedLineNode.width * multiplier;
+          arrowheadAngle = Math.PI + loopWidth * multiplier;
         }
         else {
-          arrowheadAngle = -curvedLineNode.width * multiplier;
+          arrowheadAngle = -loopWidth * multiplier;
         }
       }
       else {
         if ( aboveNumberLine ) {
-          arrowheadAngle = Math.PI - curvedLineNode.width * multiplier;
+          arrowheadAngle = Math.PI - loopWidth * multiplier;
         }
         else {
-          arrowheadAngle = curvedLineNode.width * multiplier;
+          arrowheadAngle = loopWidth * multiplier;
         }
       }
-
-      arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, arrowheadAngle, { translation: loopStartAndEndPoint } );
+      arrowheadTranslation = loopStartAndEndPoint;
     }
 
-    return new Node( { children: [ curvedLineNode, arrowheadNode ] } );
+    this.curvedLineNode.shape = lineShape;
+    this.arrowheadNode.setRotation( arrowheadAngle );
+    this.arrowheadNode.translation = arrowheadTranslation;
+
+    // only show the arrowhead for full or nearly full depictions of the operation
+    this.arrowheadNode.visible = proportion > 0.95;
   }
 
   /**
