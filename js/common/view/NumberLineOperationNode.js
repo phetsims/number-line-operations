@@ -95,8 +95,8 @@ class NumberLineOperationNode extends Node {
     this.addChild( operationDescription );
 
     // variables used to position the operation description, since it needs to move based on whether the label is visible
-    let descriptionCenterYWhenLabelVisible;
-    let descriptionCenterYWhenLabelNotVisible;
+    let descriptionCenterYWhenLabelVisible = 0;
+    let descriptionCenterYWhenLabelNotVisible = 0;
 
     // Indicates whether this is armed for animation, meaning that the next inactive-to-active change should be animated
     // rather than drawn immediately.
@@ -127,21 +127,28 @@ class NumberLineOperationNode extends Node {
         const operationStartLocation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
         const operationEndLocation = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
 
+        // stop any animation that was in progress
+        if ( inProgressAnimation ) {
+          inProgressAnimation.stop();
+          inProgressAnimation = null;
+        }
+
         if ( isActive ) {
 
-          if ( armedForAnimation ) {
+          if ( armedForAnimation && operationStartLocation.distance( operationEndLocation ) > 0 ) {
 
             // create an animation to make the change
             inProgressAnimation = new Animation( {
-              duration: 0.7,
+              duration: 0.75, // in seconds, empirically determined
               from: 0,
               to: 1,
-              easing: Easing.CUBIC_IN_OUT,
+              easing: Easing.CUBIC_OUT,
               setValue: value => {
                 this.updateArrow( operation, numberLine, aboveNumberLine, value );
               }
             } );
             inProgressAnimation.start();
+            inProgressAnimation.finishEmitter.addListener( () => { inProgressAnimation = null; } );
 
             // clear the flag until another transition occurs
             armedForAnimation = false;
@@ -196,12 +203,12 @@ class NumberLineOperationNode extends Node {
     let descriptionMovementAnimation = null;
     const commonAnimationOptions = {
       duration: 0.25,
-      easing: Easing.CUBIC_IN_OUT,
+      easing: Easing.LINEAR,
       setValue: value => { operationDescription.centerY = value; }
     };
     showLabelProperty.lazyLink( labelVisible => {
 
-      // stop any in-progress animations
+      // stop any in-progress animation of the label position
       descriptionMovementAnimation && descriptionMovementAnimation.stop();
 
       if ( labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelVisible ) {
@@ -365,7 +372,7 @@ class NumberLineOperationNode extends Node {
     this.arrowheadNode.translation = arrowheadTranslation;
 
     // only show the arrowhead for full or nearly full depictions of the operation
-    this.arrowheadNode.visible = proportion > 0.95;
+    this.arrowheadNode.visible = proportion > 0.9;
   }
 
   /**
