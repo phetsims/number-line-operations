@@ -98,7 +98,8 @@ class NLOOperationsScreenView extends ScreenView {
     // carousel with the operation entry controls
     const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
       right: this.layoutBounds.maxX - 35,
-      top: 20
+      top: 20,
+      entryControl1Options: {}
     } );
     this.addChild( operationEntryCarousel );
 
