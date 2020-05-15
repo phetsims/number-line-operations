@@ -21,8 +21,8 @@ import numberLineOperations from '../../numberLineOperations.js';
 // constants
 const NUMBER_LINE_RANGES = [
   new Range( -10, 10 ),
-  new Range( -100, 100 ),
-  new Range( -1000, 1000 )
+  new Range( -30, 30 ),
+  new Range( -100, 100 )
 ];
 const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
 const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX - 18; // matches design doc layout
