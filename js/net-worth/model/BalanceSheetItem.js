@@ -11,9 +11,9 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
+import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import Animation from '../../../../twixt/js/Animation.js';
 
 // constants
 const AVERAGE_ANIMATION_SPEED = 1000; // screen coordinates per second
@@ -76,7 +76,7 @@ class BalanceSheetItem {
   }
 
   /**
-   * go immediately to the specified location (and cancel any animations that were in progress)
+   * go immediately to the specified position (and cancel any animations that were in progress)
    * @param {Vector2} position
    */
   teleportTo( position ) {

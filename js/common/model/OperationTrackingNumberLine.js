@@ -20,7 +20,7 @@ import Operations from './Operations.js';
 class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
-   * {Vector2} zeroPosition - the location in model space of the zero point on the number line
+   * {Vector2} zeroPosition - the position in model space of the zero point on the number line
    * {NumberProperty} startingValueProperty - the starting value from which all operations will build
    * {Object} [options]
    * @public

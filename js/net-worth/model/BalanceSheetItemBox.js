@@ -46,7 +46,7 @@ class BalanceSheetItemBox {
   }
 
   /**
-   * return the provided item to its original location within this box
+   * return the provided item to its original position within this box
    * @param {BalanceSheetItem }item
    * @param {boolean} animate
    */
