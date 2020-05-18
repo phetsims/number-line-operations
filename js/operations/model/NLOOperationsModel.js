@@ -6,7 +6,7 @@
 
 import Range from '../../../../dot/js/Range.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
+import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 

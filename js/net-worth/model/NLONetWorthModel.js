@@ -10,7 +10,7 @@ import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Operations from '../../common/model/Operations.js';
-import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
+import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import BalanceSheetItem from './BalanceSheetItem.js';

@@ -14,7 +14,7 @@ import PointController from '../../../../number-line-integers/js/common/model/Po
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLIne.js';
+import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
