@@ -70,6 +70,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
     // monitor the properties of the number line that may affect the operation node positions and reposition when needed
     numberLine.startingValueProperty.link( updateOperationNodePositions );
     numberLine.centerPositionProperty.link( updateOperationNodePositions );
+    numberLine.displayedRangeProperty.link( updateOperationNodePositions );
   }
 }
 

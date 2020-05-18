@@ -119,9 +119,14 @@ class NumberLineOperationNode extends Node {
     this.arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, 0 );
     this.addChild( this.arrowheadNode );
 
-    // update the arrow, labels, and label positions with the attributes of the operation change
+    // update the arrow, labels, and label positions as the attributes of the operation and number line change
     const updateMultilink = Property.multilink(
-      [ operation.isActiveProperty, operation.operationTypeProperty, operation.amountProperty ],
+      [
+        operation.isActiveProperty,
+        operation.operationTypeProperty,
+        operation.amountProperty,
+        numberLine.displayedRangeProperty
+      ],
       isActive => {
 
         const operationStartPosition = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
