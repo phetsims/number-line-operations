@@ -1,12 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
 import Property from '../../../../axon/js/Property.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
-import Easing from '../../../../twixt/js/Easing.js';
-import Animation from '../../../../twixt/js/Animation.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
@@ -15,6 +13,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Animation from '../../../../twixt/js/Animation.js';
+import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import Operations from '../model/Operations.js';
@@ -124,8 +124,8 @@ class NumberLineOperationNode extends Node {
       [ operation.isActiveProperty, operation.operationTypeProperty, operation.amountProperty ],
       isActive => {
 
-        const operationStartLocation = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
-        const operationEndLocation = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
+        const operationStartPosition = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+        const operationEndPosition = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
 
         // stop any animation that was in progress
         if ( inProgressAnimation ) {
@@ -135,7 +135,7 @@ class NumberLineOperationNode extends Node {
 
         if ( isActive ) {
 
-          if ( armedForAnimation && operationStartLocation.distance( operationEndLocation ) > 0 ) {
+          if ( armedForAnimation && operationStartPosition.distance( operationEndPosition ) > 0 ) {
 
             // create an animation to make the change
             inProgressAnimation = new Animation( {
@@ -160,7 +160,7 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation label
-          const operationCenterX = ( operationEndLocation.x - operationStartLocation.x ) / 2;
+          const operationCenterX = ( operationEndPosition.x - operationStartPosition.x ) / 2;
           const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
           const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
           operationLabelTextNode.text = operationChar +
