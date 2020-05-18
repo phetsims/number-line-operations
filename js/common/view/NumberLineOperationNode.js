@@ -251,20 +251,21 @@ class NumberLineOperationNode extends Node {
 
     let lineShape;
     let arrowheadAngle;
-    let arrowheadTranslation;
 
-    if ( operation.amountProperty.value !== 0 ) {
+    // calculate the start and end points of the curved line
+    const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
+    const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
+                     numberLine.valueToModelPosition( 0 ).x ) * sign;
+    const startPoint = Vector2.ZERO;
+    const endPoint = new Vector2( deltaX, 0 );
 
-      const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
-      const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
-                       numberLine.valueToModelPosition( 0 ).x ) * sign;
-      const curvedLineStartPoint = Vector2.ZERO;
-      const curvedLineEndPoint = new Vector2( deltaX, 0 );
+    if ( Math.abs( deltaX / 2 ) >= APEX_DISTANCE_FROM_NUMBER_LINE ) {
 
-      // Calculate the radius of the circle that will be used to define this arrow's path using the distance between the
-      // points and the distance of the top of the arc from the number line.  I (jbphet) derived this myself because I
-      // couldn't easily find a description online, and it appears to work.
-      const radiusOfCircle = Math.pow( curvedLineStartPoint.distance( curvedLineEndPoint ), 2 ) /
+      // For this case, a circle is used for the underlying shape.  Calculate the radius and center position of the
+      // circle such that the apex will be at the needed height and the circle will intersect the number line at the
+      // start and end points.  I (jbphet) derived this myself because I couldn't easily find a description online, and
+      // it seems to work.
+      const radiusOfCircle = Math.pow( startPoint.distance( endPoint ), 2 ) /
                              ( 8 * APEX_DISTANCE_FROM_NUMBER_LINE ) +
                              APEX_DISTANCE_FROM_NUMBER_LINE / 2;
 
@@ -272,20 +273,20 @@ class NumberLineOperationNode extends Node {
       // must always be a little above the number line when the line is above and below when below, hence the min and
       // max operations.
       const circleYPosition = aboveNumberLine ?
-                              Math.max( curvedLineStartPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle, 0.1 ) :
-                              Math.min( curvedLineStartPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle, -0.1 );
-      const centerOfCircle = new Vector2( ( curvedLineStartPoint.x + curvedLineEndPoint.x ) / 2, circleYPosition );
+                              Math.max( startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle, 0.1 ) :
+                              Math.min( startPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle, -0.1 );
+      const centerOfCircle = new Vector2( ( startPoint.x + endPoint.x ) / 2, circleYPosition );
 
-      const startAngle = curvedLineStartPoint.minus( centerOfCircle ).getAngle();
-      const completeArcEndAngle = curvedLineEndPoint.minus( centerOfCircle ).getAngle();
+      const startAngle = startPoint.minus( centerOfCircle ).getAngle();
+      const completeArcEndAngle = endPoint.minus( centerOfCircle ).getAngle();
       const endAngle = startAngle + ( completeArcEndAngle - startAngle ) * proportion;
 
       let drawArcAnticlockwise;
       if ( aboveNumberLine ) {
-        drawArcAnticlockwise = curvedLineStartPoint.x > curvedLineEndPoint.x;
+        drawArcAnticlockwise = startPoint.x > endPoint.x;
       }
       else {
-        drawArcAnticlockwise = curvedLineEndPoint.x > curvedLineStartPoint.x;
+        drawArcAnticlockwise = endPoint.x > startPoint.x;
       }
 
       // create the arc
@@ -298,11 +299,11 @@ class NumberLineOperationNode extends Node {
         drawArcAnticlockwise
       );
 
-      // Create the arrowhead.  The angle is calculated by using the angle at the starting point and then moving back a
-      // bit along the circle to the head of the arrow.
+      // Calculate the angle of the arrowhead.  This is calculated by using the angle at the starting point and then
+      // moving back a bit along the circle to the head of the arrow.
       const compensationAngle = ARROWHEAD_LENGTH / ( 2 * radiusOfCircle );
       if ( aboveNumberLine ) {
-        if ( curvedLineStartPoint.x > curvedLineEndPoint.x ) {
+        if ( deltaX < 0 ) {
           arrowheadAngle = Math.PI - startAngle + compensationAngle;
         }
         else {
@@ -310,32 +311,87 @@ class NumberLineOperationNode extends Node {
         }
       }
       else {
-        if ( curvedLineStartPoint.x > curvedLineEndPoint.x ) {
+        if ( deltaX < 0 ) {
           arrowheadAngle = -startAngle - compensationAngle;
         }
         else {
           arrowheadAngle = completeArcEndAngle + compensationAngle;
         }
       }
-      arrowheadTranslation = curvedLineEndPoint;
+    }
+    else if ( Math.abs( deltaX ) > 0 ) {
+
+      // In this case, the distance between the start and end points is less than the intended apex of the curve, so an
+      // elliptical arc is used rather than a circular one.
+
+      // parameters of the elliptical arc
+      const radiusX = Math.abs( deltaX / 2 );
+      const radiusY = APEX_DISTANCE_FROM_NUMBER_LINE;
+      let startAngle;
+      let endAngle;
+      let anticlockwise;
+
+      // adjustment angle for the arrowhead - This formula was empirically determined, though a true derivation may be
+      // possible.  I (jbphet) tried for about 1/2, then tried this and it worked, so it was left at this.
+      const arrowheadAngleFromPerpendicular = radiusX / radiusY * Math.PI * 0.1;
+      if ( aboveNumberLine ) {
+        if ( deltaX > 0 ) {
+          startAngle = -Math.PI;
+          endAngle = startAngle + ( proportion * Math.PI );
+          anticlockwise = false;
+          arrowheadAngle = Math.PI - arrowheadAngleFromPerpendicular;
+        }
+        else {
+          startAngle = 0;
+          endAngle = -proportion * Math.PI;
+          anticlockwise = true;
+          arrowheadAngle = Math.PI + arrowheadAngleFromPerpendicular;
+        }
+      }
+      else {
+        if ( deltaX > 0 ) {
+          startAngle = Math.PI;
+          endAngle = startAngle - ( proportion * Math.PI );
+          anticlockwise = true;
+          arrowheadAngle = arrowheadAngleFromPerpendicular;
+        }
+        else {
+          startAngle = 0;
+          endAngle = proportion * Math.PI;
+          anticlockwise = false;
+          arrowheadAngle = -arrowheadAngleFromPerpendicular;
+        }
+      }
+
+      lineShape = new Shape().ellipticalArc(
+        deltaX / 2,
+        0,
+        radiusX,
+        radiusY,
+        0,
+        startAngle,
+        endAngle,
+        anticlockwise
+      );
     }
     else {
 
       // The amount of the operation is zero, so the curved line will be a loop that starts and ends at a point.
-      // However, add shapes were produced when trying to loop to and from the exact same point, so there are some
+      // However, odd shapes were produced when trying to loop to and from the exact same point, so there are some
       // small offsets used in the X direction.
       // TODO: follow up with JO as to whether the need for adjustment is actually a bug
       const loopStartAndEndPoint = Vector2.ZERO;
       const adjustmentAmount = 1; // in screen coordinates
       const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
       const adjustedEndPoint = loopStartAndEndPoint.plusXY( adjustmentAmount / 2, 0 );
-      const yAddFactor = APEX_DISTANCE_FROM_NUMBER_LINE * ( aboveNumberLine ? -2 : 2 );
+      const yAddFactor = APEX_DISTANCE_FROM_NUMBER_LINE * ( aboveNumberLine ? -1.5 : 1.5 ); // empirical for desired height
+      const controlPointHeightMultiplier = 0.6; // empirically determined to get the desired loop width
       const controlPoint1 = new Vector2(
-        loopStartAndEndPoint.x - 0.6 * APEX_DISTANCE_FROM_NUMBER_LINE,
+        loopStartAndEndPoint.x - controlPointHeightMultiplier * APEX_DISTANCE_FROM_NUMBER_LINE,
         loopStartAndEndPoint.y + yAddFactor
       );
       const controlPoint2 = new Vector2(
-        loopStartAndEndPoint.x + 0.6 * APEX_DISTANCE_FROM_NUMBER_LINE,
+        loopStartAndEndPoint.x + controlPointHeightMultiplier * APEX_DISTANCE_FROM_NUMBER_LINE,
         loopStartAndEndPoint.y + yAddFactor
       );
       lineShape = new Shape()
@@ -346,7 +402,7 @@ class NumberLineOperationNode extends Node {
       // because it may not work if significant changes are made to the shape of the loop, but evaluating the Bezier
       // curve for this short distance proved difficult.  This may require adjustment if the size or orientations of the
       // loop changes.
-      const multiplier = 0.02;
+      const multiplier = 0.025;
       const loopWidth = lineShape.bounds.width;
       if ( operation.operationTypeProperty.value === Operations.ADDITION ) {
         if ( aboveNumberLine ) {
@@ -364,12 +420,11 @@ class NumberLineOperationNode extends Node {
           arrowheadAngle = loopWidth * multiplier;
         }
       }
-      arrowheadTranslation = loopStartAndEndPoint;
     }
 
     this.curvedLineNode.shape = lineShape;
     this.arrowheadNode.setRotation( arrowheadAngle );
-    this.arrowheadNode.translation = arrowheadTranslation;
+    this.arrowheadNode.translation = endPoint;
 
     // only show the arrowhead for full or nearly full depictions of the operation
     this.arrowheadNode.visible = proportion > 0.9;
