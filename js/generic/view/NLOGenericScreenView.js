@@ -5,6 +5,7 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
 import PointControllerNode from '../../../../number-line-integers/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -13,10 +14,8 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import Checkbox from '../../../../sun/js/Checkbox.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import mockupImage from '../../../images/generic-screen-mockup_png.js';
@@ -73,25 +72,22 @@ class NLOGenericScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new Checkbox(
-        new Text( numberLineOperationsStrings.pointLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.primaryNumberLine.showPointLabelsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.pointLabels,
+        model.primaryNumberLine.showPointLabelsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.primaryNumberLine.showOperationLabelsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.operationLabels,
+        model.primaryNumberLine.showOperationLabelsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.primaryNumberLine.showTickMarksProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.tickMarks,
+        model.primaryNumberLine.showTickMarksProperty
       )
     ];
     const checkboxGroup = new VBox( {
       children: checkboxes,
-      spacing: 13,
+      spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
 
       // position - empirically determined to look decent

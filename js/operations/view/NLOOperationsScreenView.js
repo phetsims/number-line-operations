@@ -6,6 +6,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -13,7 +14,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Checkbox from '../../../../sun/js/Checkbox.js';
 import Operations from '../../common/model/Operations.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
@@ -60,30 +60,26 @@ class NLOOperationsScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new Checkbox(
-        new Text( numberLineOperationsStrings.pointLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showPointLabelsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.pointLabels,
+        model.numberLine.showPointLabelsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showOperationLabelsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.operationLabels,
+        model.numberLine.showOperationLabelsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.operationDescription, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showOperationDescriptionsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.operationDescription,
+        model.numberLine.showOperationDescriptionsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showTickMarksProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.tickMarks,
+        model.numberLine.showTickMarksProperty
       )
     ];
     const checkboxGroup = new VBox( {
       children: checkboxes,
-      spacing: 18,
+      spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
 
       // position - empirically determined to look decent

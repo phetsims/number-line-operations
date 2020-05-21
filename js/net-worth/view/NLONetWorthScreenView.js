@@ -1,16 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
-/**
- * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
- * @author John Blanco
- */
-
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Checkbox from '../../../../sun/js/Checkbox.js';
 import mockupImage from '../../../images/net-worth-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
@@ -23,6 +17,11 @@ import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 import NetWorthAccordionBox from './NetWorthAccordionBox.js';
 import NetWorthPiggyBankNode from './NetWorthPiggyBankNode.js';
 
+/**
+ * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
+ *
+ * @author John Blanco
+ */
 class NLONetWorthScreenView extends ScreenView {
 
   /**
@@ -47,25 +46,22 @@ class NLONetWorthScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new Checkbox(
-        new Text( numberLineOperationsStrings.operationLabels, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showOperationLabelsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.operationLabels,
+        model.numberLine.showOperationLabelsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.operationDescription, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showOperationDescriptionsProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.operationDescription,
+        model.numberLine.showOperationDescriptionsProperty
       ),
-      new Checkbox(
-        new Text( numberLineOperationsStrings.tickMarks, NLOConstants.CHECKBOX_TEXT_OPTIONS ),
-        model.numberLine.showTickMarksProperty,
-        NLOConstants.CHECKBOX_OPTIONS
+      new NLCheckbox(
+        numberLineOperationsStrings.tickMarks,
+        model.numberLine.showTickMarksProperty
       )
     ];
     const checkboxGroup = new VBox( {
       children: checkboxes,
-      spacing: 11,
+      spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
 
       // position - empirically determined to look decent
