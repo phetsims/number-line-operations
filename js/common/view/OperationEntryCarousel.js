@@ -63,6 +63,9 @@ class OperationEntryCarousel extends Node {
 
     super( merge( { children: [ operationEntryCarousel, pageControl ] }, options ) );
 
+    // @public {NumberProperty} (read-only) - make the page number visible to outside observers
+    this.selectedPageProperty = operationEntryCarousel.pageNumberProperty;
+
     // @private - make these into properties so that they can be reset
     this.operationEntryControls = operationEntryControls;
     this.operationEntryCarousel = operationEntryCarousel;

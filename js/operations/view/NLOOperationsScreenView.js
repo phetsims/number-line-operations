@@ -4,7 +4,9 @@
  * @author John Blanco
  */
 
+import Property from '../../../../axon/js/Property.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -12,6 +14,7 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
+import Operations from '../../common/model/Operations.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
@@ -25,6 +28,7 @@ class NLOOperationsScreenView extends ScreenView {
 
   /**
    * @param {NLOOperationsModel} model
+   * @param {tandem} tandem
    */
   constructor( model, tandem ) {
 
@@ -102,6 +106,52 @@ class NLOOperationsScreenView extends ScreenView {
       entryControl1Options: {}
     } );
     this.addChild( operationEntryCarousel );
+
+    // textual description of the current potential operation shown in the operationEntryCarousel
+    const potentialOperationDescription = new Text( 'add asset of $300', {
+      font: new PhetFont( 22 ),
+      centerX: this.layoutBounds.centerX,
+      bottom: numericalExpressionAccordionBox.bottom + 55
+    } );
+    this.addChild( potentialOperationDescription );
+
+    // update the potential operation description as changes occur
+    assert && assert(
+      model.numberLine.operations.length === 2,
+      'two operations expected, found ' + model.numberLine.operations.length
+    );
+    Property.multilink(
+      [
+        operationEntryCarousel.selectedPageProperty,
+        model.numberLine.operations[ 0 ].isActiveProperty,
+        model.numberLine.operations[ 0 ].amountProperty,
+        model.numberLine.operations[ 0 ].operationTypeProperty,
+        model.numberLine.operations[ 1 ].isActiveProperty,
+        model.numberLine.operations[ 1 ].amountProperty,
+        model.numberLine.operations[ 1 ].operationTypeProperty
+      ],
+      page => {
+        const selectedOperation = model.numberLine.operations[ page ];
+        potentialOperationDescription.visible = !selectedOperation.isActiveProperty.value;
+        if ( potentialOperationDescription.visible ) {
+
+          // fill in the text based on the attributes of the operation
+          potentialOperationDescription.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+            addOrRemove: selectedOperation.operationTypeProperty.value === Operations.ADDITION ?
+                         numberLineOperationsStrings.add :
+                         numberLineOperationsStrings.remove,
+            assetOrDebt: selectedOperation.amountProperty.value > 0 ?
+                         numberLineOperationsStrings.asset :
+                         numberLineOperationsStrings.debt,
+            currencyUnits: numberLineOperationsStrings.currencyUnits,
+            value: Math.abs( selectedOperation.amountProperty.value )
+          } );
+
+          // re-center
+          potentialOperationDescription.centerX = this.layoutBounds.centerX;
+        }
+      }
+    );
 
     // erase button
     const eraserButton = new EraserButton( {
