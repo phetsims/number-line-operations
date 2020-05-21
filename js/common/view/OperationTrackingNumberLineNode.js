@@ -22,8 +22,9 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     options = merge( {
 
-      // this is here essentially as documentation, so that clients know options are passed through
+      // this is here as documentation so that clients know how options are passed through to the operation nodes
       numberLineOperationNodeOptions: {}
+
     }, options );
 
     super( numberLine, options );

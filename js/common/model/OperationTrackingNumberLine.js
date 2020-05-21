@@ -39,7 +39,13 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       startingPointColor: Color.BLUE,
 
       // {Color} - color used for endpoints of operations
-      endpointColor: Color.BLUE
+      endpointColor: Color.BLUE,
+
+      // {boolean} - whether operation labels are initially visible, can be changed later via the property
+      operationLabelsInitiallyVisible: true,
+
+      // {boolean} - whether descriptions are initially visible, can be changed later via the property
+      operationDescriptionsInitiallyVisible: true
 
     }, options );
 
@@ -58,10 +64,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     }
 
     // @public (read-write)
-    this.showOperationLabelsProperty = new BooleanProperty( true );
+    this.showOperationLabelsProperty = new BooleanProperty( options.operationLabelsInitiallyVisible );
 
     // @public (read-write)
-    this.showOperationDescriptionsProperty = new BooleanProperty( true );
+    this.showOperationDescriptionsProperty = new BooleanProperty( options.operationDescriptionsInitiallyVisible );
 
     // @public (read-only) {NumberLineOperation[] - An array of operations that this number line will track.  The order
     // matters in how changes are processed and how things are portrayed in the view, which is one of the main reasons

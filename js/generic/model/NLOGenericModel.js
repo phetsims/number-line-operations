@@ -55,6 +55,7 @@ class NLOGenericModel {
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
+        operationDescriptionsInitiallyVisible: false,
         widthInModelSpace: NUMBER_LINE_WIDTH
       }
     );
@@ -105,6 +106,7 @@ class NLOGenericModel {
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
+        operationDescriptionsInitiallyVisible: false,
         startingPointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
         endpointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
         widthInModelSpace: NUMBER_LINE_WIDTH
