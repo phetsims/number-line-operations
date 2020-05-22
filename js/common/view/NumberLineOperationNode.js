@@ -38,6 +38,7 @@ const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
+const RENDERING_SCOPE = Enumeration.byKeys( [ 'ALL', 'PARTIAL', 'NONE' ] );
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
@@ -74,6 +75,10 @@ class NumberLineOperationNode extends Node {
 
     // hook up the visibility attribute
     const visibilityLinkage = operation.isActiveProperty.linkAttribute( this, 'visible' );
+
+    // identify the point from which this operation node will originate
+    const operationNumber = numberLine.operations.indexOf( operation );
+    const originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
 
     // convenience var
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
@@ -125,12 +130,31 @@ class NumberLineOperationNode extends Node {
         operation.isActiveProperty,
         operation.operationTypeProperty,
         operation.amountProperty,
-        numberLine.displayedRangeProperty
+        numberLine.displayedRangeProperty,
+        numberLine.centerPositionProperty,
+        originPoint.valueProperty
       ],
       isActive => {
 
-        const operationStartPosition = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
-        const operationEndPosition = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
+        // Figure out whether this operation is entirely within the displayed range of the number line, partially in range,
+        // or entirely out of range.  This will be important for how the rendering proceeds.
+        let rendingScope;
+        const displayedRange = numberLine.displayedRangeProperty.value;
+        const operationStartValue = originPoint.valueProperty.value;
+        const operationEndValue = numberLine.getOperationResult( operation );
+        if ( displayedRange.contains( operationStartValue ) && displayedRange.contains( operationEndValue ) ) {
+          rendingScope = RENDERING_SCOPE.ALL;
+        }
+        else if ( !displayedRange.contains( operationStartValue ) && !displayedRange.contains( operationEndValue ) ) {
+          rendingScope = RENDERING_SCOPE.NONE;
+        }
+        else {
+          rendingScope = RENDERING_SCOPE.PARTIAL;
+        }
+        console.log( 'rendingScope = ' + rendingScope );
+
+        const startPosition = numberLine.valueToModelPosition( operationStartValue );
+        const endPosition = numberLine.valueToModelPosition( operationEndValue );
 
         // stop any animation that was in progress
         if ( inProgressAnimation ) {
@@ -140,7 +164,7 @@ class NumberLineOperationNode extends Node {
 
         if ( isActive ) {
 
-          if ( armedForAnimation && operationStartPosition.distance( operationEndPosition ) > 0 ) {
+          if ( armedForAnimation && startPosition.distance( endPosition ) > 0 ) {
 
             // create an animation to make the change
             inProgressAnimation = new Animation( {
@@ -148,8 +172,8 @@ class NumberLineOperationNode extends Node {
               from: 0,
               to: 1,
               easing: Easing.CUBIC_OUT,
-              setValue: value => {
-                this.updateArrow( operation, numberLine, aboveNumberLine, value );
+              setValue: proportionToDraw => {
+                this.updateArrow( operation, numberLine, aboveNumberLine, proportionToDraw );
               }
             } );
             inProgressAnimation.start();
@@ -165,7 +189,7 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation label
-          const operationCenterX = ( operationEndPosition.x - operationStartPosition.x ) / 2;
+          const operationCenterX = ( startPosition.x + endPosition.x ) / 2;
           const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
           const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
           operationLabelTextNode.text = operationChar +
@@ -174,10 +198,10 @@ class NumberLineOperationNode extends Node {
                                         Math.abs( operation.amountProperty.value ).toString( 10 );
           operationLabel.centerX = operationCenterX;
           if ( aboveNumberLine ) {
-            operationLabel.bottom = -APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
+            operationLabel.bottom = startPosition.y - APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
           }
           else {
-            operationLabel.top = APEX_DISTANCE_FROM_NUMBER_LINE + options.labelDistanceFromApex;
+            operationLabel.top = startPosition.y + APEX_DISTANCE_FROM_NUMBER_LINE + options.labelDistanceFromApex;
           }
 
           // update the operation description
@@ -217,7 +241,6 @@ class NumberLineOperationNode extends Node {
       descriptionMovementAnimation && descriptionMovementAnimation.stop();
 
       if ( labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelVisible ) {
-
         descriptionMovementAnimation = new Animation( merge( {
           from: operationDescription.centerY,
           to: descriptionCenterYWhenLabelVisible
@@ -261,8 +284,9 @@ class NumberLineOperationNode extends Node {
     const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
     const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
                      numberLine.valueToModelPosition( 0 ).x ) * sign;
-    const startPoint = Vector2.ZERO;
-    const endPoint = new Vector2( deltaX, 0 );
+
+    const startPoint = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
+    const endPoint = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
 
     if ( Math.abs( deltaX / 2 ) >= APEX_DISTANCE_FROM_NUMBER_LINE ) {
 
@@ -278,8 +302,8 @@ class NumberLineOperationNode extends Node {
       // must always be a little above the number line when the line is above and below when below, hence the min and
       // max operations.
       const circleYPosition = aboveNumberLine ?
-                              Math.max( startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle, 0.1 ) :
-                              Math.min( startPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle, -0.1 );
+                              startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle :
+                              startPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle;
       const centerOfCircle = new Vector2( ( startPoint.x + endPoint.x ) / 2, circleYPosition );
 
       const startAngle = startPoint.minus( centerOfCircle ).getAngle();
@@ -369,8 +393,8 @@ class NumberLineOperationNode extends Node {
       }
 
       lineShape = new Shape().ellipticalArc(
-        deltaX / 2,
-        0,
+        startPoint.x + deltaX / 2,
+        startPoint.y,
         radiusX,
         radiusY,
         0,
@@ -385,7 +409,7 @@ class NumberLineOperationNode extends Node {
       // However, odd shapes were produced when trying to loop to and from the exact same point, so there are some
       // small offsets used in the X direction.
       // TODO: follow up with JO as to whether the need for adjustment is actually a bug
-      const loopStartAndEndPoint = Vector2.ZERO;
+      const loopStartAndEndPoint = startPoint;
       const adjustmentAmount = 1; // in screen coordinates
       const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
       const adjustedEndPoint = loopStartAndEndPoint.plusXY( adjustmentAmount / 2, 0 );

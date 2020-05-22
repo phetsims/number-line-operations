@@ -117,7 +117,13 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         }
         else {
 
-          // the operation is inactive, remove the associated endpoint (if it hasn't already been removed)
+          // For an inactive operation, set the endpoint's value at what is essentially the starting point, like it was
+          // an operation with an amount of zero.
+          endpoint.valueProperty.set( index === 0 ?
+                                      this.startingValueProperty.value :
+                                      this.endpoints[ index - 1 ].valueProperty.value );
+
+          // Remove the associated endpoint if it's on the number line.
           if ( this.hasPoint( endpoint ) ) {
             this.removePoint( endpoint );
           }
