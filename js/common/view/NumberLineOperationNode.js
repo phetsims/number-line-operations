@@ -73,9 +73,6 @@ class NumberLineOperationNode extends Node {
 
     super( options );
 
-    // hook up the visibility attribute
-    const visibilityLinkage = operation.isActiveProperty.linkAttribute( this, 'visible' );
-
     // identify the point from which this operation node will originate
     const operationNumber = numberLine.operations.indexOf( operation );
     const originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
@@ -138,31 +135,31 @@ class NumberLineOperationNode extends Node {
 
         // Figure out whether this operation is entirely within the displayed range of the number line, partially in range,
         // or entirely out of range.  This will be important for how the rendering proceeds.
-        let rendingScope;
+        let renderingScope;
         const displayedRange = numberLine.displayedRangeProperty.value;
         const operationStartValue = originPoint.valueProperty.value;
         const operationEndValue = numberLine.getOperationResult( operation );
         if ( displayedRange.contains( operationStartValue ) && displayedRange.contains( operationEndValue ) ) {
-          rendingScope = RENDERING_SCOPE.ALL;
+          renderingScope = RENDERING_SCOPE.ALL;
         }
         else if ( !displayedRange.contains( operationStartValue ) && !displayedRange.contains( operationEndValue ) ) {
-          rendingScope = RENDERING_SCOPE.NONE;
+          renderingScope = RENDERING_SCOPE.NONE;
         }
         else {
-          rendingScope = RENDERING_SCOPE.PARTIAL;
+          renderingScope = RENDERING_SCOPE.PARTIAL;
         }
-        console.log( 'rendingScope = ' + rendingScope );
+        console.log( 'renderingScope = ' + renderingScope );
 
-        const startPosition = numberLine.valueToModelPosition( operationStartValue );
-        const endPosition = numberLine.valueToModelPosition( operationEndValue );
+        if ( isActive && renderingScope !== RENDERING_SCOPE.NONE ) {
+          this.visible = true;
+          const startPosition = numberLine.valueToModelPosition( operationStartValue );
+          const endPosition = numberLine.valueToModelPosition( operationEndValue );
 
-        // stop any animation that was in progress
-        if ( inProgressAnimation ) {
-          inProgressAnimation.stop();
-          inProgressAnimation = null;
-        }
-
-        if ( isActive ) {
+          // stop any animation that was in progress
+          if ( inProgressAnimation ) {
+            inProgressAnimation.stop();
+            inProgressAnimation = null;
+          }
 
           if ( armedForAnimation && startPosition.distance( endPosition ) > 0 ) {
 
@@ -224,6 +221,9 @@ class NumberLineOperationNode extends Node {
                                          descriptionCenterYWhenLabelVisible :
                                          descriptionCenterYWhenLabelNotVisible;
         }
+        else {
+          this.visible = false;
+        }
       }
     );
 
@@ -261,7 +261,6 @@ class NumberLineOperationNode extends Node {
 
     // @private - dispose function
     this.disposeOperationArrowNode = () => {
-      operation.isActiveProperty.unlinkAttribute( visibilityLinkage );
       updateMultilink.dispose();
       showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
       showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );

@@ -291,6 +291,11 @@ class NLOGenericScreenView extends ScreenView {
       }
     ) );
 
+    // keep the selected range of the secondary number line in sync with that of the primary
+    model.primaryNumberLine.displayedRangeProperty.link( displayedRange => {
+      model.secondaryNumberLine.displayedRangeProperty.set( displayedRange );
+    } );
+
     // reset all
     const resetAllButton = new ResetAllButton( {
       listener: () => {

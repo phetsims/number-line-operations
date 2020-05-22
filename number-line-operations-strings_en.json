@@ -64,5 +64,8 @@
   },
   "initialNetWorthWithBreak": {
     "value": "Initial<br>Net Worth"
+  },
+  "pointsOffScale": {
+    "value": "Points<br>off scale!"
   }
 }
