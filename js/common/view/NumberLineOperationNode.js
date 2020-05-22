@@ -1,5 +1,6 @@
 // Copyright 2020, University of Colorado Boulder
 
+import Utils from '../../../../dot/js/Utils.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -38,7 +39,6 @@ const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
-const RENDERING_SCOPE = Enumeration.byKeys( [ 'ALL', 'PARTIAL', 'NONE' ] );
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
@@ -117,8 +117,8 @@ class NumberLineOperationNode extends Node {
     this.curvedLineNode = new Path( null, CURVED_LINE_OPTIONS );
     this.addChild( this.curvedLineNode );
 
-    // @private {ArrowHeadNode} - head of the arrow
-    this.arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, 0 );
+    // @private {ArrowHeadNode} - head of the arrow, position will be updated later
+    this.arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, 0, Vector2.ZERO );
     this.addChild( this.arrowheadNode );
 
     // update the arrow, labels, and label positions as the attributes of the operation and number line change
@@ -133,24 +133,10 @@ class NumberLineOperationNode extends Node {
       ],
       isActive => {
 
-        // Figure out whether this operation is entirely within the displayed range of the number line, partially in range,
-        // or entirely out of range.  This will be important for how the rendering proceeds.
-        let renderingScope;
-        const displayedRange = numberLine.displayedRangeProperty.value;
         const operationStartValue = originPoint.valueProperty.value;
         const operationEndValue = numberLine.getOperationResult( operation );
-        if ( displayedRange.contains( operationStartValue ) && displayedRange.contains( operationEndValue ) ) {
-          renderingScope = RENDERING_SCOPE.ALL;
-        }
-        else if ( !displayedRange.contains( operationStartValue ) && !displayedRange.contains( operationEndValue ) ) {
-          renderingScope = RENDERING_SCOPE.NONE;
-        }
-        else {
-          renderingScope = RENDERING_SCOPE.PARTIAL;
-        }
-        console.log( 'renderingScope = ' + renderingScope );
 
-        if ( isActive && renderingScope !== RENDERING_SCOPE.NONE ) {
+        if ( isActive ) {
           this.visible = true;
           const startPosition = numberLine.valueToModelPosition( operationStartValue );
           const endPosition = numberLine.valueToModelPosition( operationEndValue );
@@ -186,14 +172,12 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation label
-          const operationCenterX = ( startPosition.x + endPosition.x ) / 2;
           const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
           const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
           operationLabelTextNode.text = operationChar +
                                         ' ' +
                                         unarySignChar +
                                         Math.abs( operation.amountProperty.value ).toString( 10 );
-          operationLabel.centerX = operationCenterX;
           if ( aboveNumberLine ) {
             operationLabel.bottom = startPosition.y - APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
           }
@@ -216,10 +200,20 @@ class NumberLineOperationNode extends Node {
                                                operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
                                                operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
           descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
-          operationDescription.centerX = operationCenterX;
           operationDescription.centerY = showLabelProperty.value ?
                                          descriptionCenterYWhenLabelVisible :
                                          descriptionCenterYWhenLabelNotVisible;
+
+          // Set the X position of the labels such that they are at the center of the operation unless doing so would
+          // put the center of the label past the edge of the number line.  In that case, limit the X position to the
+          // max value of the number line.
+          const labelsCenterX = Utils.clamp(
+            ( startPosition.x + endPosition.x ) / 2,
+            numberLine.valueToModelPosition( numberLine.displayedRangeProperty.value.min ).x,
+            numberLine.valueToModelPosition( numberLine.displayedRangeProperty.value.max ).x
+          );
+          operationLabel.centerX = labelsCenterX;
+          operationDescription.centerX = labelsCenterX;
         }
         else {
           this.visible = false;
@@ -450,12 +444,27 @@ class NumberLineOperationNode extends Node {
       }
     }
 
+    // Update the shapes for the line and the arrowhead.  Shapes with translations are used to that the clip area will
+    // work without tricky translations.
     this.curvedLineNode.shape = lineShape;
-    this.arrowheadNode.setRotation( arrowheadAngle );
-    this.arrowheadNode.translation = endPoint;
+    this.arrowheadNode.updateShape( arrowheadAngle, endPoint );
 
     // only show the arrowhead for full or nearly full depictions of the operation
     this.arrowheadNode.visible = proportion > 0.9;
+
+    // set the clip area for the line and the arrowhead so that they don't extend beyond the edges of the number line
+    // set a clip area that prevents rendering of the arrow off the edge of the number line
+    const displayedRange = numberLine.displayedRangeProperty.value;
+    const clipAreaMinXPosition = numberLine.valueToModelPosition( displayedRange.min ).x;
+    const clipAreaMaxXPosition = numberLine.valueToModelPosition( displayedRange.max ).x;
+    const clipArea = Shape.rect(
+      clipAreaMinXPosition,
+      startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE * 5,
+      clipAreaMaxXPosition - clipAreaMinXPosition,
+      APEX_DISTANCE_FROM_NUMBER_LINE * 10
+    );
+    this.curvedLineNode.clipArea = clipArea;
+    this.arrowheadNode.clipArea = clipArea;
   }
 
   /**
@@ -477,19 +486,35 @@ class ArrowheadNode extends Path {
   /**
    * @param {number} length
    * @param {number} rotation
+   * @param {Vector2} position
    * @param {Object} [options]
    */
-  constructor( length, rotation, options ) {
+  constructor( length, rotation, position, options ) {
 
     options = merge( {
       lineJoin: 'round',
       fill: 'black'
     }, options );
 
-    const arrowHeadShape = NORMALIZED_ARROWHEAD_SHAPE
-      .transformed( Matrix3.scale( length ) )
-      .transformed( Matrix3.rotationAround( rotation, 0, 0 ) );
-    super( arrowHeadShape, options );
+    super( null, options );
+
+    // @private {number}
+    this.length = length;
+
+    this.updateShape( rotation, position );
+  }
+
+  /**
+   * update the shape to have the original length but a new rotation and position
+   * @param {number} rotation - in radians
+   * @param {Vector2} position
+   */
+  updateShape( rotation, position ) {
+    this.setShape( NORMALIZED_ARROWHEAD_SHAPE
+      .transformed( Matrix3.scale( this.length ) )
+      .transformed( Matrix3.rotationAround( rotation, 0, 0 ) )
+      .transformed( Matrix3.translationFromVector( position ) )
+    );
   }
 }
 
