@@ -18,7 +18,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
 // constants
-const CONTENT_DIMENSIONS = new Dimension2( 230, 60 ); // size based on design doc
+const CONTENT_DIMENSIONS = new Dimension2( 280, 60 ); // size based on design doc
 
 /**
  * accordion box that contains a mathematical description of the operations on a number line

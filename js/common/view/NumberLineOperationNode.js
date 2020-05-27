@@ -5,6 +5,7 @@ import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -84,7 +85,7 @@ class NumberLineOperationNode extends Node {
     const operationLabelTextNode = new Text( '', {
       font: options.operationLabelFont
     } );
-    const operationLabel = new BackgroundNode( operationLabelTextNode );
+    const operationLabel = new BackgroundNode( operationLabelTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
     const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
     this.addChild( operationLabel );
 
@@ -92,7 +93,7 @@ class NumberLineOperationNode extends Node {
     const operationDescriptionTextNode = new Text( '', {
       font: options.operationDescriptionFont
     } );
-    const operationDescription = new BackgroundNode( operationDescriptionTextNode );
+    const operationDescription = new BackgroundNode( operationDescriptionTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
     const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
     this.addChild( operationDescription );
 
