@@ -25,12 +25,11 @@ const NUMBER_LINE_RANGES = [
   new Range( -100, 100 )
 ];
 const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
-const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX - 18; // matches design doc layout
+const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX; // matches design doc layout
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = new Vector2( NUMBER_LINE_CENTER_X, MODEL_BOUNDS.centerY );
 const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
 const PRIMARY_NUMBER_LINE_POINTS_COLOR = Color.BLUE;
 const SECONDARY_NUMBER_LINE_POINTS_COLOR = Color.MAGENTA;
-const NUMBER_LINE_WIDTH = MODEL_BOUNDS.width * 0.81; // empirically determined to match spec
 
 /**
  * primary model for the "Generic" screen
@@ -56,7 +55,7 @@ class NLOGenericModel {
         preventOverlap: false,
         labelsInitiallyVisible: true,
         operationDescriptionsInitiallyVisible: false,
-        widthInModelSpace: NUMBER_LINE_WIDTH
+        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
       }
     );
 
@@ -109,7 +108,7 @@ class NLOGenericModel {
         operationDescriptionsInitiallyVisible: false,
         startingPointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
         endpointColor: SECONDARY_NUMBER_LINE_POINTS_COLOR,
-        widthInModelSpace: NUMBER_LINE_WIDTH
+        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
       }
     );
 

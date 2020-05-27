@@ -149,8 +149,8 @@ class NLOOperationsScreenView extends ScreenView {
 
     // erase button
     const eraserButton = new EraserButton( {
-      iconWidth: 36,
-      left: numberLineNode.right + 8,
+      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
+      right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
       centerY: model.numberLine.centerPositionProperty.value.y,
       listener: () => {
         model.numberLine.deactivateAllOperations();

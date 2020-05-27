@@ -48,7 +48,7 @@ class NLONetWorthModel {
         startingPointColor: new Color( 0x4ddff ),
 
         // width of the number line in model space, number empirically determined to match design
-        widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
+        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
       }
     );
 

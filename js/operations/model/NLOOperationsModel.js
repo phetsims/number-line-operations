@@ -35,7 +35,7 @@ class NLOOperationsModel {
         labelsInitiallyVisible: true,
 
         // width of the number line in model space, number empirically determined to make it look good
-        widthInModelSpace: NLOConstants.LAYOUT_BOUNDS.width - 200
+        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
       }
     );
   }

@@ -38,12 +38,7 @@ const NUMBER_LINE_NODE_OPTIONS = {
     labelDistanceFromApex: 20
   }
 };
-const NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE = 16;
 const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
-const ERASER_BUTTON_ICON_WIDTH = 36;
-
-// TODO: incorporate ranges
-// const OPERATION_ENTRY_CONTROL_RANGE = new Range( -100, 100 );
 
 /**
  * main screen view for the "Generic" screen
@@ -146,8 +141,8 @@ class NLOGenericScreenView extends ScreenView {
 
     // erase button for primary number line
     const primaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: ERASER_BUTTON_ICON_WIDTH,
-      left: primaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
+      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
+      right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
       listener: () => {
         model.primaryNumberLine.deactivateAllOperations();
         primaryOperationEntryCarousel.reset();
@@ -227,8 +222,8 @@ class NLOGenericScreenView extends ScreenView {
 
     // erase button for secondary number line
     const secondaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: ERASER_BUTTON_ICON_WIDTH,
-      left: secondaryNumberLineNode.right + NUMBER_LINE_TO_ERASER_BUTTON_X_DISTANCE,
+      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
+      right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
       centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
       listener: () => {
         model.secondaryNumberLine.deactivateAllOperations();
