@@ -7,6 +7,7 @@
  */
 
 import ScreenView from '../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../number-line-common/js/common/NLCConstants.js';
 import numberLineOperations from '../numberLineOperations.js';
 
 const NLOConstants = {
@@ -18,7 +19,20 @@ const NLOConstants = {
   SCREEN_VIEW_X_MARGIN: 15,
   SCREEN_VIEW_Y_MARGIN: 15,
   CHECKBOX_SPACING: 12,
-  OPERATION_ENTRY_CAROUSEL_LEFT_INSET: 60
+  OPERATION_ENTRY_CAROUSEL_LEFT_INSET: 60,
+  ACCORDION_BOX_COMMON_OPTIONS: {
+    fill: 'white',
+    showTitleWhenExpanded: false,
+    cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS,
+    buttonXMargin: 8,
+    buttonYMargin: 6,
+    expandCollapseButtonOptions: {
+      touchAreaXDilation: 15,
+      touchAreaYDilation: 15,
+      mouseAreaXDilation: 5,
+      mouseAreaYDilation: 5
+    }
+  }
 };
 
 numberLineOperations.register( 'NLOConstants', NLOConstants );

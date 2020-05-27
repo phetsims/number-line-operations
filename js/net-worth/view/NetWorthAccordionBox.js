@@ -6,6 +6,7 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -22,20 +23,9 @@ class NetWorthAccordionBox extends AccordionBox {
 
     options = merge( {
       titleNode: new Text( numberLineOperationsStrings.netWorth, { font: new PhetFont( 18 ) } ),
-      fill: 'white',
-      showTitleWhenExpanded: false,
       minWidth: DEFAULT_WIDTH,
-      maxWidth: DEFAULT_WIDTH,
-      cornerRadius: 5,
-      buttonXMargin: 8,
-      buttonYMargin: 6,
-      expandCollapseButtonOptions: {
-        touchAreaXDilation: 15,
-        touchAreaYDilation: 15,
-        mouseAreaXDilation: 5,
-        mouseAreaYDilation: 5
-      }
-    }, options );
+      maxWidth: DEFAULT_WIDTH
+    }, NLOConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const netWorthTextNode = new Text( '', {
       font: new PhetFont( 20 ),

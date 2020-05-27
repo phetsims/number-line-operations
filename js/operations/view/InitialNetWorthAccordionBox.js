@@ -2,7 +2,7 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
-import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
+import merge from '../../../../phet-core/js/merge.js';
 import NumberPicker from '../../../../scenery-phet/js/NumberPicker.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
@@ -10,9 +10,9 @@ import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import merge from '../../../../phet-core/js/merge.js';
 
 class InitialNetWorthAccordionBox extends AccordionBox {
 
@@ -23,11 +23,8 @@ class InitialNetWorthAccordionBox extends AccordionBox {
   constructor( initialNetWorthProperty, options ) {
 
     options = merge( {
-      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, { font: new PhetFont( 18 ) } ),
-      fill: Color.WHITE,
-      showTitleWhenExpanded: false,
-      cornerRadius: NLCConstants.ACCORDION_BOX_CORNER_RADIUS
-    }, options );
+      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, { font: new PhetFont( 18 ) } )
+    }, NLOConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const label = new RichText( numberLineOperationsStrings.initialNetWorthWithBreak, {
       align: 'center',
