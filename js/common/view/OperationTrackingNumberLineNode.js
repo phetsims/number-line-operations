@@ -67,6 +67,9 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
         merge( operationNodeOptions, options.numberLineOperationNodeOptions )
       );
       this.addChild( numberLineOperationNode );
+
+      // the operation nodes should be behind the points and the labels
+      numberLineOperationNode.moveToBack();
     } );
 
     // indicators for when all points are off the scale
