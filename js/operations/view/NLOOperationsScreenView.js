@@ -81,24 +81,22 @@ class NLOOperationsScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-
-      // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 30,
-      top: this.layoutBounds.minY + 30
+      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
     // accordion box containing a mathematical description of the operations on the number line
     const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
-      top: 20
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( numericalExpressionAccordionBox );
 
     // carousel with the operation entry controls
     const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
-      right: this.layoutBounds.maxX - 35,
-      top: 20,
+      right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN,
       entryControl1Options: {}
     } );
     this.addChild( operationEntryCarousel );

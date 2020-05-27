@@ -63,10 +63,8 @@ class NLONetWorthScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-
-      // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 33,
-      top: this.layoutBounds.minY + 32
+      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
@@ -74,7 +72,7 @@ class NLONetWorthScreenView extends ScreenView {
     this.addChild( new NetWorthAccordionBox( model.netWorthProperty, {
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
-      top: 10
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } ) );
 
     // number line node

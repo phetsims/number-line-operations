@@ -89,10 +89,8 @@ class NLOGenericScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-
-      // position - empirically determined to look decent
-      left: this.layoutBounds.minX + 28,
-      top: this.layoutBounds.minY + 22
+      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
@@ -127,7 +125,7 @@ class NLOGenericScreenView extends ScreenView {
     // accordion box containing a mathematical description of the operations on the number line
     const primaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.primaryNumberLine, {
       centerX: this.layoutBounds.centerX,
-      top: 14
+      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( primaryNumericalExpressionAccordionBox );
 
@@ -141,7 +139,7 @@ class NLOGenericScreenView extends ScreenView {
         initialValue: 1,
         increment: 1
       },
-      right: this.layoutBounds.maxX - 60,
+      right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
       top: primaryNumericalExpressionAccordionBox.top
     } );
     this.addChild( primaryOperationEntryCarousel );
@@ -222,7 +220,7 @@ class NLOGenericScreenView extends ScreenView {
         buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
         arrowDirection: 'up'
       },
-      right: this.layoutBounds.maxX - 60,
+      right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
       bottom: secondaryNumericalExpressionAccordionBox.bottom + 17
     } );
     secondaryNumberLineLayer.addChild( secondaryOperationEntryCarousel );
