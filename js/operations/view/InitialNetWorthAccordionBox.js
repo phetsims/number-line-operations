@@ -14,6 +14,10 @@ import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
+/**
+ * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a property, in an accordion
+ * box.
+ */
 class InitialNetWorthAccordionBox extends AccordionBox {
 
   /**

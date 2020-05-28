@@ -4,23 +4,22 @@
  * @author John Blanco
  */
 
-import Property from '../../../../axon/js/Property.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
-import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import Operations from '../../common/model/Operations.js';
+import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import DynamicOperationDescription from './DynamicOperationDescription.js';
 import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
 import NumericalExpressionAccordionBox from './NumericalExpressionAccordionBox.js';
 
@@ -101,51 +100,25 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( operationEntryCarousel );
 
-    // textual description of the current potential operation shown in the operationEntryCarousel
-    const potentialOperationDescription = new Text( 'add asset of $300', {
-      font: new PhetFont( 22 ),
-      centerX: this.layoutBounds.centerX,
-      bottom: numericalExpressionAccordionBox.bottom + 55
-    } );
-    this.addChild( potentialOperationDescription );
+    // local constant that tracks if a reset is in progress, needed by the dynamic operation description
+    const resetInProgressProperty = new BooleanProperty( false );
 
-    // update the potential operation description as changes occur
-    assert && assert(
-      model.numberLine.operations.length === 2,
-      'two operations expected, found ' + model.numberLine.operations.length
-    );
-    Property.multilink(
-      [
+    // @private - Textual descriptions of the operations that are shown as the user manipulates them before they go on
+    // the number line.
+    this.dynamicOperationDescriptions = [];
+    model.numberLine.operations.forEach( ( operation, index ) => {
+      const dynamicOperationDescription = new DynamicOperationDescription(
+        model.numberLine.showOperationDescriptionsProperty,
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 115 ), // y offset empirically determined
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 190 ), // y offset empirically determined
+        operation,
+        index,
         operationEntryCarousel.selectedPageProperty,
-        model.numberLine.operations[ 0 ].isActiveProperty,
-        model.numberLine.operations[ 0 ].amountProperty,
-        model.numberLine.operations[ 0 ].operationTypeProperty,
-        model.numberLine.operations[ 1 ].isActiveProperty,
-        model.numberLine.operations[ 1 ].amountProperty,
-        model.numberLine.operations[ 1 ].operationTypeProperty
-      ],
-      page => {
-        const selectedOperation = model.numberLine.operations[ page ];
-        potentialOperationDescription.visible = !selectedOperation.isActiveProperty.value;
-        if ( potentialOperationDescription.visible ) {
-
-          // fill in the text based on the attributes of the operation
-          potentialOperationDescription.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-            addOrRemove: selectedOperation.operationTypeProperty.value === Operations.ADDITION ?
-                         numberLineOperationsStrings.add :
-                         numberLineOperationsStrings.remove,
-            assetOrDebt: selectedOperation.amountProperty.value > 0 ?
-                         numberLineOperationsStrings.asset :
-                         numberLineOperationsStrings.debt,
-            currencyUnits: numberLineOperationsStrings.currencyUnits,
-            value: Math.abs( selectedOperation.amountProperty.value )
-          } );
-
-          // re-center
-          potentialOperationDescription.centerX = this.layoutBounds.centerX;
-        }
-      }
-    );
+        resetInProgressProperty
+      );
+      this.addChild( dynamicOperationDescription );
+      this.dynamicOperationDescriptions.push( dynamicOperationDescription );
+    } );
 
     // erase button
     const eraserButton = new EraserButton( {
@@ -175,11 +148,13 @@ class NLOOperationsScreenView extends ScreenView {
     // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
+        resetInProgressProperty.set( true );
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         numericalExpressionAccordionBox.reset();
         operationEntryCarousel.reset();
         model.reset();
         model.numberLine.deactivateAllOperations();
+        resetInProgressProperty.set( false );
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
       bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
