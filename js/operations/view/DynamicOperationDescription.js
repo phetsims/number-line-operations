@@ -1,10 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
-import Animation from '../../../../twixt/js/Animation.js';
 import Property from '../../../../axon/js/Property.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -13,12 +13,14 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // constants
 const FADE_TIME = 0.25; // in seconds
 const TRAVEL_TIME = 0.7; // in seconds
+const FONT = new PhetFont( 22 );
 
 /**
- * DynamicOperationDescription is used to provide a textual description of a number line operation and also move and
- * fade it as the user interacts with it.  It positions and repositions itself on the screen based on what the user is
- * doing with an operation, so it is not meant to be positioned by the client. This class is very specific to the Number
- * Line Operations simulation.
+ * DynamicOperationDescription instances are used to provide a textual description of a number line operation BEFORE it
+ * becomes active on the number line.  It updates, fades in and out, and animates as the user prepares and ultimately
+ * add the operation to the number line.  Instances of this class position themselves in view space based on what the
+ * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
+ * the Number Line Operations simulation.
  */
 class DynamicOperationDescription extends Text {
 
@@ -43,8 +45,12 @@ class DynamicOperationDescription extends Text {
     selectedOperationIDProperty,
     resetInProgressProperty ) {
 
+    // this is intended to be constructed prior to the operation being activate
+    assert && assert( !operation.isActiveProperty.value, 'operation must be inactive when this node is constructed' );
+
+    // construct with no initial text and in the inactive position
     super( '', {
-      font: new PhetFont( 22 ),
+      font: FONT,
       center: inactivePosition,
       visible: false,
       opacity: 0
@@ -53,7 +59,10 @@ class DynamicOperationDescription extends Text {
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
 
-    // update the text if the attributes of the operation change
+    // control overall visibility
+    operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
+
+    // update the text as the attributes of the operation change
     Property.multilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
@@ -71,28 +80,19 @@ class DynamicOperationDescription extends Text {
       }
     );
 
-    // control overall visibility
-    operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
-
-    // fade in if the user starts interacting with this operation (if not already visible)
+    // fade in if the user starts interacting with this operation and we're not already visible
     Property.lazyMultilink(
-      [ operation.amountProperty, operation.operationTypeProperty, selectedOperationIDProperty ],
-      ( amount, operationType, selectedOperationID ) => {
+      [ operation.amountProperty, operation.operationTypeProperty ],
+      () => {
 
         // make the update, but only if the changes were not due to a reset
         if ( !resetInProgressProperty.value ) {
-          if ( selectedOperationID === operationIDNumber && !operation.isActiveProperty.value && this.opacity === 0 ) {
+          if ( selectedOperationIDProperty.value === operationIDNumber && !operation.isActiveProperty.value && this.opacity === 0 ) {
             this.initiateFadeIn();
           }
         }
       }
     );
-
-    resetInProgressProperty.lazyLink( resetInProgress => {
-      if ( resetInProgress ) {
-        this.opacity = 0;
-      }
-    } );
 
     // fade out if visible and a different operation gets selected
     selectedOperationIDProperty.lazyLink( selectedOperationID => {
@@ -131,6 +131,13 @@ class DynamicOperationDescription extends Text {
         else {
           this.opacity = 0;
         }
+      }
+    } );
+
+    // go invisible on a reset
+    resetInProgressProperty.lazyLink( resetInProgress => {
+      if ( resetInProgress ) {
+        this.opacity = 0;
       }
     } );
 
@@ -223,18 +230,6 @@ class DynamicOperationDescription extends Text {
         this.initiateFadeOut();
       } );
       this.movementAnimation.start();
-    }
-  }
-
-  /**
-   * @private
-   */
-  stopActiveAnimations() {
-    if ( this.fadeAnimation ) {
-      this.fadeAnimation.stop();
-    }
-    if ( this.movementAnimation ) {
-      this.movementAnimation.stop();
     }
   }
 }
