@@ -46,9 +46,10 @@ class BalanceSheetItemBox {
   }
 
   /**
-   * return the provided item to its original position within this box
+   * Return the provided item to its original position within this box.
    * @param {BalanceSheetItem }item
    * @param {boolean} animate
+   * @public
    */
   returnItem( item, animate ) {
 
@@ -63,9 +64,10 @@ class BalanceSheetItemBox {
   }
 
   /**
-   * returns true if this box holds the item, regardless of whether the item is currently being held
+   * Returns true if this box holds the provided item.
    * @param {BalanceSheetItem} item
    * @returns {boolean}
+   * @public
    */
   holdsItem( item ) {
     return this.mapOfItemsToStoragePositions.get( item ) !== undefined;

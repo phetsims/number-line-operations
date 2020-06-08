@@ -42,6 +42,7 @@ class BalanceSheetItem {
   /**
    * animate (as opposed to moving instantaneously) to the provided position
    * @param {Vector2} destination
+   * @public
    */
   animateTo( destination ) {
 
@@ -78,6 +79,7 @@ class BalanceSheetItem {
   /**
    * go immediately to the specified position (and cancel any animations that were in progress)
    * @param {Vector2} position
+   * @public
    */
   teleportTo( position ) {
 

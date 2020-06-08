@@ -93,8 +93,10 @@ class BalanceSheetItemBag {
   }
 
   /**
+   * Test whether a balance sheet item is within the "capture range" of this bag.
    * @param {BalanceSheetItem} item
    * @returns {boolean}
+   * @public
    */
   isWithinCaptureRange( item ) {
     return item.positionProperty.value.distance( this.position ) <= this.radius;

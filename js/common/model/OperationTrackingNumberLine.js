@@ -188,6 +188,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * go through the operations and calculate the current end value
    * @returns {number}
+   * @public
    */
   getCurrentEndValue() {
     let value = this.startingValueProperty.value;
@@ -203,6 +204,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
    * get the value after this operation and all those that precede it on the operations list have been applied
    * @param {NumberLineOperation} targetOperation
    * @returns {number}
+   * @public
    */
   getOperationResult( targetOperation ) {
 
@@ -253,6 +255,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * Get an array of the operations that are currently active on the number line.
    * @returns {NumberLineOperations[]}
+   * @public
    */
   getActiveOperations() {
     const list = [];

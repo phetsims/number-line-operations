@@ -509,6 +509,7 @@ class ArrowheadNode extends Path {
    * update the shape to have the original length but a new rotation and position
    * @param {number} rotation - in radians
    * @param {Vector2} position
+   * @public
    */
   updateShape( rotation, position ) {
     this.setShape( NORMALIZED_ARROWHEAD_SHAPE
