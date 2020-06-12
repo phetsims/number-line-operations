@@ -14,6 +14,7 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
@@ -119,6 +120,7 @@ class NLOGenericScreenView extends ScreenView {
 
     // accordion box containing a mathematical description of the operations on the number line
     const primaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.primaryNumberLine, {
+      titleNode: new Text( numberLineOperationsStrings.numericalExpression, { font: new PhetFont( 18 ) } ),
       centerX: this.layoutBounds.centerX,
       top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
     } );
