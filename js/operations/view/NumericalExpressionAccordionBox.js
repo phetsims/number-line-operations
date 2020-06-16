@@ -13,9 +13,9 @@ import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Checkbox from '../../../../sun/js/Checkbox.js';
 import Operations from '../../common/model/Operations.js';
-import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 60 ); // size based on design doc
@@ -34,7 +34,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     options = merge( {
       titleNode: new Text( numberLineOperationsStrings.netWorth, { font: new PhetFont( 18 ) } )
-    }, NLOConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
+    }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     // Create a transparent background that will serve as the root node.  Everything should be made to fit within this.
     const contentRoot = new Rectangle( 0, 0, CONTENT_DIMENSIONS.width, CONTENT_DIMENSIONS.height, 5, 5, {

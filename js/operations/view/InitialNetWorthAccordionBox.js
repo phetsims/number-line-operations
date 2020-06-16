@@ -10,9 +10,9 @@ import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 
 /**
  * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a property, in an accordion
@@ -28,7 +28,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
 
     options = merge( {
       titleNode: new Text( numberLineOperationsStrings.initialNetWorth, { font: new PhetFont( 18 ) } )
-    }, NLOConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
+    }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const label = new RichText( numberLineOperationsStrings.initialNetWorthWithBreak, {
       align: 'center',
