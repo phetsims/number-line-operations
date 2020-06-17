@@ -141,7 +141,7 @@ class BalanceSheetItemNode extends Node {
       } ),
       {
         font: new PhetFont( 20 ),
-        maxWidth: inBagImageNode.width * 0.9
+        maxWidth: 60
       }
     );
 
