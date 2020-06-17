@@ -5,6 +5,7 @@
  * debts are placed so that they count towards the total net worth tracked by the model.
  */
 
+import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -14,6 +15,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import assetsBagImage from '../../../images/assets-bag_png.js';
 import debtsBagImage from '../../../images/debts-bag_png.js';
 import BalanceSheetItemBag from '../model/BalanceSheetItemBag.js';
+import Color from '../../../../scenery/js/util/Color.js';
 
 class BalanceSheetItemBagNode extends Node {
 
@@ -40,13 +42,27 @@ class BalanceSheetItemBagNode extends Node {
     const labelText = balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ?
                       numberLineOperationsStrings.debts :
                       numberLineOperationsStrings.assets;
-    const labelNode = new Text( labelText, {
-      font: new PhetFont( 20 ),
-      centerX: balanceSheetItemBag.position.x,
-      centerY: balanceSheetItemBag.position.y - 0.5 * balanceSheetItemBag.radius // tweaked for the bag image being used
+    const labelNode = new BackgroundNode( new Text( labelText, { font: new PhetFont( 20 ) } ), {
+      xMargin: 15,
+      yMargin: 8,
+      backgroundOptions: {
+        opacity: 1,
+        stroke: Color.BLACK,
+        cornerRadius: 5
+      }
     } );
 
-    super( { children: [ imageNode, labelNode ] } );
+    // Position the label.  This is a bit tweaky, and will need to change if the artwork does.
+    if ( balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ) {
+      labelNode.right = imageNode.centerX - 20;
+      labelNode.centerY = imageNode.top - 4;
+    }
+    else {
+      labelNode.left = imageNode.centerX + 22;
+      labelNode.centerY = imageNode.top - 5;
+    }
+
+    super( { children: [ labelNode, imageNode ] } );
   }
 }
 
