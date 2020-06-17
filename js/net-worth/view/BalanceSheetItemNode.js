@@ -15,14 +15,22 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import asset100Image from '../../../images/asset-100_png.js';
-import asset200Image from '../../../images/asset-200_png.js';
-import asset300Image from '../../../images/asset-300_png.js';
-import asset400Image from '../../../images/asset-400_png.js';
-import debt100Image from '../../../images/debt-100_png.js';
-import debt200Image from '../../../images/debt-200_png.js';
-import debt300Image from '../../../images/debt-300_png.js';
-import debt400Image from '../../../images/debt-400_png.js';
+import asset100InBagImage from '../../../images/asset-100_png.js';
+import asset100OutOfBagImage from '../../../images/asset-100-value_png.js';
+import asset200InBagImage from '../../../images/asset-200_png.js';
+import asset200OutOfBagImage from '../../../images/asset-200-value_png.js';
+import asset300InBagImage from '../../../images/asset-300_png.js';
+import asset300OutOfBagImage from '../../../images/asset-300-value_png.js';
+import asset400InBagImage from '../../../images/asset-400_png.js';
+import asset400OutOfBagImage from '../../../images/asset-400-value_png.js';
+import debt100InBagImage from '../../../images/debt-100_png.js';
+import debt100OutOfBagImage from '../../../images/debt-100-value_png.js';
+import debt200InBagImage from '../../../images/debt-200_png.js';
+import debt200OutOfBagImage from '../../../images/debt-200-value_png.js';
+import debt300InBagImage from '../../../images/debt-300_png.js';
+import debt300OutOfBagImage from '../../../images/debt-300-value_png.js';
+import debt400InBagImage from '../../../images/debt-400_png.js';
+import debt400OutOfBagImage from '../../../images/debt-400-value_png.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -33,14 +41,59 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // of lack of support in IE).  The width is the only size provided, and the aspect ratio of the image ends up defining
 // the height in the view.
 const MAP_OF_VALUES_TO_IMAGE_INFO = new Map(); // Map<key:<number>,value:<{image:{imageInfo},width:{number}}>
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, { image: asset100Image, width: 80 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, { image: asset200Image, width: 90 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, { image: asset300Image, width: 100 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, { image: asset400Image, width: 50 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, { image: debt100Image, width: 65 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, { image: debt200Image, width: 70 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, { image: debt300Image, width: 65 } );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, { image: debt400Image, width: 70 } );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, {
+  outOfBagImage: asset100OutOfBagImage,
+  outOfBagWidth: 80,
+  inBagImage: asset100InBagImage,
+  inBagWidth: 50
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, {
+  outOfBagImage: asset200OutOfBagImage,
+  outOfBagWidth: 90,
+  inBagImage: asset200InBagImage,
+  inBagWidth: 55
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, {
+  outOfBagImage: asset300OutOfBagImage,
+  outOfBagWidth: 100,
+  outOfBagLabelOffset: new Vector2( 0, 5 ),
+  inBagImage: asset300InBagImage,
+  inBagWidth: 50
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, {
+  outOfBagImage: asset400OutOfBagImage,
+  outOfBagWidth: 50,
+  outOfBagLabelOffset: new Vector2( 0, 7 ),
+  inBagImage: asset400InBagImage,
+  inBagWidth: 20
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, {
+  outOfBagImage: debt100OutOfBagImage,
+  outOfBagWidth: 65,
+  outOfBagLabelOffset: new Vector2( 0, 2 ),
+  inBagImage: debt100InBagImage,
+  inBagWidth: 40
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, {
+  outOfBagImage: debt200OutOfBagImage,
+  outOfBagWidth: 70,
+  outOfBagLabelOffset: new Vector2( 8, -2 ),
+  inBagImage: debt200InBagImage,
+  inBagWidth: 40
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, {
+  outOfBagImage: debt300OutOfBagImage,
+  outOfBagWidth: 65,
+  inBagImage: debt300InBagImage,
+  inBagWidth: 40
+} );
+MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, {
+  outOfBagImage: debt400OutOfBagImage,
+  outOfBagWidth: 70,
+  outOfBagLabelOffset: new Vector2( 8, -2 ),
+  inBagImage: debt400InBagImage,
+  inBagWidth: 40
+} );
 
 class BalanceSheetItemNode extends Node {
 
@@ -53,39 +106,53 @@ class BalanceSheetItemNode extends Node {
     const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
     assert && assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
 
-    // large image - shown when the balance sheet item is not in a balance sheet item bag
-    const largeImageNode = new Image( imageInfo.image, {
+    // out-of-bag image - shown when the balance sheet item is not in a balance sheet item bag
+    const outOfBagImageNode = new Image( imageInfo.outOfBagImage, {
       cursor: 'pointer',
-      maxWidth: imageInfo.width,
+      maxWidth: imageInfo.outOfBagWidth,
       center: Vector2.ZERO
     } );
 
-    // small image - shown when the balance sheet item is in a balance sheet item bag
-    const smallImageNode = new Image( imageInfo.image, {
+    // in-bag image - shown when the balance sheet item is in a balance sheet item bag
+    const inBagImageNode = new Image( imageInfo.inBagImage, {
       cursor: 'pointer',
-      maxWidth: imageInfo.width * 0.6  // multiplier empirically determined
+      maxWidth: imageInfo.inBagWidth
     } );
 
-    const labelNode = new Text(
+    const outOfBagLabelNode = new Text(
       StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
         sign: '', // don't show minus sign for debts, since that would be a sort of double negative
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( balanceSheetItem.value )
       } ),
       {
-        font: new PhetFont( 20 )
+        font: new PhetFont( 18 ),
+        center: imageInfo.outOfBagLabelOffset || Vector2.ZERO,
+        maxWidth: outOfBagImageNode.width * 0.9
+      }
+    );
+    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
+
+    const inBagLabelNode = new Text(
+      StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
+        sign: '', // don't show minus sign for debts, since that would be a sort of double negative
+        currencyUnits: numberLineOperationsStrings.currencyUnits,
+        value: Math.abs( balanceSheetItem.value )
+      } ),
+      {
+        font: new PhetFont( 20 ),
+        maxWidth: inBagImageNode.width * 0.9
       }
     );
 
-    // node that contains a small image and a textual label, used when the item is in a bag
     const inBagRepresentationNode = new HBox( {
-      children: [ smallImageNode, labelNode ],
+      children: [ inBagImageNode, inBagLabelNode ],
       spacing: 10,
-      center: largeImageNode.center
+      center: outOfBagImageNode.center
     } );
 
     super( {
-      children: [ largeImageNode, inBagRepresentationNode ],
+      children: [ outOfBagRepresentationNode, inBagRepresentationNode ],
       cursor: 'pointer'
     } );
 
@@ -96,7 +163,7 @@ class BalanceSheetItemNode extends Node {
 
     // update the visibility of the representations based on whether this item is in a balance sheet item bag
     balanceSheetItem.inBagProperty.link( inBag => {
-      largeImageNode.visible = !inBag;
+      outOfBagRepresentationNode.visible = !inBag;
       inBagRepresentationNode.visible = inBag;
     } );
 
