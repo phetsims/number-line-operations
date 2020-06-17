@@ -42,24 +42,30 @@ class BalanceSheetItemBagNode extends Node {
     const labelText = balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ?
                       numberLineOperationsStrings.debts :
                       numberLineOperationsStrings.assets;
-    const labelNode = new BackgroundNode( new Text( labelText, { font: new PhetFont( 20 ) } ), {
-      xMargin: 15,
-      yMargin: 8,
-      backgroundOptions: {
-        opacity: 1,
-        stroke: Color.BLACK,
-        cornerRadius: 5
+    const labelNode = new BackgroundNode(
+      new Text( labelText, {
+        font: new PhetFont( 20 ),
+        maxWidth: 60
+      } ),
+      {
+        xMargin: 15,
+        yMargin: 4,
+        backgroundOptions: {
+          opacity: 1,
+          stroke: Color.BLACK,
+          cornerRadius: 4
+        }
       }
-    } );
+    );
 
     // Position the label.  This is a bit tweaky, and will need to change if the artwork does.
     if ( balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ) {
       labelNode.right = imageNode.centerX - 20;
-      labelNode.centerY = imageNode.top - 4;
+      labelNode.centerY = imageNode.top + 3;
     }
     else {
       labelNode.left = imageNode.centerX + 22;
-      labelNode.centerY = imageNode.top - 5;
+      labelNode.centerY = imageNode.top + 3;
     }
 
     super( { children: [ labelNode, imageNode ] } );
