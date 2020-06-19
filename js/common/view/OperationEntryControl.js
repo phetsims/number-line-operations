@@ -51,11 +51,22 @@ class OperationEntryControl extends HBox {
       spacing: 25,
       initialValue: 0,
       increment: 100,
-      range: new Range( -1000, 1000 ),
       buttonBaseColor: new Color( 153, 206, 255 ),
 
       // {String} - specifies the way the arrow should point, valid values are 'up' and 'down'
-      arrowDirection: 'down'
+      arrowDirection: 'down',
+
+      numberPickerRange: new Range( -200, 200 ),
+
+      // options that are passed through to the number picker
+      numberPickerOptions: {
+        yMargin: 10,
+        arrowHeight: 10,
+        color: Color.BLACK,
+        font: new PhetFont( 26 ),
+        timerDelay: 300,
+        timerInterval: 30
+      }
     }, options );
 
     // options checking
@@ -87,15 +98,11 @@ class OperationEntryControl extends HBox {
     // amount selector
     const operationAmountPicker = new NumberPicker(
       controlledOperation.amountProperty,
-      new Property( options.range ),
-      {
+      new Property( options.numberPickerRange ),
+      merge( {
         upFunction: value => value + options.increment,
-        downFunction: value => value - options.increment,
-        yMargin: 10,
-        arrowHeight: 10,
-        color: Color.BLACK,
-        font: new PhetFont( 26 )
-      }
+        downFunction: value => value - options.increment
+      }, options.numberPickerOptions )
     );
 
     // parent node for the buttons
@@ -124,7 +131,7 @@ class OperationEntryControl extends HBox {
     const eraserButton = new EraserButton( {
       listener: () => {
 
-        // deactive our operation so that it will no longer appear on the number line
+        // deactivate our operation so that it will no longer appear on the number line
         controlledOperation.isActiveProperty.set( false );
       },
       iconWidth: 30,

@@ -5,6 +5,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
@@ -92,11 +93,20 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( numericalExpressionAccordionBox );
 
+    const commonEntryControlOptions = {
+      numberPickerRange: new Range( -1000, 1000 ),
+      numberPickerOptions: {
+        timerDelay: 400,
+        timerInterval: 100
+      }
+    };
+
     // carousel with the operation entry controls
     const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
       right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
       top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN,
-      entryControl1Options: {}
+      entryControl1Options: commonEntryControlOptions,
+      entryControl2Options: commonEntryControlOptions
     } );
     this.addChild( operationEntryCarousel );
 
