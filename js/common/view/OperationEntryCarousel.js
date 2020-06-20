@@ -26,13 +26,11 @@ class OperationEntryCarousel extends Node {
     // @private {OperationEntryControl[]} - operation entry controls
     const operationEntryControls = [
       new OperationEntryControl(
-        numberLine,
-        0,
+        numberLine.operations[ 0 ],
         options.entryControl1Options
       ),
       new OperationEntryControl(
-        numberLine,
-        1,
+        numberLine.operations[ 1 ],
         options.entryControl2Options
       )
     ];

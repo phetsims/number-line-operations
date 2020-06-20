@@ -40,12 +40,11 @@ const FULL_SIZE_ARROW_SHAPE = NORMALIZED_ENTER_ARROW_SHAPE.transformed( Matrix3.
 class OperationEntryControl extends HBox {
 
   /**
-   * @param {OperationTrackingNumberLine} numberLine
-   * @param {number} controlledOperationIndex - index of the operation on the number line that this will control
+   * @param {NumberLineOperation} controlledOperation - the number line operation that is controlled
    * @param {Object} [options]
    * @public
    */
-  constructor( numberLine, controlledOperationIndex, options ) {
+  constructor( controlledOperation, options ) {
 
     options = merge( {
       spacing: 25,
@@ -71,9 +70,6 @@ class OperationEntryControl extends HBox {
 
     // options checking
     assert && assert( options.arrowDirection === 'up' || options.arrowDirection === 'down' );
-
-    // @private {NumberLineOperation} - operation managed by this control
-    const controlledOperation = numberLine.operations[ controlledOperationIndex ];
 
     // plus/minus operation selector
     const operationSelectorRadioButtonGroup = new RadioButtonGroup(
