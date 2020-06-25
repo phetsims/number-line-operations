@@ -66,16 +66,27 @@ class DynamicOperationDescription extends Text {
     Property.multilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
-        this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-          addOrRemove: operationType === Operations.ADDITION ?
-                       numberLineOperationsStrings.add :
-                       numberLineOperationsStrings.remove,
-          assetOrDebt: amount > 0 ?
-                       numberLineOperationsStrings.asset :
-                       numberLineOperationsStrings.debt,
-          currencyUnits: numberLineOperationsStrings.currencyUnits,
-          value: Math.abs( amount )
-        } );
+        if ( amount === 0 ) {
+          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
+            addOrRemove: operationType === Operations.ADDITION ?
+                         numberLineOperationsStrings.add :
+                         numberLineOperationsStrings.remove,
+            currencyUnits: numberLineOperationsStrings.currencyUnits
+          } );
+        }
+        else {
+          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+            addOrRemove: operationType === Operations.ADDITION ?
+                         numberLineOperationsStrings.add :
+                         numberLineOperationsStrings.remove,
+            assetOrDebt: amount > 0 ?
+                         numberLineOperationsStrings.asset :
+                         numberLineOperationsStrings.debt,
+            currencyUnits: numberLineOperationsStrings.currencyUnits,
+            value: Math.abs( amount )
+          } );
+        }
+
         this.center = inactivePosition;
       }
     );

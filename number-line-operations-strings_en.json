@@ -50,6 +50,9 @@
   "remove": {
     "value": "remove"
   },
+  "addRemoveZeroPattern": {
+    "value": "{{addOrRemove}} {{currencyUnits}}0"
+  },
   "addRemoveAssetDebtPattern": {
     "value": "{{addOrRemove}} {{assetOrDebt}} of {{currencyUnits}}{{value}}"
   },

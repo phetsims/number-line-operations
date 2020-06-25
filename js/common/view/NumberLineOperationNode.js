@@ -187,16 +187,26 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation description
-          operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-            addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
-                         numberLineOperationsStrings.add :
-                         numberLineOperationsStrings.remove,
-            assetOrDebt: operation.amountProperty.value > 0 ?
-                         numberLineOperationsStrings.asset :
-                         numberLineOperationsStrings.debt,
-            currencyUnits: numberLineOperationsStrings.currencyUnits,
-            value: Math.abs( operation.amountProperty.value )
-          } );
+          if ( operation.amountProperty.value === 0 ) {
+            operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
+              addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
+                           numberLineOperationsStrings.add :
+                           numberLineOperationsStrings.remove,
+              currencyUnits: numberLineOperationsStrings.currencyUnits
+            } );
+          }
+          else {
+            operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+              addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
+                           numberLineOperationsStrings.add :
+                           numberLineOperationsStrings.remove,
+              assetOrDebt: operation.amountProperty.value > 0 ?
+                           numberLineOperationsStrings.asset :
+                           numberLineOperationsStrings.debt,
+              currencyUnits: numberLineOperationsStrings.currencyUnits,
+              value: Math.abs( operation.amountProperty.value )
+            } );
+          }
           descriptionCenterYWhenLabelVisible = aboveNumberLine ?
                                                operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
                                                operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
