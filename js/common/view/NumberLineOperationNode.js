@@ -173,11 +173,13 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation label
-          const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ? '+' : '-';
-          const unarySignChar = operation.amountProperty.value < 0 ? MathSymbols.UNARY_MINUS : MathSymbols.UNARY_PLUS;
+          const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
+                                MathSymbols.UNARY_PLUS :
+                                MathSymbols.MINUS;
+          const signChar = operation.amountProperty.value < 0 ? MathSymbols.MINUS : MathSymbols.UNARY_PLUS;
           operationLabelTextNode.text = operationChar +
                                         ' ' +
-                                        unarySignChar +
+                                        signChar +
                                         Math.abs( operation.amountProperty.value ).toString( 10 );
           if ( aboveNumberLine ) {
             operationLabel.bottom = startPosition.y - APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;

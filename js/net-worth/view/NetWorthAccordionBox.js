@@ -35,7 +35,7 @@ class NetWorthAccordionBox extends AccordionBox {
     netWorthProperty.link( netWorth => {
       netWorthTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.netWorthPattern, {
         netWorthString: numberLineOperationsStrings.netWorth,
-        sign: netWorth < 0 ? MathSymbols.UNARY_MINUS : '',
+        sign: netWorth < 0 ? MathSymbols.MINUS : '',
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         netWorthValue: Math.abs( netWorth )
       } );

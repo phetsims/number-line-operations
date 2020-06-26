@@ -56,7 +56,7 @@ class NetWorthPiggyBankNode extends Node {
 
       // update value
       labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
-        sign: netWorth < 0 ? MathSymbols.UNARY_MINUS : '',
+        sign: netWorth < 0 ? MathSymbols.MINUS : '',
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( netWorth )
       } );

@@ -142,17 +142,22 @@ class NumericalExpression extends Text {
           }
         }
 
-        let numericalExpression = '';
+        let numericalExpressionString = '';
         valuesAndOperations.forEach( valueOrOperation => {
           if ( typeof valueOrOperation === 'number' ) {
-            numericalExpression += valueOrOperation;
+
+            // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
+            if ( valueOrOperation < 0 ) {
+              numericalExpressionString += MathSymbols.MINUS;
+            }
+            numericalExpressionString += Math.abs( valueOrOperation );
           }
           else {
             const operationChar = valueOrOperation === Operations.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
-            numericalExpression += ' ' + operationChar + ' ';
+            numericalExpressionString += ' ' + operationChar + ' ';
           }
         } );
-        this.text = numericalExpression;
+        this.text = numericalExpressionString;
       }
     };
 
