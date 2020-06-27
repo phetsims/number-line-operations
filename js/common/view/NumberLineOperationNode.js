@@ -14,6 +14,7 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
+import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
@@ -74,19 +75,23 @@ class NumberLineOperationNode extends Node {
 
     super( options );
 
-    // identify the point from which this operation node will originate
+    // @private
+    this.numberLine = numberLine;
+    this.operation = operation;
+
     const operationNumber = numberLine.operations.indexOf( operation );
-    const originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
+
+    // @private - point from which this operation starts
+    this.originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
 
     // convenience var
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
     // create the operation label
-    const operationLabelTextNode = new Text( '', {
+    const operationLabelTextNode = new RichText( '', {
       font: options.operationLabelFont
     } );
     const operationLabel = new BackgroundNode( operationLabelTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
-    const showLabelLinkAttribute = showLabelProperty.linkAttribute( operationLabel, 'visible' );
     this.addChild( operationLabel );
 
     // operation description
@@ -94,7 +99,6 @@ class NumberLineOperationNode extends Node {
       font: options.operationDescriptionFont
     } );
     const operationDescription = new BackgroundNode( operationDescriptionTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
-    const showDescriptionAttribute = showDescriptionProperty.linkAttribute( operationDescription, 'visible' );
     this.addChild( operationDescription );
 
     // variables used to position the operation description, since it needs to move based on whether the label is visible
@@ -126,15 +130,16 @@ class NumberLineOperationNode extends Node {
     const updateMultilink = Property.multilink(
       [
         operation.isActiveProperty,
+        this.originPoint.valueProperty,
+        showLabelProperty,
+        showDescriptionProperty,
         operation.operationTypeProperty,
         operation.amountProperty,
         numberLine.displayedRangeProperty,
-        numberLine.centerPositionProperty,
-        originPoint.valueProperty
+        numberLine.centerPositionProperty
       ],
-      isActive => {
+      ( isActive, operationStartValue, showLabel, showDescription ) => {
 
-        const operationStartValue = originPoint.valueProperty.value;
         const operationEndValue = numberLine.getOperationResult( operation );
 
         if ( isActive ) {
@@ -157,7 +162,7 @@ class NumberLineOperationNode extends Node {
               to: 1,
               easing: Easing.CUBIC_OUT,
               setValue: proportionToDraw => {
-                this.updateArrow( operation, numberLine, aboveNumberLine, proportionToDraw );
+                this.updateArrow( aboveNumberLine, proportionToDraw );
               }
             } );
             inProgressAnimation.start();
@@ -169,18 +174,31 @@ class NumberLineOperationNode extends Node {
           else {
 
             // make the change instantaneously
-            this.updateArrow( operation, numberLine, aboveNumberLine, 1 );
+            this.updateArrow( aboveNumberLine, 1 );
           }
 
-          // update the operation label
-          const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
-                                MathSymbols.UNARY_PLUS :
-                                MathSymbols.MINUS;
-          const signChar = operation.amountProperty.value < 0 ? MathSymbols.MINUS : MathSymbols.UNARY_PLUS;
-          operationLabelTextNode.text = operationChar +
-                                        ' ' +
-                                        signChar +
-                                        Math.abs( operation.amountProperty.value ).toString( 10 );
+          // update the operation label text
+          if ( this.isAtEdgeOfDisplayRange() || this.isCompletelyOutOfDisplayRange() ) {
+
+            // The depiction of the arrow portion of the operation is either at the very edge of the number line or
+            // completely off of it, so use a special label that indicates this.
+            operationLabelTextNode.text = numberLineOperationsStrings.operationOffScale;
+          }
+          else {
+            const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
+                                  MathSymbols.UNARY_PLUS :
+                                  MathSymbols.MINUS;
+            const signChar = operation.amountProperty.value < 0 ? MathSymbols.MINUS : MathSymbols.UNARY_PLUS;
+            operationLabelTextNode.text = operationChar +
+                                          ' ' +
+                                          signChar +
+                                          Math.abs( operation.amountProperty.value ).toString( 10 );
+          }
+          if ( !aboveNumberLine ) {
+            console.log( 'operationLabelTextNode.text = ' + operationLabelTextNode.text );
+          }
+
+          // position the operation label
           if ( aboveNumberLine ) {
             operationLabel.bottom = startPosition.y - APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
           }
@@ -213,7 +231,7 @@ class NumberLineOperationNode extends Node {
                                                operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
                                                operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
           descriptionCenterYWhenLabelNotVisible = operationLabel.centerY;
-          operationDescription.centerY = showLabelProperty.value ?
+          operationDescription.centerY = showLabel ?
                                          descriptionCenterYWhenLabelVisible :
                                          descriptionCenterYWhenLabelNotVisible;
 
@@ -227,6 +245,20 @@ class NumberLineOperationNode extends Node {
           );
           operationLabel.centerX = labelsCenterX;
           operationDescription.centerX = labelsCenterX;
+
+          // Determine whether the number line has any points on it that are within its display range, since this can
+          // impact whether labels are displayed.
+          const areAnyNumberLinePointsInRange = numberLine.residentPoints.getArray().reduce( ( found, point ) => {
+            return found || numberLine.displayedRangeProperty.value.contains( point.valueProperty.value );
+          }, false );
+
+          // Even after all this work, it may turn out that the label and/or description aren't visible.
+          operationLabel.visible = showLabel && areAnyNumberLinePointsInRange;
+          operationDescription.visible = showDescription &&
+                                         ( !this.isAtEdgeOfDisplayRange() && !this.isCompletelyOutOfDisplayRange() );
+          if ( !aboveNumberLine ) {
+            console.log( 'operationLabel.visible = ' + operationLabel.visible );
+          }
         }
         else {
           this.visible = false;
@@ -269,20 +301,21 @@ class NumberLineOperationNode extends Node {
     // @private - dispose function
     this.disposeOperationArrowNode = () => {
       updateMultilink.dispose();
-      showLabelProperty.unlinkAttribute( showLabelLinkAttribute, 'visible' );
-      showDescriptionProperty.unlinkAttribute( showDescriptionAttribute, 'visible' );
     };
   }
 
   /**
-   * @param {NumberLineOperation} operation
-   * @param {OperationTrackingNumberLine} numberLine
    * @param {boolean} aboveNumberLine
    * @param {number} proportion - proportion to draw, from 0 to 1, used for animation and partial drawing
    * @private
    */
-  updateArrow( operation, numberLine, aboveNumberLine, proportion ) {
+  updateArrow( aboveNumberLine, proportion ) {
 
+    // convenience constants
+    const operation = this.operation;
+    const numberLine = this.numberLine;
+
+    // variables that describe the nature of the arrow line and arrowhead
     let lineShape;
     let arrowheadAngle;
 
@@ -478,6 +511,45 @@ class NumberLineOperationNode extends Node {
     );
     this.curvedLineNode.clipArea = clipArea;
     this.arrowheadNode.clipArea = clipArea;
+  }
+
+  /**
+   * returns true if this operation is completely contained within the displayed range of the number line
+   * @returns {boolean}
+   * @private
+   */
+  isFullyInDisplayRange() {
+    const startValue = this.originPoint.valueProperty.value;
+    const endValue = this.numberLine.getOperationResult( this.operation );
+    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
+    return numberLineDisplayRange.contains( startValue ) && numberLineDisplayRange.contains( endValue );
+  }
+
+  /**
+   * returns true if this operation starts at the min or max of the displayed range and the other point is off
+   * @returns {boolean}
+   * @private
+   */
+  isAtEdgeOfDisplayRange() {
+    const startValue = this.originPoint.valueProperty.value;
+    const endValue = this.numberLine.getOperationResult( this.operation );
+    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
+    return ( startValue === numberLineDisplayRange.min && endValue <= startValue ) ||
+           ( startValue === numberLineDisplayRange.max && endValue >= startValue ) ||
+           ( endValue === numberLineDisplayRange.min && startValue <= endValue ) ||
+           ( endValue === numberLineDisplayRange.max && startValue >= endValue );
+  }
+
+  /**
+   * returns true if this operation is either entirely above or below the display range
+   * @returns {boolean}
+   * @private
+   */
+  isCompletelyOutOfDisplayRange() {
+    const startValue = this.originPoint.valueProperty.value;
+    const endValue = this.numberLine.getOperationResult( this.operation );
+    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
+    return !numberLineDisplayRange.contains( startValue ) && !numberLineDisplayRange.contains( endValue );
   }
 
   /**

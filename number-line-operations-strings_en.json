@@ -71,8 +71,10 @@
   "pointsOffScale": {
     "value": "Points<br>off scale!"
   },
+  "operationOffScale": {
+    "value": "operation<br>off scale"
+  },
   "numericalExpression": {
     "value": "Numerical Expression"
   }
-
 }
