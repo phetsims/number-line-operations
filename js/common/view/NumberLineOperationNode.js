@@ -178,7 +178,8 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation label text
-          if ( this.isAtEdgeOfDisplayRange() || this.isCompletelyOutOfDisplayRange() ) {
+          if ( this.isCompletelyOutOfDisplayRange() ||
+               ( this.isAtEdgeOfDisplayRange() && operation.amountProperty.value !== 0 ) ) {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
@@ -193,9 +194,6 @@ class NumberLineOperationNode extends Node {
                                           ' ' +
                                           signChar +
                                           Math.abs( operation.amountProperty.value ).toString( 10 );
-          }
-          if ( !aboveNumberLine ) {
-            console.log( 'operationLabelTextNode.text = ' + operationLabelTextNode.text );
           }
 
           // position the operation label
@@ -246,19 +244,23 @@ class NumberLineOperationNode extends Node {
           operationLabel.centerX = labelsCenterX;
           operationDescription.centerX = labelsCenterX;
 
-          // Determine whether the number line has any points on it that are within its display range, since this can
-          // impact whether labels are displayed.
-          const areAnyNumberLinePointsInRange = numberLine.residentPoints.getArray().reduce( ( found, point ) => {
-            return found || numberLine.displayedRangeProperty.value.contains( point.valueProperty.value );
-          }, false );
+          // Determine whether the points on the number line are all above or below the displayed range, since that is
+          // factored in to the visibility of the label.
+          const displayedRange = numberLine.displayedRangeProperty.value;
+          const allPointsAboveDisplayRange = numberLine.residentPoints.getArray().reduce(
+            ( allPointsAboveMax, point ) => allPointsAboveMax && point.valueProperty.value > displayedRange.max,
+            true
+          );
+          const allPointsBelowDisplayRange = numberLine.residentPoints.getArray().reduce(
+            ( allPointsAboveMax, point ) => allPointsAboveMax && point.valueProperty.value < displayedRange.min,
+            true
+          );
 
-          // Even after all this work, it may turn out that the label and/or description aren't visible.
-          operationLabel.visible = showLabel && areAnyNumberLinePointsInRange;
+          // Set the visibility of the label and description.  This is controlled by a combination of the user's
+          // settings and the position of the operation and number line points.
+          operationLabel.visible = showLabel && !( allPointsAboveDisplayRange || allPointsBelowDisplayRange );
           operationDescription.visible = showDescription &&
                                          ( !this.isAtEdgeOfDisplayRange() && !this.isCompletelyOutOfDisplayRange() );
-          if ( !aboveNumberLine ) {
-            console.log( 'operationLabel.visible = ' + operationLabel.visible );
-          }
         }
         else {
           this.visible = false;
@@ -498,17 +500,22 @@ class NumberLineOperationNode extends Node {
     // only show the arrowhead for full or nearly full depictions of the operation
     this.arrowheadNode.visible = proportion > 0.9;
 
-    // set the clip area for the line and the arrowhead so that they don't extend beyond the edges of the number line
-    // set a clip area that prevents rendering of the arrow off the edge of the number line
-    const displayedRange = numberLine.displayedRangeProperty.value;
-    const clipAreaMinXPosition = numberLine.valueToModelPosition( displayedRange.min ).x;
-    const clipAreaMaxXPosition = numberLine.valueToModelPosition( displayedRange.max ).x;
-    const clipArea = Shape.rect(
-      clipAreaMinXPosition,
-      startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE * 5,
-      clipAreaMaxXPosition - clipAreaMinXPosition,
-      APEX_DISTANCE_FROM_NUMBER_LINE * 10
-    );
+    // If necessary, set a clip area for the line and the arrowhead so that they don't extend beyond the edges of the
+    // number line.
+    let clipArea = null;
+    if ( this.isCompletelyOutOfDisplayRange() ||
+         ( this.isPartiallyInDisplayRange() && operation.amountProperty.value !== 0 ) ) {
+
+      const displayedRange = numberLine.displayedRangeProperty.value;
+      const clipAreaMinXPosition = numberLine.valueToModelPosition( displayedRange.min ).x;
+      const clipAreaMaxXPosition = numberLine.valueToModelPosition( displayedRange.max ).x;
+      clipArea = Shape.rect(
+        clipAreaMinXPosition,
+        startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE * 5,
+        clipAreaMaxXPosition - clipAreaMinXPosition,
+        APEX_DISTANCE_FROM_NUMBER_LINE * 10
+      );
+    }
     this.curvedLineNode.clipArea = clipArea;
     this.arrowheadNode.clipArea = clipArea;
   }
@@ -526,7 +533,7 @@ class NumberLineOperationNode extends Node {
   }
 
   /**
-   * returns true if this operation starts at the min or max of the displayed range and the other point is off
+   * returns true if this operation starts or ends at the min or max of the displayed range and the other point is off
    * @returns {boolean}
    * @private
    */
@@ -549,7 +556,24 @@ class NumberLineOperationNode extends Node {
     const startValue = this.originPoint.valueProperty.value;
     const endValue = this.numberLine.getOperationResult( this.operation );
     const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
-    return !numberLineDisplayRange.contains( startValue ) && !numberLineDisplayRange.contains( endValue );
+    return startValue < numberLineDisplayRange.min && endValue < numberLineDisplayRange.min ||
+           startValue > numberLineDisplayRange.max && endValue > numberLineDisplayRange.max;
+  }
+
+  /**
+   * Returns true if this operation is partially in and partially out of the display range.  Note that this will return
+   * false if the operation is entirely inside the display range, so use carefully.
+   * @returns {boolean}
+   * @private
+   */
+  isPartiallyInDisplayRange() {
+    const startValue = this.originPoint.valueProperty.value;
+    const endValue = this.numberLine.getOperationResult( this.operation );
+    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
+    return numberLineDisplayRange.contains( startValue ) && !numberLineDisplayRange.contains( endValue ) ||
+           !numberLineDisplayRange.contains( startValue ) && numberLineDisplayRange.contains( endValue ) ||
+           startValue < numberLineDisplayRange.min && endValue > numberLineDisplayRange.max ||
+           startValue > numberLineDisplayRange.min && endValue < numberLineDisplayRange.max;
   }
 
   /**
