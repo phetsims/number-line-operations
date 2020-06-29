@@ -521,18 +521,6 @@ class NumberLineOperationNode extends Node {
   }
 
   /**
-   * returns true if this operation is completely contained within the displayed range of the number line
-   * @returns {boolean}
-   * @private
-   */
-  isFullyInDisplayRange() {
-    const startValue = this.originPoint.valueProperty.value;
-    const endValue = this.numberLine.getOperationResult( this.operation );
-    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
-    return numberLineDisplayRange.contains( startValue ) && numberLineDisplayRange.contains( endValue );
-  }
-
-  /**
    * returns true if this operation starts or ends at the min or max of the displayed range and the other point is off
    * @returns {boolean}
    * @private
