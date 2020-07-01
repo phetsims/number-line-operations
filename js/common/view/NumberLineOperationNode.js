@@ -1,8 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
-import Utils from '../../../../dot/js/Utils.js';
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
+import Utils from '../../../../dot/js/Utils.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Shape from '../../../../kite/js/Shape.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
@@ -14,13 +14,14 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
-import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import Operations from '../model/Operations.js';
+
 
 //---------------------------------------------------------------------------------------------------------------------
 // constants
@@ -41,6 +42,7 @@ const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
+const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
@@ -67,7 +69,7 @@ class NumberLineOperationNode extends Node {
       relativePosition: RelativePositions.ABOVE_NUMBER_LINE,
       operationLabelFont: new PhetFont( 18 ),
       operationDescriptionFont: new PhetFont( 18 ),
-      labelDistanceFromApex: 3,
+      labelDistanceFromApex: 5,
 
       // {boolean} - animate the drawing of the arrow when it transitions from inactive to active
       animateOnActive: true
@@ -88,8 +90,9 @@ class NumberLineOperationNode extends Node {
     const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
 
     // create the operation label
-    const operationLabelTextNode = new RichText( '', {
-      font: options.operationLabelFont
+    const operationLabelTextNode = new Text( '', {
+      font: options.operationLabelFont,
+      maxWidth: 150 // empirically determined
     } );
     const operationLabel = new BackgroundNode( operationLabelTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
     this.addChild( operationLabel );
@@ -177,13 +180,19 @@ class NumberLineOperationNode extends Node {
             this.updateArrow( aboveNumberLine, 1 );
           }
 
-          // update the operation label text
+          // update the operation label text and background
           if ( this.isCompletelyOutOfDisplayRange() ||
                ( this.isAtEdgeOfDisplayRange() && operation.amountProperty.value !== 0 ) ) {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
             operationLabelTextNode.text = numberLineOperationsStrings.operationOffScale;
+
+            // Use a different (generally smaller) font in this case.
+            operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
+
+            // make label stroked in this case
+            operationLabel.background.stroke = Color.BLACK;
           }
           else {
             const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
@@ -198,6 +207,10 @@ class NumberLineOperationNode extends Node {
                                           ' ' +
                                           signChar +
                                           Math.abs( operation.amountProperty.value ).toString( 10 );
+            operationLabelTextNode.font = options.operationLabelFont;
+
+            // no stroke in this case
+            operationLabel.background.stroke = null;
           }
 
           // position the operation label
