@@ -18,7 +18,7 @@ const FONT = new PhetFont( 22 );
 /**
  * DynamicOperationDescription instances are used to provide a textual description of a number line operation BEFORE it
  * becomes active on the number line.  It updates, fades in and out, and animates as the user prepares and ultimately
- * add the operation to the number line.  Instances of this class position themselves in view space based on what the
+ * adds the operation to the number line.  Instances of this class position themselves in view space based on what the
  * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
  * the Number Line Operations simulation.
  */
@@ -33,7 +33,8 @@ class DynamicOperationDescription extends Text {
    * @param {number} operationIDNumber - number that is used in conjunction with the selected selectedOperationIDProperty
    * to determine if this is the operation that the user is manipulating
    * @param {NumberProperty} selectedOperationIDProperty - the ID number of the operation that the user is manipulating
-   * @param {BooleanProperty} resetInProgressProperty - used to discern changes due to user interaction from those
+   * @param {OperationTrackingNumberLine} numberLine - the number line on which this operation is affiliated
+   * @param {BooleanProperty} resetInProgressProperty - used to distinguish changes due to user interaction from those
    * caused by a reset
    */
   constructor(
@@ -43,6 +44,7 @@ class DynamicOperationDescription extends Text {
     operation,
     operationIDNumber,
     selectedOperationIDProperty,
+    numberLine,
     resetInProgressProperty ) {
 
     // this is intended to be constructed prior to the operation being activate
@@ -105,14 +107,33 @@ class DynamicOperationDescription extends Text {
       }
     );
 
-    // fade out if visible and a different operation gets selected
+    // Handle changes to the selected operation.
     selectedOperationIDProperty.lazyLink( selectedOperationID => {
-      if ( selectedOperationID !== operationIDNumber && !operation.isActiveProperty.value ) {
-        this.initiateFadeOut();
+
+      if ( !operation.isActiveProperty.value ) {
+
+        // Fade out if visible and a different operation gets selected.
+        if ( selectedOperationID !== operationIDNumber && this.opacity > 0 ) {
+          this.initiateFadeOut();
+        }
+        else if ( selectedOperationID === operationIDNumber && this.opacity === 0 ) {
+
+          // Are any other operations active?
+          const anotherOperationIsActive = numberLine.operations.reduce( ( activeOperationFound, operationToCheck ) => {
+            return activeOperationFound || ( operationToCheck !== operation && operationToCheck.isActiveProperty.value );
+          }, false );
+
+          // If another operation is already active, show this one when it becomes selected, but use a delay so that
+          // this description doesn't end up overlapping with that of the other operation.
+          if ( anotherOperationIsActive ) {
+            this.initiateFadeIn( 0.9 ); // fade time empirically determined
+          }
+        }
       }
+
     } );
 
-    // handle changes to the 'isActive' state of the operation
+    // Handle changes to the 'isActive' state of the operation, which indicates whether it is shown on the number line.
     operation.isActiveProperty.lazyLink( isActive => {
 
       if ( isActive ) {
@@ -160,7 +181,7 @@ class DynamicOperationDescription extends Text {
   /**
    * @private
    */
-  initiateFadeIn() {
+  initiateFadeIn( preFadeInDelay = 0 ) {
 
     // cancel any in-progress fade animations
     if ( this.fadeAnimation ) {
@@ -170,6 +191,7 @@ class DynamicOperationDescription extends Text {
     // create and start the fade-in animation
     this.fadeAnimation = new Animation( {
       duration: FADE_TIME,
+      delay: preFadeInDelay,
       targets: [
         {
           object: this,
