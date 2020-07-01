@@ -189,7 +189,11 @@ class NumberLineOperationNode extends Node {
             const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
                                   MathSymbols.UNARY_PLUS :
                                   MathSymbols.MINUS;
-            const signChar = operation.amountProperty.value < 0 ? MathSymbols.MINUS : MathSymbols.UNARY_PLUS;
+            const signChar = operation.amountProperty.value < 0 ?
+                             MathSymbols.MINUS :
+                             operation.amountProperty.value > 0 ?
+                             MathSymbols.UNARY_PLUS :
+                             '';
             operationLabelTextNode.text = operationChar +
                                           ' ' +
                                           signChar +
