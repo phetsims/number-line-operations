@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * BalanceSheetItemBoxNode is the view representation of a box (i.e. a rectangle) where BalanceSheetItem instances are
+ * BalanceSheetItemBoxNode is the view representation of a box (i.e. a rectangle) where ValueItem instances are
  * stored when not in use.
  */
 
@@ -14,7 +14,7 @@ const CORNER_RADIUS = 7;
 class BalanceSheetItemBoxNode extends Rectangle {
 
   /**
-   * @param {BalanceSheetItemBox} balanceSheetItemBox - model of the storage box
+   * @param {HoldingBox} balanceSheetItemBox - model of the storage box
    */
   constructor( balanceSheetItemBox ) {
 

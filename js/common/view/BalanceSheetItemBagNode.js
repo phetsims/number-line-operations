@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * BalanceSheetItemBagNode is the view representation of a BalanceSheetItemBag, which is the place where assets and
+ * BalanceSheetItemBagNode is the view representation of a HoldingBag, which is the place where assets and
  * debts are placed so that they count towards the total net worth tracked by the model.
  */
 
@@ -14,18 +14,18 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import assetsBagImage from '../../../images/assets-bag_png.js';
 import debtsBagImage from '../../../images/debts-bag_png.js';
-import BalanceSheetItemBag from '../../common/model/BalanceSheetItemBag.js';
+import HoldingBag from '../model/HoldingBag.js';
 import Color from '../../../../scenery/js/util/Color.js';
 
 class BalanceSheetItemBagNode extends Node {
 
   /**
-   * @param {BalanceSheetItemBag} balanceSheetItemBag
+   * @param {HoldingBag} balanceSheetItemBag
    */
   constructor( balanceSheetItemBag ) {
 
     // get the image that is associated with this bag's balance sheet type
-    const image = balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ?
+    const image = balanceSheetItemBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_DEBTS ?
                   debtsBagImage :
                   assetsBagImage;
 
@@ -39,7 +39,7 @@ class BalanceSheetItemBagNode extends Node {
     } );
 
     // label
-    const labelText = balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ?
+    const labelText = balanceSheetItemBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_DEBTS ?
                       numberLineOperationsStrings.debts :
                       numberLineOperationsStrings.assets;
     const labelNode = new BackgroundNode(
@@ -59,7 +59,7 @@ class BalanceSheetItemBagNode extends Node {
     );
 
     // Position the label.  This is a bit tweaky, and will need to change if the artwork does.
-    if ( balanceSheetItemBag.itemAcceptanceTest === BalanceSheetItemBag.ACCEPT_ONLY_DEBTS ) {
+    if ( balanceSheetItemBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_DEBTS ) {
       labelNode.right = imageNode.centerX - 20;
       labelNode.centerY = imageNode.top + 3;
     }
