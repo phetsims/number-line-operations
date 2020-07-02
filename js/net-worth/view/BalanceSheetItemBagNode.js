@@ -14,7 +14,7 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import assetsBagImage from '../../../images/assets-bag_png.js';
 import debtsBagImage from '../../../images/debts-bag_png.js';
-import BalanceSheetItemBag from '../model/BalanceSheetItemBag.js';
+import BalanceSheetItemBag from '../../common/model/BalanceSheetItemBag.js';
 import Color from '../../../../scenery/js/util/Color.js';
 
 class BalanceSheetItemBagNode extends Node {

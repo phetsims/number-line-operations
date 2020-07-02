@@ -13,9 +13,9 @@ import Operations from '../../common/model/Operations.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import BalanceSheetItem from './BalanceSheetItem.js';
-import BalanceSheetItemBag from './BalanceSheetItemBag.js';
-import BalanceSheetItemBox from './BalanceSheetItemBox.js';
+import BalanceSheetItem from '../../common/model/BalanceSheetItem.js';
+import BalanceSheetItemBag from '../../common/model/BalanceSheetItemBag.js';
+import BalanceSheetItemBox from '../../common/model/BalanceSheetItemBox.js';
 
 // constants
 const NET_WORTH_RANGE = new Range( -1000, 1000 );

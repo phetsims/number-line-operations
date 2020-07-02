@@ -14,8 +14,8 @@ import NLONetWorthModel from '../model/NLONetWorthModel.js';
 import BalanceSheetItemBagNode from './BalanceSheetItemBagNode.js';
 import BalanceSheetItemBoxNode from './BalanceSheetItemBoxNode.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
-import NetWorthAccordionBox from './NetWorthAccordionBox.js';
-import NetWorthPiggyBankNode from './NetWorthPiggyBankNode.js';
+import NetWorthAccordionBox from '../../common/view/NetWorthAccordionBox.js';
+import NetWorthPiggyBankNode from '../../common/view/NetWorthPiggyBankNode.js';
 
 /**
  * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
