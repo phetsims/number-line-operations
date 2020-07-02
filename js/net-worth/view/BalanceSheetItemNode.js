@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * BalanceSheetItemNode is the view representation of a BalanceSheetItem, which is the general term being used in this
+ * BalanceSheetItemNode is the view representation of a ValueItem, which is the general term being used in this
  * sim for assets and debts.
  */
 
@@ -98,7 +98,7 @@ MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, {
 class BalanceSheetItemNode extends Node {
 
   /**
-   * @param {BalanceSheetItem} balanceSheetItem
+   * @param {ValueItem} balanceSheetItem
    */
   constructor( balanceSheetItem ) {
 

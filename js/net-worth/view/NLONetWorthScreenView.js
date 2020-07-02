@@ -7,15 +7,15 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import mockupImage from '../../../images/net-worth-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import HoldingBagNode from '../../common/view/HoldingBagNode.js';
+import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js';
+import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NLONetWorthModel from '../model/NLONetWorthModel.js';
-import BalanceSheetItemBagNode from './BalanceSheetItemBagNode.js';
-import BalanceSheetItemBoxNode from './BalanceSheetItemBoxNode.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
-import NetWorthAccordionBox from '../../common/view/NetWorthAccordionBox.js';
-import NetWorthPiggyBankNode from '../../common/view/NetWorthPiggyBankNode.js';
 
 /**
  * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
@@ -69,7 +69,7 @@ class NLONetWorthScreenView extends ScreenView {
     this.addChild( checkboxGroup );
 
     // accordion box that displays the net worth when open
-    this.addChild( new NetWorthAccordionBox( model.netWorthProperty, {
+    this.addChild( new TotalValueAccordionBox( model.netWorthProperty, {
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
       top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
@@ -83,7 +83,7 @@ class NLONetWorthScreenView extends ScreenView {
     } ) );
 
     // piggy bank that displays the net worth and moves as the value changes
-    const netWorthPiggyBankNode = new NetWorthPiggyBankNode(
+    const netWorthPiggyBankNode = new TotalValueIndicatorNode(
       model.netWorthProperty,
       NLONetWorthModel.NET_WORTH_RANGE,
       { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
@@ -96,12 +96,12 @@ class NLONetWorthScreenView extends ScreenView {
     } );
 
     // add the view representation for the storage areas where the assets and debts will be when not in use
-    this.addChild( new BalanceSheetItemBoxNode( model.assetsBox ) );
-    this.addChild( new BalanceSheetItemBoxNode( model.debtsBox ) );
+    this.addChild( new HoldingBoxNode( model.assetsBox ) );
+    this.addChild( new HoldingBoxNode( model.debtsBox ) );
 
     // add the view representations for the areas where the assets and debts will be stored when in use
-    this.addChild( new BalanceSheetItemBagNode( model.assetsBag ) );
-    this.addChild( new BalanceSheetItemBagNode( model.debtsBag ) );
+    this.addChild( new HoldingBagNode( model.assetsBag, numberLineOperationsStrings.assets ) );
+    this.addChild( new HoldingBagNode( model.debtsBag, numberLineOperationsStrings.debts ) );
 
     // add the assets and debts
     model.balanceSheetItems.forEach( balanceSheetItem => {

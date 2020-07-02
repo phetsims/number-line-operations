@@ -1,10 +1,9 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * BalanceSheetItem is a general model element that can represent assets and debts as they are portrayed in the
- * "Number Line: Operations" sim.  This means that each instance has typical things for assets and debts, such as a
- * positive or negative monetary value, but also things like a position, since these things can be moved around by the
- * user.
+ * ValueItem is a general model element that represents something that is assigned a positive or negative numerical
+ * value of some sort, such as a dollar bill, a loan, or a poker chip.  It also has a position so that it can be moved
+ * around in model space.
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
@@ -19,7 +18,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 const AVERAGE_ANIMATION_SPEED = 1000; // screen coordinates per second
 const MIN_ANIMATION_TIME = 0.3; // in seconds
 
-class BalanceSheetItem {
+class ValueItem {
 
   constructor( value ) {
 
@@ -35,7 +34,7 @@ class BalanceSheetItem {
     // @public (read-only) {Animation|null} - animation that is currently in progress, null if there isn't one
     this.inProgressAnimationProperty = new Property( null );
 
-    // @public (read-write) - flag that indicates whether this item is in a balance sheet item bag
+    // @public (read-write) - flag that indicates whether this item is in a value item bag
     this.inBagProperty = new BooleanProperty( false );
   }
 
@@ -104,5 +103,5 @@ class BalanceSheetItem {
 
 }
 
-numberLineOperations.register( 'BalanceSheetItem', BalanceSheetItem );
-export default BalanceSheetItem;
+numberLineOperations.register( 'ValueItem', ValueItem );
+export default ValueItem;

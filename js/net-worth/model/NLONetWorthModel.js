@@ -6,6 +6,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -13,12 +14,13 @@ import Operations from '../../common/model/Operations.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import BalanceSheetItem from '../../common/model/BalanceSheetItem.js';
-import BalanceSheetItemBag from '../../common/model/BalanceSheetItemBag.js';
-import BalanceSheetItemBox from '../../common/model/BalanceSheetItemBox.js';
+import ValueItem from '../../common/model/ValueItem.js';
+import HoldingBag from '../../common/model/HoldingBag.js';
+import HoldingBox from '../../common/model/HoldingBox.js';
 
 // constants
 const NET_WORTH_RANGE = new Range( -1000, 1000 );
+const HOLDING_BOX_SIZE = new Dimension2( 122, 300 ); // empirically determined to fit the items that will go in it
 
 /**
  * @constructor
@@ -57,35 +59,37 @@ class NLONetWorthModel {
 
     // @public (read-only) - list of balance sheet items (i.e. assets and debts) that the user can manipulate
     this.balanceSheetItems = [
-      new BalanceSheetItem( -400 ),
-      new BalanceSheetItem( -300 ),
-      new BalanceSheetItem( -200 ),
-      new BalanceSheetItem( -100 ),
-      new BalanceSheetItem( 100 ),
-      new BalanceSheetItem( 200 ),
-      new BalanceSheetItem( 300 ),
-      new BalanceSheetItem( 400 )
+      new ValueItem( -400 ),
+      new ValueItem( -300 ),
+      new ValueItem( -200 ),
+      new ValueItem( -100 ),
+      new ValueItem( 100 ),
+      new ValueItem( 200 ),
+      new ValueItem( 300 ),
+      new ValueItem( 400 )
     ];
 
     // add the storage areas for the balance sheet items - this is where they reside when not in use
     const balanceItemBoxesTop = 310;
-    this.debtsBox = new BalanceSheetItemBox(
+    this.debtsBox = new HoldingBox(
       new Vector2( 105, balanceItemBoxesTop ),
+      HOLDING_BOX_SIZE,
       this.balanceSheetItems.filter( item => item.value < 0 ).sort( ( a, b ) => b.value - a.value )
     );
-    this.assetsBox = new BalanceSheetItemBox(
+    this.assetsBox = new HoldingBox(
       new Vector2( 800, balanceItemBoxesTop ),
+      HOLDING_BOX_SIZE,
       this.balanceSheetItems.filter( item => item.value > 0 ).sort()
     );
     this.storageBoxes = [ this.assetsBox, this.debtsBox ];
 
     // add the asset and debt bags
     const balanceItemBagsCenterY = 475;
-    this.debtsBag = new BalanceSheetItemBag( new Vector2( 380, balanceItemBagsCenterY ), {
-      itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_DEBTS
+    this.debtsBag = new HoldingBag( new Vector2( 380, balanceItemBagsCenterY ), {
+      itemAcceptanceTest: HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES
     } );
-    this.assetsBag = new BalanceSheetItemBag( new Vector2( 645, balanceItemBagsCenterY ), {
-      itemAcceptanceTest: BalanceSheetItemBag.ACCEPT_ONLY_ASSETS
+    this.assetsBag = new HoldingBag( new Vector2( 645, balanceItemBagsCenterY ), {
+      itemAcceptanceTest: HoldingBag.ACCEPT_ONLY_POSITIVE_VALUES
     } );
     this.bags = [ this.debtsBag, this.assetsBag ];
 
