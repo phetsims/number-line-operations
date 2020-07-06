@@ -23,7 +23,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
       // this is here as documentation so that clients know how options are passed through to the operation nodes
       numberLineOperationNodeOptions: {},
-      warningForPointsOutsideRange: true
+      allowPointsOutsideRangeIndicator: true
 
     }, options );
 
