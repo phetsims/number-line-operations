@@ -2,39 +2,36 @@
 
 
 /**
- * BalanceSheetItemBox is the area in the model where balance sheet items (assets and debts) hang out when not in use.
- * It is basically just a rectangular space that keeps track of where things go within it.
+ * HoldingBox is the area in the model where items that have value (assets, debts, chips, and such) hang out when not in
+ * use. It is basically just a rectangular space that keeps track of where things go within it.
  */
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-// constants
-const DIMENSIONS = new Dimension2( 122, 300 );
-
-class BalanceSheetItemBox {
+class HoldingBox {
 
   /**
    * @param {Vector2} position - position in model space of the rectangle's upper left corner
-   * @param {BalanceSheetItem[]} items
+   * @param {Dimension2} size
+   * @param {ValueItem[]} items
    */
-  constructor( position, items ) {
+  constructor( position, size, items ) {
 
     // @public (read-only)
     this.rectangleBounds = new Bounds2(
       position.x,
       position.y,
-      position.x + DIMENSIONS.width,
-      position.y + DIMENSIONS.height
+      position.x + size.width,
+      position.y + size.height
     );
 
     // map of items to storage positions, populated below
     this.mapOfItemsToStoragePositions = new Map();
 
-    // position each of the balance sheet items and remember where each one goes when returned
-    const interItemSpacing = DIMENSIONS.height / items.length;
+    // position each of the items and remember where each one goes when returned
+    const interItemSpacing = size.height / items.length;
     const yPositionOffset = interItemSpacing / 2;
     items.forEach( ( item, index ) => {
       item.teleportTo( new Vector2(
@@ -47,7 +44,7 @@ class BalanceSheetItemBox {
 
   /**
    * Return the provided item to its original position within this box.
-   * @param {BalanceSheetItem }item
+   * @param {ValueItem }item
    * @param {boolean} animate
    * @public
    */
@@ -65,7 +62,7 @@ class BalanceSheetItemBox {
 
   /**
    * Returns true if this box holds the provided item.
-   * @param {BalanceSheetItem} item
+   * @param {ValueItem} item
    * @returns {boolean}
    * @public
    */
@@ -74,5 +71,5 @@ class BalanceSheetItemBox {
   }
 }
 
-numberLineOperations.register( 'BalanceSheetItemBox', BalanceSheetItemBox );
-export default BalanceSheetItemBox;
+numberLineOperations.register( 'HoldingBox', HoldingBox );
+export default HoldingBox;

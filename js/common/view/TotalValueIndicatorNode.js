@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * NetWorthPiggyBankNode is a Scenery node that depicts a piggy bank that corresponds to a net worth value.  The
+ * TotalValueIndicatorNode is a Scenery node that depicts a piggy bank that corresponds to a net worth value.  The
  * position, label, and fill of the piggy bank changes as the net worth value changes.
  */
 
@@ -26,7 +26,7 @@ const MOST_NEGATIVE_FILL = Color.toColor( '#fb1d25' );
 const LEAST_NEGATIVE_FILL = Color.toColor( '#fda5a8' );
 const PIGGY_BANK_IMAGE_WIDTH = 85; // empirically determined to match design doc
 
-class NetWorthPiggyBankNode extends Node {
+class TotalValueIndicatorNode extends Node {
 
   /**
    * @param {NumberProperty} netWorthProperty
@@ -85,5 +85,5 @@ class NetWorthPiggyBankNode extends Node {
   }
 }
 
-numberLineOperations.register( 'NetWorthPiggyBankNode', NetWorthPiggyBankNode );
-export default NetWorthPiggyBankNode;
+numberLineOperations.register( 'TotalValueIndicatorNode', TotalValueIndicatorNode );
+export default TotalValueIndicatorNode;

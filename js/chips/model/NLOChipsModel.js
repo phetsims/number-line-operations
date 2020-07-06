@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * root model for the "Net Worth" screen
+ * model for the "Chips" screen of the "Number Line: Operations" sim
  *
  * @author John Blanco
  */
@@ -27,7 +27,7 @@ const HOLDING_BOX_SIZE = new Dimension2( 122, 300 ); // empirically determined t
 /**
  * @constructor
  */
-class NLONetWorthModel {
+class NLOChipsModel {
 
   /**
    * @param {Tandem} tandem
@@ -182,7 +182,7 @@ class NLONetWorthModel {
 }
 
 // statics
-NLONetWorthModel.NET_WORTH_RANGE = NET_WORTH_RANGE;
+NLOChipsModel.NET_WORTH_RANGE = NET_WORTH_RANGE;
 
-numberLineOperations.register( 'NLONetWorthModel', NLONetWorthModel );
-export default NLONetWorthModel;
+numberLineOperations.register( 'NLOChipsModel', NLOChipsModel );
+export default NLOChipsModel;

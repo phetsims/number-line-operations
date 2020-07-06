@@ -14,18 +14,18 @@ import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js'
 import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import NLONetWorthModel from '../model/NLONetWorthModel.js';
-import BalanceSheetItemNode from './BalanceSheetItemNode.js';
+import NLOChipsModel from '../model/NLOChipsModel.js';
+import BalanceSheetItemNode from '../../net-worth/view/BalanceSheetItemNode.js';
 
 /**
- * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
+ * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
  *
  * @author John Blanco
  */
-class NLONetWorthScreenView extends ScreenView {
+class NLOChipsScreenView extends ScreenView {
 
   /**
-   * @param {NLONetWorthModel} model
+   * @param {NLOChipsModel} model
    * @param {Tandem} tandem
    */
   constructor( model, tandem ) {
@@ -85,7 +85,7 @@ class NLONetWorthScreenView extends ScreenView {
     // piggy bank that displays the net worth and moves as the value changes
     const netWorthPiggyBankNode = new TotalValueIndicatorNode(
       model.netWorthProperty,
-      NLONetWorthModel.NET_WORTH_RANGE,
+      NLOChipsModel.NET_WORTH_RANGE,
       { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
     );
     this.addChild( netWorthPiggyBankNode );
@@ -131,5 +131,5 @@ class NLONetWorthScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NLONetWorthScreenView', NLONetWorthScreenView );
-export default NLONetWorthScreenView;
+numberLineOperations.register( 'NLOChipsScreenView', NLOChipsScreenView );
+export default NLOChipsScreenView;

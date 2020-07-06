@@ -8,12 +8,13 @@
 
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
+import mockupOpacityControl from '../../number-line-common/js/common/view/mockupOpacityControl.js';
 import Tandem from '../../tandem/js/Tandem.js';
+import NLOChipsScreen from './chips/NLOChipsScreen.js';
 import NLOGenericScreen from './generic/NLOGenericScreen.js';
 import NLONetWorthScreen from './net-worth/NLONetWorthScreen.js';
 import numberLineOperationsStrings from './numberLineOperationsStrings.js';
 import NLOOperationsScreen from './operations/NLOOperationsScreen.js';
-import mockupOpacityControl from '../../number-line-common/js/common/view/mockupOpacityControl.js';
 
 const numberLineOperationsTitleString = numberLineOperationsStrings[ 'number-line-operations' ].title;
 
@@ -34,7 +35,8 @@ simLauncher.launch( () => {
   const screens = [
     new NLONetWorthScreen( Tandem.ROOT.createTandem( 'netWorthScreen' ) ),
     new NLOOperationsScreen( Tandem.ROOT.createTandem( 'operationsScreen' ) ),
-    new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) )
+    new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) ),
+    new NLOChipsScreen( Tandem.ROOT.createTandem( 'chipsScreen' ) )
   ];
   const sim = new Sim( numberLineOperationsTitleString, screens, simOptions );
   sim.start();

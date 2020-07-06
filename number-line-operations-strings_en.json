@@ -11,6 +11,9 @@
   "screen.generic": {
     "value": "Generic"
   },
+  "screen.chips": {
+    "value": "Chips"
+  },
   "operationLabels": {
     "value": "Operation Labels"
   },

@@ -13,7 +13,7 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 // constants
 const DEFAULT_WIDTH = 300; // empirically determined to look decent
 
-class NetWorthAccordionBox extends AccordionBox {
+class TotalValueAccordionBox extends AccordionBox {
 
   /**
    * @param {NumberProperty} netWorthProperty
@@ -45,5 +45,5 @@ class NetWorthAccordionBox extends AccordionBox {
   }
 }
 
-numberLineOperations.register( 'NetWorthAccordionBox', NetWorthAccordionBox );
-export default NetWorthAccordionBox;
+numberLineOperations.register( 'TotalValueAccordionBox', TotalValueAccordionBox );
+export default TotalValueAccordionBox;
