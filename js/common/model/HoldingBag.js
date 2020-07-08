@@ -139,10 +139,10 @@ class HoldingBag {
         let yPosition;
         if ( index === 0 ) {
           xPosition = this.position.x;
-          yPosition = this.position.y - ( this.radius * 0.4 );
+          yPosition = this.position.y - ( this.radius * 0.35 );
         }
         else {
-          xPosition = this.position.x + ( index % 2 ? -1 : 1 ) * this.radius * 0.4;
+          xPosition = this.position.x + ( index % 2 ? -1 : 1 ) * this.radius * 0.35;
           yPosition = this.position.y + Utils.sign( index - 2.5 ) * this.radius * 0.25 + this.radius * 0.25;
         }
         item.animateTo( new Vector2( xPosition, yPosition ) );

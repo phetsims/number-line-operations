@@ -42,7 +42,7 @@ class HoldingBagNode extends Node {
     const labelNode = new BackgroundNode(
       new Text( labelText, {
         font: new PhetFont( 20 ),
-        maxWidth: 60
+        maxWidth: 100
       } ),
       {
         xMargin: 15,

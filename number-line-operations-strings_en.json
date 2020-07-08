@@ -26,8 +26,11 @@
   "netWorth": {
     "value": "Net Worth"
   },
-  "netWorthPattern": {
-    "value": "{{netWorthString}} = {{sign}}{{currencyUnits}}{{netWorthValue}}"
+  "total": {
+    "value": "Total"
+  },
+  "totalPattern": {
+    "value": "{{totalString}} = {{sign}}{{currencyUnits}}{{netWorthValue}}"
   },
   "currencyUnits": {
     "value": "$"
@@ -43,6 +46,12 @@
   },
   "debt": {
     "value": "debt"
+  },
+  "positives": {
+    "value": "Positives"
+  },
+  "negatives": {
+    "value": "Negatives"
   },
   "monetaryValuePattern": {
     "value": "{{sign}}{{currencyUnits}}{{value}}"
