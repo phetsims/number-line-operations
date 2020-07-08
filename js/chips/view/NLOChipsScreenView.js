@@ -5,7 +5,7 @@ import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import mockupImage from '../../../images/net-worth-screen-mockup_png.js';
+import mockupImage from '../../../images/chips-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
 import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
