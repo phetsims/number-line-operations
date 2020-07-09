@@ -28,6 +28,7 @@ class TotalValueAccordionBox extends AccordionBox {
 
     options = merge( {
       titleAndLabelText: numberLineOperationsStrings.total,
+      showTotalAsCurrency: false,
       minWidth: DEFAULT_WIDTH,
       maxWidth: DEFAULT_WIDTH
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
@@ -38,12 +39,22 @@ class TotalValueAccordionBox extends AccordionBox {
     } );
 
     totalValueProperty.link( totalValue => {
-      totalReadoutNode.text = StringUtils.fillIn( numberLineOperationsStrings.totalPattern, {
-        totalString: options.titleAndLabelText,
-        sign: totalValue < 0 ? MathSymbols.MINUS : '',
-        currencyUnits: numberLineOperationsStrings.currencyUnits,
-        netWorthValue: Math.abs( totalValue )
-      } );
+      let readoutText;
+      if ( options.showTotalAsCurrency ) {
+        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalCurrencyPattern, {
+          totalString: options.titleAndLabelText,
+          sign: totalValue < 0 ? MathSymbols.MINUS : '',
+          currencyUnits: numberLineOperationsStrings.currencyUnits,
+          totalValue: Math.abs( totalValue )
+        } );
+      }
+      else {
+        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalPattern, {
+          totalString: options.titleAndLabelText,
+          totalValue: totalValue
+        } );
+      }
+      totalReadoutNode.text = readoutText;
     } );
 
     // accordion box title node

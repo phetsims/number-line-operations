@@ -30,7 +30,10 @@
     "value": "Total"
   },
   "totalPattern": {
-    "value": "{{totalString}} = {{sign}}{{currencyUnits}}{{netWorthValue}}"
+    "value": "{{totalString}} = {{totalValue}}"
+  },
+  "totalCurrencyPattern": {
+    "value": "{{totalString}} = {{sign}}{{currencyUnits}}{{totalValue}}"
   },
   "currencyUnits": {
     "value": "$"

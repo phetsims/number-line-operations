@@ -71,6 +71,7 @@ class NLONetWorthScreenView extends ScreenView {
     // accordion box that displays the net worth when open
     this.addChild( new TotalValueAccordionBox( model.netWorthProperty, {
       titleAndLabelText: numberLineOperationsStrings.netWorth,
+      showTotalAsCurrency: true,
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
       top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
