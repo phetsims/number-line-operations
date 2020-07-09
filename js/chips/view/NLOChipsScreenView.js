@@ -15,7 +15,7 @@ import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.j
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NLOChipsModel from '../model/NLOChipsModel.js';
-import BalanceSheetItemNode from '../../net-worth/view/BalanceSheetItemNode.js';
+import ChipStackNode from './ChipStackNode.js';
 
 /**
  * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
@@ -69,7 +69,7 @@ class NLOChipsScreenView extends ScreenView {
     this.addChild( checkboxGroup );
 
     // accordion box that displays the net worth when open
-    this.addChild( new TotalValueAccordionBox( model.netWorthProperty, {
+    this.addChild( new TotalValueAccordionBox( model.totalInBagsProperty, {
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
       top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
@@ -84,28 +84,28 @@ class NLOChipsScreenView extends ScreenView {
 
     // piggy bank that displays the net worth and moves as the value changes
     const netWorthPiggyBankNode = new TotalValueIndicatorNode(
-      model.netWorthProperty,
-      NLOChipsModel.NET_WORTH_RANGE,
+      model.totalInBagsProperty,
+      NLOChipsModel.CHIPS_NUMBER_LINE_RANGE,
       { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
     );
     this.addChild( netWorthPiggyBankNode );
 
     // update the position of the piggy bank node when the net worth changes
-    model.netWorthProperty.link( netWorth => {
+    model.totalInBagsProperty.link( netWorth => {
       netWorthPiggyBankNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );
 
-    // add the view representation for the storage areas where the assets and debts will be when not in use
-    this.addChild( new HoldingBoxNode( model.assetsBox ) );
-    this.addChild( new HoldingBoxNode( model.debtsBox ) );
+    // add the view representation for the storage areas where the chips will reside when not in use
+    this.addChild( new HoldingBoxNode( model.positiveChipsBox ) );
+    this.addChild( new HoldingBoxNode( model.negativeChipsBox ) );
 
-    // add the view representations for the areas where the assets and debts will be stored when in use
-    this.addChild( new HoldingBagNode( model.assetsBag, numberLineOperationsStrings.assets ) );
-    this.addChild( new HoldingBagNode( model.debtsBag, numberLineOperationsStrings.debts ) );
+    // add the view representations for the bags into which the chips can be placed
+    this.addChild( new HoldingBagNode( model.positiveChipsBag, numberLineOperationsStrings.positives ) );
+    this.addChild( new HoldingBagNode( model.negativeChipsBag, numberLineOperationsStrings.negatives ) );
 
-    // add the assets and debts
-    model.balanceSheetItems.forEach( balanceSheetItem => {
-      this.addChild( new BalanceSheetItemNode( balanceSheetItem ) );
+    // add the chip nodes
+    model.chips.forEach( chip => {
+      this.addChild( new ChipStackNode( chip ) );
     } );
 
     // reset all button
