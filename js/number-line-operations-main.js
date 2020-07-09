@@ -35,8 +35,8 @@ simLauncher.launch( () => {
   const screens = [
     new NLONetWorthScreen( Tandem.ROOT.createTandem( 'netWorthScreen' ) ),
     new NLOOperationsScreen( Tandem.ROOT.createTandem( 'operationsScreen' ) ),
-    new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) ),
-    new NLOChipsScreen( Tandem.ROOT.createTandem( 'chipsScreen' ) )
+    new NLOChipsScreen( Tandem.ROOT.createTandem( 'chipsScreen' ) ),
+    new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) )
   ];
   const sim = new Sim( numberLineOperationsTitleString, screens, simOptions );
   sim.start();
