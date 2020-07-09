@@ -54,6 +54,7 @@ class OperationEntryCarousel extends Node {
       operationEntryCarousel.pageNumberProperty,
       {
         orientation: 'horizontal',
+        interactive: true,
         centerX: operationEntryCarousel.centerX,
         top: operationEntryCarousel.bottom + 10
       }
