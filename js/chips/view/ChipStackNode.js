@@ -7,20 +7,21 @@
 
 import Property from '../../../../axon/js/Property.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import Shape from '../../../../kite/js/Shape.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import RadialGradient from '../../../../scenery/js/util/RadialGradient.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIP_RADIUS = 23;
 const STACKING_STAGGER_AMOUNT = new Vector2( 2, -2 );
-const SHADOW_OFFSET = new Vector2( 6, 6 );
-const SHADOW_COLOR = new Color( 96, 96, 96 );
+const SHADOW_OFFSET = new Vector2( 5, 5 );
+const SHADOW_COLOR = new Color( 110, 110, 110 );
 
 class ChipStackNode extends Node {
 
@@ -37,9 +38,11 @@ class ChipStackNode extends Node {
     const chipFill = valueItem.value > 0 ? Color.YELLOW : Color.RED;
     const nextChipCenter = Vector2.ZERO.copy();
 
-    // add the layers where the chips and their shadows will reside
+    // add the layer where the chips will reside
     const chipsLayer = new Node();
-    const chipShadowsLayer = new Node();
+
+    // create a shape that will be used to create the shadow
+    let shadowShape = null;
 
     // create the chips and their shadows and add them to their respective layers
     let topChip = null;
@@ -52,13 +55,15 @@ class ChipStackNode extends Node {
       chipsLayer.addChild( chip );
       topChip = chip;
 
-      chipShadowsLayer.addChild( new Circle( CHIP_RADIUS, {
-        // fill: SHADOW_COLOR,
-        fill: new RadialGradient( 0, 0, 0, 0, 0, CHIP_RADIUS )
-          .addColorStop( 0.75, SHADOW_COLOR )
-          .addColorStop( 1, new Color( 0, 0, 0, 0 ) ),
-        center: nextChipCenter
-      } ) );
+      // Add the next portions of the shadow shape.
+      if ( shadowShape ) {
+        shadowShape = shadowShape.shapeUnion( Shape.circle( nextChipCenter.x, nextChipCenter.y, CHIP_RADIUS ) );
+      }
+      else {
+        shadowShape = Shape.circle( nextChipCenter.x, nextChipCenter.y, CHIP_RADIUS );
+      }
+
+      // Adjust the
       nextChipCenter.add( STACKING_STAGGER_AMOUNT );
     } );
 
@@ -73,19 +78,24 @@ class ChipStackNode extends Node {
     );
     topChip.addChild( labelNode );
 
+    // Create the shadow from the shape.
+    const shadowNode = new Path( shadowShape, {
+      fill: SHADOW_COLOR
+    } );
+
     super( {
-      children: [ chipShadowsLayer, chipsLayer ],
+      children: [ shadowNode, chipsLayer ],
       cursor: 'pointer'
     } );
 
     // Move the shadow into position and make it visible when this item is being dragged.
     valueItem.isDraggingProperty.link( isDragging => {
-      chipShadowsLayer.visible = isDragging;
+      shadowNode.visible = isDragging;
       if ( isDragging ) {
-        chipShadowsLayer.translation = SHADOW_OFFSET;
+        shadowNode.translation = SHADOW_OFFSET;
       }
       else {
-        chipShadowsLayer.translation = Vector2.ZERO;
+        shadowNode.translation = Vector2.ZERO;
       }
     } );
 
