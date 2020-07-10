@@ -81,6 +81,9 @@ class NLONetWorthScreenView extends ScreenView {
     this.addChild( new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
+      },
+      numberLineOperationNodeOptions: {
+        useFinancialDescriptions: true
       }
     } ) );
 

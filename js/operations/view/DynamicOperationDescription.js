@@ -69,7 +69,7 @@ class DynamicOperationDescription extends Text {
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
         if ( amount === 0 ) {
-          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
+          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
             addOrRemove: operationType === Operations.ADDITION ?
                          numberLineOperationsStrings.add :
                          numberLineOperationsStrings.remove,

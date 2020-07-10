@@ -52,6 +52,7 @@ class NLOOperationsScreenView extends ScreenView {
         radius: 6
       },
       numberLineOperationNodeOptions: {
+        useFinancialDescriptions: true,
         operationLabelFont: new PhetFont( 22 ),
         labelDistanceFromApex: 20
       }

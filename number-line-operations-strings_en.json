@@ -66,6 +66,18 @@
     "value": "remove"
   },
   "addRemoveZeroPattern": {
+    "value": "{{addOrRemove}} 0"
+  },
+  "addRemovePositiveNegativePattern": {
+    "value": "{{addOrRemove}} {{positiveOrNegative}} {{value}}"
+  },
+  "positive": {
+    "value": "positive"
+  },
+  "negative": {
+    "value": "negative"
+  },
+  "addRemoveZeroCurrencyPattern": {
     "value": "{{addOrRemove}} {{currencyUnits}}0"
   },
   "addRemoveAssetDebtPattern": {

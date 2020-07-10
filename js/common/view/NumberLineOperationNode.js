@@ -72,7 +72,11 @@ class NumberLineOperationNode extends Node {
       labelDistanceFromApex: 5,
 
       // {boolean} - animate the drawing of the arrow when it transitions from inactive to active
-      animateOnActive: true
+      animateOnActive: true,
+
+      // {boolean} - Controls whether financial terminology, such as "remove asset of $100", is used for the operation
+      // descriptions versus more generic phrases like "remove positive 100".
+      useFinancialDescriptions: false
     }, options );
 
     super( options );
@@ -222,26 +226,11 @@ class NumberLineOperationNode extends Node {
           }
 
           // update the operation description
-          if ( operation.amountProperty.value === 0 ) {
-            operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
-              addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
-                           numberLineOperationsStrings.add :
-                           numberLineOperationsStrings.remove,
-              currencyUnits: numberLineOperationsStrings.currencyUnits
-            } );
-          }
-          else {
-            operationDescriptionTextNode.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-              addOrRemove: operation.operationTypeProperty.value === Operations.ADDITION ?
-                           numberLineOperationsStrings.add :
-                           numberLineOperationsStrings.remove,
-              assetOrDebt: operation.amountProperty.value > 0 ?
-                           numberLineOperationsStrings.asset :
-                           numberLineOperationsStrings.debt,
-              currencyUnits: numberLineOperationsStrings.currencyUnits,
-              value: Math.abs( operation.amountProperty.value )
-            } );
-          }
+          operationDescriptionTextNode.text = NumberLineOperationNode.getOperationDescriptionString(
+            operation,
+            options.useFinancialDescriptions
+          );
+
           descriptionCenterYWhenLabelVisible = aboveNumberLine ?
                                                operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
                                                operationLabel.bottom + operationDescription.height / 2 + DISTANCE_BETWEEN_LABELS;
@@ -579,6 +568,58 @@ class NumberLineOperationNode extends Node {
            !numberLineDisplayRange.contains( startValue ) && numberLineDisplayRange.contains( endValue ) ||
            startValue < numberLineDisplayRange.min && endValue > numberLineDisplayRange.max ||
            startValue > numberLineDisplayRange.min && endValue < numberLineDisplayRange.max;
+  }
+
+  /**
+   * create a string that describes this operation
+   * @param {NumberLineOperation} operation
+   * @param {boolean} useFinancialDescriptions - controls whether to use financial terms like "asset" or more generic
+   * terminology in the descriptions
+   * @returns {string}
+   * @private
+   */
+  static getOperationDescriptionString( operation, useFinancialDescriptions ) {
+
+    const addOrRemoveString = operation.operationTypeProperty.value === Operations.ADDITION ?
+                              numberLineOperationsStrings.add :
+                              numberLineOperationsStrings.remove;
+    let operationDescriptionString;
+    if ( useFinancialDescriptions ) {
+      if ( operation.amountProperty.value === 0 ) {
+        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+          addOrRemove: addOrRemoveString,
+          currencyUnits: numberLineOperationsStrings.currencyUnits
+        } );
+      }
+      else {
+        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+          addOrRemove: addOrRemoveString,
+          assetOrDebt: operation.amountProperty.value > 0 ?
+                       numberLineOperationsStrings.asset :
+                       numberLineOperationsStrings.debt,
+          currencyUnits: numberLineOperationsStrings.currencyUnits,
+          value: Math.abs( operation.amountProperty.value )
+        } );
+      }
+    }
+    else {
+      if ( operation.amountProperty.value === 0 ) {
+        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
+          addOrRemove: addOrRemoveString
+        } );
+      }
+      else {
+        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemovePositiveNegativePattern, {
+          addOrRemove: addOrRemoveString,
+          positiveOrNegative: operation.amountProperty.value > 0 ?
+                              numberLineOperationsStrings.positive :
+                              numberLineOperationsStrings.negative,
+          value: Math.abs( operation.amountProperty.value )
+        } );
+      }
+    }
+
+    return operationDescriptionString;
   }
 
   /**
