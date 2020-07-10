@@ -10,7 +10,6 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import Utils from '../../../../dot/js/Utils.js';
 
 // constants
 const RADIUS = 125;
@@ -143,7 +142,7 @@ class HoldingBag {
         }
         else {
           xPosition = this.position.x + ( index % 2 ? -1 : 1 ) * this.radius * 0.35;
-          yPosition = this.position.y + Utils.sign( index - 2.5 ) * this.radius * 0.25 + this.radius * 0.25;
+          yPosition = this.position.y + Math.sign( index - 2.5 ) * this.radius * 0.25 + this.radius * 0.25;
         }
         item.animateTo( new Vector2( xPosition, yPosition ) );
       } );
