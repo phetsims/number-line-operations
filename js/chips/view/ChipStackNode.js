@@ -15,13 +15,13 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
+import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIP_RADIUS = 23;
 const STACKING_STAGGER_AMOUNT = new Vector2( 2, -2 );
 const SHADOW_OFFSET = new Vector2( 5, 5 );
-const SHADOW_COLOR = new Color( 110, 110, 110 );
 
 class ChipStackNode extends Node {
 
@@ -79,8 +79,11 @@ class ChipStackNode extends Node {
     topChip.addChild( labelNode );
 
     // Create the shadow from the shape.
+    const vectorToShadowEdge = SHADOW_OFFSET.copy().setMagnitude( CHIP_RADIUS );
     const shadowNode = new Path( shadowShape, {
-      fill: SHADOW_COLOR
+      fill: new LinearGradient( shadowShape.bounds.centerX, shadowShape.bounds.centerY, vectorToShadowEdge.x, vectorToShadowEdge.y )
+        .addColorStop( 0.5, new Color( 20, 20, 20, 0.4 ) )
+        .addColorStop( 1, new Color( 80, 80, 80, 0.2 ) )
     } );
 
     super( {
