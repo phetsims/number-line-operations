@@ -20,8 +20,9 @@ import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIP_RADIUS = 23;
-const STACKING_STAGGER_AMOUNT = new Vector2( 2, -2 );
+const STACKING_STAGGER_AMOUNT = new Vector2( -2, 2 );
 const SHADOW_OFFSET = new Vector2( 5, 5 );
+const DRAG_OFFSET = new Vector2( 0, -CHIP_RADIUS * 0.75 );
 
 class ChipStackNode extends Node {
 
@@ -36,7 +37,7 @@ class ChipStackNode extends Node {
     );
 
     const chipFill = valueItem.value > 0 ? Color.YELLOW : Color.RED;
-    const nextChipCenter = Vector2.ZERO.copy();
+    const nextChipCenter = STACKING_STAGGER_AMOUNT.timesScalar( Math.abs( valueItem.value ) - 1 );
 
     // add the layer where the chips will reside
     const chipsLayer = new Node();
@@ -63,8 +64,8 @@ class ChipStackNode extends Node {
         shadowShape = Shape.circle( nextChipCenter.x, nextChipCenter.y, CHIP_RADIUS );
       }
 
-      // Adjust the
-      nextChipCenter.add( STACKING_STAGGER_AMOUNT );
+      // Adjust the position where the next chip will go.
+      nextChipCenter.subtract( STACKING_STAGGER_AMOUNT );
     } );
 
     // add the label to the top chip on the stack
@@ -108,21 +109,18 @@ class ChipStackNode extends Node {
     } );
 
     // drag handler
-    let dragOffset = Vector2.ZERO;
     this.addInputListener( new DragListener( {
 
       dragBoundsProperty: new Property( this.layoutBounds ),
 
       start: event => {
         valueItem.isDraggingProperty.value = true;
-        const dragStartPoint = this.globalToParentPoint( event.pointer.point ); // point in parent frame
-        dragOffset = valueItem.positionProperty.value.minus( dragStartPoint );
+        valueItem.teleportTo( this.eventToPosition( event ) );
         this.moveToFront(); // move to the front of the z-order in whatever layer this node is in
       },
 
       drag: event => {
-        const dragPoint = this.globalToParentPoint( event.pointer.point );
-        valueItem.teleportTo( dragPoint.plus( dragOffset ) );
+        valueItem.teleportTo( this.eventToPosition( event ) );
       },
 
       end: () => {
@@ -135,6 +133,20 @@ class ChipStackNode extends Node {
     valueItem.positionProperty.link( position => {
       this.center = position;
     } );
+  }
+
+  /**
+   * convert a drag event to a position in model space
+   * @param {SceneryEvent}
+   * @returns {Vector2}
+   * @private
+   */
+  eventToPosition( event ) {
+
+    // pointer position in parent coordinates
+    const parentPoint = this.globalToParentPoint( event.pointer.point );
+
+    return parentPoint.plus( DRAG_OFFSET );
   }
 }
 
