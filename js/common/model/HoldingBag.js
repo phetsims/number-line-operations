@@ -37,6 +37,9 @@ class HoldingBag {
 
     }, options );
 
+    // options validation
+    assert && assert( options.capacity >= 4 && options.capacity <= 5, 'unsupported capacity: ' + options.capacity );
+
     // @public (read-only)
     this.position = position;
 
@@ -49,6 +52,37 @@ class HoldingBag {
     // @private
     this.itemAcceptanceTest = options.itemAcceptanceTest;
     this.capacity = options.capacity;
+
+    // @private {Vector2[]} - positions where items can be placed within the bag
+    this.possibleItemPositions = [];
+    if ( this.capacity === 4 ) {
+
+      // Several of the factors in the position calculation were empirically determined based on the artwork of the
+      // items and the bag and can be adjust if needed when things change.
+      _.times( this.capacity, index => {
+        const xPosition = this.position.x;
+        const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.3;
+        this.possibleItemPositions.push( new Vector2( xPosition, yPosition ) );
+      } );
+    }
+    else if ( this.capacity === 5 ) {
+
+      // Several of the factors in the position calculation were empirically determined based on the size of the items
+      // that go with this capacity and the artwork for the bag.  These can be adjust if needed when things change.
+      _.times( this.capacity, index => {
+        let xPosition;
+        let yPosition;
+        if ( index === 0 ) {
+          xPosition = this.position.x;
+          yPosition = this.position.y - ( this.radius * 0.35 );
+        }
+        else {
+          xPosition = this.position.x + ( index % 2 ? -1 : 1 ) * this.radius * 0.35;
+          yPosition = this.position.y + Math.sign( index - 2.5 ) * this.radius * 0.25 + this.radius * 0.25;
+        }
+        this.possibleItemPositions.push( new Vector2( xPosition, yPosition ) );
+      } );
+    }
   }
 
   /**
@@ -71,7 +105,7 @@ class HoldingBag {
     assert && assert( this.containedItemList.length < this.capacity, 'there is insufficient space in bag for this item' );
     this.containedItemList.push( item );
     item.inBagProperty.set( true );
-    this.positionContainedItems();
+    this.moveNewItemIntoPosition( item );
   }
 
   /**
@@ -83,7 +117,12 @@ class HoldingBag {
     assert && assert( this.containedItemList.indexOf( item ) !== -1, 'item is not in bag' );
     this.containedItemList = _.without( this.containedItemList, item );
     item.inBagProperty.set( false );
-    this.positionContainedItems();
+
+    // The design team decided to consolidate the items in the bag when there are 4, but not to do so when there are 5.
+    // This was made for purely aesthetic purposes, and can be changed or made configurable if desired.
+    if ( this.capacity === 4 ) {
+      this.consolidateItems();
+    }
   }
 
   /**
@@ -114,39 +153,42 @@ class HoldingBag {
   }
 
   /**
-   * Position the items that are in this bag.  This method is optimized to work with the image artwork for this sim and
-   * makes assumptions about how many items can be added, it will need to be adjusted if any of this changes.
+   * Move a newly added item into the correct position.  This assumes that the item has already been added to the list
+   * of contained items and just needs to be moved into place.
+   * @param newItem
    * @private
    */
-  positionContainedItems() {
-    assert && assert( this.containedItemList.length <= this.capacity, 'too many items in bag' );
-    assert && assert( this.capacity >= 4 && this.capacity <= 5, 'unable to position for this bag\'s capacity' );
-    if ( this.capacity === 4 ) {
+  moveNewItemIntoPosition( newItem ) {
 
-      // position items in a vertical stack
-      this.containedItemList.forEach( ( item, index ) => {
-        const xPosition = this.position.x;
-        const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.3;
-        item.animateTo( new Vector2( xPosition, yPosition ) );
-      } );
+    const itemIndex = this.containedItemList.indexOf( newItem );
+    assert && assert( itemIndex >= 0, 'item is not contained (must be added before calling this method)' );
+    assert && assert( this.containedItemList.length <= this.capacity, 'too many items in bag' );
+    if ( this.capacity === 4 ) {
+      newItem.animateTo( this.possibleItemPositions[ itemIndex ] );
     }
     else if ( this.capacity === 5 ) {
 
-      // position items with one centered at the top and the remaining four in a grid pattern
-      this.containedItemList.forEach( ( item, index ) => {
-        let xPosition;
-        let yPosition;
-        if ( index === 0 ) {
-          xPosition = this.position.x;
-          yPosition = this.position.y - ( this.radius * 0.35 );
-        }
-        else {
-          xPosition = this.position.x + ( index % 2 ? -1 : 1 ) * this.radius * 0.35;
-          yPosition = this.position.y + Math.sign( index - 2.5 ) * this.radius * 0.25 + this.radius * 0.25;
-        }
-        item.animateTo( new Vector2( xPosition, yPosition ) );
+      // find the first unoccupied position
+      const firstUnoccupiedPosition = this.possibleItemPositions.find( position => {
+        return this.containedItemList.find( item => item.positionProperty.value.equals( position ) ) === undefined;
       } );
+      newItem.animateTo( firstUnoccupiedPosition );
     }
+  }
+
+  /**
+   * Adjust the positions of the items in this bag such that the unoccupied positions are all at the end of the position
+   * list.
+   * @private
+   */
+  consolidateItems() {
+
+    this.containedItemList.forEach( ( item, index ) => {
+      const position = this.possibleItemPositions[ index ];
+      if ( !item.positionProperty.value.equals( this.possibleItemPositions[ index ] ) ) {
+        item.animateTo( position );
+      }
+    } );
   }
 }
 
