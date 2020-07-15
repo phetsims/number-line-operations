@@ -66,7 +66,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // numerical expression
     const numericalExpression = new NumericalExpression( numberLine, simplifyProperty, evaluateProperty, { top: 0 } );
     contentRoot.addChild( numericalExpression );
-    numericalExpression.boundsProperty.link( () => {
+    numericalExpression.localBoundsProperty.link( () => {
       numericalExpression.centerX = CONTENT_DIMENSIONS.width / 2;
       numericalExpression.top = 0;
     } );
