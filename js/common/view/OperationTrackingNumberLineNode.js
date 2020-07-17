@@ -9,7 +9,7 @@ import SpatializedNumberLineNode from '../../../../number-line-common/js/common/
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationNode from './NumberLineOperationNode.js';
 import merge from '../../../../phet-core/js/merge.js';
-import PointsOffScaleCondition from '../../../../number-line-common/js/common/model/PointsOffScaleCondition.js';
+import PointsOffScaleCondition from '../../../../number-line-common/js/common/view/PointsOffScaleCondition.js';
 
 class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
