@@ -1,5 +1,6 @@
 // Copyright 2020, University of Colorado Boulder
 
+import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -16,6 +17,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NLOChipsModel from '../model/NLOChipsModel.js';
 import ChipStackNode from './ChipStackNode.js';
+import FillableBagNode from './FillableBagNode.js';
 
 /**
  * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
@@ -83,16 +85,22 @@ class NLOChipsScreenView extends ScreenView {
     } ) );
 
     // piggy bank that displays the net worth and moves as the value changes
-    const netWorthPiggyBankNode = new TotalValueIndicatorNode(
+    const totalValueIndicatorNode = new TotalValueIndicatorNode(
       model.totalInBagsProperty,
+      new FillableBagNode( {
+        maxWidth: 40 // empirically determined to match design doc
+      } ),
       NLOChipsModel.CHIPS_NUMBER_LINE_RANGE,
-      { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
+      {
+        centerY: model.numberLine.centerPositionProperty.value.y + 60,
+        labelCenterOffset: new Vector2( 0, 5 )
+      }
     );
-    this.addChild( netWorthPiggyBankNode );
+    this.addChild( totalValueIndicatorNode );
 
     // update the position of the piggy bank node when the net worth changes
     model.totalInBagsProperty.link( netWorth => {
-      netWorthPiggyBankNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
+      totalValueIndicatorNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );
 
     // add the view representation for the storage areas where the chips will reside when not in use

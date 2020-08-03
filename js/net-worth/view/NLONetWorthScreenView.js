@@ -1,7 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
+import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
+import PiggyBankDecoration from '../../../../number-line-common/js/explore/model/PiggyBankDecoration.js';
+import PiggyBankNode from '../../../../number-line-common/js/explore/view/PiggyBankNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -90,8 +93,16 @@ class NLONetWorthScreenView extends ScreenView {
     // piggy bank that displays the net worth and moves as the value changes
     const netWorthPiggyBankNode = new TotalValueIndicatorNode(
       model.netWorthProperty,
+      new PiggyBankNode( {
+        decorationType: PiggyBankDecoration.NONE,
+        maxWidth: 85 // empirically determined to match design doc
+      } ),
       NLONetWorthModel.NET_WORTH_RANGE,
-      { centerY: model.numberLine.centerPositionProperty.value.y + 68 }
+      {
+        isCurrency: true,
+        labelCenterOffset: new Vector2( -8, 0 ),
+        centerY: model.numberLine.centerPositionProperty.value.y + 68
+      }
     );
     this.addChild( netWorthPiggyBankNode );
 
