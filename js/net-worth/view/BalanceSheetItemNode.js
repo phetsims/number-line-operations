@@ -49,9 +49,10 @@ MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, {
 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, {
   outOfBagImage: asset200OutOfBagImage,
-  outOfBagWidth: 90,
+  outOfBagWidth: 85,
+  outOfBagLabelOffset: new Vector2( 0, -3 ),
   inBagImage: asset200InBagImage,
-  inBagWidth: 55
+  inBagWidth: 50
 } );
 MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, {
   outOfBagImage: asset300OutOfBagImage,
