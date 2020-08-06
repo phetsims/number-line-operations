@@ -35,12 +35,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       // {NumberProperty} - the value from which the operations will start, created if not supplied
       startingValueProperty: null,
 
-      // {Color[]} - A list of colors that is used to set the color values for the points that appear on the number
-      // line.  The list is ordered such that when all operations are active, the first color is used for the starting
-      // point, the 2nd is used for the 2nd point in sequence, and so forth.  If not all operations are active, the
-      // colors at the end of the list have priority, so for instance if only one point is visible (no operations
-      // active), the last color in the list is used.  See https://github.com/phetsims/number-line-operations/issues/13.
-      pointColorList: [ new Color( '#4069FF' ), new Color( '#0000C4' ) ],
+      // {Color[]} - A list of colors that is used for the points that appear on the number line.  The list is ordered
+      // such that the first color is the color of the initial point, the second is the color of the first operation if
+      // present, and so on.
+      pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ) ],
 
       // {boolean} - whether operation labels are initially visible, can be changed later via the property
       operationLabelsInitiallyVisible: true,
@@ -85,7 +83,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // @public (read-write) - the number line point that corresponds with the starting value, this is always present
     this.startingPoint = new NumberLinePoint( this, {
       valueProperty: this.startingValueProperty,
-      initialColor: options.pointColorList[ options.pointColorList.length - 1 ]
+      initialColor: options.pointColorList[ 0 ]
     } );
     this.addPoint( this.startingPoint );
 
@@ -93,15 +91,14 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // operation and these are added to or removed from the number line as the corresponding operation goes active or
     // inactive.  The position in the array identifies the operation to which the endpoint corresponds.
     this.endpoints = [];
-    _.times( options.numberOfOperationsTracked, () => {
-      this.endpoints.push( new NumberLinePoint( this ) );
+    _.times( options.numberOfOperationsTracked, index => {
+      this.endpoints.push( new NumberLinePoint( this, {
+        initialColor: options.pointColorList[ index + 1 ]
+      } ) );
     } );
 
     // function closure to update endpoint values as operations change
     const updateEndpoints = () => {
-
-      // A list of visible points that is ordered from the start point to the last operation's end point.
-      const orderedListOfVisiblePoints = [ this.startingPoint ];
 
       // Cycle through the operations in order and update all endpoint values.
       this.operations.forEach( ( operation, index ) => {
@@ -115,9 +112,6 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
           if ( !this.hasPoint( endpoint ) ) {
             this.addPoint( endpoint );
           }
-
-          // This endpoint is visible.
-          orderedListOfVisiblePoints.push( endpoint );
 
           // Update the value of the endpoint to the result of this operation EXCEPT when the endpoint is being dragged,
           // since in that case it is probably the dragging that caused the change to the operation, so setting the
@@ -139,12 +133,6 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
             this.removePoint( endpoint );
           }
         }
-      } );
-
-      // Update the colors of the visible points.
-      orderedListOfVisiblePoints.forEach( ( point, index ) => {
-        const colorIndex = index + options.pointColorList.length - orderedListOfVisiblePoints.length;
-        point.colorProperty.set( options.pointColorList[ colorIndex ] );
       } );
     };
 

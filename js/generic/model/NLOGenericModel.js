@@ -28,8 +28,6 @@ const MODEL_BOUNDS = NLOConstants.LAYOUT_BOUNDS;
 const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX; // matches design doc layout
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = new Vector2( NUMBER_LINE_CENTER_X, MODEL_BOUNDS.centerY );
 const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
-const PRIMARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR = Color.BLUE;
-const SECONDARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR = Color.MAGENTA;
 
 /**
  * primary model for the "Generic" screen
@@ -49,7 +47,7 @@ class NLOGenericModel {
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       {
         numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#64A3FF' ), new Color( '#4069FF' ), new Color( '#0000C4' ) ],
+        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ],
         startingValueProperty: new NumberProperty( 1 ),
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
@@ -65,7 +63,7 @@ class NLOGenericModel {
     // are others that can come and go.
     assert && assert( this.primaryNumberLine.residentPoints.length === 1, 'expected only one point on the number line' );
     this.primaryLineInitialValuePointController = new PointController( {
-      color: PRIMARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR,
+      color: this.primaryNumberLine.startingPoint.colorProperty.value,
       numberLines: [ this.primaryNumberLine ],
       numberLinePoints: [ this.primaryNumberLine.startingPoint ],
       lockToNumberLine: LockToNumberLine.ALWAYS
@@ -78,7 +76,7 @@ class NLOGenericModel {
 
       // add a point controller for the newly added point
       const pointController = new PointController( {
-        color: PRIMARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR,
+        color: addedPoint.colorProperty.value,
         numberLines: [ this.primaryNumberLine ],
         numberLinePoints: [ addedPoint ],
         lockToNumberLine: LockToNumberLine.ALWAYS
@@ -101,7 +99,7 @@ class NLOGenericModel {
       this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
       {
         numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#ff85ff' ), new Color( '#f533ff' ), new Color( '#a400cc' ) ],
+        pointColorList: [ new Color( '#a400cc' ), new Color( '#f533ff' ), new Color( '#ff85ff' ) ],
         startingValueProperty: new NumberProperty( 1 ),
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
@@ -117,7 +115,7 @@ class NLOGenericModel {
     // are others that can come and go.
     assert && assert( this.secondaryNumberLine.residentPoints.length === 1, 'expected only one point on the number line' );
     this.secondaryLineInitialValuePointController = new PointController( {
-      color: SECONDARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR,
+      color: this.secondaryNumberLine.startingPoint.colorProperty.value,
       numberLines: [ this.secondaryNumberLine ],
       numberLinePoints: [ this.secondaryNumberLine.startingPoint ],
       lockToNumberLine: LockToNumberLine.ALWAYS
@@ -130,7 +128,7 @@ class NLOGenericModel {
 
       // add a point controller for the newly added point
       const pointController = new PointController( {
-        color: SECONDARY_NUMBER_LINE_POINT_CONTROLLERS_COLOR,
+        color: addedPoint.colorProperty.value,
         numberLines: [ this.secondaryNumberLine ],
         numberLinePoints: [ addedPoint ],
         lockToNumberLine: LockToNumberLine.ALWAYS

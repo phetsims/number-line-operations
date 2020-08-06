@@ -29,7 +29,7 @@ class NLOOperationsModel {
       NLOConstants.LAYOUT_BOUNDS.center,
       {
         numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#64A3FF' ), new Color( '#4069FF' ), new Color( '#0000C4' ) ],
+        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ],
         startingValueProperty: this.initialValueProperty,
         initialDisplayedRange: new Range( -1000, 1000 ),
         tickMarksInitiallyVisible: true,
