@@ -4,8 +4,9 @@
  * @author John Blanco
  */
 
-import Range from '../../../../dot/js/Range.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Range from '../../../../dot/js/Range.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -28,6 +29,7 @@ class NLOOperationsModel {
       NLOConstants.LAYOUT_BOUNDS.center,
       {
         numberOfOperationsTracked: 2,
+        pointColorList: [ new Color( '#64A3FF' ), new Color( '#4069FF' ), new Color( '#0000C4' ) ],
         startingValueProperty: this.initialValueProperty,
         initialDisplayedRange: new Range( -1000, 1000 ),
         tickMarksInitiallyVisible: true,

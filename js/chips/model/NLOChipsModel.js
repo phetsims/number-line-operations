@@ -11,14 +11,13 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import Color from '../../../../scenery/js/util/Color.js';
-import Operations from '../../common/model/Operations.js';
-import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
-import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
-import ValueItem from '../../common/model/ValueItem.js';
 import HoldingBag from '../../common/model/HoldingBag.js';
 import HoldingBox from '../../common/model/HoldingBox.js';
+import Operations from '../../common/model/Operations.js';
+import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
+import ValueItem from '../../common/model/ValueItem.js';
+import NLOConstants from '../../common/NLOConstants.js';
+import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIPS_NUMBER_LINE_RANGE = new Range( -15, 15 );
@@ -51,7 +50,6 @@ class NLOChipsModel {
         initialDisplayedRange: CHIPS_NUMBER_LINE_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
-        startingPointColor: new Color( 0x4ddff ),
 
         // width of the number line in model space, number empirically determined to match design
         widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
