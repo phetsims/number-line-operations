@@ -99,7 +99,7 @@ class NLOGenericModel {
       this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
       {
         numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#a400cc' ), new Color( '#f533ff' ), new Color( '#ff85ff' ) ],
+        pointColorList: [ new Color( '#a400cc' ), new Color( '#ef29ff' ), new Color( '#fb71ff' ) ],
         startingValueProperty: new NumberProperty( 1 ),
         initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
         tickMarksInitiallyVisible: true,
