@@ -6,6 +6,7 @@ import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import mockupImage from '../../../images/chips-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
@@ -88,12 +89,14 @@ class NLOChipsScreenView extends ScreenView {
     const totalValueIndicatorNode = new TotalValueIndicatorNode(
       model.totalInBagsProperty,
       new FillableBagNode( {
-        maxWidth: 40 // empirically determined to match design doc
+        maxWidth: 46 // empirically determined to match design doc
       } ),
       NLOChipsModel.CHIPS_NUMBER_LINE_RANGE,
       {
-        centerY: model.numberLine.centerPositionProperty.value.y + 60,
-        labelCenterOffset: new Vector2( 0, 5 )
+        centerY: model.numberLine.centerPositionProperty.value.y + 64,
+        labelCenterOffset: new Vector2( 0, 5 ),
+        leastPositiveFill: new Color( '#FFFFCC' ),
+        mostPositiveFill: Color.YELLOW
       }
     );
     this.addChild( totalValueIndicatorNode );

@@ -16,13 +16,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
-// constants
-const ZERO_FILL = Color.WHITE;
-const MOST_POSITIVE_FILL = Color.toColor( '#1fb493' );
-const LEAST_POSITIVE_FILL = Color.toColor( '#a5e1d4' );
-const MOST_NEGATIVE_FILL = Color.toColor( '#fb1d25' );
-const LEAST_NEGATIVE_FILL = Color.toColor( '#fda5a8' );
-
 class TotalValueIndicatorNode extends Node {
 
   /**
@@ -39,8 +32,14 @@ class TotalValueIndicatorNode extends Node {
       labelCenterOffset: Vector2.ZERO,
 
       // {boolean} - if false, just shows the number, if true, uses a currency symbol and pattern
-      isCurrency: false
+      isCurrency: false,
 
+      // {Color} - color values used, and interpolated between, as the total value changes
+      zeroFill: Color.WHITE,
+      mostPositiveFill: new Color( '#1fb493' ),
+      leastPositiveFill: new Color( '#a5e1d4' ),
+      mostNegativeFill: new Color( '#fb1d25' ),
+      leastNegativeFill: new Color( '#fda5a8' )
     }, options );
 
     // label the represent the value
@@ -73,18 +72,18 @@ class TotalValueIndicatorNode extends Node {
       labelNode.center = fillableBackgroundNode.center.plus( options.labelCenterOffset );
 
       // set the fill
-      let fill = ZERO_FILL;
+      let fill = options.zeroFill;
       if ( totalValue < 0 ) {
         fill = Color.interpolateRGBA(
-          LEAST_NEGATIVE_FILL,
-          MOST_NEGATIVE_FILL,
+          options.leastNegativeFill,
+          options.mostNegativeFill,
           totalValue / range.min
         );
       }
       else if ( totalValue > 0 ) {
         fill = Color.interpolateRGBA(
-          LEAST_POSITIVE_FILL,
-          MOST_POSITIVE_FILL,
+          options.leastPositiveFill,
+          options.mostPositiveFill,
           totalValue / range.max
         );
       }
