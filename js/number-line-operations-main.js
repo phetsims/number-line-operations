@@ -33,9 +33,9 @@ const simOptions = {
 // until the images are fully loaded, see https://github.com/phetsims/coulombs-law/issues/70
 simLauncher.launch( () => {
   const screens = [
+    new NLOChipsScreen( Tandem.ROOT.createTandem( 'chipsScreen' ) ),
     new NLONetWorthScreen( Tandem.ROOT.createTandem( 'netWorthScreen' ) ),
     new NLOOperationsScreen( Tandem.ROOT.createTandem( 'operationsScreen' ) ),
-    new NLOChipsScreen( Tandem.ROOT.createTandem( 'chipsScreen' ) ),
     new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) )
   ];
   const sim = new Sim( numberLineOperationsTitleString, screens, simOptions );
