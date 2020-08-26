@@ -61,7 +61,7 @@ class HoldingBag {
       // items and the bag and can be adjust if needed when things change.
       _.times( this.capacity, index => {
         const xPosition = this.position.x;
-        const yPosition = this.position.y - ( this.radius * 0.2 ) + index * this.radius * 0.3;
+        const yPosition = this.position.y - ( this.radius * 0.3 ) + index * this.radius * 0.33;
         this.possibleItemPositions.push( new Vector2( xPosition, yPosition ) );
       } );
     }
