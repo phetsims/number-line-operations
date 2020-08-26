@@ -100,5 +100,8 @@
   },
   "numericalExpression": {
     "value": "Numerical Expression"
+  },
+  "loan": {
+    "value": "Loan"
   }
 }

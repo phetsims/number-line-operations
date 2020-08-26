@@ -171,11 +171,40 @@ class BalanceSheetItemNode extends Node {
       }
     );
 
+    // put the in-bag image under a parent node so that a label can be added if needed
+    const inBagImageNodeParent = new Node( { children: [ inBagImageNode ] } );
+
     const inBagRepresentationNode = new HBox( {
-      children: [ inBagImageNode, inBagLabelNode ],
+      children: [ inBagImageNodeParent, inBagLabelNode ],
       spacing: 10,
       center: outOfBagImageNode.center
     } );
+
+    // Special Case: There are two values that are loans, and the word "loan" appeared on the original artwork.  We
+    // realized fairly late in the game that this word should be translatable, so the following code handles that case.
+    // It's specific to the loan images, and is thus fairly fragile, but it was the most expedient way to handle the
+    // situation.  If other labels are ever needed, this should be generalized instead of continuing to follow this
+    // approach.
+    if ( balanceSheetItem.value === -100 || balanceSheetItem.value === -300 ) {
+
+      // out-of-bag representation
+      const outOfBagTextLabelNode = new Text( numberLineOperationsStrings.loan, {
+        font: new PhetFont( { size: 11, family: 'serif', style: 'italic' } ),
+        centerX: 0,
+        centerY: outOfBagImageNode.bottom - 15, // offset empirically determined
+        maxWidth: outOfBagImageNode.width * 0.65
+      } );
+      outOfBagRepresentationNode.addChild( outOfBagTextLabelNode );
+
+      // in-bag representation
+      const inBagTextLabelNode = new Text( numberLineOperationsStrings.loan, {
+        font: new PhetFont( { size: 8, family: 'serif', style: 'italic' } ),
+        centerX: inBagImageNode.centerX,
+        centerY: inBagImageNode.bottom - 8, // offset empirically determined
+        maxWidth: inBagImageNode.width * 0.65
+      } );
+      inBagImageNodeParent.addChild( inBagTextLabelNode );
+    }
 
     super( {
       children: [ outOfBagRepresentationNode, inBagRepresentationNode ],
