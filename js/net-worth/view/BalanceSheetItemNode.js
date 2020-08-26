@@ -37,64 +37,89 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // constants
 //---------------------------------------------------------------------------------------------------------------------
 
-// Create a map of asset/debt values to the images and their sizes that go with each (not using Map constructor because
-// of lack of support in IE).  The width is the only size provided, and the aspect ratio of the image ends up defining
+// Create a map of asset/debt values to the images, sizes, and other information necessary to create the node for a
+// particular value.  Note that the width is the only size provided, and the aspect ratio of the image ends up defining
 // the height in the view.
-const MAP_OF_VALUES_TO_IMAGE_INFO = new Map(); // Map<key:<number>,value:<{image:{imageInfo},width:{number}}>
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 100, {
-  outOfBagImage: asset100OutOfBagImage,
-  outOfBagWidth: 80,
-  inBagImage: asset100InBagImage,
-  inBagWidth: 50
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 200, {
-  outOfBagImage: asset200OutOfBagImage,
-  outOfBagWidth: 85,
-  outOfBagLabelOffset: new Vector2( 0, -3 ),
-  inBagImage: asset200InBagImage,
-  inBagWidth: 50
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 300, {
-  outOfBagImage: asset300OutOfBagImage,
-  outOfBagWidth: 100,
-  outOfBagLabelOffset: new Vector2( 0, 5 ),
-  inBagImage: asset300InBagImage,
-  inBagWidth: 50
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( 400, {
-  outOfBagImage: asset400OutOfBagImage,
-  outOfBagWidth: 50,
-  outOfBagLabelOffset: new Vector2( 0, 7 ),
-  inBagImage: asset400InBagImage,
-  inBagWidth: 20
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -100, {
-  outOfBagImage: debt100OutOfBagImage,
-  outOfBagWidth: 65,
-  outOfBagLabelOffset: new Vector2( 0, 2 ),
-  inBagImage: debt100InBagImage,
-  inBagWidth: 40
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -200, {
-  outOfBagImage: debt200OutOfBagImage,
-  outOfBagWidth: 70,
-  outOfBagLabelOffset: new Vector2( 8, -2 ),
-  inBagImage: debt200InBagImage,
-  inBagWidth: 40
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -300, {
-  outOfBagImage: debt300OutOfBagImage,
-  outOfBagWidth: 65,
-  inBagImage: debt300InBagImage,
-  inBagWidth: 40
-} );
-MAP_OF_VALUES_TO_IMAGE_INFO.set( -400, {
-  outOfBagImage: debt400OutOfBagImage,
-  outOfBagWidth: 70,
-  outOfBagLabelOffset: new Vector2( 8, -2 ),
-  inBagImage: debt400InBagImage,
-  inBagWidth: 40
-} );
+const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
+  [
+    100,
+    {
+      outOfBagImage: asset100OutOfBagImage,
+      outOfBagWidth: 80,
+      inBagImage: asset100InBagImage,
+      inBagWidth: 50
+    }
+  ],
+  [
+    200,
+    {
+      outOfBagImage: asset200OutOfBagImage,
+      outOfBagWidth: 85,
+      outOfBagLabelOffset: new Vector2( 0, -3 ),
+      inBagImage: asset200InBagImage,
+      inBagWidth: 50
+    }
+  ],
+  [
+    300,
+    {
+      outOfBagImage: asset300OutOfBagImage,
+      outOfBagWidth: 100,
+      outOfBagLabelOffset: new Vector2( 0, 5 ),
+      inBagImage: asset300InBagImage,
+      inBagWidth: 50
+    }
+  ],
+  [
+    400,
+    {
+      outOfBagImage: asset400OutOfBagImage,
+      outOfBagWidth: 50,
+      outOfBagLabelOffset: new Vector2( 0, 7 ),
+      inBagImage: asset400InBagImage,
+      inBagWidth: 20
+    }
+  ],
+  [
+    -100,
+    {
+      outOfBagImage: debt100OutOfBagImage,
+      outOfBagWidth: 65,
+      outOfBagLabelOffset: new Vector2( 0, 2 ),
+      inBagImage: debt100InBagImage,
+      inBagWidth: 40
+    }
+  ],
+  [
+    -200,
+    {
+      outOfBagImage: debt200OutOfBagImage,
+      outOfBagWidth: 70,
+      outOfBagLabelOffset: new Vector2( 8, -2 ),
+      inBagImage: debt200InBagImage,
+      inBagWidth: 40
+    }
+  ],
+  [
+    -300,
+    {
+      outOfBagImage: debt300OutOfBagImage,
+      outOfBagWidth: 65,
+      inBagImage: debt300InBagImage,
+      inBagWidth: 40
+    }
+  ],
+  [
+    -400,
+    {
+      outOfBagImage: debt400OutOfBagImage,
+      outOfBagWidth: 70,
+      outOfBagLabelOffset: new Vector2( 8, -2 ),
+      inBagImage: debt400InBagImage,
+      inBagWidth: 40
+    }
+  ]
+] );
 
 class BalanceSheetItemNode extends Node {
 
