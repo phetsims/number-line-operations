@@ -8,7 +8,6 @@
 
 import Sim from '../../joist/js/Sim.js';
 import simLauncher from '../../joist/js/simLauncher.js';
-import mockupOpacityControl from '../../number-line-common/js/common/view/mockupOpacityControl.js';
 import Tandem from '../../tandem/js/Tandem.js';
 import NLOChipsScreen from './chips/NLOChipsScreen.js';
 import NLOGenericScreen from './generic/NLOGenericScreen.js';
@@ -25,8 +24,7 @@ const simOptions = {
     team: 'Kathy Perkins',
     qualityAssurance: 'Katie Woessner',
     graphicArts: 'Megan Lai'
-  },
-  createOptionsDialogContent: () => mockupOpacityControl
+  }
 };
 
 // launch the sim - beware that scenery Image nodes created outside of simLauncher.launch() will have zero bounds

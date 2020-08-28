@@ -12,9 +12,7 @@ import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import mockupImage from '../../../images/operations-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
@@ -35,16 +33,6 @@ class NLOOperationsScreenView extends ScreenView {
     super( {
       tandem: tandem
     } );
-
-    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
-    const mockup = new Image( mockupImage, {
-      center: NLOConstants.LAYOUT_BOUNDS.center,
-      minWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      opacity: window.phet.mockupOpacityProperty.value
-    } );
-    this.addChild( mockup );
-    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // number line node
     const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {

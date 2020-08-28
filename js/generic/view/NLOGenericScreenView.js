@@ -12,14 +12,12 @@ import merge from '../../../../phet-core/js/merge.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import mockupImage from '../../../images/generic-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
@@ -55,16 +53,6 @@ class NLOGenericScreenView extends ScreenView {
     super( {
       tandem: tandem
     } );
-
-    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
-    const mockup = new Image( mockupImage, {
-      center: this.layoutBounds.center,
-      minWidth: this.layoutBounds.width,
-      maxWidth: this.layoutBounds.width,
-      opacity: window.phet.mockupOpacityProperty.value
-    } );
-    this.addChild( mockup );
-    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // checkboxes that will control the presentation options
     const checkboxes = [

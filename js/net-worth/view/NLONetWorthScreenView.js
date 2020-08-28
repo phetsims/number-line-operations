@@ -6,9 +6,7 @@ import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox
 import PiggyBankDecoration from '../../../../number-line-common/js/explore/model/PiggyBankDecoration.js';
 import PiggyBankNode from '../../../../number-line-common/js/explore/view/PiggyBankNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import Image from '../../../../scenery/js/nodes/Image.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import mockupImage from '../../../images/net-worth-screen-mockup_png.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
 import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
@@ -36,16 +34,6 @@ class NLONetWorthScreenView extends ScreenView {
     super( {
       tandem: tandem
     } );
-
-    // TODO - mockup - temporary, for design and layout, see https://github.com/phetsims/number-line-operations/issues/3
-    const mockup = new Image( mockupImage, {
-      center: NLOConstants.LAYOUT_BOUNDS.center,
-      minWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      maxWidth: NLOConstants.LAYOUT_BOUNDS.width,
-      opacity: window.phet.mockupOpacityProperty.value
-    } );
-    this.addChild( mockup );
-    window.phet.mockupOpacityProperty.linkAttribute( mockup, 'opacity' );
 
     // checkboxes that will control the presentation options
     const checkboxes = [
