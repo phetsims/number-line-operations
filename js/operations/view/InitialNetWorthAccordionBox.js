@@ -43,8 +43,8 @@ class InitialNetWorthAccordionBox extends AccordionBox {
       initialNetWorthProperty,
       new Property( new Range( -1000, 1000 ) ),
       {
-        upFunction: value => value + 100,
-        downFunction: value => value - 100,
+        incrementFunction: value => value + 100,
+        decrementFunction: value => value - 100,
         yMargin: 10,
         arrowHeight: 10,
         color: Color.BLACK,

@@ -96,8 +96,8 @@ class OperationEntryControl extends HBox {
       controlledOperation.amountProperty,
       new Property( options.numberPickerRange ),
       merge( {
-        upFunction: value => value + options.increment,
-        downFunction: value => value - options.increment
+        incrementFunction: value => value + options.increment,
+        decrementFunction: value => value - options.increment
       }, options.numberPickerOptions )
     );
 
