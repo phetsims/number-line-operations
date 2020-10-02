@@ -6,7 +6,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import ObservableArray from '../../../../axon/js/ObservableArray.js';
+import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import LockToNumberLine from '../../../../number-line-common/js/common/model/LockToNumberLine.js';
@@ -71,7 +71,7 @@ class NLOGenericModel {
 
     // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for the primary number
     // line. These come and go as points come and go.
-    this.primaryNumberLinePointControllers = new ObservableArray();
+    this.primaryNumberLinePointControllers = createObservableArray();
     this.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
       // add a point controller for the newly added point
@@ -123,7 +123,7 @@ class NLOGenericModel {
 
     // @public (read-only) {ObservableArray.<PointController>} - A list of the point controllers for the secondary number
     // line. These come and go as points come and go.
-    this.secondaryNumberLinePointControllers = new ObservableArray();
+    this.secondaryNumberLinePointControllers = createObservableArray();
     this.secondaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
       // add a point controller for the newly added point
