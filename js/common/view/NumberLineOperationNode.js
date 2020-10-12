@@ -253,11 +253,11 @@ class NumberLineOperationNode extends Node {
           // Determine whether the points on the number line are all above or below the displayed range, since that is
           // factored in to the visibility of the label.
           const displayedRange = numberLine.displayedRangeProperty.value;
-          const allPointsAboveDisplayRange = numberLine.residentPoints.getArray().reduce(
+          const allPointsAboveDisplayRange = numberLine.residentPoints.reduce(
             ( allPointsAboveMax, point ) => allPointsAboveMax && point.valueProperty.value > displayedRange.max,
             true
           );
-          const allPointsBelowDisplayRange = numberLine.residentPoints.getArray().reduce(
+          const allPointsBelowDisplayRange = numberLine.residentPoints.reduce(
             ( allPointsAboveMax, point ) => allPointsAboveMax && point.valueProperty.value < displayedRange.min,
             true
           );
