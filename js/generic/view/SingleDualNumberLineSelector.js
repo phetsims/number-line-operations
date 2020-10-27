@@ -3,7 +3,7 @@
 import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
@@ -19,7 +19,7 @@ const ARROW_ICON_OPTIONS = {
  * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
  * number line" and "dual number line" modes.
  */
-class SingleDualNumberLineSelector extends RadioButtonGroup {
+class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
 
   /**
    * @param {BooleanProperty} secondNumberLineVisibleProperty

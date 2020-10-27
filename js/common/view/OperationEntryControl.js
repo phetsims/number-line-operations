@@ -14,7 +14,7 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import RadioButtonGroup from '../../../../sun/js/buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -72,7 +72,7 @@ class OperationEntryControl extends HBox {
     assert && assert( options.arrowDirection === 'up' || options.arrowDirection === 'down' );
 
     // plus/minus operation selector
-    const operationSelectorRadioButtonGroup = new RadioButtonGroup(
+    const operationSelectorRadioButtonGroup = new RectangularRadioButtonGroup(
       controlledOperation.operationTypeProperty,
       [
         { value: Operations.ADDITION, node: new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
