@@ -27,16 +27,21 @@ class InitialNetWorthAccordionBox extends AccordionBox {
   constructor( initialNetWorthProperty, options ) {
 
     options = merge( {
-      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, { font: new PhetFont( 18 ) } )
+      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, {
+        font: new PhetFont( 18 ),
+        maxWidth: 200 // empirically determined using stringTest=long
+      } )
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const label = new RichText( numberLineOperationsStrings.initialNetWorthWithBreak, {
       align: 'center',
-      font: new PhetFont( 24 )
+      font: new PhetFont( 24 ),
+      maxWidth: 150 // empirically determined using stringTest=long
     } );
 
     const equalsAndCurrencyUnits = new Text( '= ' + numberLineOperationsStrings.currencyUnits, {
-      font: new PhetFont( 24 )
+      font: new PhetFont( 24 ),
+      maxWidth: 150 // empirically determined using stringTest=long
     } );
 
     const initialNetWorthPicker = new NumberPicker(

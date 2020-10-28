@@ -114,7 +114,8 @@ class NLOOperationsScreenView extends ScreenView {
         index,
         operationEntryCarousel.selectedPageProperty,
         model.numberLine,
-        resetInProgressProperty
+        resetInProgressProperty,
+        { maxWidth: 300 }
       );
       this.addChild( dynamicOperationDescription );
       this.dynamicOperationDescriptions.push( dynamicOperationDescription );

@@ -1,6 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 import Property from '../../../../axon/js/Property.js';
+import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
@@ -36,6 +37,7 @@ class DynamicOperationDescription extends Text {
    * @param {OperationTrackingNumberLine} numberLine - the number line on which this operation is affiliated
    * @param {BooleanProperty} resetInProgressProperty - used to distinguish changes due to user interaction from those
    * caused by a reset
+   * @param {Object} [options]
    */
   constructor(
     operationDescriptionsVisibleProperty,
@@ -45,18 +47,20 @@ class DynamicOperationDescription extends Text {
     operationIDNumber,
     selectedOperationIDProperty,
     numberLine,
-    resetInProgressProperty ) {
+    resetInProgressProperty,
+    options
+  ) {
 
     // this is intended to be constructed prior to the operation being activate
     assert && assert( !operation.isActiveProperty.value, 'operation must be inactive when this node is constructed' );
 
     // construct with no initial text and in the inactive position
-    super( '', {
+    super( '', merge( {
       font: FONT,
       center: inactivePosition,
       visible: false,
       opacity: 0
-    } );
+    }, options ) );
 
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;

@@ -1,5 +1,13 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
+ * label and a description that can be optionally shown. It must be positioned by the client such that the node's (x,y)
+ * position is where the starting point is in view space.
+ *
+ * This node updates itself as the attributes of the underlying operation change.
+ */
+
 import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Utils from '../../../../dot/js/Utils.js';
@@ -22,15 +30,17 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import Operations from '../model/Operations.js';
 
-
-//---------------------------------------------------------------------------------------------------------------------
 // constants
-//---------------------------------------------------------------------------------------------------------------------
-
 const CURVED_LINE_OPTIONS = {
   stroke: 'black',
   lineWidth: 2
 };
+const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
+const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
+const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
+const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
+const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
+
 // an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, height normalized to 1
 const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
   .lineTo( -0.4, 1.14 )
@@ -38,18 +48,6 @@ const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
   .lineTo( 0.4, 1.14 )
   .lineTo( 0, 0 );
 
-const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
-const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
-const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
-const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
-const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
-
-/**
- * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
- * label and a description that can be optionally shown. It must be positioned by the client such that the node's (x,y) position is where the starting point is in view space.
- *
- * This node updates itself as the attributes of the underlying operation change.
- */
 class NumberLineOperationNode extends Node {
 
   /**
@@ -105,7 +103,14 @@ class NumberLineOperationNode extends Node {
     const operationDescriptionTextNode = new Text( '', {
       font: options.operationDescriptionFont
     } );
-    const operationDescription = new BackgroundNode( operationDescriptionTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
+    const operationDescription = new BackgroundNode(
+      operationDescriptionTextNode,
+      merge(
+        {},
+        NLCConstants.LABEL_BACKGROUND_OPTIONS,
+        { maxWidth: 280 } // empirically determined so as to never end up partially outside the dev bounds
+      )
+    );
     this.addChild( operationDescription );
 
     // variables used to position the operation description, since it needs to move based on whether the label is visible
