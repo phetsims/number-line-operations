@@ -119,6 +119,8 @@ class OperationEntryControl extends HBox {
       },
       content: enterArrowNode,
       radius: 30,
+      xMargin: 16,
+      yMargin: 16,
       baseColor: options.buttonBaseColor
     } );
     buttonRootNode.addChild( enterButton );
