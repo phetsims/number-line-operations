@@ -23,9 +23,6 @@ import numberLineOperations from '../../numberLineOperations.js';
 const NET_WORTH_RANGE = new Range( -1000, 1000 );
 const HOLDING_BOX_SIZE = new Dimension2( 122, 300 ); // empirically determined to fit the items that will go in it
 
-/**
- * @constructor
- */
 class NLONetWorthModel {
 
   /**

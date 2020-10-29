@@ -1,5 +1,12 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and
+ * subtraction operations so that they can be depicted on a number line.  It is important to note that the operation
+ * order matters in how they are depicted, so this is designed with that assumption in mind.  In other words, it is
+ * *not* designed such that it can handle an arbitrary number of operations in any order.
+ */
+
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -11,12 +18,6 @@ import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperation from './NumberLineOperation.js';
 import Operations from './Operations.js';
 
-/**
- * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and
- * subtraction operations so that they can be depicted on a number line.  It is important to note that the operation
- * order matters in how they are depicted, so this is designed with that assumption in mind.  In other words, it is
- * *not* designed such that it can handle an arbitrary number of operations in any order.
- */
 class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**

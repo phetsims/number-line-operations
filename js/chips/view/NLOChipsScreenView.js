@@ -1,5 +1,11 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
+ *
+ * @author John Blanco
+ */
+
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
@@ -18,11 +24,6 @@ import NLOChipsModel from '../model/NLOChipsModel.js';
 import ChipStackNode from './ChipStackNode.js';
 import FillableBagNode from './FillableBagNode.js';
 
-/**
- * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
- *
- * @author John Blanco
- */
 class NLOChipsScreenView extends ScreenView {
 
   /**

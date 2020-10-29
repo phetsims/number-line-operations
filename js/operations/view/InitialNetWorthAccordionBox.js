@@ -1,5 +1,12 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a property, in an accordion
+ * box.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
+ */
+
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -14,10 +21,6 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 
-/**
- * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a property, in an accordion
- * box.
- */
 class InitialNetWorthAccordionBox extends AccordionBox {
 
   /**

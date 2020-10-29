@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * primary model class for the "Operations" screen
+ *
  * @author John Blanco
  */
 
@@ -11,9 +13,6 @@ import OperationTrackingNumberLine from '../../common/model/OperationTrackingNum
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-/**
- * primary model class for the "Operations" screen
- */
 class NLOOperationsModel {
 
   /**

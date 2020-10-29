@@ -1,5 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
+ * number line" and "dual number line" modes.
+ */
+
 import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -15,10 +20,6 @@ const ARROW_ICON_OPTIONS = {
   tailWidth: 1
 };
 
-/**
- * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
- * number line" and "dual number line" modes.
- */
 class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
 
   /**

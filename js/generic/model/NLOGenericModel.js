@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * primary model for the "Generic" screen
+ *
  * @author John Blanco
  */
 
@@ -29,9 +31,6 @@ const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX; // matches design doc layout
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = new Vector2( NUMBER_LINE_CENTER_X, MODEL_BOUNDS.centerY );
 const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
 
-/**
- * primary model for the "Generic" screen
- */
 class NLOGenericModel {
 
   /**

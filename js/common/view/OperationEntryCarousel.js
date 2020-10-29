@@ -1,5 +1,9 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * carousel and page control for entering operations onto a number line
+ */
+
 import merge from '../../../../phet-core/js/merge.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Carousel from '../../../../sun/js/Carousel.js';
@@ -7,9 +11,6 @@ import PageControl from '../../../../sun/js/PageControl.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import OperationEntryControl from './OperationEntryControl.js';
 
-/**
- * carousel and page control for entering operations onto a number line
- */
 class OperationEntryCarousel extends Node {
 
   constructor( numberLine, options ) {

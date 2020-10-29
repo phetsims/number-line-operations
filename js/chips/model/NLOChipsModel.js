@@ -25,9 +25,6 @@ const HOLDING_BOX_SIZE = new Dimension2( 122, 320 ); // empirically determined t
 const NUMBER_OF_POSITIVE_CHIPS = 5;
 const NUMBER_OF_NEGATIVE_CHIPS = 5;
 
-/**
- * @constructor
- */
 class NLOChipsModel {
 
   /**

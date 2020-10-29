@@ -1,5 +1,11 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
+ *
+ * @author John Blanco
+ */
+
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
@@ -18,11 +24,6 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NLONetWorthModel from '../model/NLONetWorthModel.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 
-/**
- * NLONetWorthScreenView is the root of the view screen graph for the Net Worth screen.
- *
- * @author John Blanco
- */
 class NLONetWorthScreenView extends ScreenView {
 
   /**

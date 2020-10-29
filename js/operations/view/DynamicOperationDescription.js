@@ -1,5 +1,13 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * DynamicOperationDescription instances are used to provide a textual description of a number line operation BEFORE it
+ * becomes active on the number line.  It updates, fades in and out, and animates as the user prepares and ultimately
+ * adds the operation to the number line.  Instances of this class position themselves in view space based on what the
+ * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
+ * the Number Line Operations simulation.
+ */
+
 import Property from '../../../../axon/js/Property.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -16,13 +24,6 @@ const FADE_TIME = 0.25; // in seconds
 const TRAVEL_TIME = 0.7; // in seconds
 const FONT = new PhetFont( 22 );
 
-/**
- * DynamicOperationDescription instances are used to provide a textual description of a number line operation BEFORE it
- * becomes active on the number line.  It updates, fades in and out, and animates as the user prepares and ultimately
- * adds the operation to the number line.  Instances of this class position themselves in view space based on what the
- * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
- * the Number Line Operations simulation.
- */
 class DynamicOperationDescription extends Text {
 
   /**

@@ -1,6 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
+ * main screen view for the "Generic" screen
+ *
  * @author John Blanco
  */
 
@@ -39,9 +41,6 @@ const NUMBER_LINE_NODE_OPTIONS = {
 };
 const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
 
-/**
- * main screen view for the "Generic" screen
- */
 class NLOGenericScreenView extends ScreenView {
 
   /**

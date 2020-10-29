@@ -636,7 +636,6 @@ class NumberLineOperationNode extends Node {
   }
 }
 
-
 /**
  * Inner class for creating the type of arrowhead needed for the operations lines.  Position the point of the arrowhead
  * by specifying the x and y position of the node.
