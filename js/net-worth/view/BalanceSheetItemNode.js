@@ -154,7 +154,7 @@ class BalanceSheetItemNode extends Node {
       {
         font: new PhetFont( 18 ),
         center: imageInfo.outOfBagLabelOffset || Vector2.ZERO,
-        maxWidth: outOfBagImageNode.width * 0.9
+        maxWidth: outOfBagImageNode.width * 0.75 // empirically determined such that the label fits on all artwork
       }
     );
     const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );

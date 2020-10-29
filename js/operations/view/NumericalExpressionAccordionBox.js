@@ -1,5 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
+/**
+ * NumericalExpressionAccordionBox is an accordion box that contains a mathematical description of the operations on a
+ * number line.
+ */
+
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -20,9 +25,6 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 60 ); // size based on design doc
 
-/**
- * accordion box that contains a mathematical description of the operations on a number line
- */
 class NumericalExpressionAccordionBox extends AccordionBox {
 
   /**
@@ -33,7 +35,13 @@ class NumericalExpressionAccordionBox extends AccordionBox {
   constructor( numberLine, options ) {
 
     options = merge( {
-      titleNode: new Text( numberLineOperationsStrings.netWorth, { font: new PhetFont( 18 ) } )
+      titleNode: new Text(
+        numberLineOperationsStrings.netWorth,
+        {
+          font: new PhetFont( 18 ),
+          maxWidth: CONTENT_DIMENSIONS.width * 0.9
+        }
+      )
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     // Create a transparent background that will serve as the root node.  Everything should be made to fit within this.
@@ -44,7 +52,13 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // simplify checkbox
     const simplifyProperty = new BooleanProperty( false );
     contentRoot.addChild( new Checkbox(
-      new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 20 ) } ),
+      new Text(
+        numberLineOperationsStrings.simplify,
+        {
+          font: new PhetFont( 20 ),
+          maxWidth: CONTENT_DIMENSIONS.width * 0.5
+        }
+      ),
       simplifyProperty,
       {
         centerX: contentRoot.width / 2,
@@ -64,7 +78,15 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     } ) );
 
     // numerical expression
-    const numericalExpression = new NumericalExpression( numberLine, simplifyProperty, evaluateProperty, { top: 0 } );
+    const numericalExpression = new NumericalExpression(
+      numberLine,
+      simplifyProperty,
+      evaluateProperty,
+      {
+        top: 0,
+        maxWidth: CONTENT_DIMENSIONS.width
+      }
+    );
     contentRoot.addChild( numericalExpression );
     numericalExpression.localBoundsProperty.link( () => {
       numericalExpression.centerX = CONTENT_DIMENSIONS.width / 2;
