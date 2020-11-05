@@ -154,6 +154,28 @@ class NLOGenericScreenView extends ScreenView {
       primaryNumberLineEraserButton.centerY = position.y;
     } );
 
+    // Monitor the points on the number line and make sure that the operation being manipulated is the one being shown
+    // in the corresponding operation entry carousel.
+    model.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
+
+      // Hook up a listener to the new point that will make sure that the operation entry carousel is showing the
+      // operation that is being manipulated.
+      const pointIsDraggingListener = isDragging => {
+        if ( isDragging ) {
+          primaryOperationEntryCarousel.showOperationWithEndpoint( addedPoint );
+        }
+      };
+      addedPoint.isDraggingProperty.lazyLink( pointIsDraggingListener );
+
+      // Listen for when this point is removed and unhook the listener when it is.
+      model.primaryNumberLine.residentPoints.addItemRemovedListener( function pointRemovedListener( removedPoint ) {
+        if ( removedPoint === addedPoint ) {
+          removedPoint.isDraggingProperty.unlink( pointIsDraggingListener );
+          model.primaryNumberLine.residentPoints.removeItemRemovedListener( pointRemovedListener );
+        }
+      } );
+    } );
+
     // layer where the secondary number line will live, here so that it can be shown and hidden
     const secondaryNumberLineLayer = new Node( { opacity: 0 } );
     this.addChild( secondaryNumberLineLayer );
@@ -228,6 +250,28 @@ class NLOGenericScreenView extends ScreenView {
     model.secondaryNumberLine.operations.forEach( operation => {
       operation.isActiveProperty.link( () => {
         secondaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
+      } );
+    } );
+
+    // Monitor the points on the number line and make sure that the operation being manipulated is the one being shown
+    // in the corresponding operation entry carousel.
+    model.secondaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
+
+      // Hook up a listener to the new point that will make sure that the operation entry carousel is showing the
+      // operation that is being manipulated.
+      const pointIsDraggingListener = isDragging => {
+        if ( isDragging ) {
+          secondaryOperationEntryCarousel.showOperationWithEndpoint( addedPoint );
+        }
+      };
+      addedPoint.isDraggingProperty.lazyLink( pointIsDraggingListener );
+
+      // Listen for when this point is removed and unhook the listener when it is.
+      model.secondaryNumberLine.residentPoints.addItemRemovedListener( function pointRemovedListener( removedPoint ) {
+        if ( removedPoint === addedPoint ) {
+          removedPoint.isDraggingProperty.unlink( pointIsDraggingListener );
+          model.secondaryNumberLine.residentPoints.removeItemRemovedListener( pointRemovedListener );
+        }
       } );
     } );
 

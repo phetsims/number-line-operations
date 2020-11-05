@@ -69,6 +69,21 @@ class OperationEntryCarousel extends Node {
     // @private - make these into properties so that they can be reset
     this.operationEntryControls = operationEntryControls;
     this.operationEntryCarousel = operationEntryCarousel;
+
+    // @private - make this available so that it can be used in a method
+    this.numberLine = numberLine;
+  }
+
+  /**
+   * Make sure that the operation with the provided endpoint is the one that is being shown in the carousel.
+   * @param {NumberLinePoint} endpoint
+   * @public
+   */
+  showOperationWithEndpoint( endpoint ) {
+    const endpointIndex = this.numberLine.endpoints.indexOf( endpoint );
+    if ( endpointIndex >= 0 ) {
+      this.selectedPageProperty.set( endpointIndex );
+    }
   }
 
   /**
