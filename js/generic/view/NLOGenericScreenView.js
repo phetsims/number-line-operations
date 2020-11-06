@@ -40,6 +40,10 @@ const NUMBER_LINE_NODE_OPTIONS = {
   }
 };
 const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
+const SECONDARY_CAROUSEL_BUTTON_OPTIONS = {
+  buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
+  arrowDirection: 'up'
+};
 
 class NLOGenericScreenView extends ScreenView {
 
@@ -77,203 +81,45 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( checkboxGroup );
 
-    // layer where the point controllers for the primary number line go so that they stay behind the points
-    const primaryPointControllerLayer = new Node();
-    this.addChild( primaryPointControllerLayer );
-
-    // primary number line node
-    const primaryNumberLineNode = new OperationTrackingNumberLineNode(
+    // create and add the representation of the primary number line
+    const primaryNumberLineView = new InteractiveNumberLineView(
       model.primaryNumberLine,
-      NUMBER_LINE_NODE_OPTIONS
-    );
-    this.addChild( primaryNumberLineNode );
-
-    // point controller for the starting point on the primary number line, which is always present
-    primaryPointControllerLayer.addChild( new PointControllerNode( model.primaryLineInitialValuePointController ) );
-
-    // add and remove nodes for the point controllers that come and go from the primary number line
-    model.primaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
-      const pointControllerNode = new PointControllerNode( addedPointController );
-      primaryPointControllerLayer.addChild( pointControllerNode );
-      const removalListener = removedPointController => {
-        if ( removedPointController === addedPointController ) {
-          primaryPointControllerLayer.removeChild( pointControllerNode );
-          pointControllerNode.dispose();
-          model.primaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
+      model.primaryLineInitialValuePointController,
+      model.primaryNumberLinePointControllers,
+      this.layoutBounds,
+      {
+        numericalExpressionAccordionBoxOptions: {
+          top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+        },
+        operationEntryCarouselOptions: {
+          top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
         }
-      };
-      model.primaryNumberLinePointControllers.addItemRemovedListener( removalListener );
-    } );
-
-    // accordion box containing a mathematical description of the operations on the number line
-    const primaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.primaryNumberLine, {
-      titleNode: new Text( numberLineOperationsStrings.numericalExpression, {
-        font: new PhetFont( 18 ),
-        maxWidth: 250
-      } ),
-      centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
-    } );
-    this.addChild( primaryNumericalExpressionAccordionBox );
-
-    // carousel in which the operation entry controls for the upper number line reside
-    const primaryOperationEntryCarousel = new OperationEntryCarousel( model.primaryNumberLine, {
-      entryControl1Options: {
-        initialValue: 1,
-        increment: 1
-      },
-      entryControl2Options: {
-        initialValue: 1,
-        increment: 1
-      },
-      right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
-      top: primaryNumericalExpressionAccordionBox.top
-    } );
-    this.addChild( primaryOperationEntryCarousel );
-
-    // erase button for primary number line
-    const primaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
-      right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
-      listener: () => {
-        model.primaryNumberLine.deactivateAllOperations();
-        primaryOperationEntryCarousel.reset();
       }
-    } );
-    this.addChild( primaryNumberLineEraserButton );
-
-    // erase is disabled if there are no operations
-    model.primaryNumberLine.operations.forEach( operation => {
-      operation.isActiveProperty.link( () => {
-        primaryNumberLineEraserButton.enabled = model.primaryNumberLine.getActiveOperations().length > 0;
-      } );
-    } );
-
-    // reposition the primary eraser button if the primary number line moves
-    model.primaryNumberLine.centerPositionProperty.link( position => {
-      primaryNumberLineEraserButton.centerY = position.y;
-    } );
-
-    // Monitor the points on the number line and make sure that the operation being manipulated is the one being shown
-    // in the corresponding operation entry carousel.
-    model.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
-
-      // Hook up a listener to the new point that will make sure that the operation entry carousel is showing the
-      // operation that is being manipulated.
-      const pointIsDraggingListener = isDragging => {
-        if ( isDragging ) {
-          primaryOperationEntryCarousel.showOperationWithEndpoint( addedPoint );
-        }
-      };
-      addedPoint.isDraggingProperty.lazyLink( pointIsDraggingListener );
-
-      // Listen for when this point is removed and unhook the listener when it is.
-      model.primaryNumberLine.residentPoints.addItemRemovedListener( function pointRemovedListener( removedPoint ) {
-        if ( removedPoint === addedPoint ) {
-          removedPoint.isDraggingProperty.unlink( pointIsDraggingListener );
-          model.primaryNumberLine.residentPoints.removeItemRemovedListener( pointRemovedListener );
-        }
-      } );
-    } );
+    );
+    this.addChild( primaryNumberLineView );
 
     // layer where the secondary number line will live, here so that it can be shown and hidden
     const secondaryNumberLineLayer = new Node( { opacity: 0 } );
     this.addChild( secondaryNumberLineLayer );
 
-    // sub-layer where point controllers go so that they stay behind the points
-    const secondaryPointControllerLayer = new Node();
-    secondaryNumberLineLayer.addChild( secondaryPointControllerLayer );
-
-    // secondary number line node
-    const secondaryNumberLineNode = new OperationTrackingNumberLineNode(
+    // create and add the representation of the secondary number line
+    const secondaryNumberLineView = new InteractiveNumberLineView(
       model.secondaryNumberLine,
-      merge( { opacity: 0 }, NUMBER_LINE_NODE_OPTIONS )
-    );
-    secondaryNumberLineLayer.addChild( secondaryNumberLineNode );
-
-    // point controller for the starting point on the secondary number line, which is always present
-    secondaryPointControllerLayer.addChild( new PointControllerNode( model.secondaryLineInitialValuePointController ) );
-
-    // add and remove nodes for the point controllers that come and go from the secondary number line
-    model.secondaryNumberLinePointControllers.addItemAddedListener( addedPointController => {
-      const pointControllerNode = new PointControllerNode( addedPointController );
-      secondaryPointControllerLayer.addChild( pointControllerNode );
-      const removalListener = removedPointController => {
-        if ( removedPointController === addedPointController ) {
-          secondaryPointControllerLayer.removeChild( pointControllerNode );
-          pointControllerNode.dispose();
-          model.secondaryNumberLinePointControllers.removeItemRemovedListener( removalListener );
+      model.secondaryLineInitialValuePointController,
+      model.secondaryNumberLinePointControllers,
+      this.layoutBounds,
+      {
+        numericalExpressionAccordionBoxOptions: {
+          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN
+        },
+        operationEntryCarouselOptions: {
+          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN + 17, // extra amount due to page control
+          entryControl1Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
+          entryControl2Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS
         }
-      };
-      model.secondaryNumberLinePointControllers.addItemRemovedListener( removalListener );
-    } );
-
-    // accordion box containing a mathematical description of the operations on the number line
-    const secondaryNumericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.secondaryNumberLine, {
-      centerX: this.layoutBounds.centerX,
-      bottom: this.layoutBounds.maxY - 34
-    } );
-    secondaryNumberLineLayer.addChild( secondaryNumericalExpressionAccordionBox );
-
-    // carousel in which the operation entry controls for the upper number line reside
-    const secondaryOperationEntryCarousel = new OperationEntryCarousel( model.secondaryNumberLine, {
-      entryControl1Options: {
-        initialValue: 1,
-        increment: 1,
-        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
-        arrowDirection: 'up'
-      },
-      entryControl2Options: {
-        initialValue: 1,
-        increment: 1,
-        buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
-        arrowDirection: 'up'
-      },
-      right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
-      bottom: secondaryNumericalExpressionAccordionBox.bottom + 17
-    } );
-    secondaryNumberLineLayer.addChild( secondaryOperationEntryCarousel );
-
-    // erase button for secondary number line
-    const secondaryNumberLineEraserButton = new EraserButton( {
-      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
-      right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
-      centerY: model.secondaryNumberLine.centerPositionProperty.value.y,
-      listener: () => {
-        model.secondaryNumberLine.deactivateAllOperations();
-        secondaryOperationEntryCarousel.reset();
       }
-    } );
-    secondaryNumberLineLayer.addChild( secondaryNumberLineEraserButton );
-
-    // erase is disabled if there are no operations
-    model.secondaryNumberLine.operations.forEach( operation => {
-      operation.isActiveProperty.link( () => {
-        secondaryNumberLineEraserButton.enabled = model.secondaryNumberLine.getActiveOperations().length > 0;
-      } );
-    } );
-
-    // Monitor the points on the number line and make sure that the operation being manipulated is the one being shown
-    // in the corresponding operation entry carousel.
-    model.secondaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
-
-      // Hook up a listener to the new point that will make sure that the operation entry carousel is showing the
-      // operation that is being manipulated.
-      const pointIsDraggingListener = isDragging => {
-        if ( isDragging ) {
-          secondaryOperationEntryCarousel.showOperationWithEndpoint( addedPoint );
-        }
-      };
-      addedPoint.isDraggingProperty.lazyLink( pointIsDraggingListener );
-
-      // Listen for when this point is removed and unhook the listener when it is.
-      model.secondaryNumberLine.residentPoints.addItemRemovedListener( function pointRemovedListener( removedPoint ) {
-        if ( removedPoint === addedPoint ) {
-          removedPoint.isDraggingProperty.unlink( pointIsDraggingListener );
-          model.secondaryNumberLine.residentPoints.removeItemRemovedListener( pointRemovedListener );
-        }
-      } );
-    } );
+    );
+    secondaryNumberLineLayer.addChild( secondaryNumberLineView );
 
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
@@ -329,8 +175,8 @@ class NLOGenericScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
-        primaryOperationEntryCarousel.reset();
-        secondaryOperationEntryCarousel.reset();
+        primaryNumberLineView.reset();
+        secondaryNumberLineView.reset();
         model.reset();
       },
       right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
@@ -338,6 +184,141 @@ class NLOGenericScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
+  }
+}
+
+/**
+ * InteractiveNumberLineView is an inner class to creates and positions the various view elements used to represent and
+ * interact with a number line.  It exists primarily to avoid code duplication.
+ */
+class InteractiveNumberLineView extends Node {
+
+  /**
+   * Add the various view elements for the provided number line.  This method exists primarily to minimize code
+   * duplication.
+   * @param {OperationTrackingNumberLine} numberLine
+   * @param {PointController} initialValuePointController
+   * @param {ObservableArrayDef<PointController>} pointControllerObservableArray
+   * @param {Bounds2} layoutBounds - the bounds into which this must be laid out
+   * @param {Object} [options]
+   */
+  constructor( numberLine, initialValuePointController, pointControllerObservableArray, layoutBounds, options ) {
+
+    options = merge( {
+
+      numericalExpressionAccordionBoxOptions: {
+        titleNode: new Text( numberLineOperationsStrings.numericalExpression, {
+          font: new PhetFont( 18 ),
+          maxWidth: 250
+        } ),
+        centerX: layoutBounds.centerX
+      },
+      operationEntryCarouselOptions: {
+        entryControl1Options: {
+          initialValue: 1,
+          increment: 1
+        },
+        entryControl2Options: {
+          initialValue: 1,
+          increment: 1
+        },
+        right: layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET
+      }
+
+    }, options );
+
+    super();
+
+    // layer where the point controllers go so that they stay behind the points
+    const pointControllerLayer = new Node();
+    this.addChild( pointControllerLayer );
+
+    // node that represents the number line itself
+    const numberLineNode = new OperationTrackingNumberLineNode(
+      numberLine,
+      NUMBER_LINE_NODE_OPTIONS
+    );
+    this.addChild( numberLineNode );
+
+    // point controller for the starting point on the number line, which is always present
+    pointControllerLayer.addChild( new PointControllerNode( initialValuePointController ) );
+
+    // add and remove nodes for the point controllers that come and go from the number line
+    pointControllerObservableArray.addItemAddedListener( addedPointController => {
+      const pointControllerNode = new PointControllerNode( addedPointController );
+      pointControllerLayer.addChild( pointControllerNode );
+      const removalListener = removedPointController => {
+        if ( removedPointController === addedPointController ) {
+          pointControllerLayer.removeChild( pointControllerNode );
+          pointControllerNode.dispose();
+          pointControllerObservableArray.removeItemRemovedListener( removalListener );
+        }
+      };
+      pointControllerObservableArray.addItemRemovedListener( removalListener );
+    } );
+
+    // accordion box containing a mathematical description of the operations on the number line
+    const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox(
+      numberLine,
+      options.numericalExpressionAccordionBoxOptions
+    );
+    this.addChild( numericalExpressionAccordionBox );
+
+    // @private - carousel in which the operation entry controls reside
+    this.operationEntryCarousel = new OperationEntryCarousel( numberLine, options.operationEntryCarouselOptions );
+    this.addChild( this.operationEntryCarousel );
+
+    // erase button
+    const eraserButton = new EraserButton( {
+      iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
+      right: layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
+      listener: () => {
+        numberLine.deactivateAllOperations();
+        this.operationEntryCarousel.reset();
+      }
+    } );
+    this.addChild( eraserButton );
+
+    // erase is disabled if there are no operations
+    numberLine.operations.forEach( operation => {
+      operation.isActiveProperty.link( () => {
+        eraserButton.enabled = numberLine.getActiveOperations().length > 0;
+      } );
+    } );
+
+    // reposition the eraser button if the number line moves
+    numberLine.centerPositionProperty.link( position => {
+      eraserButton.centerY = position.y;
+    } );
+
+    // Monitor the points on the number line and make sure that the operation being manipulated is the one being shown
+    // in the corresponding operation entry carousel.
+    numberLine.residentPoints.addItemAddedListener( addedPoint => {
+
+      // Hook up a listener to the new point that will make sure that the operation entry carousel is showing the
+      // operation that is being manipulated.
+      const pointIsDraggingListener = isDragging => {
+        if ( isDragging ) {
+          this.operationEntryCarousel.showOperationWithEndpoint( addedPoint );
+        }
+      };
+      addedPoint.isDraggingProperty.lazyLink( pointIsDraggingListener );
+
+      // Listen for when this point is removed and unhook the listener when it is.
+      numberLine.residentPoints.addItemRemovedListener( function pointRemovedListener( removedPoint ) {
+        if ( removedPoint === addedPoint ) {
+          removedPoint.isDraggingProperty.unlink( pointIsDraggingListener );
+          numberLine.residentPoints.removeItemRemovedListener( pointRemovedListener );
+        }
+      } );
+    } );
+  }
+
+  /**
+   * @public
+   */
+  reset() {
+    this.operationEntryCarousel.reset();
   }
 }
 
