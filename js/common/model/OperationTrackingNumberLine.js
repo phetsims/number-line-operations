@@ -2,7 +2,7 @@
 
 /**
  * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and
- * subtraction operations so that they can be depicted on a number line.  It is important to note that the operation
+ * subtraction operations so that they can be depicted on the number line.  It is important to note that the operation
  * order matters in how they are depicted, so this is designed with that assumption in mind.  In other words, it is
  * *not* designed such that it can handle an arbitrary number of operations in any order.
  */
@@ -60,8 +60,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     super( zeroPosition, options );
 
-    // @public (read-write) - the starting value from which the added operations add and/or subtract, created if not
-    // supplied
+    // @public (read-write) - The starting value from which the active operations add and/or subtract, created if not
+    // supplied.
     this.startingValueProperty = options.startingValueProperty;
     if ( !this.startingValueProperty ) {
       this.startingValueProperty = new NumberProperty( 0 );

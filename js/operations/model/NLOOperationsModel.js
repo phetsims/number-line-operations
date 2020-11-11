@@ -48,15 +48,6 @@ class NLOOperationsModel {
   reset() {
     this.numberLine.reset();
   }
-
-  /**
-   * Steps the model.
-   * @param {number} dt - time step, in seconds
-   * @public
-   */
-  step( dt ) {
-    //TODO
-  }
 }
 
 numberLineOperations.register( 'NLOOperationsModel', NLOOperationsModel );

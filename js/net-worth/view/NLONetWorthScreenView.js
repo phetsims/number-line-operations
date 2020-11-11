@@ -125,15 +125,6 @@ class NLONetWorthScreenView extends ScreenView {
     } );
     this.addChild( resetAllButton );
   }
-
-  /**
-   * Steps the view.
-   * @param {number} dt - time step, in seconds
-   * @public
-   */
-  step( dt ) {
-    //TODO
-  }
 }
 
 numberLineOperations.register( 'NLONetWorthScreenView', NLONetWorthScreenView );

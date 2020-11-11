@@ -120,6 +120,7 @@ class NLONetWorthModel {
               bag.addItem( balanceSheetItem );
               addedToBag = true;
 
+              // Update the starting value.
               this.numberLine.startingValueProperty.set( this.netWorthProperty.value );
 
               // Update the operation.  The "active" state is cycled in order to trigger animation in the view.
