@@ -62,6 +62,15 @@ class NumberLineOperation {
   }
 
   /**
+   * Get a string representation that is worthy of logging to the console.
+   * @public
+   * @returns {string}
+   */
+  toString() {
+    return `operation type: ${this.operationTypeProperty.value}, amount: ${this.amountProperty.value}, isActive: ${this.isActiveProperty.value}`;
+  }
+
+  /**
    * @public
    */
   reset() {
