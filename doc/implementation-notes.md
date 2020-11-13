@@ -1,7 +1,10 @@
 Implementation Overview
 =======================
 
-Note: There a lots of links for things that are permanent, it seemed excessive to comment them all.
+TODO: I tried to keep points and operations quite basic, since points are shared between a number of simulations, and
+operations may be at some point in the future.  Because of this, the responsibility for maintaining the relationship
+between points and operations rests with the number line, specifically `OperationTrackingNumberLine`, instead of
+with the points and operations.
 
 Net Worth Screen
 ----------------
