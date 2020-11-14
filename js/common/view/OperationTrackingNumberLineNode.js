@@ -7,6 +7,7 @@
 
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import NLOConstants from '../NLOConstants.js';
 import NumberLineOperationNode from './NumberLineOperationNode.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PointsOffScaleCondition from '../../../../number-line-common/js/common/view/PointsOffScaleCondition.js';
@@ -30,6 +31,10 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     super( numberLine, options );
 
+    // @private
+    this.numberLine = numberLine;
+    this.operationToNodeMap = new Map();
+
     // create an operation node for each operation on the number line
     numberLine.operations.forEach( ( operation, index ) => {
 
@@ -50,7 +55,24 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
       // the operation nodes should be behind the points and the labels
       numberLineOperationNode.moveToBack();
+
+      // map it to the operation
+      this.operationToNodeMap.set( operation, numberLineOperationNode );
     } );
+  }
+
+  /**
+   * @public
+   */
+  step() {
+
+    // Fade operation nodes that are set to expire.
+    for ( const [ operation, operationNode ] of this.operationToNodeMap ) {
+      if ( this.numberLine.operationExpirationTimes.has( operation ) ) {
+        const expirationTimeForOperation = this.numberLine.operationExpirationTimes.get( operation );
+        operationNode.opacity = Math.min( 1, ( expirationTimeForOperation - phet.joist.elapsedTime ) / NLOConstants.OPERATION_FADE_OUT_TIME );
+      }
+    }
   }
 }
 

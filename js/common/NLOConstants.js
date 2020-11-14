@@ -21,7 +21,13 @@ const NLOConstants = {
   CHECKBOX_SPACING: 12,
   OPERATION_ENTRY_CAROUSEL_LEFT_INSET: 60,
   ERASER_BUTTON_ICON_WIDTH: 32,
-  ERASER_BUTTON_INSET: 12
+  ERASER_BUTTON_INSET: 12,
+
+  // length of time between activating and then deactivating it when the timed deactivation feature is in use
+  OPERATION_AUTO_DEACTIVATE_TIME: 1500, // in milliseconds
+
+  // fade out time for operations that are being deactivated
+  OPERATION_FADE_OUT_TIME: 750 // in milliseconds
 };
 
 numberLineOperations.register( 'NLOConstants', NLOConstants );

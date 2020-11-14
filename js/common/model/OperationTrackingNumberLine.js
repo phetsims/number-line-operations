@@ -15,6 +15,7 @@ import SpatializedNumberLine from '../../../../number-line-common/js/common/mode
 import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
+import NLOConstants from '../NLOConstants.js';
 import NumberLineOperation from './NumberLineOperation.js';
 import Operations from './Operations.js';
 
@@ -45,8 +46,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       operationLabelsInitiallyVisible: true,
 
       // {boolean} - whether descriptions are initially visible, can be changed later via the property
-      operationDescriptionsInitiallyVisible: true
+      operationDescriptionsInitiallyVisible: true,
 
+      // {boolean} - automatically deactivate an operation after it has been active for a while
+      automaticallyDeactivateOperations: false
     }, options );
 
     assert && assert(
@@ -97,6 +100,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         initialColor: options.pointColorList[ index + 1 ]
       } ) );
     } );
+
+    // @public (read-only) {Map<operation, number>} - A map that tracks when an operation expires, only used if
+    // automatic deactivation is enabled.
+    this.operationExpirationTimes = new Map();
 
     // function closure to update endpoint values as operations change
     const updateEndpoints = () => {
@@ -163,13 +170,29 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       } );
     };
 
-    this.operations.forEach( ( operation, operationIndex ) => {
+    this.operations.forEach( operation => {
 
       // Set up listeners to update the endpoint values as the operations change.
       Property.multilink(
         [ operation.isActiveProperty, operation.amountProperty, operation.operationTypeProperty ],
         updateEndpoints
       );
+
+      // update expiration times as operations become active and inactive
+      operation.isActiveProperty.link( isActive => {
+
+        if ( isActive ) {
+          if ( options.automaticallyDeactivateOperations ) {
+            this.operationExpirationTimes.set( operation, phet.joist.elapsedTime + NLOConstants.OPERATION_AUTO_DEACTIVATE_TIME );
+          }
+          this.getOperationStartPoint( operation ).colorProperty.reset();
+        }
+        else {
+          if ( this.operationExpirationTimes.has( operation ) ) {
+            this.operationExpirationTimes.delete( operation );
+          }
+        }
+      } );
     } );
 
     // update the endpoints if the starting point moves
@@ -304,6 +327,56 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
+   * @param {NumberLineOperation} operation
+   * @returns {NumberLinePoint}
+   * @private
+   */
+  getOperationStartPoint( operation ) {
+    const operationIndex = this.operations.indexOf( operation );
+    let startingPoint;
+    if ( operationIndex === 0 ) {
+      startingPoint = this.startingPoint;
+    }
+    else {
+      startingPoint = this.endpoints[ operationIndex - 1 ];
+    }
+    return startingPoint;
+  }
+
+  /**
+   * @public
+   */
+  step() {
+    for ( const [ operation, expirationTime ] of this.operationExpirationTimes ) {
+
+      const operationStartPoint = this.getOperationStartPoint( operation );
+      const operationStartPointColor = operationStartPoint.colorProperty.value;
+
+      if ( expirationTime < phet.joist.elapsedTime ) {
+
+        // Set the starting value to be where the end of this operation was.
+        this.startingValueProperty.set( this.getOperationResult( operation ) );
+
+        // Make sure the starting point is at full opacity.
+        const nonFadedColor = new Color( operationStartPointColor.r, operationStartPointColor.g, operationStartPointColor.b, 1 );
+        operationStartPoint.colorProperty.set( nonFadedColor );
+
+        // This operation has expired, so deactivate it.
+        operation.isActiveProperty.set( false );
+      }
+      else {
+
+        // This operation hasn't expired yet, but it's on the way.  Fade it's origin point as it gets close.
+        if ( expirationTime - phet.joist.elapsedTime < NLOConstants.OPERATION_FADE_OUT_TIME ) {
+          const opacity = Math.min( 1, ( expirationTime - phet.joist.elapsedTime ) / NLOConstants.OPERATION_FADE_OUT_TIME );
+          const potentiallyFadedColor = new Color( operationStartPointColor.r, operationStartPointColor.g, operationStartPointColor.b, opacity );
+          operationStartPoint.colorProperty.set( potentiallyFadedColor );
+        }
+      }
+    }
+  }
+
+  /**
    * restore initial state
    * @public
    */
@@ -319,6 +392,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     this.showOperationDescriptionsProperty.reset();
 
     // resetting the number line removes all points, so we need to add back the starting point
+    this.startingPoint.colorProperty.reset();
     this.addPoint( this.startingPoint );
   }
 }

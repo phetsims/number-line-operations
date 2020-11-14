@@ -68,11 +68,12 @@ class NLOChipsScreenView extends ScreenView {
     } ) );
 
     // number line node
-    this.addChild( new OperationTrackingNumberLineNode( model.numberLine, {
+    this.numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {
       pointNodeOptions: {
         radius: 6
       }
-    } ) );
+    } );
+    this.addChild( this.numberLineNode );
 
     // piggy bank that displays the net worth and moves as the value changes
     const totalValueIndicatorNode = new TotalValueIndicatorNode(
@@ -119,6 +120,13 @@ class NLOChipsScreenView extends ScreenView {
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
+  }
+
+  /**
+   * @public
+   */
+  step() {
+    this.numberLineNode.step();
   }
 }
 

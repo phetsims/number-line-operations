@@ -45,6 +45,7 @@ class NLONetWorthModel {
         initialDisplayedRange: NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
+        automaticallyDeactivateOperations: true,
 
         // width of the number line in model space, number empirically determined to match design
         widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
@@ -174,6 +175,13 @@ class NLONetWorthModel {
     this.netWorthAccordionBoxExpandedProperty.reset();
     this.numberLine.reset();
     this.netWorthProperty.reset();
+  }
+
+  /**
+   * @public
+   */
+  step() {
+    this.numberLine.step();
   }
 }
 

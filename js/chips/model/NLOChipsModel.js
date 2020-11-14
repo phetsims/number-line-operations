@@ -47,6 +47,7 @@ class NLOChipsModel {
         initialDisplayedRange: CHIPS_NUMBER_LINE_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
+        automaticallyDeactivateOperations: true,
 
         // width of the number line in model space, number empirically determined to match design
         widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
@@ -170,6 +171,13 @@ class NLOChipsModel {
     this.netWorthAccordionBoxExpandedProperty.reset();
     this.numberLine.reset();
     this.totalInBagsProperty.reset();
+  }
+
+  /**
+   * @public
+   */
+  step() {
+    this.numberLine.step();
   }
 }
 
