@@ -42,13 +42,6 @@ class OperationEntryCarousel extends Node {
       itemsPerPage: 1
     } );
 
-    // automatically advance the carousel when the first operation is added
-    numberLine.operations[ 0 ].isActiveProperty.link( isActive => {
-      if ( isActive ) {
-        this.carousel.pageNumberProperty.value = 1;
-      }
-    } );
-
     // page indicator
     const pageControl = new PageControl(
       carousel.numberOfPages,
