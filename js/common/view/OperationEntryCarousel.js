@@ -37,7 +37,7 @@ class OperationEntryCarousel extends Node {
     ];
 
     // carousel in which the operation entry controls reside
-    const operationEntryCarousel = new Carousel( operationEntryControls, {
+    const carousel = new Carousel( operationEntryControls, {
       orientation: 'horizontal',
       itemsPerPage: 1
     } );
@@ -45,30 +45,30 @@ class OperationEntryCarousel extends Node {
     // automatically advance the carousel when the first operation is added
     numberLine.operations[ 0 ].isActiveProperty.link( isActive => {
       if ( isActive ) {
-        this.operationEntryCarousel.pageNumberProperty.value = 1;
+        this.carousel.pageNumberProperty.value = 1;
       }
     } );
 
     // page indicator
     const pageControl = new PageControl(
-      operationEntryCarousel.numberOfPages,
-      operationEntryCarousel.pageNumberProperty,
+      carousel.numberOfPages,
+      carousel.pageNumberProperty,
       {
         orientation: 'horizontal',
         interactive: true,
-        centerX: operationEntryCarousel.centerX,
-        top: operationEntryCarousel.bottom + 10
+        centerX: carousel.centerX,
+        top: carousel.bottom + 10
       }
     );
 
-    super( merge( { children: [ operationEntryCarousel, pageControl ] }, options ) );
+    super( merge( { children: [ carousel, pageControl ] }, options ) );
 
     // @public {NumberProperty} (read-only) - make the page number visible to outside observers
-    this.selectedPageProperty = operationEntryCarousel.pageNumberProperty;
+    this.selectedPageProperty = carousel.pageNumberProperty;
 
     // @private - make these into properties so that they can be reset
     this.operationEntryControls = operationEntryControls;
-    this.operationEntryCarousel = operationEntryCarousel;
+    this.carousel = carousel;
 
     // @private - make this available so that it can be used in a method
     this.numberLine = numberLine;
@@ -91,7 +91,7 @@ class OperationEntryCarousel extends Node {
    * @public
    */
   reset() {
-    this.operationEntryCarousel.pageNumberProperty.reset();
+    this.carousel.pageNumberProperty.reset();
     this.operationEntryControls.forEach( control => {control.clear(); } );
   }
 }

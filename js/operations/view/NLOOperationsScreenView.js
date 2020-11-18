@@ -99,6 +99,34 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( operationEntryCarousel );
 
+    // Add a listener that detects when clicks occur that are outside the operation entry carousel and fades out any
+    // dynamic operation descriptions that are currently visible.  This is done to reduce the clutter if the user isn't
+    // working with the operation entry carousels.  This code was highly leveraged from some code that exists for a
+    // similar purpose in BuildingLabScreenView.
+    phet.joist.display.addInputListener( {
+      down: event => {
+        const screen = phet.joist.sim.screenProperty.value;
+        if ( screen && screen.view === this ) {
+
+          // See if our press was a "miss" (trail length 1) or a hit on our screen (screen.view in the trail).
+          // We really want to exclude home-screen clicks so that things start focused.
+          const doesTrailMatch = _.includes( event.trail.nodes, screen.view ) || event.trail.length <= 1;
+
+          if ( doesTrailMatch ) {
+
+            // Test whether the operation entry carousel was in the trail and, if so, fade out any of the dynamic
+            // operation descriptions.
+            const operationEntryCarouselInTrail = _.includes( event.trail.nodes, operationEntryCarousel );
+            if ( !operationEntryCarouselInTrail ) {
+              this.dynamicOperationDescriptions.forEach( dynamicOperationDescription =>
+                dynamicOperationDescription.fadeOutIfVisible()
+              );
+            }
+          }
+        }
+      }
+    } );
+
     // local constant that tracks if a reset is in progress, needed by the dynamic operation description
     const resetInProgressProperty = new BooleanProperty( false );
 

@@ -243,6 +243,17 @@ class DynamicOperationDescription extends Text {
   }
 
   /**
+   * If this is currently visible and not fading, initiate a fade out.  This method is intended to allow external
+   * clients to initiate a fade if needed.
+   * @public
+   */
+  fadeOutIfVisible() {
+    if ( this.opacity > 0 ) {
+      this.initiateFadeOut();
+    }
+  }
+
+  /**
    * @private
    */
   initiateMovementToActivePosition() {
