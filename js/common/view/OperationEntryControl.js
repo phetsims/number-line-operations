@@ -25,6 +25,7 @@ const MATH_SYMBOL_OPTIONS = {
 };
 
 // This is a normalized version of the enter arrow shape, pointing straight down, upper left corner at 0,0, height is 1.
+const BUTTON_BASE_COLOR = new Color( 153, 206, 255 );
 const NORMALIZED_ENTER_ARROW_SHAPE = new Shape()
   .lineTo( 0.45, 0 )
   .lineTo( 0.45, 0.5 )
@@ -50,7 +51,7 @@ class OperationEntryControl extends HBox {
       spacing: 25,
       initialValue: 0,
       increment: 100,
-      buttonBaseColor: new Color( 153, 206, 255 ),
+      buttonBaseColor: BUTTON_BASE_COLOR,
 
       // {String} - specifies the way the arrow should point, valid values are 'up' and 'down'
       arrowDirection: 'down',
@@ -166,6 +167,9 @@ class OperationEntryControl extends HBox {
     this.controlledOperation.reset();
   }
 }
+
+// statics
+OperationEntryControl.BUTTON_BASE_COLOR = BUTTON_BASE_COLOR;
 
 numberLineOperations.register( 'OperationEntryControl', OperationEntryControl );
 export default OperationEntryControl;

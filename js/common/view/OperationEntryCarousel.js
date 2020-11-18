@@ -6,6 +6,7 @@
 
 import merge from '../../../../phet-core/js/merge.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -39,7 +40,11 @@ class OperationEntryCarousel extends Node {
     // carousel in which the operation entry controls reside
     const carousel = new Carousel( operationEntryControls, {
       orientation: 'horizontal',
-      itemsPerPage: 1
+      itemsPerPage: 1,
+      fill: new Color( 255, 255, 255, 0.5 ),
+      stroke: OperationEntryControl.BUTTON_BASE_COLOR,
+      buttonColor: OperationEntryControl.BUTTON_BASE_COLOR,
+      buttonDisabledColor: new Color( 255, 255, 255, 0.1 )
     } );
 
     // page indicator
