@@ -24,10 +24,10 @@ const NLOConstants = {
   ERASER_BUTTON_INSET: 12,
 
   // length of time between activating and then deactivating it when the timed deactivation feature is in use
-  OPERATION_AUTO_DEACTIVATE_TIME: 1500, // in milliseconds
+  OPERATION_AUTO_DEACTIVATE_TIME: 4000, // in milliseconds
 
   // fade out time for operations that are being deactivated
-  OPERATION_FADE_OUT_TIME: 750 // in milliseconds
+  OPERATION_FADE_OUT_TIME: 1500 // in milliseconds
 };
 
 numberLineOperations.register( 'NLOConstants', NLOConstants );
