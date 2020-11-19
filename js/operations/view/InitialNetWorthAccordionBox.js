@@ -56,7 +56,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
         yMargin: 10,
         arrowHeight: 10,
         color: Color.BLACK,
-        font: new PhetFont( 20 )
+        font: new PhetFont( 26 )
       }
     );
 
