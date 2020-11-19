@@ -16,7 +16,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 
 // constants
-const DEFAULT_WIDTH = 300; // empirically determined to look decent
+const DEFAULT_WIDTH = 350; // empirically determined to look decent
 
 class TotalValueAccordionBox extends AccordionBox {
 
@@ -34,7 +34,7 @@ class TotalValueAccordionBox extends AccordionBox {
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const totalReadoutNode = new Text( '', {
-      font: new PhetFont( 20 ),
+      font: new PhetFont( 26 ),
       maxWidth: DEFAULT_WIDTH * 0.9
     } );
 
