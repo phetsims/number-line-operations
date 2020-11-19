@@ -48,7 +48,7 @@ class OperationEntryControl extends HBox {
   constructor( controlledOperation, options ) {
 
     options = merge( {
-      spacing: 25,
+      spacing: 15,
       initialValue: 0,
       increment: 100,
       buttonBaseColor: BUTTON_BASE_COLOR,
