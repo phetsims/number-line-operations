@@ -4,6 +4,7 @@
  * carousel and page control for entering operations onto a number line
  */
 
+import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -14,6 +15,7 @@ import OperationEntryControl from './OperationEntryControl.js';
 
 // constants
 const DEFAULT_THEME_COLOR = new Color( 153, 206, 255 );
+const PageControlPosition = Enumeration.byKeys( [ 'ABOVE', 'BELOW' ] );
 
 class OperationEntryCarousel extends Node {
 
@@ -33,7 +35,8 @@ class OperationEntryCarousel extends Node {
       },
       entryControl2Options: {
         buttonBaseColor: options.themeColor
-      }
+      },
+      pageControlPosition: PageControlPosition.BELOW
     }, options );
 
     // @private {OperationEntryControl[]} - operation entry controls
@@ -65,10 +68,15 @@ class OperationEntryCarousel extends Node {
       {
         orientation: 'horizontal',
         interactive: true,
-        centerX: carousel.centerX,
-        top: carousel.bottom + 10
+        centerX: carousel.centerX
       }
     );
+    if ( options.pageControlPosition === PageControlPosition.BELOW ) {
+      pageControl.top = carousel.bottom + 10;
+    }
+    else {
+      pageControl.bottom = carousel.top - 10;
+    }
 
     super(
       merge(
@@ -112,6 +120,9 @@ class OperationEntryCarousel extends Node {
     this.operationEntryControls.forEach( control => {control.reset(); } );
   }
 }
+
+// statics
+OperationEntryCarousel.PageControlPosition = PageControlPosition;
 
 numberLineOperations.register( 'OperationEntryCarousel', OperationEntryCarousel );
 export default OperationEntryCarousel;

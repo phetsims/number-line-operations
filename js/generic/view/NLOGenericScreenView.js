@@ -112,10 +112,11 @@ class NLOGenericScreenView extends ScreenView {
           bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN
         },
         operationEntryCarouselOptions: {
-          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN + 17, // extra amount due to page control
+          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
           themeColor: SECONDARY_ENTRY_CAROUSEL_THEME_COLOR,
           entryControl1Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
-          entryControl2Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS
+          entryControl2Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
+          pageControlPosition: OperationEntryCarousel.PageControlPosition.ABOVE
         }
       }
     );
