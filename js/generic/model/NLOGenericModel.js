@@ -7,12 +7,13 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import createObservableArray from '../../../../axon/js/createObservableArray.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import LockToNumberLine from '../../../../number-line-common/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-common/js/common/model/PointController.js';
+import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
@@ -31,6 +32,18 @@ const NUMBER_LINE_CENTER_X = MODEL_BOUNDS.centerX; // matches design doc layout
 const PRIMARY_NUMBER_LINE_LOWER_POSITION = new Vector2( NUMBER_LINE_CENTER_X, MODEL_BOUNDS.centerY );
 const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.minusXY( 0, MODEL_BOUNDS.height * 0.15 );
 
+const COMMON_NUMBER_LINE_OPTIONS = {
+  numberOfOperationsTracked: 2,
+  startingValueProperty: new NumberProperty( 1 ),
+  initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
+  tickMarksInitiallyVisible: true,
+  preventOverlap: false,
+  labelsInitiallyVisible: true,
+  operationDescriptionsInitiallyVisible: false,
+  widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH,
+  operationOptions: { initialAmount: 1 }
+};
+
 class NLOGenericModel {
 
   /**
@@ -44,17 +57,9 @@ class NLOGenericModel {
     // @public - the primary operation-tracking number line, which is always visible
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
-      {
-        numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ],
-        startingValueProperty: new NumberProperty( 1 ),
-        initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
-        tickMarksInitiallyVisible: true,
-        preventOverlap: false,
-        labelsInitiallyVisible: true,
-        operationDescriptionsInitiallyVisible: false,
-        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
-      }
+      merge( {
+        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ]
+      }, COMMON_NUMBER_LINE_OPTIONS )
     );
 
     // @public (read-only) - Associate a point controller with the point that represents the initial value on the
@@ -96,17 +101,9 @@ class NLOGenericModel {
     // @public - the secondary operation-tracking number line, which is only visible when enabled by the user
     this.secondaryNumberLine = new OperationTrackingNumberLine(
       this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
-      {
-        numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#a400cc' ), new Color( '#ef29ff' ), new Color( '#fb71ff' ) ],
-        startingValueProperty: new NumberProperty( 1 ),
-        initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
-        tickMarksInitiallyVisible: true,
-        preventOverlap: false,
-        labelsInitiallyVisible: true,
-        operationDescriptionsInitiallyVisible: false,
-        widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
-      }
+      merge( {
+        pointColorList: [ new Color( '#a400cc' ), new Color( '#ef29ff' ), new Color( '#fb71ff' ) ]
+      }, COMMON_NUMBER_LINE_OPTIONS )
     );
 
     // @public (read-only) - Associate a point controller with the point that represents the initial value on the

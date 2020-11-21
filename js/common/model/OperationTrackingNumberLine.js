@@ -49,7 +49,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       operationDescriptionsInitiallyVisible: true,
 
       // {boolean} - automatically deactivate an operation after it has been active for a while
-      automaticallyDeactivateOperations: false
+      automaticallyDeactivateOperations: false,
+
+      // {number} - options used for each of the operations that are being tracked
+      operationOptions: {}
     }, options );
 
     assert && assert(
@@ -81,7 +84,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // that they are created at construction rather than added and removed.  This is also better for phet-io.
     this.operations = [];
     _.times( options.numberOfOperationsTracked, () => {
-      this.operations.push( new NumberLineOperation() );
+      this.operations.push( new NumberLineOperation( options.operationOptions ) );
     } );
 
     // @public (read-write) - the number line point that corresponds with the starting value, this is always present

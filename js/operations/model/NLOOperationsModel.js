@@ -34,6 +34,7 @@ class NLOOperationsModel {
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
+        operationOptions: { initialAmount: 100 },
 
         // width of the number line in model space, number empirically determined to make it look good
         widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH

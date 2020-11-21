@@ -275,6 +275,10 @@ class InteractiveNumberLineView extends Node {
       listener: () => {
         numberLine.deactivateAllOperations();
         this.operationEntryCarousel.reset();
+
+        // By design, the operations are set to have values of zero rather than their default values when the eraser
+        // button is used.
+        numberLine.operations.forEach( operation => operation.amountProperty.set( 0 ) );
       }
     } );
     this.addChild( eraserButton );

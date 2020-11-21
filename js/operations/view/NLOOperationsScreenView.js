@@ -157,6 +157,10 @@ class NLOOperationsScreenView extends ScreenView {
       listener: () => {
         model.numberLine.deactivateAllOperations();
         operationEntryCarousel.reset();
+
+        // By design, the operations are set to have values of zero rather than their default values when the eraser
+        // button is used.
+        model.numberLine.operations.forEach( operation => operation.amountProperty.set( 0 ) );
       }
     } );
     this.addChild( eraserButton );

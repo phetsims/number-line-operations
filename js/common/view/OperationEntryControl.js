@@ -155,14 +155,6 @@ class OperationEntryControl extends HBox {
   /**
    * @public
    */
-  clear() {
-    this.controlledOperation.operationTypeProperty.reset();
-    this.controlledOperation.amountProperty.set( 0 );
-  }
-
-  /**
-   * @public
-   */
   reset() {
     this.controlledOperation.reset();
   }
