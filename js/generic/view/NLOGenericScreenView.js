@@ -39,9 +39,8 @@ const NUMBER_LINE_NODE_OPTIONS = {
     labelDistanceFromApex: 20
   }
 };
-const SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR = new Color( 0xE5BDF5 );
+const SECONDARY_ENTRY_CAROUSEL_THEME_COLOR = new Color( 0xE5BDF5 );
 const SECONDARY_CAROUSEL_BUTTON_OPTIONS = {
-  buttonBaseColor: SECONDARY_ENTRY_CONTROLS_BUTTON_COLOR,
   arrowDirection: 'up'
 };
 
@@ -114,6 +113,7 @@ class NLOGenericScreenView extends ScreenView {
         },
         operationEntryCarouselOptions: {
           bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN + 17, // extra amount due to page control
+          themeColor: SECONDARY_ENTRY_CAROUSEL_THEME_COLOR,
           entryControl1Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
           entryControl2Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS
         }
@@ -215,11 +215,9 @@ class InteractiveNumberLineView extends Node {
       },
       operationEntryCarouselOptions: {
         entryControl1Options: {
-          initialValue: 1,
           increment: 1
         },
         entryControl2Options: {
-          initialValue: 1,
           increment: 1
         },
         right: layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET
