@@ -41,7 +41,7 @@ const COMMON_NUMBER_LINE_OPTIONS = {
   labelsInitiallyVisible: true,
   operationDescriptionsInitiallyVisible: false,
   widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH,
-  operationOptions: { initialAmount: 1 }
+  operationOptionsArray: [ { initialAmount: 1 }, { initialAmount: 1 } ]
 };
 
 class NLOGenericModel {

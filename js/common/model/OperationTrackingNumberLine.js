@@ -51,8 +51,9 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       // {boolean} - automatically deactivate an operation after it has been active for a while
       automaticallyDeactivateOperations: false,
 
-      // {number} - options used for each of the operations that are being tracked
-      operationOptions: {}
+      // {number} - options used for each of the tracked operations, can either be an empty array or a number that
+      // matches the number of tracked operations
+      operationOptionsArray: []
     }, options );
 
     assert && assert(
@@ -62,6 +63,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     assert && assert(
       options.pointColorList.length = options.numberOfOperationsTracked + 1,
       'number of potential points doesn\'t match length of point color list'
+    );
+    assert && assert(
+      options.operationOptionsArray.length === 0 || options.operationOptionsArray.length === options.numberOfOperationsTracked,
+      'must either provide no operation options or the same number as the tracked operations'
     );
 
     super( zeroPosition, options );
@@ -83,8 +88,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     // matters in how changes are processed and how things are portrayed in the view, which is one of the main reasons
     // that they are created at construction rather than added and removed.  This is also better for phet-io.
     this.operations = [];
-    _.times( options.numberOfOperationsTracked, () => {
-      this.operations.push( new NumberLineOperation( options.operationOptions ) );
+    _.times( options.numberOfOperationsTracked, index => {
+      this.operations.push( new NumberLineOperation( options.operationOptionsArray[ index ] || {} ) );
     } );
 
     // @public (read-write) - the number line point that corresponds with the starting value, this is always present

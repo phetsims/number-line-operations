@@ -13,6 +13,9 @@ import OperationTrackingNumberLine from '../../common/model/OperationTrackingNum
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
+// constants
+const OPERATION_OPTIONS = { initialAmount: 100 };
+
 class NLOOperationsModel {
 
   /**
@@ -34,7 +37,7 @@ class NLOOperationsModel {
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,
-        operationOptions: { initialAmount: 100 },
+        operationOptionsArray: [ OPERATION_OPTIONS, OPERATION_OPTIONS ],
 
         // width of the number line in model space, number empirically determined to make it look good
         widthInModelSpace: NLOConstants.NUMBER_LINE_WIDTH
