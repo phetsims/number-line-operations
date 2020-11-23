@@ -100,29 +100,25 @@ class NLOOperationsScreenView extends ScreenView {
     } );
     this.addChild( operationEntryCarousel );
 
-    // Add a listener that detects when clicks occur that are outside the operation entry carousel and fades out any
-    // dynamic operation descriptions that are currently visible.  This is done to reduce the clutter if the user isn't
-    // working with the operation entry carousels.  This code was highly leveraged from some code that exists for a
-    // similar purpose in BuildingLabScreenView.
+    // A flag that tracks whether the operation entry carousel is "in focus", which in this context means that the most
+    // recent pointer down event had the carousel in its trail.  See usages to better understand why this is needed.
+    const operationEntryCarouselHasFocusProperty = new BooleanProperty( false );
+
+    // Add a listener that detects when pointer down events occur that are outside the operation entry carousel and
+    // updated a property to reflect whether the carousel has focus.  This code was highly leveraged from some code that
+    // exists for a similar purpose in BuildingLabScreenView.  See
+    // https://github.com/phetsims/number-line-operations/issues/23.
     phet.joist.display.addInputListener( {
       down: event => {
         const screen = phet.joist.sim.screenProperty.value;
         if ( screen && screen.view === this ) {
 
-          // See if our press was a "miss" (trail length 1) or a hit on our screen (screen.view in the trail).
-          // We really want to exclude home-screen clicks so that things start focused.
+          // See if our press was a "miss" (trail length 1) or a hit on our screen (screen.view in the trail). This is
+          // necessary to exclude home-screen clicks.
           const doesTrailMatch = _.includes( event.trail.nodes, screen.view ) || event.trail.length <= 1;
 
           if ( doesTrailMatch ) {
-
-            // Test whether the operation entry carousel was in the trail and, if so, fade out any of the dynamic
-            // operation descriptions.
-            const operationEntryCarouselInTrail = _.includes( event.trail.nodes, operationEntryCarousel );
-            if ( !operationEntryCarouselInTrail ) {
-              this.dynamicOperationDescriptions.forEach( dynamicOperationDescription =>
-                dynamicOperationDescription.fadeOutIfVisible()
-              );
-            }
+            operationEntryCarouselHasFocusProperty.set( _.includes( event.trail.nodes, operationEntryCarousel ) );
           }
         }
       }
@@ -144,6 +140,7 @@ class NLOOperationsScreenView extends ScreenView {
         operationEntryCarousel.selectedPageProperty,
         model.numberLine,
         resetInProgressProperty,
+        operationEntryCarouselHasFocusProperty,
         { maxWidth: 300 }
       );
       this.addChild( dynamicOperationDescription );

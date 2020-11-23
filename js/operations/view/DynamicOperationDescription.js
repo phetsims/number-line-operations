@@ -38,6 +38,8 @@ class DynamicOperationDescription extends Text {
    * @param {OperationTrackingNumberLine} numberLine - the number line on which this operation is affiliated
    * @param {BooleanProperty} resetInProgressProperty - used to distinguish changes due to user interaction from those
    * caused by a reset
+   * @param {BooleanProperty} operationEntryCarouselInFocusProperty - used to prevent this from being shown when
+   * user actions from outside the operation entry carousels, such as an erase, causes changes to the operation
    * @param {Object} [options]
    */
   constructor(
@@ -49,13 +51,14 @@ class DynamicOperationDescription extends Text {
     selectedOperationIDProperty,
     numberLine,
     resetInProgressProperty,
+    operationEntryCarouselInFocusProperty,
     options
   ) {
 
-    // this is intended to be constructed prior to the operation being activate
+    // This is intended to be constructed prior to the operation becoming active.
     assert && assert( !operation.isActiveProperty.value, 'operation must be inactive when this node is constructed' );
 
-    // construct with no initial text and in the inactive position
+    // Construct with no initial text and in the inactive position.
     super( '', merge( {
       font: FONT,
       center: inactivePosition,
@@ -69,7 +72,7 @@ class DynamicOperationDescription extends Text {
     // control overall visibility
     operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
 
-    // update the text as the attributes of the operation change
+    // Update the text as the attributes of the operation change.
     Property.multilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
@@ -98,16 +101,15 @@ class DynamicOperationDescription extends Text {
       }
     );
 
-    // fade in if the user starts interacting with this operation and we're not already visible
+    // Listen for changes to the attributes of the operation and, if the other conditions check out, initiate a fade-in
+    // when changes occur.
     Property.lazyMultilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
       () => {
-
-        // make the update, but only if the changes were not due to a reset
-        if ( !resetInProgressProperty.value ) {
-          if ( selectedOperationIDProperty.value === operationIDNumber && !operation.isActiveProperty.value && this.opacity === 0 ) {
-            this.initiateFadeIn();
-          }
+        if ( !resetInProgressProperty.value && operationEntryCarouselInFocusProperty.value &&
+             selectedOperationIDProperty.value === operationIDNumber && !operation.isActiveProperty.value &&
+             this.opacity === 0 ) {
+          this.initiateFadeIn();
         }
       }
     );
@@ -115,65 +117,63 @@ class DynamicOperationDescription extends Text {
     // Handle changes to the selected operation.
     selectedOperationIDProperty.lazyLink( selectedOperationID => {
 
-      if ( !operation.isActiveProperty.value ) {
+      if ( !operation.isActiveProperty.value && operationEntryCarouselInFocusProperty.value ) {
 
-        // Fade out if visible and a different operation gets selected.
+        // Fade out if visible and a different operation gets selected, fade in if this one becomes selected.
         if ( selectedOperationID !== operationIDNumber && this.opacity > 0 ) {
           this.initiateFadeOut();
         }
         else if ( selectedOperationID === operationIDNumber && this.opacity === 0 ) {
-
-          // Are any other operations active?
-          const anotherOperationIsActive = numberLine.operations.reduce( ( activeOperationFound, operationToCheck ) => {
-            return activeOperationFound || ( operationToCheck !== operation && operationToCheck.isActiveProperty.value );
-          }, false );
-
-          // If another operation is already active, show this one when it becomes selected, but use a delay so that
-          // this description doesn't end up overlapping with that of the other operation.
-          if ( anotherOperationIsActive ) {
-            this.initiateFadeIn( 0.9 ); // fade time empirically determined
-          }
+          this.initiateFadeIn();
         }
       }
-
     } );
 
-    // Handle changes to the 'isActive' state of the operation, which indicates whether it is shown on the number line.
+    // Fade out if visible and the focus moves away from the operation entry controls.
+    operationEntryCarouselInFocusProperty.link( operationEntryCarouselInFocus => {
+      if ( this.opacity > 0 && !operationEntryCarouselInFocus ) {
+        this.initiateFadeOut();
+      }
+    } );
+
+    // Handle changes to the 'isActive' state of the operation.  The description for active operations is shown near the
+    // operation, whereas the description for inactive operations are shown in a different position or not at all.
     operation.isActiveProperty.lazyLink( isActive => {
 
       if ( isActive ) {
 
         if ( this.opacity !== 1 ) {
 
-          // if the operation becomes active while invisible or fading in, instantly make it fully visible
-          if ( this.fadeAnimation ) {
-            this.fadeAnimation.stop();
-          }
+          // If the operation becomes active while invisible or fading in, instantly make it fully visible.
+          this.cancelInProgressAnimations();
           this.opacity = 1;
         }
 
-        // head to the "active" position
+        // Head to the "active" position.
         this.initiateMovementToActivePosition();
       }
-      else if ( !isActive ) {
+      else {
 
-        // go back to the inactive position (without animation)
+        // Go back to the inactive position (without animation).
         this.center = inactivePosition;
 
-        // If the operation went inactive due to being erased, and that's the operation that is currently selected,
-        // then it should be visible.  Otherwise it shouldn't.
-        if ( !resetInProgressProperty.value && selectedOperationIDProperty.value === operationIDNumber ) {
-          this.opacity = 1;
+        // If the focus is on the carousel, that indicates that the operation was erased from the number line using the
+        // operation entry control.  In this case, fade in.
+        if ( operationEntryCarouselInFocusProperty.value ) {
+          this.initiateFadeIn();
         }
         else {
+
+          // The operation was cleared due to a reset or external erase by the user, so this should be invisible.
           this.opacity = 0;
         }
       }
     } );
 
-    // go invisible on a reset
+    // go instantly invisible on a reset
     resetInProgressProperty.lazyLink( resetInProgress => {
       if ( resetInProgress ) {
+        this.cancelInProgressAnimations();
         this.opacity = 0;
       }
     } );
@@ -188,10 +188,7 @@ class DynamicOperationDescription extends Text {
    */
   initiateFadeIn( preFadeInDelay = 0 ) {
 
-    // cancel any in-progress fade animations
-    if ( this.fadeAnimation ) {
-      this.fadeAnimation.stop();
-    }
+    this.cancelInProgressAnimations();
 
     // create and start the fade-in animation
     this.fadeAnimation = new Animation( {
@@ -214,14 +211,24 @@ class DynamicOperationDescription extends Text {
   }
 
   /**
+   * Cancel the fade animation if it exists, do nothing if it doesn't.
+   * @private
+   */
+  cancelInProgressAnimations() {
+    if ( this.fadeAnimation ) {
+      this.fadeAnimation.stop();
+    }
+    if ( this.movementAnimation ) {
+      this.movementAnimation.stop();
+    }
+  }
+
+  /**
    * @private
    */
   initiateFadeOut() {
 
-    // cancel any in-progress fade animations
-    if ( this.fadeAnimation ) {
-      this.fadeAnimation.stop();
-    }
+    this.cancelInProgressAnimations();
 
     // create and start the fade-out animation
     this.fadeAnimation = new Animation( {
@@ -240,17 +247,6 @@ class DynamicOperationDescription extends Text {
       this.fadeAnimation = null;
     } );
     this.fadeAnimation.start();
-  }
-
-  /**
-   * If this is currently visible and not fading, initiate a fade out.  This method is intended to allow external
-   * clients to initiate a fade if needed.
-   * @public
-   */
-  fadeOutIfVisible() {
-    if ( this.opacity > 0 ) {
-      this.initiateFadeOut();
-    }
   }
 
   /**
