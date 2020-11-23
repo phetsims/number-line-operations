@@ -7,6 +7,7 @@
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
 import PointControllerNode from '../../../../number-line-common/js/common/view/PointControllerNode.js';
@@ -75,8 +76,8 @@ class NLOGenericScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+      left: this.layoutBounds.minX + NLCConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
@@ -88,10 +89,10 @@ class NLOGenericScreenView extends ScreenView {
       this.layoutBounds,
       {
         numericalExpressionAccordionBoxOptions: {
-          top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+          top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
         },
         operationEntryCarouselOptions: {
-          top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+          top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
         }
       }
     );
@@ -109,10 +110,10 @@ class NLOGenericScreenView extends ScreenView {
       this.layoutBounds,
       {
         numericalExpressionAccordionBoxOptions: {
-          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN
+          bottom: this.layoutBounds.maxY - NLCConstants.SCREEN_VIEW_Y_MARGIN
         },
         operationEntryCarouselOptions: {
-          bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
+          bottom: this.layoutBounds.maxY - NLCConstants.SCREEN_VIEW_Y_MARGIN,
           themeColor: SECONDARY_ENTRY_CAROUSEL_THEME_COLOR,
           entryControl1Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
           entryControl2Options: SECONDARY_CAROUSEL_BUTTON_OPTIONS,
@@ -122,10 +123,24 @@ class NLOGenericScreenView extends ScreenView {
     );
     secondaryNumberLineLayer.addChild( secondaryNumberLineView );
 
+    // reset all button
+    const resetAllButton = new ResetAllButton( {
+      listener: () => {
+        this.interruptSubtreeInput(); // cancel interactions that may be in progress
+        primaryNumberLineView.reset();
+        secondaryNumberLineView.reset();
+        model.reset();
+      },
+      right: this.layoutBounds.maxX - NLCConstants.SCREEN_VIEW_X_MARGIN,
+      bottom: this.layoutBounds.maxY - NLCConstants.SCREEN_VIEW_Y_MARGIN,
+      tandem: tandem.createTandem( 'resetAllButton' )
+    } );
+    this.addChild( resetAllButton );
+
     // add the selector used to show/hide the second number line
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
       left: checkboxGroup.left,
-      bottom: this.layoutBounds.maxY - 46
+      bottom: resetAllButton.centerY
     } );
     this.addChild( singleDualNumberLineSelector );
 
@@ -163,7 +178,7 @@ class NLOGenericScreenView extends ScreenView {
       this,
       {
         left: singleDualNumberLineSelector.left,
-        bottom: singleDualNumberLineSelector.top - 20
+        bottom: singleDualNumberLineSelector.top - 12
       }
     ) );
 
@@ -171,20 +186,6 @@ class NLOGenericScreenView extends ScreenView {
     model.primaryNumberLine.displayedRangeProperty.link( displayedRange => {
       model.secondaryNumberLine.displayedRangeProperty.set( displayedRange );
     } );
-
-    // reset all
-    const resetAllButton = new ResetAllButton( {
-      listener: () => {
-        this.interruptSubtreeInput(); // cancel interactions that may be in progress
-        primaryNumberLineView.reset();
-        secondaryNumberLineView.reset();
-        model.reset();
-      },
-      right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
-      bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
-      tandem: tandem.createTandem( 'resetAllButton' )
-    } );
-    this.addChild( resetAllButton );
   }
 }
 

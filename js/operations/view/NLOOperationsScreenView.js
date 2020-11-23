@@ -8,6 +8,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -70,15 +71,15 @@ class NLOOperationsScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+      left: this.layoutBounds.minX + NLCConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
     // accordion box containing a mathematical description of the operations on the number line
     const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( numericalExpressionAccordionBox );
 
@@ -93,7 +94,7 @@ class NLOOperationsScreenView extends ScreenView {
     // carousel with the operation entry controls
     const operationEntryCarousel = new OperationEntryCarousel( model.numberLine, {
       right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN,
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN,
       entryControl1Options: commonEntryControlOptions,
       entryControl2Options: commonEntryControlOptions
     } );
@@ -189,8 +190,8 @@ class NLOOperationsScreenView extends ScreenView {
         model.numberLine.deactivateAllOperations();
         resetInProgressProperty.set( false );
       },
-      right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
-      bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
+      right: this.layoutBounds.maxX - NLCConstants.SCREEN_VIEW_X_MARGIN,
+      bottom: this.layoutBounds.maxY - NLCConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );

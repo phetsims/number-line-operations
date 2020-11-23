@@ -8,6 +8,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
@@ -55,8 +56,8 @@ class NLOChipsScreenView extends ScreenView {
       children: checkboxes,
       spacing: NLOConstants.CHECKBOX_SPACING,
       align: 'left',
-      left: this.layoutBounds.minX + NLOConstants.SCREEN_VIEW_X_MARGIN,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+      left: this.layoutBounds.minX + NLCConstants.SCREEN_VIEW_X_MARGIN,
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
     } );
     this.addChild( checkboxGroup );
 
@@ -64,7 +65,7 @@ class NLOChipsScreenView extends ScreenView {
     this.addChild( new TotalValueAccordionBox( model.totalInBagsProperty, {
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.minY + NLOConstants.SCREEN_VIEW_Y_MARGIN
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
     } ) );
 
     // number line node
@@ -115,8 +116,8 @@ class NLOChipsScreenView extends ScreenView {
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         model.reset();
       },
-      right: this.layoutBounds.maxX - NLOConstants.SCREEN_VIEW_X_MARGIN,
-      bottom: this.layoutBounds.maxY - NLOConstants.SCREEN_VIEW_Y_MARGIN,
+      right: this.layoutBounds.maxX - NLCConstants.SCREEN_VIEW_X_MARGIN,
+      bottom: this.layoutBounds.maxY - NLCConstants.SCREEN_VIEW_Y_MARGIN,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );

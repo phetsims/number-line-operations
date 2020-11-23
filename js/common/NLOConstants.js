@@ -16,8 +16,6 @@ const NLOConstants = {
 
   // shared constants used for consistent layout between screens
   NUMBER_LINE_WIDTH: ScreenView.DEFAULT_LAYOUT_BOUNDS.width - 200,
-  SCREEN_VIEW_X_MARGIN: 15,
-  SCREEN_VIEW_Y_MARGIN: 15,
   CHECKBOX_SPACING: 12,
   OPERATION_ENTRY_CAROUSEL_LEFT_INSET: 70,
   ERASER_BUTTON_ICON_WIDTH: 32,

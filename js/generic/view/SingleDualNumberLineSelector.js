@@ -12,11 +12,9 @@ import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularR
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const ARROW_ICON_LENGTH = 35;
+const ARROW_ICON_LENGTH = 40;
 const ARROW_ICON_OPTIONS = {
   doubleHead: true,
-  headHeight: 8,
-  headWidth: 8,
   tailWidth: 1
 };
 
@@ -29,14 +27,14 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
   constructor( secondNumberLineVisibleProperty, options ) {
 
     options = merge( {
-      buttonContentXMargin: 7,
-      buttonContentYMargin: 12,
+      buttonContentXMargin: 5,
+      buttonContentYMargin: 10,
       baseColor: 'white',
       selectedLineWidth: 2,
       deselectedLineWidth: 0.5,
       deselectedButtonOpacity: 0.5,
       orientation: 'horizontal',
-      spacing: 8,
+      spacing: 12,
       touchAreaXDilation: 2,
       touchAreaYDilation: 2
     }, options );
