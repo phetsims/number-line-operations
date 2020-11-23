@@ -34,7 +34,6 @@ const PRIMARY_NUMBER_LINE_UPPER_POSITION = PRIMARY_NUMBER_LINE_LOWER_POSITION.mi
 
 const COMMON_NUMBER_LINE_OPTIONS = {
   numberOfOperationsTracked: 2,
-  startingValueProperty: new NumberProperty( 1 ),
   initialDisplayedRange: NUMBER_LINE_RANGES[ 0 ],
   tickMarksInitiallyVisible: true,
   preventOverlap: false,
@@ -58,6 +57,7 @@ class NLOGenericModel {
     this.primaryNumberLine = new OperationTrackingNumberLine(
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       merge( {
+        startingValueProperty: new NumberProperty( 1 ),
         pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ]
       }, COMMON_NUMBER_LINE_OPTIONS )
     );
@@ -102,6 +102,7 @@ class NLOGenericModel {
     this.secondaryNumberLine = new OperationTrackingNumberLine(
       this.primaryNumberLine.centerPositionProperty.value.plusXY( 0, 62 ),
       merge( {
+        startingValueProperty: new NumberProperty( 1 ),
         pointColorList: [ new Color( '#a400cc' ), new Color( '#ef29ff' ), new Color( '#fb71ff' ) ]
       }, COMMON_NUMBER_LINE_OPTIONS )
     );
