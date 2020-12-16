@@ -6,8 +6,10 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -16,14 +18,14 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
-import Checkbox from '../../../../sun/js/Checkbox.js';
 import Operations from '../../common/model/Operations.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 60 ); // size based on design doc
+const MOMENTARY_BUTTON_BASE_COLOR = new Color( 0xfdfd96 );
+const MOMENTARY_BUTTON_TEXT_FONT = new PhetFont( 20 );
 
 class NumericalExpressionAccordionBox extends AccordionBox {
 
@@ -44,33 +46,58 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       )
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
+    assert && assert( numberLine.operations.length === 2, 'this indicator is designed to work with exactly two operations' );
+
     // Create a transparent background that will serve as the root node.  Everything should be made to fit within this.
     const contentRoot = new Rectangle( 0, 0, CONTENT_DIMENSIONS.width, CONTENT_DIMENSIONS.height, 5, 5, {
       fill: Color.TRANSPARENT
     } );
 
-    // simplify checkbox
-    const simplifyProperty = new BooleanProperty( false );
-    contentRoot.addChild( new Checkbox(
-      new Text(
-        numberLineOperationsStrings.simplify,
-        {
-          font: new PhetFont( 20 ),
-          maxWidth: CONTENT_DIMENSIONS.width * 0.5
-        }
-      ),
-      simplifyProperty,
-      {
-        centerX: contentRoot.width / 2,
-        bottom: contentRoot.bottom
+    // Create a derived property that is true when there are negative values in the expression, which means that
+    // simplification is possible.  This will be used as the enabled property for the simplify button.
+    const simplificationPossibleProperty = new DerivedProperty(
+      [
+        numberLine.operations[ 0 ].isActiveProperty,
+        numberLine.operations[ 0 ].amountProperty,
+        numberLine.operations[ 1 ].isActiveProperty,
+        numberLine.operations[ 1 ].amountProperty
+      ],
+      ( firstOperationIsActive, firstOperationValue, secondOperationIsActive, secondOperationValue ) => {
+        return ( firstOperationIsActive && firstOperationValue < 0 ) ||
+               ( secondOperationIsActive && secondOperationValue < 0 );
       }
-    ) );
+    );
+
+    // simplify button
+    const simplifyProperty = new BooleanProperty( false );
+    contentRoot.addChild( new RectangularMomentaryButton( false, true, simplifyProperty, {
+      content: new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 20 ) } ),
+      baseColor: MOMENTARY_BUTTON_BASE_COLOR,
+      enabledProperty: simplificationPossibleProperty,
+      xMargin: 5,
+      yMargin: 1,
+      left: 0,
+      bottom: CONTENT_DIMENSIONS.height
+    } ) );
+
+    // Create a derived property that is true when there are one or more active operations.  This will be used as the
+    // enabled property for the evaluate button.
+    const evaluationPossibleProperty = new DerivedProperty(
+      [
+        numberLine.operations[ 0 ].isActiveProperty,
+        numberLine.operations[ 1 ].isActiveProperty
+      ],
+      ( firstOperationIsActive, secondOperationIsActive ) => {
+        return firstOperationIsActive || secondOperationIsActive;
+      }
+    );
 
     // evaluate button
     const evaluateProperty = new BooleanProperty( false );
     contentRoot.addChild( new RectangularMomentaryButton( false, true, evaluateProperty, {
-      content: new Text( MathSymbols.EQUAL_TO, { font: new PhetFont( 20 ) } ),
-      baseColor: new Color( 0xfdfd96 ),
+      content: new Text( MathSymbols.EQUAL_TO, { font: MOMENTARY_BUTTON_TEXT_FONT } ),
+      baseColor: MOMENTARY_BUTTON_BASE_COLOR,
+      enabledProperty: evaluationPossibleProperty,
       xMargin: 5,
       yMargin: 1,
       right: CONTENT_DIMENSIONS.width,
