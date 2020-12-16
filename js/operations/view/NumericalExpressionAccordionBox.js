@@ -148,7 +148,7 @@ class NumericalExpression extends Text {
    * @public
    */
   constructor( numberLine, simplifyProperty, evaluateProperty, options ) {
-    options = merge( { font: new PhetFont( 30 ) }, options );
+    options = merge( { font: new PhetFont( 26 ) }, options );
     super( '', options );
 
     // function closure to update the text that defines the expression
