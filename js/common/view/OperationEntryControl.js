@@ -1,16 +1,21 @@
 // Copyright 2020, University of Colorado Boulder
 
-import merge from '../../../../phet-core/js/merge.js';
+/**
+ * OperationEntryControl is a control that allows users to add operations to a number line.  Operations can be either
+ * addition or subtraction, and have a value associated with them, and this control allows the user to set those
+ * attributes and commit the operation to the number line, and also alter it after it has been added.
+ */
+
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Range from '../../../../dot/js/Range.js';
-import Property from '../../../../axon/js/Property.js';
 import Shape from '../../../../kite/js/Shape.js';
-import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
+import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import NumberPicker from '../../../../scenery-phet/js/NumberPicker.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
-import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -24,7 +29,8 @@ const MATH_SYMBOL_OPTIONS = {
   font: new PhetFont( 32 )
 };
 
-// This is a normalized version of the enter arrow shape, pointing straight down, upper left corner at 0,0, height is 1.
+// This is a normalized version of the enter arrow shape, pointing in the downward direction.  The upper left corner is
+// at 0,0 and the height is 1.
 const NORMALIZED_ENTER_ARROW_SHAPE = new Shape()
   .lineTo( 0.45, 0 )
   .lineTo( 0.45, 0.5 )
@@ -97,9 +103,6 @@ class OperationEntryControl extends HBox {
       }, options.numberPickerOptions )
     );
 
-    // parent node for the buttons
-    const buttonRootNode = new Node();
-
     // enter button
     let enterArrowShape;
     if ( options.arrowDirection === 'down' ) {
@@ -110,6 +113,7 @@ class OperationEntryControl extends HBox {
     }
     const enterArrowNode = new Path( enterArrowShape, { fill: Color.BLACK } );
     const enterButton = new RoundPushButton( {
+      enabledProperty: DerivedProperty.not( controlledOperation.isActiveProperty ),
       listener: () => {
         controlledOperation.isActiveProperty.set( true );
       },
@@ -119,28 +123,9 @@ class OperationEntryControl extends HBox {
       yMargin: 16,
       baseColor: options.buttonBaseColor
     } );
-    buttonRootNode.addChild( enterButton );
-
-    // eraser button
-    const eraserButton = new EraserButton( {
-      listener: () => {
-
-        // deactivate our operation so that it will no longer appear on the number line
-        controlledOperation.isActiveProperty.set( false );
-      },
-      iconWidth: 30,
-      center: enterButton.center
-    } );
-    buttonRootNode.addChild( eraserButton );
-
-    // control the visibility of the "enter" and "erase" buttons based on whether or not the operation is active
-    controlledOperation.isActiveProperty.link( operationIsActive => {
-      enterButton.visible = !operationIsActive;
-      eraserButton.visible = operationIsActive;
-    } );
 
     super( merge( {
-      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, buttonRootNode ]
+      children: [ operationSelectorRadioButtonGroup, operationAmountPicker, enterButton ]
     }, options ) );
 
     // @private - now that the constructor has been called, make the controlled operation available to the methods
