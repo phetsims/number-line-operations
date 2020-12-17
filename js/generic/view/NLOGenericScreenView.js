@@ -10,7 +10,6 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
-import PointControllerNode from '../../../../number-line-common/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
@@ -22,8 +21,8 @@ import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
-import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import NumericalExpressionAccordionBox from '../../operations/view/NumericalExpressionAccordionBox.js';
@@ -31,15 +30,6 @@ import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
 
 // constants
-const NUMBER_LINE_NODE_OPTIONS = {
-  pointNodeOptions: {
-    radius: 6
-  },
-  numberLineOperationNodeOptions: {
-    operationLabelFont: new PhetFont( 22 ),
-    labelDistanceFromApex: 20
-  }
-};
 const SECONDARY_ENTRY_CAROUSEL_THEME_COLOR = new Color( 0xE5BDF5 );
 const SECONDARY_CAROUSEL_BUTTON_OPTIONS = {
   arrowDirection: 'up'
@@ -234,28 +224,21 @@ class InteractiveNumberLineView extends Node {
     this.addChild( pointControllerLayer );
 
     // node that represents the number line itself
-    const numberLineNode = new OperationTrackingNumberLineNode(
+    const numberLineNode = new ControllableOperationNumberLineNode(
       numberLine,
-      NUMBER_LINE_NODE_OPTIONS
+      initialValuePointController,
+      pointControllerObservableArray,
+      layoutBounds,
+      {
+        numberLineNodeOptions: {
+          numberLineOperationNodeOptions: {
+            operationLabelFont: new PhetFont( 22 ),
+            labelDistanceFromApex: 20
+          }
+        }
+      }
     );
     this.addChild( numberLineNode );
-
-    // point controller for the starting point on the number line, which is always present
-    pointControllerLayer.addChild( new PointControllerNode( initialValuePointController ) );
-
-    // add and remove nodes for the point controllers that come and go from the number line
-    pointControllerObservableArray.addItemAddedListener( addedPointController => {
-      const pointControllerNode = new PointControllerNode( addedPointController );
-      pointControllerLayer.addChild( pointControllerNode );
-      const removalListener = removedPointController => {
-        if ( removedPointController === addedPointController ) {
-          pointControllerLayer.removeChild( pointControllerNode );
-          pointControllerNode.dispose();
-          pointControllerObservableArray.removeItemRemovedListener( removalListener );
-        }
-      };
-      pointControllerObservableArray.addItemRemovedListener( removalListener );
-    } );
 
     // accordion box containing a mathematical description of the operations on the number line
     const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox(

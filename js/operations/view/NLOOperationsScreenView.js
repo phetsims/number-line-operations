@@ -15,8 +15,8 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import VBox from '../../../../scenery/js/nodes/VBox.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
-import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import DynamicOperationDescription from './DynamicOperationDescription.js';
@@ -36,16 +36,24 @@ class NLOOperationsScreenView extends ScreenView {
     } );
 
     // number line node
-    const numberLineNode = new OperationTrackingNumberLineNode( model.numberLine, {
-      pointNodeOptions: {
-        radius: 6
-      },
-      numberLineOperationNodeOptions: {
-        useFinancialDescriptions: true,
-        operationLabelFont: new PhetFont( 22 ),
-        labelDistanceFromApex: 20
+    const numberLineNode = new ControllableOperationNumberLineNode(
+      model.numberLine,
+      model.initialValuePointController,
+      model.pointControllers,
+      this.layoutBounds,
+      {
+        numberLineNodeOptions: {
+          pointNodeOptions: {
+            radius: 6
+          },
+          numberLineOperationNodeOptions: {
+            useFinancialDescriptions: true,
+            operationLabelFont: new PhetFont( 22 ),
+            labelDistanceFromApex: 20
+          }
+        }
       }
-    } );
+    );
     this.addChild( numberLineNode );
 
     // checkboxes that will control the presentation options

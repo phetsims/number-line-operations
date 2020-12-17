@@ -73,8 +73,8 @@ class NLOGenericModel {
       lockToNumberLine: LockToNumberLine.ALWAYS
     } );
 
-    // @public (read-only) {ObservableArrayDef.<PointController>} - A list of the point controllers for the primary number
-    // line. These come and go as points come and go.
+    // @public (read-only) {ObservableArrayDef.<PointController>} - A list of the point controllers for the primary
+    // number line. These come and go as points come and go.
     this.primaryNumberLinePointControllers = createObservableArray();
     this.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
