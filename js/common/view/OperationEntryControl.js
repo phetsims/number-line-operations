@@ -77,6 +77,7 @@ class OperationEntryControl extends HBox {
     assert && assert( options.arrowDirection === 'up' || options.arrowDirection === 'down' );
 
     // plus/minus operation selector
+    const interButtonSpacing = 5;
     const operationSelectorRadioButtonGroup = new RectangularRadioButtonGroup(
       controlledOperation.operationTypeProperty,
       [
@@ -86,10 +87,12 @@ class OperationEntryControl extends HBox {
       {
         baseColor: Color.WHITE,
         orientation: 'vertical',
-        spacing: 5,
+        spacing: interButtonSpacing,
         buttonContentXMargin: 8,
         buttonContentYMargin: 0,
-        selectedLineWidth: 2.5
+        selectedLineWidth: 2.5,
+        touchAreaXDilation: 4,
+        touchAreaYDilation: interButtonSpacing / 2
       }
     );
 

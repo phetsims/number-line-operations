@@ -27,6 +27,7 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 70 ); // size based on design doc
 const MOMENTARY_BUTTON_BASE_COLOR = new Color( 0xfdfd96 );
+const MOMENTARY_BUTTON_TOUCH_AREA_DILATION = 8;
 
 class NumericalExpressionAccordionBox extends AccordionBox {
 
@@ -76,7 +77,9 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
       xMargin: 5,
-      yMargin: 3.5
+      yMargin: 3.5,
+      touchAreaXDilation: MOMENTARY_BUTTON_TOUCH_AREA_DILATION,
+      touchAreaYDilation: MOMENTARY_BUTTON_TOUCH_AREA_DILATION
     } );
 
     // Create a derived property that is true when there are one or more active operations.  This will be used as the
@@ -98,7 +101,9 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: evaluationPossibleProperty,
       xMargin: 5,
-      yMargin: 1
+      yMargin: 1,
+      touchAreaXDilation: MOMENTARY_BUTTON_TOUCH_AREA_DILATION,
+      touchAreaYDilation: MOMENTARY_BUTTON_TOUCH_AREA_DILATION
     } );
 
     // TODO: The layout of these buttons is going through some churn.  Delete whatever isn't used when this gets finalized.  See https://github.com/phetsims/number-line-operations/issues/30.

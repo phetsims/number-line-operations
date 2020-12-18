@@ -160,6 +160,8 @@ class NLOOperationsScreenView extends ScreenView {
       iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
       right: this.layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
       centerY: model.numberLine.centerPositionProperty.value.y,
+      touchAreaXDilation: 8,
+      touchAreaYDilation: 8,
       listener: () => {
         model.numberLine.deactivateAllOperations();
         operationEntryCarousel.reset();

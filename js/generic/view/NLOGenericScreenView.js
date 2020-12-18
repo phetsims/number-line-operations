@@ -255,6 +255,8 @@ class InteractiveNumberLineView extends Node {
     const eraserButton = new EraserButton( {
       iconWidth: NLOConstants.ERASER_BUTTON_ICON_WIDTH,
       right: layoutBounds.maxX - NLOConstants.ERASER_BUTTON_INSET,
+      touchAreaXDilation: 8,
+      touchAreaYDilation: 8,
       listener: () => {
         numberLine.deactivateAllOperations();
         this.operationEntryCarousel.reset();
