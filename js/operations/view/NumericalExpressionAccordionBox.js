@@ -13,6 +13,7 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
@@ -23,7 +24,7 @@ import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
 // constants
-const CONTENT_DIMENSIONS = new Dimension2( 280, 60 ); // size based on design doc
+const CONTENT_DIMENSIONS = new Dimension2( 280, 70 ); // size based on design doc
 const MOMENTARY_BUTTON_BASE_COLOR = new Color( 0xfdfd96 );
 const MOMENTARY_BUTTON_TEXT_FONT = new PhetFont( 20 );
 
@@ -70,15 +71,13 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     // simplify button
     const simplifyProperty = new BooleanProperty( false );
-    contentRoot.addChild( new RectangularMomentaryButton( false, true, simplifyProperty, {
-      content: new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 20 ) } ),
+    const simplifyButton = new RectangularMomentaryButton( false, true, simplifyProperty, {
+      content: new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 16 ), maxWidth: 200 } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
       xMargin: 5,
-      yMargin: 1,
-      left: 0,
-      bottom: CONTENT_DIMENSIONS.height
-    } ) );
+      yMargin: 3.5
+    } );
 
     // Create a derived property that is true when there are one or more active operations.  This will be used as the
     // enabled property for the evaluate button.
@@ -94,15 +93,22 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     // evaluate button
     const evaluateProperty = new BooleanProperty( false );
-    contentRoot.addChild( new RectangularMomentaryButton( false, true, evaluateProperty, {
+    const evaluateButton = new RectangularMomentaryButton( false, true, evaluateProperty, {
       content: new Text( MathSymbols.EQUAL_TO, { font: MOMENTARY_BUTTON_TEXT_FONT } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: evaluationPossibleProperty,
       xMargin: 5,
-      yMargin: 1,
-      right: CONTENT_DIMENSIONS.width,
+      yMargin: 1
+    } );
+
+    // Position the buttons and put them together into a node so that they can be positioned as a group.
+    simplifyButton.centerX = CONTENT_DIMENSIONS.width * 0.25;
+    evaluateButton.centerX = CONTENT_DIMENSIONS.width * 0.75;
+    const buttonsNode = new Node( {
+      children: [ simplifyButton, evaluateButton ],
       bottom: CONTENT_DIMENSIONS.height
-    } ) );
+    } );
+    contentRoot.addChild( buttonsNode );
 
     // numerical expression
     const numericalExpression = new NumericalExpression(

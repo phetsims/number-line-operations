@@ -141,7 +141,7 @@ class NLOOperationsScreenView extends ScreenView {
     model.numberLine.operations.forEach( ( operation, index ) => {
       const dynamicOperationDescription = new DynamicOperationDescription(
         model.numberLine.showOperationDescriptionsProperty,
-        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 115 ), // y offset empirically determined
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 125 ), // y offset empirically determined
         new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 190 ), // y offset empirically determined
         operation,
         index,
