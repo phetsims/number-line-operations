@@ -101,11 +101,25 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       yMargin: 1
     } );
 
+    // TODO: The layout of these buttons is going through some churn.  Delete whatever isn't used when this gets finalized.  See https://github.com/phetsims/number-line-operations/issues/30.
     // Position the buttons and put them together into a node so that they can be positioned as a group.
-    simplifyButton.centerX = CONTENT_DIMENSIONS.width * 0.25;
-    evaluateButton.centerX = CONTENT_DIMENSIONS.width * 0.75;
+
+    // This one centers the space between the buttons with the expression.
+    // const interButtonSpacing = 20;
+    // simplifyButton.right = CONTENT_DIMENSIONS.width / 2 - interButtonSpacing / 2;
+    // evaluateButton.left = CONTENT_DIMENSIONS.width / 2 + interButtonSpacing / 2;
+    // const buttonsNode = new Node( {
+    //   children: [ simplifyButton, evaluateButton ],
+    //   bottom: CONTENT_DIMENSIONS.height
+    // } );
+    // contentRoot.addChild( buttonsNode );
+
+    // This one centers the buttons as a whole under the expression.
+    simplifyButton.x = 0;
+    evaluateButton.left = simplifyButton.width + 20;
     const buttonsNode = new Node( {
       children: [ simplifyButton, evaluateButton ],
+      centerX: CONTENT_DIMENSIONS.width / 2,
       bottom: CONTENT_DIMENSIONS.height
     } );
     contentRoot.addChild( buttonsNode );
