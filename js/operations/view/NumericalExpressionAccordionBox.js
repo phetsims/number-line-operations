@@ -7,6 +7,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Emitter from '../../../../axon/js/Emitter.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
@@ -26,7 +27,6 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 70 ); // size based on design doc
 const MOMENTARY_BUTTON_BASE_COLOR = new Color( 0xfdfd96 );
-const MOMENTARY_BUTTON_TEXT_FONT = new PhetFont( 20 );
 
 class NumericalExpressionAccordionBox extends AccordionBox {
 
@@ -94,7 +94,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // evaluate button
     const evaluateProperty = new BooleanProperty( false );
     const evaluateButton = new RectangularMomentaryButton( false, true, evaluateProperty, {
-      content: new Text( MathSymbols.EQUAL_TO, { font: MOMENTARY_BUTTON_TEXT_FONT } ),
+      content: new Text( MathSymbols.EQUAL_TO, { font: new PhetFont( 20 ) } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: evaluationPossibleProperty,
       xMargin: 5,
@@ -121,10 +121,14 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       }
     );
     contentRoot.addChild( numericalExpression );
-    numericalExpression.localBoundsProperty.link( () => {
+
+    // Keep the numerical expression centered.
+    const centerNumericalExpression = () => {
       numericalExpression.centerX = CONTENT_DIMENSIONS.width / 2;
       numericalExpression.top = 0;
-    } );
+    };
+    centerNumericalExpression();
+    numericalExpression.updatedEmitter.addListener( centerNumericalExpression );
 
     super( contentRoot, options );
 
@@ -154,8 +158,11 @@ class NumericalExpression extends Text {
    * @public
    */
   constructor( numberLine, simplifyProperty, evaluateProperty, options ) {
-    options = merge( { font: new PhetFont( 26 ) }, options );
+    options = merge( { font: new PhetFont( 30 ) }, options );
     super( '', options );
+
+    // @public (listen-only) - used to signal updates, was necessary because listening to bounds changes wasn't working
+    this.updatedEmitter = new Emitter();
 
     // function closure to update the text that defines the expression
     const update = () => {
@@ -214,11 +221,10 @@ class NumericalExpression extends Text {
         } );
         this.text = numericalExpressionString;
       }
+      this.updatedEmitter.emit();
     };
 
     // Hook up the various properties that should trigger an update.
-    evaluateProperty.link( update );
-    simplifyProperty.link( update );
     numberLine.startingValueProperty.link( update );
     numberLine.operations.forEach( operation => {
       Property.multilink(
@@ -226,6 +232,8 @@ class NumericalExpression extends Text {
         update
       );
     } );
+    evaluateProperty.lazyLink( update );
+    simplifyProperty.lazyLink( update );
   }
 }
 
