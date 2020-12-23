@@ -20,6 +20,9 @@ const MIN_ANIMATION_TIME = 0.3; // in seconds
 
 class ValueItem {
 
+  /**
+   * @param value
+   */
   constructor( value ) {
 
     // @public (read-only)
