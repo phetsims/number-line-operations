@@ -107,6 +107,17 @@ class NLOGenericModel {
       }, COMMON_NUMBER_LINE_OPTIONS )
     );
 
+    // Link the view control properties from the primary number line to those in the secondary number line.
+    this.primaryNumberLine.showPointLabelsProperty.link(
+      showPointLabels => this.secondaryNumberLine.showPointLabelsProperty.set( showPointLabels )
+    );
+    this.primaryNumberLine.showOperationLabelsProperty.link(
+      showPointLabels => this.secondaryNumberLine.showOperationLabelsProperty.set( showPointLabels )
+    );
+    this.primaryNumberLine.showTickMarksProperty.link(
+      showPointLabels => this.secondaryNumberLine.showTickMarksProperty.set( showPointLabels )
+    );
+
     // @public (read-only) - Associate a point controller with the point that represents the initial value on the
     // operation tracking number line.  This point controller will always be present on the number line, whereas there
     // are others that can come and go.
