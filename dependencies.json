@@ -1,5 +1,5 @@
 {
-  "comment": "# number-line-operations 1.0.0-dev.11 Fri Dec 18 2020 16:35:56 GMT-0700 (Mountain Standard Time)",
+  "comment": "# number-line-operations 1.0.0-dev.12 Wed Dec 23 2020 16:50:14 GMT-0700 (Mountain Standard Time)",
   "assert": {
     "sha": "3df8c5ff9a465b031f84195a90bbb7e1be10a14d",
     "branch": "master"
@@ -13,7 +13,7 @@
     "branch": "master"
   },
   "chipper": {
-    "sha": "9434df2b22771f5706424a456871e8c61ac4d797",
+    "sha": "d2ec1a53b9c675520defae89c08ae32170239381",
     "branch": "master"
   },
   "dot": {
@@ -21,7 +21,7 @@
     "branch": "master"
   },
   "joist": {
-    "sha": "e0b018e279d3011821f909d1dc0f362f7a573454",
+    "sha": "4b0ff11a20a66c2c6071af0d251778042562a88e",
     "branch": "master"
   },
   "kite": {
@@ -29,15 +29,15 @@
     "branch": "master"
   },
   "number-line-common": {
-    "sha": "0a1b62927e18754e9898e6379319698b059d5d06",
+    "sha": "f69e31656c2527567c840903a05cd6cb9be19610",
     "branch": "master"
   },
   "number-line-distance": {
-    "sha": "9fd811a4dd0cecc0197dc8d177df5990dd6f1dff",
+    "sha": "626e7a2cb0060e9b4671692241403b1485652ec4",
     "branch": "master"
   },
   "number-line-operations": {
-    "sha": "bde4c25eca7777f14a16320d48e24a1266280ac4",
+    "sha": "e74ed0ed1b2413ec35ff753f8cb1daba9a2e772a",
     "branch": "master"
   },
   "phet-core": {
@@ -69,11 +69,11 @@
     "branch": "master"
   },
   "scenery": {
-    "sha": "c047a16c7a184497990a2bb5c0f45598a2305027",
+    "sha": "c0011bdb63f8386fccefb92280bbc03d48900338",
     "branch": "master"
   },
   "scenery-phet": {
-    "sha": "d14b04b663c12caef9782f403518dfca4d89a16e",
+    "sha": "7db01ab1d4282b9a7c1e6189ff147a5cd22398f7",
     "branch": "master"
   },
   "sherpa": {
@@ -85,7 +85,7 @@
     "branch": "master"
   },
   "sun": {
-    "sha": "dd8ffc4685040b92fc6c5021184e24142842c647",
+    "sha": "fe13dfe1ea3f3ae0721fa5ec1100cce08efa1464",
     "branch": "master"
   },
   "tambo": {
