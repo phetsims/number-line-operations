@@ -3,6 +3,8 @@
 /**
  * BalanceSheetItemNode is the view representation of a ValueItem, which is the general term being used in this
  * sim for assets and debts.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

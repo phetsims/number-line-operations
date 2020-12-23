@@ -6,6 +6,8 @@
  * position is where the starting point is in view space.
  *
  * This node updates itself as the attributes of the underlying operation change.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

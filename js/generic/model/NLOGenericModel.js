@@ -3,7 +3,7 @@
 /**
  * primary model for the "Generic" screen
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

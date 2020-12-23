@@ -3,6 +3,8 @@
 /**
  * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
  * number line" and "dual number line" modes.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import merge from '../../../../phet-core/js/merge.js';

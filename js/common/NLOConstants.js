@@ -3,7 +3,7 @@
 /**
  * Constants used throughout this simulation.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import ScreenView from '../../../joist/js/ScreenView.js';

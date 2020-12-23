@@ -3,6 +3,8 @@
 /**
  * NumberLineOperation is a class used to track arithmetic operations of addition and subtraction that have been
  * performed on an operation-tracking number line.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

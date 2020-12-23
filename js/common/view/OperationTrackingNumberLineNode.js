@@ -3,6 +3,8 @@
 /**
  * OperationTrackingNumberLineNode is a specialization of SpatializedNumberLineNode that adds the ability to depict
  * labeled operations that have occurred between the points on the number line.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';

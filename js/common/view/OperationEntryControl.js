@@ -4,6 +4,8 @@
  * OperationEntryControl is a control that allows users to add operations to a number line.  Operations can be either
  * addition or subtraction, and have a value associated with them, and this control allows the user to set those
  * attributes and commit the operation to the number line, and also alter it after it has been added.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';

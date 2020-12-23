@@ -5,6 +5,8 @@
  * subtraction operations so that they can be depicted on the number line.  It is important to note that the operation
  * order matters in how they are depicted, so this is designed with that assumption in mind.  In other words, it is
  * *not* designed such that it can handle an arbitrary number of operations in any order.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

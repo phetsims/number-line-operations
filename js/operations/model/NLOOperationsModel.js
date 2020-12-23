@@ -3,7 +3,7 @@
 /**
  * primary model class for the "Operations" screen
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import createObservableArray from '../../../../axon/js/createObservableArray.js';

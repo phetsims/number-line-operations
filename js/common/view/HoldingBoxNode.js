@@ -3,6 +3,8 @@
 /**
  * HoldingBoxNode is the view representation of a box (i.e. a rectangle) where ValueItem instances are stored when not
  * in use.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';

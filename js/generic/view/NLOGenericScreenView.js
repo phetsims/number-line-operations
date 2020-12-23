@@ -3,7 +3,7 @@
 /**
  * main screen view for the "Generic" screen
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';

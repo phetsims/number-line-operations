@@ -3,7 +3,7 @@
 /**
  * Main entry point for the sim.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Sim from '../../joist/js/Sim.js';

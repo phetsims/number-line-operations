@@ -3,6 +3,8 @@
 /**
  * ChipStackNode is the view representation of a ValueItem that is intended to look like a stack of game (e.g. poker)
  * chips, with the size of the stack being dependent upon the value of the item being represented.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

@@ -3,6 +3,8 @@
 /**
  * HoldingBagNode is the view representation of a HoldingBag, which is the place where items with value are placed so
  * that they count towards the total value tracked by the model.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';

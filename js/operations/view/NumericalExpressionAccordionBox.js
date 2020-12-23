@@ -3,6 +3,8 @@
 /**
  * NumericalExpressionAccordionBox is an accordion box that contains a mathematical description of the operations on a
  * number line.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

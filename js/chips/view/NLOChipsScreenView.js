@@ -3,7 +3,7 @@
 /**
  * NLOChipsScreenView is the root of the view screen graph for the "Chips" screen.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';

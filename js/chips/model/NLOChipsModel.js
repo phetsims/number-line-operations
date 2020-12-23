@@ -3,7 +3,7 @@
 /**
  * model for the "Chips" screen of the "Number Line: Operations" sim
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

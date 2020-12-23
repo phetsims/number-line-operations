@@ -6,6 +6,8 @@
  * adds the operation to the number line.  Instances of this class position themselves in view space based on what the
  * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
  * the Number Line Operations simulation.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';

@@ -4,6 +4,8 @@
  * ValueItem is a general model element that represents something that is assigned a positive or negative numerical
  * value of some sort, such as a dollar bill, a loan, or a poker chip.  It also has a position so that it can be moved
  * around in model space.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';

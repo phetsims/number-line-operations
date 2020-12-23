@@ -3,6 +3,8 @@
 /**
  * TotalValueIndicatorNode is a Scenery node that takes a background node and shows a total value over it, and fills
  * the total value node with different colors based on the total value.
+ *
+ * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
