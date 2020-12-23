@@ -218,8 +218,20 @@ class BalanceSheetItemNode extends Node {
 
     // update the visibility of the representations based on whether this item is in a balance sheet item bag
     balanceSheetItem.inBagProperty.link( inBag => {
+
+      // adjust node visibility
       outOfBagRepresentationNode.visible = !inBag;
       inBagRepresentationNode.visible = inBag;
+
+      // adjust touch and mouse areas, dilation amounts empirically determined, check for overlap if changed
+      if ( inBag ) {
+        this.touchArea = inBagRepresentationNode.bounds.dilatedXY( 10, 4 );
+        this.mouseArea = inBagRepresentationNode.bounds;
+      }
+      else {
+        this.touchArea = outOfBagRepresentationNode.bounds.dilatedXY( 10, 6 );
+        this.mouseArea = outOfBagRepresentationNode.bounds;
+      }
     } );
 
     // drag handler
