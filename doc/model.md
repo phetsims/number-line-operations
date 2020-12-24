@@ -46,6 +46,14 @@ number line, and the apex of the arrow for the second operation will be always b
 
 There is also an "initial net worth", from which the operations start.  This value can also be manipulated by the user.
 
+There is a numerical expression indicator shown in the top center of this screen.  The expression shown here depicts
+the sequence of operations, for example, 100 - 200 + 400, where the first term is the initial net worth, the second is
+the first operation, and the third term represents the second operation.  When one or more operations are active, the
+"evaluate" button (which has an equals sign on it) becomes active and the result of all operations is shown momentarily
+when this button is pressed.  If any active operation has a negative value, the "Simplify" button becomes active, which
+can be pressed to momentarily show a version of the expression that converts addition of a negative to subtraction and
+subtraction of a negative to addition. 
+
 This screen continues to use financial terms, such as "asset", "debt", and "net worth" to describe the operations.
 
 ## The "Generic" Screen
@@ -53,3 +61,5 @@ This screen continues to use financial terms, such as "asset", "debt", and "net 
 This screen is similar to the "Operations" screen in that up to two operations can be added to the number line.  The
 primary differences are that a second number line can be shown to allow for comparisons, the range of the number lines
 can be changed, and financial terms are not used to describe the operations.
+
+This screen also has a numerical expression display that operates the same as on the previous screen.
