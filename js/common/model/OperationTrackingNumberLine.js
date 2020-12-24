@@ -379,7 +379,12 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         // This operation hasn't expired yet, but it's on the way.  Fade it's origin point as it gets close.
         if ( expirationTime - phet.joist.elapsedTime < NLOConstants.OPERATION_FADE_OUT_TIME ) {
           const opacity = Math.min( 1, ( expirationTime - phet.joist.elapsedTime ) / NLOConstants.OPERATION_FADE_OUT_TIME );
-          const potentiallyFadedColor = new Color( operationStartPointColor.r, operationStartPointColor.g, operationStartPointColor.b, opacity );
+          const potentiallyFadedColor = new Color(
+            operationStartPointColor.r,
+            operationStartPointColor.g,
+            operationStartPointColor.b,
+            opacity
+          );
           operationStartPoint.colorProperty.set( potentiallyFadedColor );
         }
       }

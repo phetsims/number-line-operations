@@ -2,10 +2,8 @@
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
- * label and a description that can be optionally shown. It must be positioned by the client such that the node's (x,y)
- * position is where the starting point is in view space.
- *
- * This node updates itself as the attributes of the underlying operation change.
+ * label and a description that can be optionally shown. This node updates itself as the attributes of the underlying
+ * operation change.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
