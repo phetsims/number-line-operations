@@ -62,7 +62,7 @@ class NLOChipsModel {
     _.times( NUMBER_OF_POSITIVE_CHIPS, index => { this.chips.push( new ValueItem( index + 1 ) ); } );
     _.times( NUMBER_OF_NEGATIVE_CHIPS, index => { this.chips.push( new ValueItem( -( index + 1 ) ) ); } );
 
-    // add the storage areas for the chips - this is where they reside when not in use
+    // Add the storage areas for the chips - this is where they reside when not in use.
     const chipHoldingBox = 290;
     this.negativeChipsBox = new HoldingBox(
       new Vector2( 105, chipHoldingBox ),
@@ -76,7 +76,7 @@ class NLOChipsModel {
     );
     this.storageBoxes = [ this.positiveChipsBox, this.negativeChipsBox ];
 
-    // add the positive and negative chip bags
+    // Add the positive and negative chip bags.
     const holdingBagsCenterY = 475;
     this.negativeChipsBag = new HoldingBag( new Vector2( 380, holdingBagsCenterY ), {
       itemAcceptanceTest: HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES,

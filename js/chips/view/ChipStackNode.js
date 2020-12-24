@@ -139,7 +139,7 @@ class ChipStackNode extends Node {
 
   /**
    * convert a drag event to a position in model space
-   * @param {SceneryEvent}
+   * @param {SceneryEvent} event
    * @returns {Vector2}
    * @private
    */
