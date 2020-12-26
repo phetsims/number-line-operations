@@ -30,8 +30,8 @@ created.
 
 ## The "Net Worth" Screen
 
-This screen is very similar to the "Chips" screen except that it uses monetary values and visual depictions of real-
-world assets and debts, as well as the terminology associated with basic financial ideas.  As with the first screen,
+This screen is very similar to the "Chips" screen except that it uses monetary values and visual depictions of real-world
+assets and debts, as well as the terminology associated with basic financial ideas.  As with the first screen,
 operations are created by adding items to or removing them from the bags, and the operation is visual for either a fixed
 amount of time or until another operation is created.
 
