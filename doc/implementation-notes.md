@@ -39,7 +39,7 @@ that were either made up for this sim or whose meaning is more specific in this 
 whose generally accepted definitions are close enough to how they are used in the sim that they are not listed here,
 such as "number line" and "point".
 
-* _balance sheet item_ - In general, a balance sheet is a financial statement that lists a companies assets and debts.
+* _balance sheet item_ - In general, a balance sheet is a financial statement that lists a company's assets and debts.
 This sim uses the terms "asset" and "debt" in some places, and the term "balance sheet item" is intended to be a
 generalization of either an asset or a debt.
 * _operation_ - a numerical operation that consists of an operation type - either addition or subtraction 
