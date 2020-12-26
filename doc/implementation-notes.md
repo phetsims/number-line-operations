@@ -69,7 +69,7 @@ These instances are quite simple, and have a property that indicates the operati
 the amount.  There is an additional property that tracks whether the operation is active, which means whether it should
 appear on the number line.  
 
-Instances of `NumberLineOperation` are created when a `OperationTrackingNumberLine` is created, and they are activated
+Instances of `NumberLineOperation` are created when an `OperationTrackingNumberLine` is created, and they are activated
 and deactivated based on the user's interaction with the sim.  There is a single tracked operation for the number lines
 on the first two screens and two tracked operations per number line on both the third and fourth screens.
 
