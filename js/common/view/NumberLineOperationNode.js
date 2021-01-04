@@ -629,6 +629,7 @@ class NumberLineOperationNode extends Node {
 
   /**
    * @public
+   * @override
    */
   dispose() {
     this.disposeOperationArrowNode();
