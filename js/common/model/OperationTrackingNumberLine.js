@@ -394,6 +394,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   /**
    * restore initial state
    * @public
+   * @override
    */
   reset() {
 
