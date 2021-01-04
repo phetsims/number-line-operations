@@ -57,7 +57,7 @@ class NLOChipsModel {
     // convenience variable (note that there is only one operation shown on this number line)
     const operation = this.numberLine.operations[ 0 ];
 
-    // @public (read-only) - list of the chips that the user can manipulate
+    // @public (read-only) {ValueItem[]} - list of the chips that the user can manipulate
     this.chips = [];
     _.times( NUMBER_OF_POSITIVE_CHIPS, index => { this.chips.push( new ValueItem( index + 1 ) ); } );
     _.times( NUMBER_OF_NEGATIVE_CHIPS, index => { this.chips.push( new ValueItem( -( index + 1 ) ) ); } );

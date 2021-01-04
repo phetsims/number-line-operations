@@ -46,7 +46,7 @@ class HoldingBag {
     // @public (read-only)
     this.radius = RADIUS;
 
-    // @public (read-only) - value items that are currently in this bag, use methods to access
+    // @public (read-only) {ValueItem[]} - value items that are currently in this bag, use methods to access
     this.containedItemList = [];
 
     // @private

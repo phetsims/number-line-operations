@@ -135,8 +135,8 @@ class NLOOperationsScreenView extends ScreenView {
     // local constant that tracks if a reset is in progress, needed by the dynamic operation description
     const resetInProgressProperty = new BooleanProperty( false );
 
-    // @private - Textual descriptions of the operations that are shown as the user manipulates a potential operation
-    // before adding it to the number line.
+    // @private {DynamicOperationDescription[]} - Textual descriptions of the operations that are shown as the user
+    // manipulates a potential operation before adding it to the number line.
     this.dynamicOperationDescriptions = [];
     model.numberLine.operations.forEach( ( operation, index ) => {
       const dynamicOperationDescription = new DynamicOperationDescription(
