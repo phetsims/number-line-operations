@@ -71,7 +71,7 @@ class ValueItem {
     this.inProgressAnimationProperty.value = animation;
     animation.start();
 
-    // when the animation is finished, clear the property that is keeping track of it
+    // when the animation is finished, clear the Property that is keeping track of it
     animation.finishEmitter.addListener( () => {
       this.inProgressAnimationProperty.value = null;
     } );

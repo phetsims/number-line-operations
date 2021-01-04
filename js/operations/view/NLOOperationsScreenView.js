@@ -113,7 +113,7 @@ class NLOOperationsScreenView extends ScreenView {
     const operationEntryCarouselHasFocusProperty = new BooleanProperty( false );
 
     // Add a listener that detects when pointer down events occur that are outside the operation entry carousel and
-    // updated a property to reflect whether the carousel has focus.  This code was highly leveraged from some code that
+    // updated a Property to reflect whether the carousel has focus.  This code was highly leveraged from some code that
     // exists for a similar purpose in BuildingLabScreenView.  See
     // https://github.com/phetsims/number-line-operations/issues/23.
     phet.joist.display.addInputListener( {

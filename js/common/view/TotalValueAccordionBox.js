@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * TotalValueAccordionBox is an accordion box that displays the value of a provided property and allows customization of
+ * TotalValueAccordionBox is an accordion box that displays the value of a provided Property and allows customization of
  * the title and label through the options.
  *
  * @author John Blanco (PhET Interactive Simulations)

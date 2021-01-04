@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a property, in an accordion
+ * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a Property, in an accordion
  * box.
  *
  * @author John Blanco (PhET Interactive Simulations)

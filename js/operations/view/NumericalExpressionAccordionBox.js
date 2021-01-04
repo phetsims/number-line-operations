@@ -57,8 +57,8 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       fill: Color.TRANSPARENT
     } );
 
-    // Create a derived property that is true when there are negative values in the expression, which means that
-    // simplification is possible.  This will be used as the enabled property for the simplify button.
+    // Create a DerivedProperty that is true when there are negative values in the expression, which means that
+    // simplification is possible.  This will be used as the enabled Property for the simplify button.
     const simplificationPossibleProperty = new DerivedProperty(
       [
         numberLine.operations[ 0 ].isActiveProperty,
@@ -84,8 +84,8 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       touchAreaYDilation: MOMENTARY_BUTTON_TOUCH_AREA_DILATION
     } );
 
-    // Create a derived property that is true when there are one or more active operations.  This will be used as the
-    // enabled property for the evaluate button.
+    // Create a DerivedProperty that is true when there are one or more active operations.  This will be used as the
+    // enabled Property for the evaluate button.
     const evaluationPossibleProperty = new DerivedProperty(
       [
         numberLine.operations[ 0 ].isActiveProperty,

@@ -44,10 +44,10 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       // present, and so on.
       pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ) ],
 
-      // {boolean} - whether operation labels are initially visible, can be changed later via the property
+      // {boolean} - whether operation labels are initially visible, can be changed later via the Property
       operationLabelsInitiallyVisible: true,
 
-      // {boolean} - whether descriptions are initially visible, can be changed later via the property
+      // {boolean} - whether descriptions are initially visible, can be changed later via the Property
       operationDescriptionsInitiallyVisible: true,
 
       // {boolean} - automatically deactivate an operation after it has been active for a while

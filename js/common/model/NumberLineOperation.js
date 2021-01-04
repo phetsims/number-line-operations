@@ -39,7 +39,7 @@ class NumberLineOperation {
     // @public - amount of the operation
     this.amountProperty = new NumberProperty( options.initialAmount );
 
-    // @public - whether or not this property is "active", meaning it is shown on the number line and considered in
+    // @public - whether or not this Property is "active", meaning it is shown on the number line and considered in
     // calculations
     this.isActiveProperty = new BooleanProperty( options.initiallyActive );
   }
