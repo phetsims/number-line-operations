@@ -89,7 +89,10 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( primaryNumberLineView );
 
     // layer where the secondary number line will live, here so that it can be shown and hidden
-    const secondaryNumberLineLayer = new Node( { opacity: 0 } );
+    const secondaryNumberLineLayer = new Node( {
+      visible: false,
+      opacity: 0
+    } );
     this.addChild( secondaryNumberLineLayer );
 
     // create and add the representation of the secondary number line
@@ -127,20 +130,20 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( resetAllButton );
 
-    // add the selector used to show/hide the second number line
+    // Add the selector used to show/hide the second number line.
     const singleDualNumberLineSelector = new SingleDualNumberLineSelector( model.secondNumberLineVisibleProperty, {
       left: checkboxGroup.left,
       bottom: resetAllButton.centerY
     } );
     this.addChild( singleDualNumberLineSelector );
 
-    // the second number line is only visible when enabled
+    // The second number line is only visible when enabled, and fades in and out.
     let secondaryNumberLineFadeAnimation = null;
-    model.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
-      const targetOpacity = secondNumberLineVisible ? 1 : 0;
+    model.secondNumberLineVisibleProperty.lazyLink( isVisible => {
+      const targetOpacity = isVisible ? 1 : 0;
       if ( secondaryNumberLineLayer.opacity !== targetOpacity ) {
 
-        // stop any previous animation
+        // Stop any previous animation.
         if ( secondaryNumberLineFadeAnimation ) {
           secondaryNumberLineFadeAnimation.stop();
         }
@@ -152,6 +155,14 @@ class NLOGenericScreenView extends ScreenView {
           easing: Easing.CUBIC_IN_OUT,
           setValue: value => {
             secondaryNumberLineLayer.opacity = value;
+
+            // Keep the visibility in sync with the opacity so that we don't have invisible interactive components.
+            if ( value > 0 && !secondaryNumberLineLayer.visible ) {
+              secondaryNumberLineLayer.visible = true;
+            }
+            else if ( value === 0 && secondaryNumberLineLayer.visible ) {
+              secondaryNumberLineLayer.visible = false;
+            }
           }
         } );
         secondaryNumberLineFadeAnimation.start();
