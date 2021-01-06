@@ -51,7 +51,7 @@ class TotalValueAccordionBox extends AccordionBox {
         } );
       }
       else {
-        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalPattern, {
+        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalValuePattern, {
           totalString: options.titleAndLabelText,
           totalValue: totalValue
         } );

@@ -29,7 +29,7 @@
   "total": {
     "value": "Total"
   },
-  "totalPattern": {
+  "totalValuePattern": {
     "value": "{{totalString}} = {{totalValue}}"
   },
   "totalCurrencyPattern": {
