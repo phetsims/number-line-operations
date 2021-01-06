@@ -56,7 +56,7 @@
   "negatives": {
     "value": "Negatives"
   },
-  "monetaryValuePattern": {
+  "currencyValuePattern": {
     "value": "{{sign}}{{currencyUnits}}{{value}}"
   },
   "add": {

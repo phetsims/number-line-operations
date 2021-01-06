@@ -60,7 +60,7 @@ class TotalValueIndicatorNode extends Node {
 
       // update value
       if ( options.isCurrency ) {
-        labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
+        labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
           sign: totalValue < 0 ? MathSymbols.MINUS : '',
           currencyUnits: numberLineOperationsStrings.currencyUnits,
           value: Math.abs( totalValue )

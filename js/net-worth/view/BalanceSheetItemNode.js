@@ -148,7 +148,7 @@ class BalanceSheetItemNode extends Node {
     } );
 
     const outOfBagLabelNode = new Text(
-      StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
+      StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
         sign: '', // don't show minus sign for debts, since that would be a sort of double negative
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( balanceSheetItem.value )
@@ -162,7 +162,7 @@ class BalanceSheetItemNode extends Node {
     const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
 
     const inBagLabelNode = new Text(
-      StringUtils.fillIn( numberLineOperationsStrings.monetaryValuePattern, {
+      StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
         sign: '', // don't show minus sign for debts, since that would be a sort of double negative
         currencyUnits: numberLineOperationsStrings.currencyUnits,
         value: Math.abs( balanceSheetItem.value )
