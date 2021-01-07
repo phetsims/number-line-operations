@@ -137,7 +137,8 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( singleDualNumberLineSelector );
 
-    // The second number line is only visible when enabled, and fades in and out.
+    // The second number line is only visible when enabled, and fades in and out.  Monitor the model property that is
+    // associated with this visibility and create animations for the fades.
     let secondaryNumberLineFadeAnimation = null;
     model.secondNumberLineVisibleProperty.lazyLink( isVisible => {
       const targetOpacity = isVisible ? 1 : 0;
@@ -153,20 +154,35 @@ class NLOGenericScreenView extends ScreenView {
           from: secondaryNumberLineLayer.opacity,
           to: targetOpacity,
           easing: Easing.CUBIC_IN_OUT,
-          setValue: value => {
-            secondaryNumberLineLayer.opacity = value;
+          setValue: newOpacityValue => {
+
+            // If the number line is starting to fade out, cancel any current interacitons and make it unpickable so
+            // that no new interactions can be started.
+            if ( secondaryNumberLineLayer.opacity === 1 && newOpacityValue < 1 ) {
+              secondaryNumberLineLayer.interruptSubtreeInput();
+              secondaryNumberLineLayer.pickable = false;
+            }
+
+            // Update the opacity for the layer on which the number line and associated controls reside.
+            secondaryNumberLineLayer.opacity = newOpacityValue;
 
             // Keep the visibility in sync with the opacity so that we don't have invisible interactive components.
-            if ( value > 0 && !secondaryNumberLineLayer.visible ) {
+            if ( newOpacityValue > 0 && !secondaryNumberLineLayer.visible ) {
               secondaryNumberLineLayer.visible = true;
             }
-            else if ( value === 0 && secondaryNumberLineLayer.visible ) {
+            else if ( newOpacityValue === 0 && secondaryNumberLineLayer.visible ) {
               secondaryNumberLineLayer.visible = false;
             }
           }
         } );
         secondaryNumberLineFadeAnimation.start();
         secondaryNumberLineFadeAnimation.endedEmitter.addListener( () => {
+
+          // If the number line has just faded in, make it pickable
+          if ( secondaryNumberLineLayer.opacity === 1 ) {
+            secondaryNumberLineLayer.pickable = true;
+          }
+
           secondaryNumberLineFadeAnimation = null;
         } );
       }
