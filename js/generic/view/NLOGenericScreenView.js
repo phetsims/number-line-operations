@@ -156,7 +156,7 @@ class NLOGenericScreenView extends ScreenView {
           easing: Easing.CUBIC_IN_OUT,
           setValue: newOpacityValue => {
 
-            // If the number line is starting to fade out, cancel any current interacitons and make it unpickable so
+            // If the number line is starting to fade out, cancel any current interactions and make it unpickable so
             // that no new interactions can be started.
             if ( secondaryNumberLineLayer.opacity === 1 && newOpacityValue < 1 ) {
               secondaryNumberLineLayer.interruptSubtreeInput();
@@ -178,7 +178,7 @@ class NLOGenericScreenView extends ScreenView {
         secondaryNumberLineFadeAnimation.start();
         secondaryNumberLineFadeAnimation.endedEmitter.addListener( () => {
 
-          // If the number line has just faded in, make it pickable
+          // If the number line has just faded in, make it pickable.
           if ( secondaryNumberLineLayer.opacity === 1 ) {
             secondaryNumberLineLayer.pickable = true;
           }
