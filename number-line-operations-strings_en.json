@@ -17,8 +17,8 @@
   "operationLabels": {
     "value": "Operation Labels"
   },
-  "operationDescription": {
-    "value": "Operation Description"
+  "operationDescriptions": {
+    "value": "Operation Descriptions"
   },
   "tickMarks": {
     "value": "Tick Marks"

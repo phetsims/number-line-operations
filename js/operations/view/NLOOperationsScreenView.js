@@ -67,7 +67,7 @@ class NLOOperationsScreenView extends ScreenView {
         model.numberLine.showOperationLabelsProperty
       ),
       new NLCheckbox(
-        numberLineOperationsStrings.operationDescription,
+        numberLineOperationsStrings.operationDescriptions,
         model.numberLine.showOperationDescriptionsProperty
       ),
       new NLCheckbox(
