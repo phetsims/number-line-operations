@@ -106,9 +106,10 @@ class DynamicOperationDescription extends Text {
     // Listen for changes to the attributes of the operation and, if the other conditions check out, initiate a fade-in
     // when changes occur.
     Property.lazyMultilink(
-      [ operation.amountProperty, operation.operationTypeProperty ],
+      [ operationDescriptionsVisibleProperty, operation.amountProperty, operation.operationTypeProperty ],
       () => {
-        if ( !resetInProgressProperty.value && operationEntryCarouselInFocusProperty.value &&
+        if ( !resetInProgressProperty.value && operationDescriptionsVisibleProperty.value &&
+             operationEntryCarouselInFocusProperty.value &&
              selectedOperationIDProperty.value === operationIDNumber && !operation.isActiveProperty.value &&
              this.opacity === 0 ) {
           this.initiateFadeIn();
