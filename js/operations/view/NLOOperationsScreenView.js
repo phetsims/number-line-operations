@@ -87,7 +87,8 @@ class NLOOperationsScreenView extends ScreenView {
     // accordion box containing a mathematical description of the operations on the number line
     const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
+      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN,
+      showTitleWhenExpanded: true
     } );
     this.addChild( numericalExpressionAccordionBox );
 
@@ -141,8 +142,8 @@ class NLOOperationsScreenView extends ScreenView {
     model.numberLine.operations.forEach( ( operation, index ) => {
       const dynamicOperationDescription = new DynamicOperationDescription(
         model.numberLine.showOperationDescriptionsProperty,
-        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 125 ), // y offset empirically determined
-        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 190 ), // y offset empirically determined
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 145 ), // y offset empirically determined
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 225 ), // y offset empirically determined
         operation,
         index,
         operationEntryCarousel.selectedPageProperty,
@@ -183,7 +184,7 @@ class NLOOperationsScreenView extends ScreenView {
     // initial net worth control
     this.addChild( new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty, {
       centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.maxY - 180
+      top: this.layoutBounds.maxY - 150
     } ) );
 
     // reset all button
