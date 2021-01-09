@@ -32,7 +32,7 @@ class NLOOperationsModel {
 
     // @public - the number line upon which the operations are tracked
     this.numberLine = new OperationTrackingNumberLine(
-      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 30 ),
+      NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 20 ),
       {
         numberOfOperationsTracked: 2,
         pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ],
