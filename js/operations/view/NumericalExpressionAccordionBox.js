@@ -189,7 +189,11 @@ class NumericalExpression extends Text {
     const update = () => {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
-        this.text = numberLine.getCurrentEndValue();
+
+        // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
+        const endValue = numberLine.getCurrentEndValue();
+        const signChar = endValue < 0 ? MathSymbols.MINUS : '';
+        this.text = signChar + Math.abs( endValue ).toString( 10 );
       }
       else {
 
