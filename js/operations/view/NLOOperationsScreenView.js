@@ -49,7 +49,8 @@ class NLOOperationsScreenView extends ScreenView {
           numberLineOperationNodeOptions: {
             useFinancialDescriptions: true,
             operationLabelFont: new PhetFont( 22 ),
-            labelDistanceFromApex: 20
+            labelDistanceFromApex: 20,
+            operationDescriptionsFadeIn: true
           }
         }
       }
@@ -143,7 +144,7 @@ class NLOOperationsScreenView extends ScreenView {
       const dynamicOperationDescription = new DynamicOperationDescription(
         model.numberLine.showOperationDescriptionsProperty,
         new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 145 ), // y offset empirically determined
-        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 225 ), // y offset empirically determined
+        new Vector2( this.layoutBounds.centerX, this.layoutBounds.minY + 215 ), // y offset empirically determined
         operation,
         index,
         operationEntryCarousel.selectedPageProperty,

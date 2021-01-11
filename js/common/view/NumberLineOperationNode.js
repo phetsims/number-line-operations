@@ -40,6 +40,8 @@ const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically
 const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
 const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
+const OPERATION_DESCRIPTION_PRE_FADE_DELAY = 0.7; // in seconds
+const OPERATION_DESCRIPTION_FADE_IN_TIME = 0.4; // in seconds
 
 // an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, height normalized to 1
 const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
@@ -71,6 +73,9 @@ class NumberLineOperationNode extends Node {
 
       // {boolean} - animate the drawing of the arrow when it transitions from inactive to active
       animateOnActive: true,
+
+      // {boolean} - fade in the description when the operation becomes active
+      operationDescriptionsFadeIn: false,
 
       // {boolean} - Controls whether financial terminology, such as "remove asset of $100", is used for the operation
       // descriptions versus more generic phrases like "remove positive 100".
@@ -121,7 +126,46 @@ class NumberLineOperationNode extends Node {
     // rather than drawn immediately.
     let armedForAnimation = false;
 
+    // animation that is used to fade in the operation description
+    let operationDescriptionFadeInAnimation = null;
+
     operation.isActiveProperty.lazyLink( isActive => {
+
+      if ( isActive && options.operationDescriptionsFadeIn ) {
+
+        if ( operationDescriptionFadeInAnimation ) {
+          operationDescriptionFadeInAnimation.stop();
+        }
+
+        // Create an animation to fade in the operation description by adjusting its opacity.  The "visible" property is
+        // handled elsewhere.
+        const fadeInDuration = OPERATION_DESCRIPTION_PRE_FADE_DELAY + OPERATION_DESCRIPTION_FADE_IN_TIME;
+        operationDescriptionFadeInAnimation = new Animation( {
+          duration: fadeInDuration,
+          from: 0,
+          to: fadeInDuration,
+          easing: Easing.CUBIC_IN,
+          setValue: time => {
+            if ( time <= OPERATION_DESCRIPTION_PRE_FADE_DELAY ) {
+              operationDescription.opacity = 0;
+            }
+            else {
+              operationDescription.opacity = Math.min(
+                ( time - OPERATION_DESCRIPTION_PRE_FADE_DELAY ) / OPERATION_DESCRIPTION_FADE_IN_TIME,
+                1
+              );
+            }
+          }
+        } );
+        operationDescriptionFadeInAnimation.start();
+        operationDescriptionFadeInAnimation.endedEmitter.addListener( () => {
+
+          // Remove the reference to the animation.
+          operationDescriptionFadeInAnimation = null;
+        } );
+      }
+
+      // Set a flag that is referenced elsewhere and is used kick of an animation of the arrow.
       if ( isActive && options.animateOnActive ) {
         armedForAnimation = true;
       }
