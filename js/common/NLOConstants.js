@@ -6,8 +6,8 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
+import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import numberLineOperations from '../numberLineOperations.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 
@@ -29,7 +29,7 @@ const NLOConstants = {
   // fade out time for operations that are being deactivated
   OPERATION_FADE_OUT_TIME: 1500, // in milliseconds,
 
-  // patternized string that is used in multiple places
+  // patternized string for net worth with a currency symbol that is used in multiple places
   NET_WORTH_WITH_CURRENCY_STRING: StringUtils.fillIn( numberLineOperationsStrings.netWorthWithCurrencyPattern, {
     netWorthString: numberLineOperationsStrings.netWorth,
     currencyUnits: numberLineOperationsStrings.currencyUnits
