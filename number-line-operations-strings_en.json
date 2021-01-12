@@ -26,6 +26,9 @@
   "netWorth": {
     "value": "Net Worth"
   },
+  "netWorthWithCurrencyPattern": {
+    "value": "{{netWorthString}} ({{currencyUnits}})"
+  },
   "total": {
     "value": "Total"
   },

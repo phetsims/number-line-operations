@@ -23,6 +23,7 @@ import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Operations from '../../common/model/Operations.js';
+import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
@@ -42,7 +43,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     options = merge( {
       titleNode: new Text(
-        numberLineOperationsStrings.netWorth,
+        NLOConstants.NET_WORTH_WITH_CURRENCY_STRING,
         {
           font: new PhetFont( 18 ),
           maxWidth: CONTENT_DIMENSIONS.width * 0.9

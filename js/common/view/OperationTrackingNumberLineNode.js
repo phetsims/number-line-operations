@@ -7,12 +7,12 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import PointsOffScaleCondition from '../../../../number-line-common/js/common/view/PointsOffScaleCondition.js';
 import SpatializedNumberLineNode from '../../../../number-line-common/js/common/view/SpatializedNumberLineNode.js';
+import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NLOConstants from '../NLOConstants.js';
 import NumberLineOperationNode from './NumberLineOperationNode.js';
-import merge from '../../../../phet-core/js/merge.js';
-import PointsOffScaleCondition from '../../../../number-line-common/js/common/view/PointsOffScaleCondition.js';
 
 class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 

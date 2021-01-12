@@ -9,8 +9,8 @@ import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import genericHomeScreenIcon from '../../images/generic-home-screen-icon_png.js';
-import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 import numberLineOperations from '../numberLineOperations.js';
+import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 import NLOGenericModel from './model/NLOGenericModel.js';
 import NLOGenericScreenView from './view/NLOGenericScreenView.js';
 

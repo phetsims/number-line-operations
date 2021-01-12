@@ -12,8 +12,8 @@ import merge from '../../../../phet-core/js/merge.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
-import numberLineCommon from '../../numberLineOperations.js';
 import bagForeground from '../../../images/nl-bag-foreground_png.js';
+import numberLineCommon from '../../numberLineOperations.js';
 
 // constants
 const BAG_OUTLINE_SVG_STRING = 'M367.541,188.392c0,0-7.992-7.075,39.988-42.405\n' +
