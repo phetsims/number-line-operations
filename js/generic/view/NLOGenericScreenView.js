@@ -50,12 +50,12 @@ class NLOGenericScreenView extends ScreenView {
     // checkboxes that will control the presentation options
     const checkboxes = [
       new NLCheckbox(
-        numberLineOperationsStrings.pointLabels,
-        model.primaryNumberLine.showPointLabelsProperty
-      ),
-      new NLCheckbox(
         numberLineOperationsStrings.operationLabels,
         model.primaryNumberLine.showOperationLabelsProperty
+      ),
+      new NLCheckbox(
+        numberLineOperationsStrings.pointLabels,
+        model.primaryNumberLine.showPointLabelsProperty
       ),
       new NLCheckbox(
         numberLineOperationsStrings.tickMarks,
