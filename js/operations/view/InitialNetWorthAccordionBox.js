@@ -16,8 +16,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
 import RichText from '../../../../scenery/js/nodes/RichText.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
@@ -55,7 +55,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
         decrementFunction: value => value - 100,
         yMargin: 10,
         arrowHeight: 10,
-        color: Color.BLACK,
+        color: NLOConstants.DARK_BLUE_POINT_COLOR,
         font: new PhetFont( 26 )
       }
     );

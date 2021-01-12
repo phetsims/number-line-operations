@@ -42,7 +42,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       // {Color[]} - A list of colors that is used for the points that appear on the number line.  The list is ordered
       // such that the first color is the color of the initial point, the second is the color of the first operation if
       // present, and so on.
-      pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ) ],
+      pointColorList: [ NLOConstants.DARK_BLUE_POINT_COLOR, NLOConstants.MEDIUM_BLUE_POINT_COLOR ],
 
       // {boolean} - whether operation labels are initially visible, can be changed later via the Property
       operationLabelsInitiallyVisible: true,

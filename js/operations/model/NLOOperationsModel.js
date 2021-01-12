@@ -12,7 +12,6 @@ import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import LockToNumberLine from '../../../../number-line-common/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-common/js/common/model/PointController.js';
-import Color from '../../../../scenery/js/util/Color.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -35,7 +34,11 @@ class NLOOperationsModel {
       NLOConstants.LAYOUT_BOUNDS.center.plusXY( 0, 20 ),
       {
         numberOfOperationsTracked: 2,
-        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ],
+        pointColorList: [
+          NLOConstants.DARK_BLUE_POINT_COLOR,
+          NLOConstants.MEDIUM_BLUE_POINT_COLOR,
+          NLOConstants.LIGHT_BLUE_POINT_COLOR
+        ],
         startingValueProperty: this.initialValueProperty,
         initialDisplayedRange: new Range( -1000, 1000 ),
         tickMarksInitiallyVisible: true,

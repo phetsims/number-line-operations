@@ -58,7 +58,11 @@ class NLOGenericModel {
       PRIMARY_NUMBER_LINE_LOWER_POSITION,
       merge( {
         startingValueProperty: new NumberProperty( 1 ),
-        pointColorList: [ new Color( '#0000C4' ), new Color( '#4069FF' ), new Color( '#64A3FF' ) ]
+        pointColorList: [
+          NLOConstants.DARK_BLUE_POINT_COLOR,
+          NLOConstants.MEDIUM_BLUE_POINT_COLOR,
+          NLOConstants.LIGHT_BLUE_POINT_COLOR
+        ]
       }, COMMON_NUMBER_LINE_OPTIONS )
     );
 

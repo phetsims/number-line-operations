@@ -8,6 +8,7 @@
 
 import ScreenView from '../../../joist/js/ScreenView.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
+import Color from '../../../scenery/js/util/Color.js';
 import numberLineOperations from '../numberLineOperations.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 
@@ -33,7 +34,12 @@ const NLOConstants = {
   NET_WORTH_WITH_CURRENCY_STRING: StringUtils.fillIn( numberLineOperationsStrings.netWorthWithCurrencyPattern, {
     netWorthString: numberLineOperationsStrings.netWorth,
     currencyUnits: numberLineOperationsStrings.currencyUnits
-  } )
+  } ),
+
+  // common colors used for points in multiple places
+  DARK_BLUE_POINT_COLOR: new Color( '#0000C4' ),
+  MEDIUM_BLUE_POINT_COLOR: new Color( '#4069FF' ),
+  LIGHT_BLUE_POINT_COLOR: new Color( '#64A3FF' )
 };
 
 numberLineOperations.register( 'NLOConstants', NLOConstants );
