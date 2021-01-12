@@ -14,6 +14,7 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
@@ -48,7 +49,14 @@ class NumericalExpressionAccordionBox extends AccordionBox {
           font: new PhetFont( 18 ),
           maxWidth: CONTENT_DIMENSIONS.width * 0.9
         }
-      )
+      ),
+
+      // options that are passed through to the numerical expression
+      numericalExpressionOptions: {
+        top: 0,
+        maxWidth: CONTENT_DIMENSIONS.width
+      }
+
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     assert && assert( numberLine.operations.length === 2, 'this indicator is designed to work with exactly two operations' );
@@ -137,10 +145,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       numberLine,
       simplifyProperty,
       evaluateProperty,
-      {
-        top: 0,
-        maxWidth: CONTENT_DIMENSIONS.width
-      }
+      options.numericalExpressionOptions
     );
     contentRoot.addChild( numericalExpression );
 
@@ -180,7 +185,12 @@ class NumericalExpression extends Text {
    * @public
    */
   constructor( numberLine, simplifyProperty, evaluateProperty, options ) {
-    options = merge( { font: new PhetFont( 30 ) }, options );
+
+    options = merge( {
+      font: new PhetFont( 30 ),
+      showCurrencyWhenEvaluated: false
+    }, options );
+
     super( '', options );
 
     // @public (listen-only) - used to signal updates, was necessary because listening to bounds changes wasn't working
@@ -191,10 +201,22 @@ class NumericalExpression extends Text {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
 
-        // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
         const endValue = numberLine.getCurrentEndValue();
+
+        // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
         const signChar = endValue < 0 ? MathSymbols.MINUS : '';
-        this.text = signChar + Math.abs( endValue ).toString( 10 );
+
+        // Use currency units if specified when displaying the simplified total.
+        if ( evaluateProperty.value && options.showCurrencyWhenEvaluated ) {
+          this.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
+            sign: signChar,
+            currencyUnits: numberLineOperationsStrings.currencyUnits,
+            value: Math.abs( endValue )
+          } );
+        }
+        else {
+          this.text = signChar + Math.abs( endValue ).toString( 10 );
+        }
       }
       else {
 
