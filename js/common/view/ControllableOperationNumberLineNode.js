@@ -105,13 +105,6 @@ class ControllableOperationNumberLineNode extends Node {
       pointControllerObservableArray.addItemRemovedListener( removalListener );
     } );
   }
-
-  /**
-   * @public
-   */
-  reset() {
-    this.operationEntryCarousel.reset();
-  }
 }
 
 numberLineOperations.register( 'ControllableOperationNumberLineNode', ControllableOperationNumberLineNode );
