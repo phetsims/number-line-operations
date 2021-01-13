@@ -6,6 +6,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import Range from '../../../dot/js/Range.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -35,6 +36,9 @@ const NLOConstants = {
     netWorthString: numberLineOperationsStrings.netWorth,
     currencyUnits: numberLineOperationsStrings.currencyUnits
   } ),
+
+  // net worth range, used in a couple of places
+  NET_WORTH_RANGE: new Range( -1000, 1000 ),
 
   // common colors used for points in multiple places
   DARK_BLUE_POINT_COLOR: new Color( '#0000C4' ),

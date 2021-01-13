@@ -8,7 +8,6 @@
 
 import createObservableArray from '../../../../axon/js/createObservableArray.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Range from '../../../../dot/js/Range.js';
 import Utils from '../../../../dot/js/Utils.js';
 import LockToNumberLine from '../../../../number-line-common/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-common/js/common/model/PointController.js';
@@ -40,7 +39,7 @@ class NLOOperationsModel {
           NLOConstants.LIGHT_BLUE_POINT_COLOR
         ],
         startingValueProperty: this.initialValueProperty,
-        initialDisplayedRange: new Range( -1000, 1000 ),
+        initialDisplayedRange: NLOConstants.NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         labelsInitiallyVisible: true,

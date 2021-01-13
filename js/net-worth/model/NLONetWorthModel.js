@@ -9,7 +9,6 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
-import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import HoldingBag from '../../common/model/HoldingBag.js';
 import HoldingBox from '../../common/model/HoldingBox.js';
@@ -20,7 +19,6 @@ import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
-const NET_WORTH_RANGE = new Range( -1000, 1000 );
 const HOLDING_BOX_SIZE = new Dimension2( 122, 300 ); // empirically determined to fit the items that will go in it
 
 class NLONetWorthModel {
@@ -42,7 +40,7 @@ class NLONetWorthModel {
     this.numberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.minusXY( 0, 110 ),
       {
-        initialDisplayedRange: NET_WORTH_RANGE,
+        initialDisplayedRange: NLOConstants.NET_WORTH_RANGE,
         tickMarksInitiallyVisible: true,
         preventOverlap: false,
         automaticallyDeactivateOperations: true,
@@ -184,9 +182,6 @@ class NLONetWorthModel {
     this.numberLine.step();
   }
 }
-
-// statics
-NLONetWorthModel.NET_WORTH_RANGE = NET_WORTH_RANGE;
 
 numberLineOperations.register( 'NLONetWorthModel', NLONetWorthModel );
 export default NLONetWorthModel;
