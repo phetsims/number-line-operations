@@ -7,8 +7,6 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
-import Range from '../../../../dot/js/Range.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
 import NumberPicker from '../../../../scenery-phet/js/NumberPicker.js';
@@ -25,9 +23,10 @@ class InitialNetWorthAccordionBox extends AccordionBox {
 
   /**
    * @param {NumberProperty} initialNetWorthProperty
+   * @param {Property.<Range>} netWorthRangeProperty
    * @param {Object} [options]
    */
-  constructor( initialNetWorthProperty, options ) {
+  constructor( initialNetWorthProperty, netWorthRangeProperty, options ) {
 
     options = merge( {
       titleNode: new Text( numberLineOperationsStrings.initialNetWorth, {
@@ -49,7 +48,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
 
     const initialNetWorthPicker = new NumberPicker(
       initialNetWorthProperty,
-      new Property( new Range( -1000, 1000 ) ),
+      netWorthRangeProperty,
       {
         incrementFunction: value => value + 100,
         decrementFunction: value => value - 100,

@@ -5,7 +5,6 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
@@ -97,7 +96,7 @@ class NLOOperationsScreenView extends ScreenView {
     this.addChild( numericalExpressionAccordionBox );
 
     const commonEntryControlOptions = {
-      numberPickerRange: new Range( -1000, 1000 ),
+      numberPickerRangeProperty: model.numberLine.displayedRangeProperty,
       numberPickerOptions: {
         timerDelay: 400,
         timerInterval: 100
@@ -187,10 +186,15 @@ class NLOOperationsScreenView extends ScreenView {
     } );
 
     // initial net worth control
-    this.addChild( new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty, {
-      centerX: this.layoutBounds.centerX,
-      top: this.layoutBounds.maxY - 150
-    } ) );
+    this.addChild(
+      new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty,
+        model.numberLine.displayedRangeProperty,
+        {
+          centerX: this.layoutBounds.centerX,
+          top: this.layoutBounds.maxY - 150
+        }
+      )
+    );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {

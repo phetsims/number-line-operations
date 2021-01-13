@@ -62,7 +62,7 @@ class OperationEntryControl extends HBox {
       // {String} - specifies the way the arrow should point, valid values are 'up' and 'down'
       arrowDirection: 'down',
 
-      numberPickerRange: new Range( -200, 200 ),
+      numberPickerRangeProperty: new Property( new Range( -200, 200 ) ),
 
       // options that are passed through to the number picker
       numberPickerOptions: {
@@ -101,7 +101,7 @@ class OperationEntryControl extends HBox {
     // amount selector
     const operationAmountPicker = new NumberPicker(
       controlledOperation.amountProperty,
-      new Property( options.numberPickerRange ),
+      options.numberPickerRangeProperty,
       merge( {
         incrementFunction: value => value + options.increment,
         decrementFunction: value => value - options.increment
