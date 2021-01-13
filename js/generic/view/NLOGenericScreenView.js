@@ -285,6 +285,7 @@ class InteractiveNumberLineView extends Node {
       touchAreaXDilation: 8,
       touchAreaYDilation: 8,
       listener: () => {
+        numberLineNode.interruptSubtreeInput();
         numberLine.deactivateAllOperations();
         this.operationEntryCarousel.reset();
 

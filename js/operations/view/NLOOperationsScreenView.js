@@ -168,6 +168,7 @@ class NLOOperationsScreenView extends ScreenView {
       touchAreaXDilation: 8,
       touchAreaYDilation: 8,
       listener: () => {
+        numberLineNode.interruptSubtreeInput();
         model.numberLine.deactivateAllOperations();
         operationEntryCarousel.reset();
 
