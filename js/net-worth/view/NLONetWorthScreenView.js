@@ -22,7 +22,6 @@ import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js'
 import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import NLONetWorthModel from '../model/NLONetWorthModel.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 
 class NLONetWorthScreenView extends ScreenView {
@@ -89,7 +88,7 @@ class NLONetWorthScreenView extends ScreenView {
         decorationType: PiggyBankDecoration.NONE,
         maxWidth: 85 // empirically determined to match design doc
       } ),
-      NLONetWorthModel.NET_WORTH_RANGE,
+      NLOConstants.NET_WORTH_RANGE,
       {
         isCurrency: true,
         labelCenterOffset: new Vector2( -8, 0 ),
