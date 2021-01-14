@@ -20,7 +20,8 @@ class ControllableOperationNumberLineNode extends Node {
    * @param {PointController} initialValuePointController
    * @param {ObservableArrayDef<PointController>} pointControllerObservableArray
    * @param {Bounds2} layoutBounds - the bounds into which this must be laid out
-   * @param {Object} [options]
+   * @param {Object} [options] - The options are specific to this class and its components, and are not propagated to
+   * the superclass.
    */
   constructor( numberLine, initialValuePointController, pointControllerObservableArray, layoutBounds, options ) {
 
