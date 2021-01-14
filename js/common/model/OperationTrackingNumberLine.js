@@ -226,25 +226,6 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * Log to the console the current point-operation chain.  This is used for debugging.
-   * @public
-   */
-  logPointOperationChain() {
-
-    console.log( '--------------------------------' );
-    console.log( 'Point-operation chain:' );
-
-    // log the initial point, which should always be present
-    console.log( this.startingPoint.toString() );
-
-    // log each operation and its endpoint
-    this.getActiveOperations().forEach( activeOperation => {
-      console.log( activeOperation.toString() );
-      console.log( this.getOperationEndpoint( activeOperation ).toString() );
-    } );
-  }
-
-  /**
    * remove all operations, does nothing if there are none
    * @public
    */
