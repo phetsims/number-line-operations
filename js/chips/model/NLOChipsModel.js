@@ -89,7 +89,7 @@ class NLOChipsModel {
     this.bags = [ this.negativeChipsBag, this.positiveChipsBag ];
 
     // Monitor the isDragging state of each chip and, when it transitions to false, either add it to a bag or return it
-    // to a storage box based on where it was dropped.
+    // to a storage box based on where it was dropped.  No unlink is necessary.
     this.chips.forEach( chip => {
       chip.isDraggingProperty.lazyLink( isDragging => {
         if ( isDragging ) {

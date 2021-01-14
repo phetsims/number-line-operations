@@ -129,6 +129,7 @@ class NumberLineOperationNode extends Node {
     // animation that is used to fade in the operation description
     let operationDescriptionFadeInAnimation = null;
 
+    // Update the appearance as the isActive state changes.  No unlink is needed.
     operation.isActiveProperty.lazyLink( isActive => {
 
       if ( isActive && options.operationDescriptionsFadeIn ) {
@@ -324,7 +325,7 @@ class NumberLineOperationNode extends Node {
     );
 
     // Update the position of the operation description based on the visibility of the operation label.  An animation is
-    // used to make this look cool.
+    // used to make this look cool.  No unlink is needed.
     let descriptionMovementAnimation = null;
     const commonAnimationOptions = {
       duration: 0.25,

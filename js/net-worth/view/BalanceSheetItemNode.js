@@ -213,12 +213,13 @@ class BalanceSheetItemNode extends Node {
       cursor: 'pointer'
     } );
 
-    // prevent from being grabbed when animating
+    // prevent from being grabbed when animating, unlink not needed
     balanceSheetItem.inProgressAnimationProperty.link( inProgressAnimation => {
       this.pickable = inProgressAnimation === null;
     } );
 
-    // update the visibility of the representations based on whether this item is in a balance sheet item bag
+    // Update the visibility of the representations based on whether this item is in a balance sheet item bag.  No
+    // unlink is needed.
     balanceSheetItem.inBagProperty.link( inBag => {
 
       // adjust node visibility
@@ -260,7 +261,7 @@ class BalanceSheetItemNode extends Node {
     } ) );
 
     // Position this node based on the model element position.  Note that there is no model-view transform, since we are
-    // using the same coordinate system in both the model and view.
+    // using the same coordinate system in both the model and view.  No unlink is needed.
     balanceSheetItem.positionProperty.link( position => {
       this.center = position;
     } );

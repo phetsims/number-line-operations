@@ -272,7 +272,7 @@ class NumericalExpression extends Text {
       this.updatedEmitter.emit();
     };
 
-    // Hook up the various properties that should trigger an update.
+    // Hook up the various properties that should trigger an update.  No unlink is needed.
     numberLine.startingValueProperty.link( update );
     numberLine.operations.forEach( operation => {
       Property.multilink(

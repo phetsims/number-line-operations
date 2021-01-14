@@ -55,7 +55,8 @@ class TotalValueIndicatorNode extends Node {
 
     super( merge( { children: [ fillableBackgroundNode, labelNode ] }, options ) );
 
-    // update the fill and label as the total value changes
+    // Update the fill and label as the total value changes.  Instances of this type are assumed to exist for the
+    // duration of the sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
 
       // update value

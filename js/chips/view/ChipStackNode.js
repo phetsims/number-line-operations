@@ -94,7 +94,7 @@ class ChipStackNode extends Node {
       cursor: 'pointer'
     } );
 
-    // Move the shadow into position and make it visible when this item is being dragged.
+    // Move the shadow into position and make it visible when this item is being dragged.  No unlink is needed.
     valueItem.isDraggingProperty.link( isDragging => {
       shadowNode.visible = isDragging;
       if ( isDragging ) {
@@ -105,7 +105,7 @@ class ChipStackNode extends Node {
       }
     } );
 
-    // prevent from being grabbed when animating
+    // prevent from being grabbed when animating, unlink not necessary
     valueItem.inProgressAnimationProperty.link( inProgressAnimation => {
       this.pickable = inProgressAnimation === null;
     } );
@@ -131,7 +131,7 @@ class ChipStackNode extends Node {
     } ) );
 
     // Position this node based on the model element position.  Note that there is no model-view transform, since we are
-    // using the same coordinate system in both the model and view.
+    // using the same coordinate system in both the model and view.  No unlink is needed.
     valueItem.positionProperty.link( position => {
       this.center = position;
     } );

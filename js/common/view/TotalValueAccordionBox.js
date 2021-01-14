@@ -41,6 +41,8 @@ class TotalValueAccordionBox extends AccordionBox {
       maxWidth: DEFAULT_WIDTH * 0.9
     } );
 
+    // Update readout when total value changes.  Instances of this class are assumed to exist for the duration of the
+    // sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
       let readoutText;
       if ( options.showTotalAsCurrency ) {

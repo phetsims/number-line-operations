@@ -138,7 +138,7 @@ class NLOGenericScreenView extends ScreenView {
     this.addChild( singleDualNumberLineSelector );
 
     // The second number line is only visible when enabled, and fades in and out.  Monitor the model property that is
-    // associated with this visibility and create animations for the fades.
+    // associated with this visibility and create animations for the fades.  No unlink is necessary.
     let secondaryNumberLineFadeAnimation = null;
     model.secondNumberLineVisibleProperty.lazyLink( isVisible => {
       const targetOpacity = isVisible ? 1 : 0;
@@ -199,7 +199,7 @@ class NLOGenericScreenView extends ScreenView {
       }
     ) );
 
-    // keep the selected range of the secondary number line in sync with that of the primary
+    // Keep the selected range of the secondary number line in sync with that of the primary.  No unlink is needed.
     model.primaryNumberLine.displayedRangeProperty.link( displayedRange => {
       model.secondaryNumberLine.displayedRangeProperty.set( displayedRange );
     } );
@@ -297,14 +297,14 @@ class InteractiveNumberLineView extends Node {
     } );
     this.addChild( eraserButton );
 
-    // erase is disabled if there are no operations
+    // Erase is disabled if there are no operations.  No unlink is necessary.
     numberLine.operations.forEach( operation => {
       operation.isActiveProperty.link( () => {
         eraserButton.enabled = numberLine.getActiveOperations().length > 0;
       } );
     } );
 
-    // reposition the eraser button if the number line moves
+    // Reposition the eraser button if the number line moves.  No unlink is necessary.
     numberLine.centerPositionProperty.link( position => {
       eraserButton.centerY = position.y;
     } );

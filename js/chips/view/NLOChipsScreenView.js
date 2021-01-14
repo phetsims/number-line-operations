@@ -92,7 +92,7 @@ class NLOChipsScreenView extends ScreenView {
     );
     this.addChild( totalValueIndicatorNode );
 
-    // update the position of the piggy bank node when the net worth changes
+    // update the position of the piggy bank node when the net worth changes - no unlink necessary
     model.totalInBagsProperty.link( netWorth => {
       totalValueIndicatorNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );

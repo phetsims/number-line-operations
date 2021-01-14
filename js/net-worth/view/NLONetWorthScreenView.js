@@ -97,7 +97,7 @@ class NLONetWorthScreenView extends ScreenView {
     );
     this.addChild( netWorthPiggyBankNode );
 
-    // update the position of the piggy bank node when the net worth changes
+    // Update the position of the piggy bank node when the net worth changes.  No unlink needed.
     model.netWorthProperty.link( netWorth => {
       netWorthPiggyBankNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );

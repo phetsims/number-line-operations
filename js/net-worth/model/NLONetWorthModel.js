@@ -90,7 +90,7 @@ class NLONetWorthModel {
     this.bags = [ this.debtsBag, this.assetsBag ];
 
     // Monitor the isDragging state of each balance sheet item and, when it transitions to false, either add it to a
-    // bag or return it to a storage box based on where it was dropped.
+    // bag or return it to a storage box based on where it was dropped.  No unlink is necessary.
     this.balanceSheetItems.forEach( balanceSheetItem => {
       balanceSheetItem.isDraggingProperty.lazyLink( isDragging => {
         if ( isDragging ) {

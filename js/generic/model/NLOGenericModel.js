@@ -111,7 +111,8 @@ class NLOGenericModel {
       }, COMMON_NUMBER_LINE_OPTIONS )
     );
 
-    // Link the view control properties from the primary number line to those in the secondary number line.
+    // Link the view control properties from the primary number line to those in the secondary number line.  Calls to
+    // unlink are not needed.
     this.primaryNumberLine.showPointLabelsProperty.link(
       showPointLabels => this.secondaryNumberLine.showPointLabelsProperty.set( showPointLabels )
     );
@@ -161,7 +162,7 @@ class NLOGenericModel {
     // animation to move the primary number line around based on with the secondary is being shown
     this.primaryNumberLineAnimation = null;
 
-    // position the primary number line based on whether the secondary number line is visible
+    // Position the primary number line based on whether the secondary number line is visible.  No unlink is needed.
     this.secondNumberLineVisibleProperty.link( secondNumberLineVisible => {
       const destination = secondNumberLineVisible ?
                           PRIMARY_NUMBER_LINE_UPPER_POSITION :

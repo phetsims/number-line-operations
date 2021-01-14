@@ -30,7 +30,40 @@ well in this context nonetheless.
 During the design and implementation, a conscious effort was made to keep the most essential classes very simple so that
 their implementation would match the common understanding of what terms like a "number line" mean without a lot of
 extra, sim-specific baggage.  Functionality that was specific to the needs of this simulation and the others in the
-suite was either added in subclasses or created through composition. 
+suite was either added in subclasses or created through composition.
+
+## General Considerations
+
+This section describes how this sim addresses implementation considerations that are typically encountered in PhET sims.
+
+**Model-View Transform**
+
+As mentioned above, model-view transforms are not used in this sim since using screen coordinates as the basis of the
+two-dimensional space seemed perfectly reasonable.
+
+**Query Parameters**
+
+There are no sim-specific query parameters for this particular sim.
+
+**Assertions**
+
+The sim makes heavy use of `assert` and [AssertUtils](https://github.com/phetsims/phetcommon/blob/master/js/AssertUtils.js)
+to verify pre/post assumptions and perform type checking. This sim performs type-checking for almost all function arguments via `assert` (but it's not a requirement that type-checking is done everywhere). If you are making modifications to this sim, do so with assertions enabled via the `ea` query parameter.
+
+**Memory Management** 
+
+* **Listeners**: This sim does not have a lot of things coming and going, so most calls to `link` and `lazyLink` don't
+need a corresponding `unlink` call.  There are several usages of `addListener` related to animations where no
+`removeListener` is needed because the animation is short lived so it will not retain references.  All uses of `link`
+and`lazyLink` are documented as to whether they need a corresponding `unlink`. For example:
+
+```js
+    // Move the shadow into position and make it visible when this item is being dragged.  No unlink is needed.
+    valueItem.isDraggingProperty.link( isDragging => {
+      ...
+```
+
+* **dispose:**: Classes that need a dispose function have one, those that don't do not.
 
 ## Terminology
 

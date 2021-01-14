@@ -86,6 +86,9 @@ class ControllableOperationNumberLineNode extends Node {
         pointControllerToNodeMap.forEach( node => { node.pickable = true; } );
       }
     };
+
+    // Updated the pickability of all point controllers when the dragging state of one changes.  This number line node
+    // is assumed to exist for the duration of the sim and therefore no unlink is necessary.
     initialValuePointController.isDraggingProperty.link( updatePointControllerPickability );
 
     // Add and remove nodes for the point controllers that come and go from the number line.
@@ -93,7 +96,7 @@ class ControllableOperationNumberLineNode extends Node {
       const pointControllerNode = new PointControllerNode( addedPointController );
       pointControllerToNodeMap.set( addedPointController, pointControllerNode );
       pointControllerLayer.addChild( pointControllerNode );
-      addedPointController.isDraggingProperty.link( updatePointControllerPickability );
+      addedPointController.isDraggingProperty.link( updatePointControllerPickability ); // unlinked on removal
       const removalListener = removedPointController => {
         if ( removedPointController === addedPointController ) {
           pointControllerLayer.removeChild( pointControllerNode );

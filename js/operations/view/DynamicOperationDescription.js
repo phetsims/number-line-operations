@@ -71,7 +71,7 @@ class DynamicOperationDescription extends Text {
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
 
-    // control overall visibility
+    // control overall visibility, unlink not needed
     operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
 
     // Update the text as the attributes of the operation change.
@@ -117,7 +117,7 @@ class DynamicOperationDescription extends Text {
       }
     );
 
-    // Handle changes to the selected operation.
+    // Handle changes to the selected operation.  No unlink is necessary.
     selectedOperationIDProperty.lazyLink( selectedOperationID => {
 
       if ( !operation.isActiveProperty.value && operationEntryCarouselInFocusProperty.value ) {
@@ -132,7 +132,7 @@ class DynamicOperationDescription extends Text {
       }
     } );
 
-    // Fade out if visible and the focus moves away from the operation entry controls.
+    // Fade out if visible and the focus moves away from the operation entry controls.  No unlink needed.
     operationEntryCarouselInFocusProperty.link( operationEntryCarouselInFocus => {
       if ( this.opacity > 0 && !operationEntryCarouselInFocus ) {
         this.initiateFadeOut();
@@ -140,7 +140,8 @@ class DynamicOperationDescription extends Text {
     } );
 
     // Handle changes to the 'isActive' state of the operation.  The description for active operations is shown near the
-    // operation, whereas the description for inactive operations are shown in a different position or not at all.
+    // operation, whereas the description for inactive operations are shown in a different position or not at all.  No
+    // unlink is needed.  No unlink is necessary.
     operation.isActiveProperty.lazyLink( isActive => {
 
       if ( isActive ) {
@@ -173,7 +174,7 @@ class DynamicOperationDescription extends Text {
       }
     } );
 
-    // go instantly invisible on a reset
+    // go instantly invisible on a reset, unlink not needed
     resetInProgressProperty.lazyLink( resetInProgress => {
       if ( resetInProgress ) {
         this.cancelInProgressAnimations();

@@ -188,7 +188,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         updateEndpoints
       );
 
-      // update expiration times as operations become active and inactive
+      // Update expiration times as operations become active and inactive. No unlink is necessary.
       operation.isActiveProperty.link( isActive => {
 
         if ( isActive ) {
@@ -205,10 +205,12 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       } );
     } );
 
-    // update the endpoints if the starting point moves
+    // Update the endpoints if the starting point moves.  These instances are assumed to be persistent and therefore no
+    // unlink is necessary.
     this.startingValueProperty.link( updateEndpoints );
 
-    // update the operations when the endpoints are dragged
+    // Update the operations when the endpoints are dragged.  These instances are assumed to be persistent and therefore
+    // no unlink is necessary.
     this.endpoints.forEach( endpoint => {
       endpoint.valueProperty.link( updateOperationWhenEndpointDragged );
     } );
