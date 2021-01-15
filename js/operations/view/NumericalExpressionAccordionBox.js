@@ -162,6 +162,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
    */
   reset() {
     this.simplifyProperty.reset();
+    this.expandedProperty.reset();
   }
 }
 

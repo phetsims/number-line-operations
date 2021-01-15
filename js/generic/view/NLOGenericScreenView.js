@@ -269,11 +269,11 @@ class InteractiveNumberLineView extends Node {
     this.addChild( numberLineNode );
 
     // accordion box containing a mathematical description of the operations on the number line
-    const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox(
+    this.numericalExpressionAccordionBox = new NumericalExpressionAccordionBox(
       numberLine,
       options.numericalExpressionAccordionBoxOptions
     );
-    this.addChild( numericalExpressionAccordionBox );
+    this.addChild( this.numericalExpressionAccordionBox );
 
     // @private - carousel in which the operation entry controls reside
     this.operationEntryCarousel = new OperationEntryCarousel( numberLine, options.operationEntryCarouselOptions );
@@ -337,6 +337,7 @@ class InteractiveNumberLineView extends Node {
    */
   reset() {
     this.operationEntryCarousel.reset();
+    this.numericalExpressionAccordionBox.reset();
   }
 }
 

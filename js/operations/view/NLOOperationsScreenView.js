@@ -188,15 +188,14 @@ class NLOOperationsScreenView extends ScreenView {
     } );
 
     // initial net worth control
-    this.addChild(
-      new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty,
-        model.numberLine.displayedRangeProperty,
-        {
-          centerX: this.layoutBounds.centerX,
-          top: this.layoutBounds.maxY - 150
-        }
-      )
+    const initialNetWorthAccordionBox = new InitialNetWorthAccordionBox( model.numberLine.startingValueProperty,
+      model.numberLine.displayedRangeProperty,
+      {
+        centerX: this.layoutBounds.centerX,
+        top: this.layoutBounds.maxY - 150
+      }
     );
+    this.addChild( initialNetWorthAccordionBox );
 
     // reset all button
     const resetAllButton = new ResetAllButton( {
@@ -204,6 +203,7 @@ class NLOOperationsScreenView extends ScreenView {
         resetInProgressProperty.set( true );
         this.interruptSubtreeInput(); // cancel interactions that may be in progress
         numericalExpressionAccordionBox.reset();
+        initialNetWorthAccordionBox.expandedProperty.reset();
         operationEntryCarousel.reset();
         model.reset();
         model.numberLine.deactivateAllOperations();
