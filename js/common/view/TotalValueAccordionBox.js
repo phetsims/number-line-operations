@@ -45,10 +45,11 @@ class TotalValueAccordionBox extends AccordionBox {
     // sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
       let readoutText;
+      const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.showTotalAsCurrency ) {
         readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalCurrencyPattern, {
           totalString: options.labelText,
-          sign: totalValue < 0 ? MathSymbols.MINUS : '',
+          sign: sign,
           currencyUnits: numberLineOperationsStrings.currencyUnits,
           totalValue: Math.abs( totalValue )
         } );
@@ -56,7 +57,7 @@ class TotalValueAccordionBox extends AccordionBox {
       else {
         readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalValuePattern, {
           totalString: options.labelText,
-          totalValue: totalValue
+          totalValue: sign + Math.abs( totalValue ).toString( 10 )
         } );
       }
       totalReadoutNode.text = readoutText;

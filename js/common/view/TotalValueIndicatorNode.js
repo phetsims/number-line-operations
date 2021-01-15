@@ -60,15 +60,16 @@ class TotalValueIndicatorNode extends Node {
     totalValueProperty.link( totalValue => {
 
       // update value
+      const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.isCurrency ) {
         labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
-          sign: totalValue < 0 ? MathSymbols.MINUS : '',
+          sign: sign,
           currencyUnits: numberLineOperationsStrings.currencyUnits,
           value: Math.abs( totalValue )
         } );
       }
       else {
-        labelNode.text = totalValue;
+        labelNode.text = sign + Math.abs( totalValue ).toString( 10 );
       }
 
       // reposition the label
