@@ -505,7 +505,7 @@ class NumberLineOperationNode extends Node {
       // The amount of the operation is zero, so the curved line will be a loop that starts and ends at a point.
       // However, odd shapes were produced when trying to loop to and from the exact same point, so there are some
       // small offsets used in the X direction.
-      // TODO: follow up with JO as to whether the need for adjustment is actually a bug
+      // TODO: Why is the adjustment necessary?  See https://github.com/phetsims/kite/issues/87.
       const loopStartAndEndPoint = startPoint;
       const adjustmentAmount = 1; // in screen coordinates
       const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
