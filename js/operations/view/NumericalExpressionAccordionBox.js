@@ -42,7 +42,13 @@ class NumericalExpressionAccordionBox extends AccordionBox {
    */
   constructor( numberLine, options ) {
 
+    // The horizontal margin for the content needs to be bigger if the title is showing in order to make sure the
+    // overall width of the accordion box is the same whether or not the title is showing.  The amount was empirically
+    // determined.  See https://github.com/phetsims/number-line-operations/issues/44 for some history if needed.
+    const contentXMargin = options.showTitleWhenExpanded ? 22 : 15;
+
     options = merge( {
+      contentXMargin: contentXMargin,
       titleNode: new Text(
         NLOConstants.NET_WORTH_WITH_CURRENCY_STRING,
         {
