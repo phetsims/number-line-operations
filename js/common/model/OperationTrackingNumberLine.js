@@ -53,8 +53,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       // {boolean} - automatically deactivate an operation after it has been active for a while
       automaticallyDeactivateOperations: false,
 
-      // {number} - options used for each of the tracked operations, can either be an empty array or a number that
-      // matches the number of tracked operations
+      // {Object[]} - options used for each of the tracked operations, can either be an empty array if no options need
+      // to be passed to the operations, or a set of options objects, one for each tracked operation
       operationOptionsArray: []
     }, options );
 
