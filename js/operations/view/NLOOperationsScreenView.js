@@ -181,7 +181,7 @@ class NLOOperationsScreenView extends ScreenView {
     // erase is disabled if there are no operations
     model.numberLine.operations.forEach( operation => {
 
-      // Operations are permanent, so no unlink is needed.
+      // Operation are permanent, so no unlink is needed.
       operation.isActiveProperty.link( () => {
         eraserButton.enabled = model.numberLine.getActiveOperations().length > 0;
       } );

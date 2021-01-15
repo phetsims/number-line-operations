@@ -23,7 +23,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
-import Operations from '../../common/model/Operations.js';
+import Operation from '../../common/model/Operation.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
@@ -236,11 +236,11 @@ class NumericalExpression extends Text {
           for ( let i = 1; i < valuesAndOperations.length; i++ ) {
             if ( typeof valuesAndOperations[ i ] === 'number' && valuesAndOperations[ i ] < 0 ) {
               valuesAndOperations[ i ] = Math.abs( valuesAndOperations[ i ] );
-              if ( valuesAndOperations[ i - 1 ] === Operations.ADDITION ) {
-                valuesAndOperations[ i - 1 ] = Operations.SUBTRACTION;
+              if ( valuesAndOperations[ i - 1 ] === Operation.ADDITION ) {
+                valuesAndOperations[ i - 1 ] = Operation.SUBTRACTION;
               }
               else {
-                valuesAndOperations[ i - 1 ] = Operations.ADDITION;
+                valuesAndOperations[ i - 1 ] = Operation.ADDITION;
               }
             }
           }
@@ -257,7 +257,7 @@ class NumericalExpression extends Text {
             numericalExpressionString += Math.abs( valueOrOperation );
           }
           else {
-            const operationChar = valueOrOperation === Operations.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
+            const operationChar = valueOrOperation === Operation.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
             numericalExpressionString += ' ' + operationChar + ' ';
           }
         } );

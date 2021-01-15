@@ -42,7 +42,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
       // nodes for even-indexed operations go above the number line, odd below
       const operationNodeOptions = index % 2 === 1 ?
-        { relativePosition: NumberLineOperationNode.RelativePositions.BELOW_NUMBER_LINE } :
+        { relativePosition: NumberLineOperationNode.RelativePosition.BELOW_NUMBER_LINE } :
         {};
 
       // add the node

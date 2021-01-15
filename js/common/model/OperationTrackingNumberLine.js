@@ -19,7 +19,7 @@ import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NLOConstants from '../NLOConstants.js';
 import NumberLineOperation from './NumberLineOperation.js';
-import Operations from './Operations.js';
+import Operation from './Operation.js';
 
 class OperationTrackingNumberLine extends SpatializedNumberLine {
 
@@ -172,7 +172,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
             operation.isActiveProperty.value,
             'state error - it should not be possible to update an inactive operation via dragging'
           );
-          const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
+          const sign = operation.operationTypeProperty.value === Operation.SUBTRACTION ? -1 : 1;
           operation.amountProperty.set(
             sign * ( endpoint.valueProperty.value - this.getOperationStartValue( operation ) )
           );
@@ -261,8 +261,8 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   getOperationResult( targetOperation ) {
 
     assert && assert(
-      targetOperation.operationTypeProperty.value === Operations.ADDITION ||
-      targetOperation.operationTypeProperty.value === Operations.SUBTRACTION,
+      targetOperation.operationTypeProperty.value === Operation.ADDITION ||
+      targetOperation.operationTypeProperty.value === Operation.SUBTRACTION,
       'unrecognized operation type'
     );
 

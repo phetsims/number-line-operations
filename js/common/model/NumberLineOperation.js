@@ -12,7 +12,7 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import Operations from './Operations.js';
+import Operation from './Operation.js';
 
 class NumberLineOperation {
 
@@ -23,8 +23,8 @@ class NumberLineOperation {
 
     options = merge( {
 
-      // {Operations}
-      initialOperationType: Operations.ADDITION,
+      // {Operation}
+      initialOperationType: Operation.ADDITION,
 
       // {number}
       initialAmount: 0,
@@ -34,7 +34,7 @@ class NumberLineOperation {
     }, options );
 
     // @public {Property<OperationType>} - type of operation, e.g. addition or subtraction
-    this.operationTypeProperty = new EnumerationProperty( Operations, options.initialOperationType );
+    this.operationTypeProperty = new EnumerationProperty( Operation, options.initialOperationType );
 
     // @public - amount of the operation
     this.amountProperty = new NumberProperty( options.initialAmount );
@@ -51,10 +51,10 @@ class NumberLineOperation {
    */
   getResult( startingValue ) {
     let value = startingValue;
-    if ( this.operationTypeProperty.value === Operations.ADDITION ) {
+    if ( this.operationTypeProperty.value === Operation.ADDITION ) {
       value += this.amountProperty.value;
     }
-    else if ( this.operationTypeProperty.value === Operations.SUBTRACTION ) {
+    else if ( this.operationTypeProperty.value === Operation.SUBTRACTION ) {
       value -= this.amountProperty.value;
     }
     else {

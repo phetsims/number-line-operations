@@ -9,6 +9,6 @@
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-const Operations = Enumeration.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
-numberLineOperations.register( 'Operations', Operations );
-export default Operations;
+const Operation = Enumeration.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
+numberLineOperations.register( 'Operation', Operation );
+export default Operation;

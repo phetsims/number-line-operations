@@ -28,7 +28,7 @@ import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
-import Operations from '../model/Operations.js';
+import Operation from '../model/Operation.js';
 
 // constants
 const CURVED_LINE_OPTIONS = {
@@ -37,7 +37,7 @@ const CURVED_LINE_OPTIONS = {
 };
 const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
 const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
-const RelativePositions = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
+const RelativePosition = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
 const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
 const OPERATION_DESCRIPTION_PRE_FADE_DELAY = 0.7; // in seconds
@@ -66,7 +66,7 @@ class NumberLineOperationNode extends Node {
     assert && assert( numberLine.isHorizontal, 'this class is not generalized to handle vertical number lines ' );
 
     options = merge( {
-      relativePosition: RelativePositions.ABOVE_NUMBER_LINE,
+      relativePosition: RelativePosition.ABOVE_NUMBER_LINE,
       operationLabelFont: new PhetFont( 18 ),
       operationDescriptionFont: new PhetFont( 18 ),
       labelDistanceFromApex: 5,
@@ -94,7 +94,7 @@ class NumberLineOperationNode extends Node {
     this.originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
 
     // convenience var
-    const aboveNumberLine = options.relativePosition === RelativePositions.ABOVE_NUMBER_LINE;
+    const aboveNumberLine = options.relativePosition === RelativePosition.ABOVE_NUMBER_LINE;
 
     // create the operation label
     const operationLabelTextNode = new Text( '', {
@@ -249,7 +249,7 @@ class NumberLineOperationNode extends Node {
             operationLabel.background.stroke = Color.BLACK;
           }
           else {
-            const operationChar = operation.operationTypeProperty.value === Operations.ADDITION ?
+            const operationChar = operation.operationTypeProperty.value === Operation.ADDITION ?
                                   MathSymbols.UNARY_PLUS :
                                   MathSymbols.MINUS;
             const signChar = operation.amountProperty.value < 0 ?
@@ -378,7 +378,7 @@ class NumberLineOperationNode extends Node {
     let arrowheadAngle;
 
     // calculate the start and end points of the curved line
-    const sign = operation.operationTypeProperty.value === Operations.SUBTRACTION ? -1 : 1;
+    const sign = operation.operationTypeProperty.value === Operation.SUBTRACTION ? -1 : 1;
     const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
                      numberLine.valueToModelPosition( 0 ).x ) * sign;
 
@@ -530,7 +530,7 @@ class NumberLineOperationNode extends Node {
       // loop changes.
       const multiplier = 0.025;
       const loopWidth = lineShape.bounds.width;
-      if ( operation.operationTypeProperty.value === Operations.ADDITION ) {
+      if ( operation.operationTypeProperty.value === Operation.ADDITION ) {
         if ( aboveNumberLine ) {
           arrowheadAngle = Math.PI + loopWidth * multiplier;
         }
@@ -630,7 +630,7 @@ class NumberLineOperationNode extends Node {
    */
   static getOperationDescriptionString( operation, useFinancialDescriptions ) {
 
-    const addOrRemoveString = operation.operationTypeProperty.value === Operations.ADDITION ?
+    const addOrRemoveString = operation.operationTypeProperty.value === Operation.ADDITION ?
                               numberLineOperationsStrings.add :
                               numberLineOperationsStrings.remove;
     let operationDescriptionString;
@@ -725,7 +725,7 @@ class ArrowheadNode extends Path {
 }
 
 // statics
-NumberLineOperationNode.RelativePositions = RelativePositions;
+NumberLineOperationNode.RelativePosition = RelativePosition;
 
 numberLineOperations.register( 'NumberLineOperationNode', NumberLineOperationNode );
 export default NumberLineOperationNode;

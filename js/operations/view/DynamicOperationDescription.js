@@ -5,7 +5,7 @@
  * becomes active on the number line.  It updates, fades in and out, and animates as the user prepares and ultimately
  * adds the operation to the number line.  Instances of this class position themselves in view space based on what the
  * user is doing with an operation, so they are not meant to be positioned by the client. This class is very specific to
- * the Number Line Operations simulation.
+ * the Number Line Operation simulation.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -17,7 +17,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import Operations from '../../common/model/Operations.js';
+import Operation from '../../common/model/Operation.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
@@ -80,7 +80,7 @@ class DynamicOperationDescription extends Text {
       ( amount, operationType ) => {
         if ( amount === 0 ) {
           this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
-            addOrRemove: operationType === Operations.ADDITION ?
+            addOrRemove: operationType === Operation.ADDITION ?
                          numberLineOperationsStrings.add :
                          numberLineOperationsStrings.remove,
             currencyUnits: numberLineOperationsStrings.currencyUnits
@@ -88,7 +88,7 @@ class DynamicOperationDescription extends Text {
         }
         else {
           this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
-            addOrRemove: operationType === Operations.ADDITION ?
+            addOrRemove: operationType === Operation.ADDITION ?
                          numberLineOperationsStrings.add :
                          numberLineOperationsStrings.remove,
             assetOrDebt: amount > 0 ?

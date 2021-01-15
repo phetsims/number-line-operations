@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * model for the "Chips" screen of the "Number Line: Operations" sim
+ * model for the "Chips" screen of the "Number Line: Operation" sim
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -13,7 +13,7 @@ import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import HoldingBag from '../../common/model/HoldingBag.js';
 import HoldingBox from '../../common/model/HoldingBox.js';
-import Operations from '../../common/model/Operations.js';
+import Operation from '../../common/model/Operation.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import ValueItem from '../../common/model/ValueItem.js';
 import NLOConstants from '../../common/NLOConstants.js';
@@ -103,7 +103,7 @@ class NLOChipsModel {
               // to trigger the animation in the view.
               operation.isActiveProperty.set( false );
               this.numberLine.startingValueProperty.set( this.totalInBagsProperty.value );
-              operation.operationTypeProperty.set( Operations.SUBTRACTION );
+              operation.operationTypeProperty.set( Operation.SUBTRACTION );
               operation.amountProperty.set( chip.value );
               operation.isActiveProperty.set( true );
             }
@@ -122,7 +122,7 @@ class NLOChipsModel {
 
               // Update the operation.  The "active" state is cycled in order to trigger animation in the view.
               operation.isActiveProperty.set( false );
-              operation.operationTypeProperty.set( Operations.ADDITION );
+              operation.operationTypeProperty.set( Operation.ADDITION );
               operation.amountProperty.set( chip.value );
               operation.isActiveProperty.set( true );
             }

@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * OperationEntryControl is a control that allows users to add operations to a number line.  Operations can be either
+ * OperationEntryControl is a control that allows users to add operations to a number line.  Operation can be either
  * addition or subtraction, and have a value associated with them, and this control allows the user to set those
  * attributes and commit the operation to the number line, and also alter it after it has been added.
  *
@@ -23,7 +23,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
-import Operations from '../../common/model/Operations.js';
+import Operation from '../../common/model/Operation.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
@@ -83,8 +83,8 @@ class OperationEntryControl extends HBox {
     const operationSelectorRadioButtonGroup = new RectangularRadioButtonGroup(
       controlledOperation.operationTypeProperty,
       [
-        { value: Operations.ADDITION, node: new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
-        { value: Operations.SUBTRACTION, node: new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
+        { value: Operation.ADDITION, node: new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
+        { value: Operation.SUBTRACTION, node: new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
       ],
       {
         baseColor: Color.WHITE,

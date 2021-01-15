@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * primary model class for the "Operations" screen
+ * primary model class for the "Operation" screen
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
