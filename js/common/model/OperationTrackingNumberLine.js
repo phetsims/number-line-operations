@@ -306,7 +306,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
   /**
    * Get an array of the operations that are currently active on the number line.
-   * @returns {NumberLineOperations[]}
+   * @returns {NumberLineOperation[]}
    * @public
    */
   getActiveOperations() {
