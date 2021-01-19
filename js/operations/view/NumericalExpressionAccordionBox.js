@@ -214,7 +214,7 @@ class NumericalExpression extends Text {
       }
       else {
 
-        // {Array.<number|OperationType} - a list of all the values and operations needed to create the expression
+        // {Array.<number|OperationType>} - a list of all the values and operations needed to create the expression
         const valuesAndOperations = [];
 
         // add the starting value
