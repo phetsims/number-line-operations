@@ -28,7 +28,8 @@ class ControllableOperationNumberLineNode extends Node {
     options = merge( {
       numberLineNodeOptions: {
         pointNodeOptions: {
-          radius: 6
+          radius: 6,
+          labelOpacity: 0.65 // translucent point labels are needed so that short operations can be seen behind them
         }
       }
     }, options );
