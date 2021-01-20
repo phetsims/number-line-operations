@@ -8,6 +8,7 @@
  */
 
 import Property from '../../../../axon/js/Property.js';
+import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -15,7 +16,9 @@ import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import HBox from '../../../../scenery/js/nodes/HBox.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import asset100OutOfBagImage from '../../../images/asset-100-value_png.js';
 import asset100InBagImage from '../../../images/asset-100_png.js';
 import asset200OutOfBagImage from '../../../images/asset-200-value_png.js';
@@ -39,6 +42,10 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 // constants
 //---------------------------------------------------------------------------------------------------------------------
 
+// Dimensions of the icons used for the in-bag representations.  The images will be fit to this size.  This is done so
+// that the in-bag items align well in the bags.
+const IN_BAG_ICON_DIMENSIONS = new Dimension2( 50, 37 );
+
 // Create a map of asset/debt values to the images, sizes, and other information necessary to create the node for a
 // particular value.  Note that the width is the only size provided, and the aspect ratio of the image ends up defining
 // the height in the view.
@@ -48,8 +55,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
     {
       outOfBagImage: asset100OutOfBagImage,
       outOfBagWidth: 80,
-      inBagImage: asset100InBagImage,
-      inBagWidth: 50
+      inBagImage: asset100InBagImage
     }
   ],
   [
@@ -58,8 +64,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: asset200OutOfBagImage,
       outOfBagWidth: 85,
       outOfBagLabelOffset: new Vector2( 0, -3 ),
-      inBagImage: asset200InBagImage,
-      inBagWidth: 50
+      inBagImage: asset200InBagImage
     }
   ],
   [
@@ -68,8 +73,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: asset300OutOfBagImage,
       outOfBagWidth: 100,
       outOfBagLabelOffset: new Vector2( 0, 5 ),
-      inBagImage: asset300InBagImage,
-      inBagWidth: 50
+      inBagImage: asset300InBagImage
     }
   ],
   [
@@ -78,8 +82,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: asset400OutOfBagImage,
       outOfBagWidth: 50,
       outOfBagLabelOffset: new Vector2( 0, 7 ),
-      inBagImage: asset400InBagImage,
-      inBagWidth: 20
+      inBagImage: asset400InBagImage
     }
   ],
   [
@@ -88,8 +91,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: debt100OutOfBagImage,
       outOfBagWidth: 65,
       outOfBagLabelOffset: new Vector2( 0, 2 ),
-      inBagImage: debt100InBagImage,
-      inBagWidth: 40
+      inBagImage: debt100InBagImage
     }
   ],
   [
@@ -98,8 +100,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: debt200OutOfBagImage,
       outOfBagWidth: 70,
       outOfBagLabelOffset: new Vector2( 8, -2 ),
-      inBagImage: debt200InBagImage,
-      inBagWidth: 40
+      inBagImage: debt200InBagImage
     }
   ],
   [
@@ -107,8 +108,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
     {
       outOfBagImage: debt300OutOfBagImage,
       outOfBagWidth: 65,
-      inBagImage: debt300InBagImage,
-      inBagWidth: 40
+      inBagImage: debt300InBagImage
     }
   ],
   [
@@ -117,8 +117,7 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
       outOfBagImage: debt400OutOfBagImage,
       outOfBagWidth: 70,
       outOfBagLabelOffset: new Vector2( 8, -2 ),
-      inBagImage: debt400InBagImage,
-      inBagWidth: 40
+      inBagImage: debt400InBagImage
     }
   ]
 ] );
@@ -144,7 +143,16 @@ class BalanceSheetItemNode extends Node {
     // in-bag image - shown when the balance sheet item is in a balance sheet item bag
     const inBagImageNode = new Image( imageInfo.inBagImage, {
       cursor: 'pointer',
-      maxWidth: imageInfo.inBagWidth
+      maxWidth: IN_BAG_ICON_DIMENSIONS.width,
+      maxHeight: IN_BAG_ICON_DIMENSIONS.height,
+      centerX: IN_BAG_ICON_DIMENSIONS.width / 2,
+      centerY: IN_BAG_ICON_DIMENSIONS.height / 2
+    } );
+
+    // background for the in-bag icon, this keeps the icons the same size in the layout
+    const inBagIconBackground = Rectangle.dimension( IN_BAG_ICON_DIMENSIONS, {
+      fill: Color.TRANSPARENT,
+      children: [ inBagImageNode ]
     } );
 
     const outOfBagLabelNode = new Text(
@@ -173,11 +181,8 @@ class BalanceSheetItemNode extends Node {
       }
     );
 
-    // put the in-bag image under a parent node so that a label can be added if needed
-    const inBagImageNodeParent = new Node( { children: [ inBagImageNode ] } );
-
     const inBagRepresentationNode = new HBox( {
-      children: [ inBagImageNodeParent, inBagLabelNode ],
+      children: [ inBagIconBackground, inBagLabelNode ],
       spacing: 10,
       center: outOfBagImageNode.center
     } );
@@ -205,7 +210,7 @@ class BalanceSheetItemNode extends Node {
         centerY: inBagImageNode.bottom - 8, // offset empirically determined
         maxWidth: inBagImageNode.width * 0.65
       } );
-      inBagImageNodeParent.addChild( inBagTextLabelNode );
+      inBagIconBackground.addChild( inBagTextLabelNode );
     }
 
     super( {
