@@ -33,7 +33,7 @@ class NumberLineOperation {
       initiallyActive: false
     }, options );
 
-    // @public {Property<OperationType>} - type of operation, e.g. addition or subtraction
+    // @public {Property.<OperationType>} - type of operation, e.g. addition or subtraction
     this.operationTypeProperty = new EnumerationProperty( Operation, options.initialOperationType );
 
     // @public - amount of the operation

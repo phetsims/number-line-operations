@@ -217,7 +217,7 @@ class InteractiveNumberLineView extends Node {
    * duplication.
    * @param {OperationTrackingNumberLine} numberLine
    * @param {PointController} initialValuePointController
-   * @param {ObservableArrayDef<PointController>} pointControllerObservableArray
+   * @param {ObservableArrayDef.<PointController>} pointControllerObservableArray
    * @param {Bounds2} layoutBounds - the bounds into which this must be laid out
    * @param {Object} [options] - These options are specific to this class and its components, and they are not
    * propagated to the superclass.

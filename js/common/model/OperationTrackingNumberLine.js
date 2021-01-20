@@ -111,7 +111,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
       } ) );
     } );
 
-    // @public (read-only) {Map<operation, number>} - A map that tracks when an operation expires, only used if
+    // @public (read-only) {Map.<operation, number>} - A map that tracks when an operation expires, only used if
     // automatic deactivation is enabled.
     this.operationExpirationTimes = new Map();
 
