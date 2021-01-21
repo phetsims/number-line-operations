@@ -42,11 +42,11 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
     }, options );
 
     // create the single/dual number line selection icons
-    const singleNumberLineIcon = new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS );
+    const singleNumberLineIcon = createDoubleArrowNode();
     const dualNumberLineIcon = new VBox( {
       children: [
-        new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS ),
-        new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS )
+        createDoubleArrowNode(),
+        createDoubleArrowNode()
       ],
       spacing: 10
     } );
@@ -66,6 +66,9 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
     super( secondNumberLineVisibleProperty, items, options );
   }
 }
+
+// convenience function for creating the arrow nodes
+const createDoubleArrowNode = () => new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS );
 
 numberLineOperations.register( 'SingleDualNumberLineSelector', SingleDualNumberLineSelector );
 export default SingleDualNumberLineSelector;
