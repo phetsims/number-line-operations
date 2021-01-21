@@ -155,31 +155,23 @@ class BalanceSheetItemNode extends Node {
       children: [ inBagImageNode ]
     } );
 
-    const outOfBagLabelNode = new Text(
-      StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
-        sign: '', // don't show minus sign for debts, since that would be a sort of double negative
-        currencyUnits: numberLineOperationsStrings.currencyUnits,
-        value: Math.abs( balanceSheetItem.value )
-      } ),
-      {
-        font: new PhetFont( 18 ),
-        center: imageInfo.outOfBagLabelOffset || Vector2.ZERO,
-        maxWidth: outOfBagImageNode.width * 0.75 // empirically determined such that the label fits on all artwork
-      }
-    );
+    const currencyString = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
+      sign: '', // don't show minus sign for debts, since that would be a sort of double negative
+      currencyUnits: numberLineOperationsStrings.currencyUnits,
+      value: Math.abs( balanceSheetItem.value )
+    } );
+
+    const outOfBagLabelNode = new Text( currencyString, {
+      font: new PhetFont( 18 ),
+      center: imageInfo.outOfBagLabelOffset || Vector2.ZERO,
+      maxWidth: outOfBagImageNode.width * 0.75 // empirically determined such that the label fits on all artwork
+    } );
     const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
 
-    const inBagLabelNode = new Text(
-      StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
-        sign: '', // don't show minus sign for debts, since that would be a sort of double negative
-        currencyUnits: numberLineOperationsStrings.currencyUnits,
-        value: Math.abs( balanceSheetItem.value )
-      } ),
-      {
-        font: new PhetFont( 20 ),
-        maxWidth: 60
-      }
-    );
+    const inBagLabelNode = new Text( currencyString, {
+      font: new PhetFont( 20 ),
+      maxWidth: 60
+    } );
 
     const inBagRepresentationNode = new HBox( {
       children: [ inBagIconBackground, inBagLabelNode ],
