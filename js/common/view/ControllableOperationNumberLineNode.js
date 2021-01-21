@@ -29,7 +29,7 @@ class ControllableOperationNumberLineNode extends Node {
       numberLineNodeOptions: {
         pointNodeOptions: {
           radius: 6,
-          labelOpacity: 0.65 // translucent point labels are needed so that short operations can be seen behind them
+          labelOpacity: 0.7 // translucent point labels are needed so that short operations can be seen behind them
         }
       }
     }, options );
