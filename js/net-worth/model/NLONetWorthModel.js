@@ -130,11 +130,7 @@ class NLONetWorthModel {
             }
           } );
           if ( !addedToBag ) {
-            this.storageBoxes.forEach( storageBox => {
-              if ( storageBox.holdsItem( balanceSheetItem ) ) {
-                storageBox.returnItem( balanceSheetItem, true );
-              }
-            } );
+            this.returnItemToStorage( balanceSheetItem );
           }
         }
         this.netWorthProperty.set( this.assetsBag.getTotalValue() + this.debtsBag.getTotalValue() );
@@ -162,17 +158,25 @@ class NLONetWorthModel {
 
       // if it was removed from a bag, add it back to its storage box
       if ( itemRemovedFromBag ) {
-        this.storageBoxes.forEach( storageBox => {
-          if ( storageBox.holdsItem( balanceSheetItem ) ) {
-            storageBox.returnItem( balanceSheetItem, true );
-          }
-        } );
+        this.returnItemToStorage( balanceSheetItem );
       }
     } );
 
     this.netWorthAccordionBoxExpandedProperty.reset();
     this.numberLine.reset();
     this.netWorthProperty.reset();
+  }
+
+  /**
+   * @param {ValueItem} item
+   * @private
+   */
+  returnItemToStorage( item ) {
+    this.storageBoxes.forEach( storageBox => {
+      if ( storageBox.holdsItem( item ) ) {
+        storageBox.returnItem( item, true );
+      }
+    } );
   }
 
   /**

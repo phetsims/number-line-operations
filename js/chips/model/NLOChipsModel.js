@@ -40,7 +40,7 @@ class NLOChipsModel {
       tandem: tandem.createTandem( 'netWorthAccordionBoxExpandedProperty' )
     } );
 
-    // @public (read-only) - the number line upon which the net worth and the various operation will be portrayed
+    // @public (read-only) - the number line upon which the total value and the various operation will be portrayed
     this.numberLine = new OperationTrackingNumberLine(
       NLOConstants.LAYOUT_BOUNDS.center.minusXY( 0, 110 ),
       {
@@ -128,11 +128,7 @@ class NLOChipsModel {
             }
           } );
           if ( !addedToBag ) {
-            this.storageBoxes.forEach( storageBox => {
-              if ( storageBox.holdsItem( chip ) ) {
-                storageBox.returnItem( chip, true );
-              }
-            } );
+            this.returnItemToStorage( chip );
           }
         }
         this.totalInBagsProperty.set( this.positiveChipsBag.getTotalValue() + this.negativeChipsBag.getTotalValue() );
@@ -158,19 +154,27 @@ class NLOChipsModel {
         }
       } );
 
-      // if it was removed from a bag, add it back to its storage box
+      // If it was removed from a bag, add it back to its storage box.
       if ( itemRemovedFromBag ) {
-        this.storageBoxes.forEach( storageBox => {
-          if ( storageBox.holdsItem( chip ) ) {
-            storageBox.returnItem( chip, true );
-          }
-        } );
+        this.returnItemToStorage( chip );
       }
     } );
 
     this.netWorthAccordionBoxExpandedProperty.reset();
     this.numberLine.reset();
     this.totalInBagsProperty.reset();
+  }
+
+  /**
+   * @param {ValueItem} item
+   * @private
+   */
+  returnItemToStorage( item ) {
+    this.storageBoxes.forEach( storageBox => {
+      if ( storageBox.holdsItem( item ) ) {
+        storageBox.returnItem( item, true );
+      }
+    } );
   }
 
   /**
