@@ -9,6 +9,7 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
+import NLCheckboxGroup from '../../../../number-line-common/js/common/view/NLCheckboxGroup.js';
 import NumberLineRangeSelector from '../../../../number-line-common/js/common/view/NumberLineRangeSelector.js';
 import merge from '../../../../phet-core/js/merge.js';
 import EraserButton from '../../../../scenery-phet/js/buttons/EraserButton.js';
@@ -16,7 +17,6 @@ import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.j
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
@@ -62,13 +62,7 @@ class NLOGenericScreenView extends ScreenView {
         model.primaryNumberLine.showTickMarksProperty
       )
     ];
-    const checkboxGroup = new VBox( {
-      children: checkboxes,
-      spacing: NLOConstants.CHECKBOX_SPACING,
-      align: 'left',
-      left: this.layoutBounds.minX + NLCConstants.SCREEN_VIEW_X_MARGIN,
-      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
-    } );
+    const checkboxGroup = new NLCheckboxGroup( checkboxes );
     this.addChild( checkboxGroup );
 
     // create and add the representation of the primary number line

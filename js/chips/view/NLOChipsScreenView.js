@@ -10,10 +10,9 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
+import NLCheckboxGroup from '../../../../number-line-common/js/common/view/NLCheckboxGroup.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import VBox from '../../../../scenery/js/nodes/VBox.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import NLOConstants from '../../common/NLOConstants.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
 import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
@@ -52,14 +51,7 @@ class NLOChipsScreenView extends ScreenView {
         model.numberLine.showTickMarksProperty
       )
     ];
-    const checkboxGroup = new VBox( {
-      children: checkboxes,
-      spacing: NLOConstants.CHECKBOX_SPACING,
-      align: 'left',
-      left: this.layoutBounds.minX + NLCConstants.SCREEN_VIEW_X_MARGIN,
-      top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN
-    } );
-    this.addChild( checkboxGroup );
+    this.addChild( new NLCheckboxGroup( checkboxes ) );
 
     // accordion box that displays the net worth when open
     this.addChild( new TotalValueAccordionBox( model.totalInBagsProperty, {
