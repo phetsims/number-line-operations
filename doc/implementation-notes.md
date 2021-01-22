@@ -52,10 +52,10 @@ to verify pre/post assumptions and perform type checking. This sim performs type
 
 **Memory Management** 
 
-* **Listeners**: This sim does not have a lot of things coming and going, so most calls to `link` and `lazyLink` don't
-need a corresponding `unlink` call.  There are several usages of `addListener` related to animations where no
-`removeListener` is needed because the animation is short lived so it will not retain references.  All uses of `link`
-and`lazyLink` are documented as to whether they need a corresponding `unlink`. For example:
+* **Listeners**: This sim does not have a lot of things being allocated and then de-allocated, so most calls to `link`
+and `lazyLink` don't need a corresponding `unlink` call.  There are several usages of `addListener` related to
+animations where no `removeListener` is needed because the animation is short lived so it will not retain references.
+All uses of `link` and`lazyLink` are documented as to whether they need a corresponding `unlink`. For example:
 
 ```js
     // Move the shadow into position and make it visible when this item is being dragged.  No unlink is needed.
