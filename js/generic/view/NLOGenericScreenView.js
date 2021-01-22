@@ -254,8 +254,7 @@ class InteractiveNumberLineView extends Node {
       {
         numberLineNodeOptions: {
           numberLineOperationNodeOptions: {
-            operationLabelFont: new PhetFont( 22 ),
-            labelDistanceFromApex: 20
+            operationLabelFont: new PhetFont( 22 )
           }
         }
       }

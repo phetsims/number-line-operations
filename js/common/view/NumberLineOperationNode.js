@@ -1,18 +1,15 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow, and has a
- * label and a description that can be optionally shown. This node updates itself as the attributes of the underlying
- * operation change.
+ * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow with a label
+ * and a textual description that can be optionally shown. This node updates itself as the attributes of the underlying
+ * operation or anything else that can affect the appearance changes.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
 
 import Property from '../../../../axon/js/Property.js';
-import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Utils from '../../../../dot/js/Utils.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import Shape from '../../../../kite/js/Shape.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import Enumeration from '../../../../phet-core/js/Enumeration.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -21,7 +18,6 @@ import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
@@ -29,26 +25,15 @@ import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 import Operation from '../model/Operation.js';
+import OperationArrowNode from './OperationArrowNode.js';
 
 // constants
-const CURVED_LINE_OPTIONS = {
-  stroke: 'black',
-  lineWidth: 2
-};
-const ARROWHEAD_LENGTH = 15; // in screen coordinates, empirically chosen
-const APEX_DISTANCE_FROM_NUMBER_LINE = 25; // in screen coordinates, empirically chosen to look good
 const RelativePosition = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
 const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
 const OPERATION_DESCRIPTION_PRE_FADE_DELAY = 0.7; // in seconds
 const OPERATION_DESCRIPTION_FADE_IN_TIME = 0.4; // in seconds
-
-// an unscaled version of the arrowhead shape, pointing straight up, tip at 0,0, height normalized to 1
-const NORMALIZED_ARROWHEAD_SHAPE = new Shape()
-  .lineTo( -0.4, 1.14 )
-  .lineTo( 0, 1 )
-  .lineTo( 0.4, 1.14 )
-  .lineTo( 0, 0 );
+const DISTANCE_NUMBER_LINE_TO_LABELS = 45; // in screen coordinates, empirically chosen to look good
 
 class NumberLineOperationNode extends Node {
 
@@ -69,7 +54,6 @@ class NumberLineOperationNode extends Node {
       relativePosition: RelativePosition.ABOVE_NUMBER_LINE,
       operationLabelFont: new PhetFont( 18 ),
       operationDescriptionFont: new PhetFont( 18 ),
-      labelDistanceFromApex: 5,
 
       // {boolean} - animate the drawing of the arrow when it transitions from inactive to active
       animateOnActive: true,
@@ -91,12 +75,12 @@ class NumberLineOperationNode extends Node {
     const operationNumber = numberLine.operations.indexOf( operation );
 
     // @private - point from which this operation starts
-    this.originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
+    const originPoint = operationNumber === 0 ? numberLine.startingPoint : numberLine.endpoints[ operationNumber - 1 ];
 
     // convenience var
     const aboveNumberLine = options.relativePosition === RelativePosition.ABOVE_NUMBER_LINE;
 
-    // create the operation label
+    // operation label
     const operationLabelTextNode = new Text( '', {
       font: options.operationLabelFont,
       maxWidth: 150 // empirically determined
@@ -122,14 +106,10 @@ class NumberLineOperationNode extends Node {
     let descriptionCenterYWhenLabelVisible = 0;
     let descriptionCenterYWhenLabelNotVisible = 0;
 
-    // Indicates whether this is armed for animation, meaning that the next inactive-to-active change should be animated
-    // rather than drawn immediately.
-    let armedForAnimation = false;
-
     // animation that is used to fade in the operation description
     let operationDescriptionFadeInAnimation = null;
 
-    // Update the appearance as the isActive state changes.  No unlink is needed.
+    // Update the description as the isActive state changes.  No unlink is needed.
     operation.isActiveProperty.lazyLink( isActive => {
 
       if ( isActive && options.operationDescriptionsFadeIn ) {
@@ -165,29 +145,23 @@ class NumberLineOperationNode extends Node {
           operationDescriptionFadeInAnimation = null;
         } );
       }
-
-      // Set a flag that is referenced elsewhere and is used kick of an animation of the arrow.
-      if ( isActive && options.animateOnActive ) {
-        armedForAnimation = true;
-      }
     } );
 
-    // animation that is in progress, null when none (i.e. most of the time)
-    let inProgressAnimation = null;
+    // arrow that represents the start and end of the operation
+    this.addChild( new OperationArrowNode(
+      numberLine,
+      operation,
+      {
+        relativePosition: options.relativePosition,
+        animateOnActive: options.animateOnActive
+      }
+    ) );
 
-    // @private {Path} - the Node that makes up the curved line portion of the arrow, updated when the operation changes
-    this.curvedLineNode = new Path( null, CURVED_LINE_OPTIONS );
-    this.addChild( this.curvedLineNode );
-
-    // @private {ArrowHeadNode} - head of the arrow, position will be updated later
-    this.arrowheadNode = new ArrowheadNode( ARROWHEAD_LENGTH, 0, Vector2.ZERO );
-    this.addChild( this.arrowheadNode );
-
-    // update the arrow, labels, and label positions as the attributes of the operation and number line change
+    // update the labels and label positions as the attributes of the operation and number line change
     const updateMultilink = Property.multilink(
       [
         operation.isActiveProperty,
-        this.originPoint.valueProperty,
+        originPoint.valueProperty,
         showLabelProperty,
         showDescriptionProperty,
         operation.operationTypeProperty,
@@ -204,39 +178,9 @@ class NumberLineOperationNode extends Node {
           const startPosition = numberLine.valueToModelPosition( operationStartValue );
           const endPosition = numberLine.valueToModelPosition( operationEndValue );
 
-          // stop any animation that was in progress
-          if ( inProgressAnimation ) {
-            inProgressAnimation.stop();
-            inProgressAnimation = null;
-          }
-
-          if ( armedForAnimation && startPosition.distance( endPosition ) > 0 ) {
-
-            // create an animation to make the change
-            inProgressAnimation = new Animation( {
-              duration: 0.75, // in seconds, empirically determined
-              from: 0,
-              to: 1,
-              easing: Easing.CUBIC_OUT,
-              setValue: proportionToDraw => {
-                this.updateArrow( aboveNumberLine, proportionToDraw );
-              }
-            } );
-            inProgressAnimation.start();
-            inProgressAnimation.finishEmitter.addListener( () => { inProgressAnimation = null; } );
-
-            // clear the flag until another transition occurs
-            armedForAnimation = false;
-          }
-          else {
-
-            // make the change instantaneously
-            this.updateArrow( aboveNumberLine, 1 );
-          }
-
           // update the operation label text and background
-          if ( this.isCompletelyOutOfDisplayRange() ||
-               ( this.isAtEdgeOfDisplayRange() && operation.amountProperty.value !== 0 ) ) {
+          if ( numberLine.isOperationCompletelyOutOfDisplayedRange( operation ) ||
+               ( numberLine.isOperationAtEdgeOfDisplayedRange( operation ) && operation.amountProperty.value !== 0 ) ) {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
@@ -269,10 +213,10 @@ class NumberLineOperationNode extends Node {
 
           // position the operation label
           if ( aboveNumberLine ) {
-            operationLabel.bottom = startPosition.y - APEX_DISTANCE_FROM_NUMBER_LINE - options.labelDistanceFromApex;
+            operationLabel.bottom = startPosition.y - DISTANCE_NUMBER_LINE_TO_LABELS;
           }
           else {
-            operationLabel.top = startPosition.y + APEX_DISTANCE_FROM_NUMBER_LINE + options.labelDistanceFromApex;
+            operationLabel.top = startPosition.y + DISTANCE_NUMBER_LINE_TO_LABELS;
           }
 
           // update the operation description
@@ -316,7 +260,8 @@ class NumberLineOperationNode extends Node {
           // settings and the position of the operation and number line points.
           operationLabel.visible = showLabel && !( allPointsAboveDisplayRange || allPointsBelowDisplayRange );
           operationDescription.visible = showDescription &&
-                                         ( !this.isAtEdgeOfDisplayRange() && !this.isCompletelyOutOfDisplayRange() );
+                                         ( !numberLine.isOperationAtEdgeOfDisplayedRange( operation ) &&
+                                         !this.numberLine.isOperationCompletelyOutOfDisplayedRange( operation ) );
         }
         else {
           this.visible = false;
@@ -357,267 +302,9 @@ class NumberLineOperationNode extends Node {
     } );
 
     // @private - dispose function
-    this.disposeOperationArrowNode = () => {
+    this.disposeNumberLineOperationNode = () => {
       updateMultilink.dispose();
     };
-  }
-
-  /**
-   * @param {boolean} aboveNumberLine
-   * @param {number} proportion - proportion to draw, from 0 to 1, used for animation and partial drawing
-   * @private
-   */
-  updateArrow( aboveNumberLine, proportion ) {
-
-    // convenience constants
-    const operation = this.operation;
-    const numberLine = this.numberLine;
-
-    // variables that describe the nature of the arrow line and arrowhead
-    let lineShape;
-    let arrowheadAngle;
-
-    // calculate the start and end points of the curved line
-    const sign = operation.operationTypeProperty.value === Operation.SUBTRACTION ? -1 : 1;
-    const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
-                     numberLine.valueToModelPosition( 0 ).x ) * sign;
-
-    const startPoint = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
-    const endPoint = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
-
-    if ( Math.abs( deltaX / 2 ) >= APEX_DISTANCE_FROM_NUMBER_LINE ) {
-
-      // For this case, a circle is used for the underlying shape.  Calculate the radius and center position of the
-      // circle such that the apex will be at the needed height and the circle will intersect the number line at the
-      // start and end points.  I (jbphet) derived this myself because I couldn't easily find a description online, and
-      // it seems to work.
-      const radiusOfCircle = Math.pow( startPoint.distance( endPoint ), 2 ) /
-                             ( 8 * APEX_DISTANCE_FROM_NUMBER_LINE ) +
-                             APEX_DISTANCE_FROM_NUMBER_LINE / 2;
-
-      // Calculate the center Y position of the circle.  For the angle calculations to work, the center of the circle
-      // must always be a little above the number line when the line is above and below when below, hence the min and
-      // max operations.
-      const circleYPosition = aboveNumberLine ?
-                              startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE + radiusOfCircle :
-                              startPoint.y + APEX_DISTANCE_FROM_NUMBER_LINE - radiusOfCircle;
-      const centerOfCircle = new Vector2( ( startPoint.x + endPoint.x ) / 2, circleYPosition );
-
-      const startAngle = startPoint.minus( centerOfCircle ).getAngle();
-      const completeArcEndAngle = endPoint.minus( centerOfCircle ).getAngle();
-      const endAngle = startAngle + ( completeArcEndAngle - startAngle ) * proportion;
-
-      let drawArcAnticlockwise;
-      if ( aboveNumberLine ) {
-        drawArcAnticlockwise = startPoint.x > endPoint.x;
-      }
-      else {
-        drawArcAnticlockwise = endPoint.x > startPoint.x;
-      }
-
-      // create the arc
-      lineShape = Shape.arc(
-        centerOfCircle.x,
-        centerOfCircle.y,
-        radiusOfCircle,
-        startAngle,
-        endAngle,
-        drawArcAnticlockwise
-      );
-
-      // Calculate the angle of the arrowhead.  This is calculated by using the angle at the starting point and then
-      // moving back a bit along the circle to the head of the arrow.
-      const compensationAngle = ARROWHEAD_LENGTH / ( 2 * radiusOfCircle );
-      if ( aboveNumberLine ) {
-        if ( deltaX < 0 ) {
-          arrowheadAngle = Math.PI - startAngle + compensationAngle;
-        }
-        else {
-          arrowheadAngle = Math.PI + completeArcEndAngle - compensationAngle;
-        }
-      }
-      else {
-        if ( deltaX < 0 ) {
-          arrowheadAngle = -startAngle - compensationAngle;
-        }
-        else {
-          arrowheadAngle = completeArcEndAngle + compensationAngle;
-        }
-      }
-    }
-    else if ( Math.abs( deltaX ) > 0 ) {
-
-      // In this case, the distance between the start and end points is less than the intended apex of the curve, so an
-      // elliptical arc is used rather than a circular one.
-
-      // parameters of the elliptical arc
-      const radiusX = Math.abs( deltaX / 2 );
-      const radiusY = APEX_DISTANCE_FROM_NUMBER_LINE;
-      let startAngle;
-      let endAngle;
-      let anticlockwise;
-
-      // adjustment angle for the arrowhead - This formula was empirically determined, though a true derivation may be
-      // possible.  I (jbphet) tried for about 1/2, then tried this and it worked, so it was left at this.
-      const arrowheadAngleFromPerpendicular = radiusX / radiusY * Math.PI * 0.1;
-      if ( aboveNumberLine ) {
-        if ( deltaX > 0 ) {
-          startAngle = -Math.PI;
-          endAngle = startAngle + ( proportion * Math.PI );
-          anticlockwise = false;
-          arrowheadAngle = Math.PI - arrowheadAngleFromPerpendicular;
-        }
-        else {
-          startAngle = 0;
-          endAngle = -proportion * Math.PI;
-          anticlockwise = true;
-          arrowheadAngle = Math.PI + arrowheadAngleFromPerpendicular;
-        }
-      }
-      else {
-        if ( deltaX > 0 ) {
-          startAngle = Math.PI;
-          endAngle = startAngle - ( proportion * Math.PI );
-          anticlockwise = true;
-          arrowheadAngle = arrowheadAngleFromPerpendicular;
-        }
-        else {
-          startAngle = 0;
-          endAngle = proportion * Math.PI;
-          anticlockwise = false;
-          arrowheadAngle = -arrowheadAngleFromPerpendicular;
-        }
-      }
-
-      lineShape = new Shape().ellipticalArc(
-        startPoint.x + deltaX / 2,
-        startPoint.y,
-        radiusX,
-        radiusY,
-        0,
-        startAngle,
-        endAngle,
-        anticlockwise
-      );
-    }
-    else {
-
-      // The amount of the operation is zero, so the curved line will be a loop that starts and ends at a point.
-      // However, odd shapes were produced when trying to loop to and from the exact same point, so there are some
-      // small offsets used in the X direction.
-      // TODO: Why is the adjustment necessary?  See https://github.com/phetsims/kite/issues/87.
-      const loopStartAndEndPoint = startPoint;
-      const adjustmentAmount = 1; // in screen coordinates
-      const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
-      const adjustedEndPoint = loopStartAndEndPoint.plusXY( adjustmentAmount / 2, 0 );
-      const yAddFactor = APEX_DISTANCE_FROM_NUMBER_LINE * ( aboveNumberLine ? -1.5 : 1.5 ); // empirical for desired height
-      const controlPointHeightMultiplier = 0.6; // empirically determined to get the desired loop width
-      const controlPoint1 = new Vector2(
-        loopStartAndEndPoint.x - controlPointHeightMultiplier * APEX_DISTANCE_FROM_NUMBER_LINE,
-        loopStartAndEndPoint.y + yAddFactor
-      );
-      const controlPoint2 = new Vector2(
-        loopStartAndEndPoint.x + controlPointHeightMultiplier * APEX_DISTANCE_FROM_NUMBER_LINE,
-        loopStartAndEndPoint.y + yAddFactor
-      );
-      lineShape = new Shape()
-        .moveToPoint( adjustedStartPoint )
-        .cubicCurveToPoint( controlPoint1, controlPoint2, adjustedEndPoint );
-
-      // The formula for the arrowhead angle was determined through trial and error, which isn't a great way to do it
-      // because it may not work if significant changes are made to the shape of the loop, but evaluating the Bezier
-      // curve for this short distance proved difficult.  This may require adjustment if the size or orientations of the
-      // loop changes.
-      const multiplier = 0.025;
-      const loopWidth = lineShape.bounds.width;
-      if ( operation.operationTypeProperty.value === Operation.ADDITION ) {
-        if ( aboveNumberLine ) {
-          arrowheadAngle = Math.PI + loopWidth * multiplier;
-        }
-        else {
-          arrowheadAngle = -loopWidth * multiplier;
-        }
-      }
-      else {
-        if ( aboveNumberLine ) {
-          arrowheadAngle = Math.PI - loopWidth * multiplier;
-        }
-        else {
-          arrowheadAngle = loopWidth * multiplier;
-        }
-      }
-    }
-
-    // Update the shapes for the line and the arrowhead.  Shapes with translations are used to that the clip area will
-    // work without tricky translations.
-    this.curvedLineNode.shape = lineShape;
-    this.arrowheadNode.updateShape( arrowheadAngle, endPoint );
-
-    // only show the arrowhead for full or nearly full depictions of the operation
-    this.arrowheadNode.visible = proportion > 0.9;
-
-    // If necessary, set a clip area for the line and the arrowhead so that they don't extend beyond the edges of the
-    // number line.
-    let clipArea = null;
-    if ( this.isCompletelyOutOfDisplayRange() ||
-         ( this.isPartiallyInDisplayRange() && operation.amountProperty.value !== 0 ) ) {
-
-      const displayedRange = numberLine.displayedRangeProperty.value;
-      const clipAreaMinXPosition = numberLine.valueToModelPosition( displayedRange.min ).x;
-      const clipAreaMaxXPosition = numberLine.valueToModelPosition( displayedRange.max ).x;
-      clipArea = Shape.rect(
-        clipAreaMinXPosition,
-        startPoint.y - APEX_DISTANCE_FROM_NUMBER_LINE * 5,
-        clipAreaMaxXPosition - clipAreaMinXPosition,
-        APEX_DISTANCE_FROM_NUMBER_LINE * 10
-      );
-    }
-    this.curvedLineNode.clipArea = clipArea;
-    this.arrowheadNode.clipArea = clipArea;
-  }
-
-  /**
-   * returns true if this operation starts or ends at the min or max of the displayed range and the other point is off
-   * @returns {boolean}
-   * @private
-   */
-  isAtEdgeOfDisplayRange() {
-    const startValue = this.originPoint.valueProperty.value;
-    const endValue = this.numberLine.getOperationResult( this.operation );
-    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
-    return ( startValue === numberLineDisplayRange.min && endValue <= startValue ) ||
-           ( startValue === numberLineDisplayRange.max && endValue >= startValue ) ||
-           ( endValue === numberLineDisplayRange.min && startValue <= endValue ) ||
-           ( endValue === numberLineDisplayRange.max && startValue >= endValue );
-  }
-
-  /**
-   * returns true if this operation is either entirely above or below the display range
-   * @returns {boolean}
-   * @private
-   */
-  isCompletelyOutOfDisplayRange() {
-    const startValue = this.originPoint.valueProperty.value;
-    const endValue = this.numberLine.getOperationResult( this.operation );
-    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
-    return startValue < numberLineDisplayRange.min && endValue < numberLineDisplayRange.min ||
-           startValue > numberLineDisplayRange.max && endValue > numberLineDisplayRange.max;
-  }
-
-  /**
-   * Returns true if this operation is partially in and partially out of the display range.  Note that this will return
-   * false if the operation is entirely inside the display range, so use carefully.
-   * @returns {boolean}
-   * @private
-   */
-  isPartiallyInDisplayRange() {
-    const startValue = this.originPoint.valueProperty.value;
-    const endValue = this.numberLine.getOperationResult( this.operation );
-    const numberLineDisplayRange = this.numberLine.displayedRangeProperty.value;
-    return numberLineDisplayRange.contains( startValue ) && !numberLineDisplayRange.contains( endValue ) ||
-           !numberLineDisplayRange.contains( startValue ) && numberLineDisplayRange.contains( endValue ) ||
-           startValue < numberLineDisplayRange.min && endValue > numberLineDisplayRange.max ||
-           startValue > numberLineDisplayRange.min && endValue < numberLineDisplayRange.max;
   }
 
   /**
@@ -677,50 +364,8 @@ class NumberLineOperationNode extends Node {
    * @override
    */
   dispose() {
-    this.disposeOperationArrowNode();
+    this.disposeNumberLineOperationNode();
     super.dispose();
-  }
-}
-
-/**
- * Inner class for creating the type of arrowhead needed for the operations lines.  Position the point of the arrowhead
- * by specifying the x and y position of the node.
- */
-class ArrowheadNode extends Path {
-
-  /**
-   * @param {number} length
-   * @param {number} rotation
-   * @param {Vector2} position
-   * @param {Object} [options]
-   */
-  constructor( length, rotation, position, options ) {
-
-    options = merge( {
-      lineJoin: 'round',
-      fill: 'black'
-    }, options );
-
-    super( null, options );
-
-    // @private {number}
-    this.length = length;
-
-    this.updateShape( rotation, position );
-  }
-
-  /**
-   * update the shape to have the original length but a new rotation and position
-   * @param {number} rotation - in radians
-   * @param {Vector2} position
-   * @public
-   */
-  updateShape( rotation, position ) {
-    this.setShape( NORMALIZED_ARROWHEAD_SHAPE
-      .transformed( Matrix3.scale( this.length ) )
-      .transformed( Matrix3.rotationAround( rotation, 0, 0 ) )
-      .transformed( Matrix3.translationFromVector( position ) )
-    );
   }
 }
 

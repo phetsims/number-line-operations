@@ -305,6 +305,57 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
+   * Returns true if the start and end values of the operation are either entirely above or below the display range.
+   * @param {NumberLineOperation} operation
+   * @returns {boolean}
+   * @public
+   */
+  isOperationCompletelyOutOfDisplayedRange( operation ) {
+    assert && assert( this.operations.includes( operation ), 'the operation is not on this number line' );
+    const startValue = this.getOperationStartValue( operation );
+    const endValue = this.getOperationResult( operation );
+    const displayedRange = this.displayedRangeProperty.value;
+    return startValue < displayedRange.min && endValue < displayedRange.min ||
+           startValue > displayedRange.max && endValue > displayedRange.max;
+  }
+
+  /**
+   * Returns true if this operation starts or ends at the min or max of the displayed range and the other endpoint is
+   * out of the displayed range.
+   * @param {NumberLineOperation} operation
+   * @returns {boolean}
+   * @public
+   */
+  isOperationAtEdgeOfDisplayedRange( operation ) {
+    assert && assert( this.operations.includes( operation ), 'the operation is not on this number line' );
+    const startValue = this.getOperationStartValue( operation );
+    const endValue = this.getOperationResult( operation );
+    const displayedRange = this.displayedRangeProperty.value;
+    return ( startValue === displayedRange.min && endValue <= startValue ) ||
+           ( startValue === displayedRange.max && endValue >= startValue ) ||
+           ( endValue === displayedRange.min && startValue <= endValue ) ||
+           ( endValue === displayedRange.max && startValue >= endValue );
+  }
+
+  /**
+   * Returns true if this operation is partially in and partially out of the display range.  Note that this will return
+   * false if the operation is entirely inside the display range, so use carefully.
+   * @param {NumberLineOperation} operation
+   * @returns {boolean}
+   * @public
+   */
+  isOperationPartiallyInDisplayedRange( operation ) {
+    assert && assert( this.operations.includes( operation ), 'the operation is not on this number line' );
+    const startValue = this.getOperationStartValue( operation );
+    const endValue = this.getOperationResult( operation );
+    const displayedRange = this.displayedRangeProperty.value;
+    return displayedRange.contains( startValue ) && !displayedRange.contains( endValue ) ||
+           !displayedRange.contains( startValue ) && displayedRange.contains( endValue ) ||
+           startValue < displayedRange.min && endValue > displayedRange.max ||
+           startValue > displayedRange.min && endValue < displayedRange.max;
+  }
+
+  /**
    * Get an array of the operations that are currently active on the number line.
    * @returns {NumberLineOperation[]}
    * @public
