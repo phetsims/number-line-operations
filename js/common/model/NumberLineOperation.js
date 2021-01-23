@@ -45,7 +45,7 @@ class NumberLineOperation {
   }
 
   /**
-   * get the value at the end of this operation
+   * Get the value at the end of this operation.
    * @returns {number}
    * @public
    */

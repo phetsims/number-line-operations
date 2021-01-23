@@ -1,7 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * carousel and page control for entering operations onto a number line
+ * OperationEntryCarousel is a carousel and page control that contains controls used for entering operations on to a
+ * number line.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -114,7 +115,7 @@ class OperationEntryCarousel extends Node {
   }
 
   /**
-   * restore initial state
+   * Restore initial state.
    * @public
    */
   reset() {

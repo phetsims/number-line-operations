@@ -228,7 +228,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * remove all operations, does nothing if there are none
+   * Remove all operations, does nothing if there are none.
    * @public
    */
   deactivateAllOperations() {
@@ -238,7 +238,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * go through the operations and calculate the current end value
+   * Go through the operations and calculate the current end value.
    * @returns {number}
    * @public
    */
@@ -253,7 +253,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * get the value after this operation and all those that precede it on the operations list have been applied
+   * Get the value after this operation and all those that precede it on the operations list have been applied.
    * @param {NumberLineOperation} targetOperation
    * @returns {number}
    * @public
@@ -426,7 +426,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 
   /**
-   * restore initial state
+   * Restore initial state.
    * @public
    * @override
    */

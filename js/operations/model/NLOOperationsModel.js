@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * primary model class for the "Operation" screen
+ * NLOOperationsModel is the primary model class for the "Operation" screen.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -89,7 +89,7 @@ class NLOOperationsModel {
   }
 
   /**
-   * resets the model
+   * Reset the model.
    * @public
    */
   reset() {

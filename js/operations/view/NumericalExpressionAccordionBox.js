@@ -157,7 +157,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
   }
 
   /**
-   * restore initial state
+   * Restore initial state.
    * @public
    */
   reset() {
@@ -167,7 +167,8 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 }
 
 /**
- * a numerical expression that describes the operations on the number line
+ * NumericalExpression is a Scenery Text Node that represent a numerical expression that describes the operations on the
+ * number line, for example "1 + 7 - 2".
  */
 class NumericalExpression extends Text {
 

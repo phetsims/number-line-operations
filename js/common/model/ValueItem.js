@@ -44,7 +44,7 @@ class ValueItem {
   }
 
   /**
-   * animate (as opposed to moving instantaneously) to the provided position
+   * Animate (as opposed to moving instantaneously) to the provided position.
    * @param {Vector2} destination
    * @public
    */
@@ -81,7 +81,7 @@ class ValueItem {
   }
 
   /**
-   * go immediately to the specified position (and cancel any animations that were in progress)
+   * Go immediately to the specified position (and cancel any animations that were in progress).
    * @param {Vector2} position
    * @public
    */
@@ -96,7 +96,7 @@ class ValueItem {
   }
 
   /**
-   * stop the current animation if one is happening, do nothing if not
+   * Stop the current animation if one is happening, do nothing if not.
    * @private
    */
   stopAnimation() {

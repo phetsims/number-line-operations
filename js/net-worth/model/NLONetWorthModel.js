@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * primary model for the "Net Worth" screen
+ * NLONetWorthModel is the primary model for the "Net Worth" screen.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */

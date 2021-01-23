@@ -308,10 +308,10 @@ class NumberLineOperationNode extends Node {
   }
 
   /**
-   * create a string that describes this operation
+   * Create a string that describes this operation.
    * @param {NumberLineOperation} operation
-   * @param {boolean} useFinancialDescriptions - controls whether to use financial terms like "asset" or more generic
-   * terminology in the descriptions
+   * @param {boolean} useFinancialDescriptions - Controls whether to use financial terms like "asset" or more generic
+   * terminology in the descriptions.
    * @returns {string}
    * @private
    */

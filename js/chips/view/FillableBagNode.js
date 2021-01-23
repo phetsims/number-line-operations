@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * a node that represents a bag and that can be filled with different colors
+ * FillableBagNode is a Scenery Node that looks like a drawing of a bag and that can be filled with different colors.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */

@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * primary model for the "Generic" screen
+ * NLOGenericModel is the primary model for the "Generic" screen.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -193,7 +193,7 @@ class NLOGenericModel {
   }
 
   /**
-   * resets the model
+   * Resets the model.
    * @public
    */
   reset() {

@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * model for the "Chips" screen of the "Number Line: Operation" sim
+ * NLOChipsModel is the primary model for the "Chips" screen.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */
@@ -137,7 +137,7 @@ class NLOChipsModel {
   }
 
   /**
-   * Resets the model.
+   * Reset the model.
    * @public
    */
   reset() {

@@ -86,7 +86,7 @@ class HoldingBag {
   }
 
   /**
-   * test if this bag accepts this type of item
+   * Test if this bag accepts this type of item.
    * @param {ValueItem }item
    * @public
    */
@@ -95,7 +95,7 @@ class HoldingBag {
   }
 
   /**
-   * add the provide item to this bag
+   * Add the provide item to this bag.
    * @param {ValueItem} item
    * @public
    */
@@ -109,7 +109,7 @@ class HoldingBag {
   }
 
   /**
-   * remove an item from this bag
+   * Remove an item from this bag.
    * @param {ValueItem} item
    * @public
    */

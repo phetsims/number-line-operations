@@ -1,7 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * main screen view for the "Generic" screen
+ * NLOGenericScreenView is the main screen view for the "Generic" screen.
  *
  * @author John Blanco (PhET Interactive Simulations)
  */

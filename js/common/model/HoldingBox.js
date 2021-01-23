@@ -1,6 +1,5 @@
 // Copyright 2020, University of Colorado Boulder
 
-
 /**
  * HoldingBox is the area in the model where items that have value (assets, debts, chips, and such) hang out when not in
  * use. It is basically just a rectangular space that keeps track of where things go within it.
