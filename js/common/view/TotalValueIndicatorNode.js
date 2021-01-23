@@ -44,7 +44,7 @@ class TotalValueIndicatorNode extends Node {
       leastNegativeFill: new Color( '#fda5a8' )
     }, options );
 
-    // label the represent the value
+    // label that represents the value
     const labelNode = new Text( '', {
       font: new PhetFont( 20 ),
       fill: 'white',
@@ -72,10 +72,10 @@ class TotalValueIndicatorNode extends Node {
         labelNode.text = sign + Math.abs( totalValue ).toString( 10 );
       }
 
-      // reposition the label
+      // Reposition the label.
       labelNode.center = fillableBackgroundNode.center.plus( options.labelCenterOffset );
 
-      // set the fill
+      // Set the fill.
       let fill = options.zeroFill;
       if ( totalValue < 0 ) {
         fill = Color.interpolateRGBA(
