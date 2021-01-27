@@ -19,10 +19,7 @@ import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 class NetWorthIcon extends ScreenIcon {
 
   constructor() {
-    const piggyBankImage = new Image( netWorthHomeScreenIcon, {
-      maxIconWidthProportion: 1,
-      maxIconHeightProportion: 1
-    } );
+    const piggyBankImage = new Image( netWorthHomeScreenIcon );
     const currencySymbol = new Text( numberLineOperationsStrings.currencyUnits, {
 
       fill: Color.WHITE,
@@ -47,7 +44,10 @@ class NetWorthIcon extends ScreenIcon {
     }
     piggyBankImage.addChild( currencySymbol );
 
-    super( piggyBankImage );
+    super( piggyBankImage, {
+      maxIconWidthProportion: 1,
+      maxIconHeightProportion: 1
+    } );
   }
 }
 
