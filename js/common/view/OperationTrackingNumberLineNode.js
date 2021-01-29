@@ -25,7 +25,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
 
     options = merge( {
 
-      // this is here as documentation so that clients know how options are passed through to the operation nodes
+      // This is here as documentation so that clients know how options are passed through to the operation nodes.
       numberLineOperationNodeOptions: {},
       pointsOffScaleCondition: PointsOffScaleCondition.ALL
 
@@ -37,7 +37,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
     this.numberLine = numberLine;
     this.operationToNodeMap = new Map();
 
-    // create an operation node for each operation on the number line
+    // Create an operation node for each operation on the number line.
     numberLine.operations.forEach( ( operation, index ) => {
 
       // nodes for even-indexed operations go above the number line, odd below
@@ -45,7 +45,7 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
         { relativePosition: NumberLineOperationNode.RelativePosition.BELOW_NUMBER_LINE } :
         {};
 
-      // add the node
+      // Add the node.
       const numberLineOperationNode = new NumberLineOperationNode(
         operation,
         numberLine.showOperationLabelsProperty,
@@ -55,10 +55,10 @@ class OperationTrackingNumberLineNode extends SpatializedNumberLineNode {
       );
       this.addChild( numberLineOperationNode );
 
-      // the operation nodes should be behind the points and the labels
+      // The operation nodes should be behind the points and the labels.
       numberLineOperationNode.moveToBack();
 
-      // map it to the operation
+      // Map it to the operation.
       this.operationToNodeMap.set( operation, numberLineOperationNode );
     } );
   }

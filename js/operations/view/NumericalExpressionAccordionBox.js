@@ -198,7 +198,7 @@ class NumericalExpression extends Text {
 
         const endValue = numberLine.getCurrentEndValue();
 
-        // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
+        // Use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9.
         const signChar = endValue < 0 ? MathSymbols.MINUS : '';
 
         // Use currency units if specified when displaying the simplified total.
@@ -218,13 +218,13 @@ class NumericalExpression extends Text {
         // {Array.<number|OperationType>} - a list of all the values and operations needed to create the expression
         const valuesAndOperations = [];
 
-        // add the starting value
+        // Add the starting value.
         valuesAndOperations.push( numberLine.startingValueProperty.value );
 
-        // go through the operations, adding the values and operation types to the list
+        // Go through the operations, adding the values and operation types to the list.
         activeOperations.forEach( ( operation, index ) => {
 
-          // the first operation is a special case - it's not included if the starting value was left off
+          // The first operation is a special case - it's not included if the starting value was left off.
           if ( index > 0 || valuesAndOperations.length > 0 ) {
             valuesAndOperations.push( operation.operationTypeProperty.value );
           }
@@ -233,7 +233,8 @@ class NumericalExpression extends Text {
 
         if ( simplifyProperty.value ) {
 
-          // if simplifying, replace subtraction of a negative with addition and addition of a negative with subtraction
+          // If simplifying, replace subtraction of a negative with addition and addition of a negative with
+          // subtraction.
           for ( let i = 1; i < valuesAndOperations.length; i++ ) {
             if ( typeof valuesAndOperations[ i ] === 'number' && valuesAndOperations[ i ] < 0 ) {
               valuesAndOperations[ i ] = Math.abs( valuesAndOperations[ i ] );
@@ -251,7 +252,7 @@ class NumericalExpression extends Text {
         valuesAndOperations.forEach( valueOrOperation => {
           if ( typeof valueOrOperation === 'number' ) {
 
-            // use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9
+            // Use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9.
             if ( valueOrOperation < 0 ) {
               numericalExpressionString += MathSymbols.MINUS;
             }

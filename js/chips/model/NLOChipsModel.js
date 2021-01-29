@@ -94,7 +94,7 @@ class NLOChipsModel {
       chip.isDraggingProperty.lazyLink( isDragging => {
         if ( isDragging ) {
 
-          // if the item was in one of the bags, remove it
+          // If the item was in one of the bags, remove it.
           this.bags.forEach( bag => {
             if ( bag.containsItem( chip ) ) {
               bag.removeItem( chip );
@@ -142,10 +142,10 @@ class NLOChipsModel {
    */
   reset() {
 
-    // reset initial state of all chips
+    // Reset initial state of all chips.
     this.chips.forEach( chip => {
 
-      // see if this chip is in a bag and remove it if so
+      // See if this chip is in a bag and remove it if so.
       let itemRemovedFromBag = false;
       this.bags.forEach( bag => {
         if ( bag.containsItem( chip ) ) {

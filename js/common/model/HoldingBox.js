@@ -31,7 +31,7 @@ class HoldingBox {
     // map of items to storage positions, populated below
     this.mapOfItemsToStoragePositions = new Map();
 
-    // position each of the items and remember where each one goes when returned
+    // Position each of the items and remember where each one goes when returned.
     const interItemSpacing = size.height / items.length;
     const yPositionOffset = interItemSpacing / 2;
     items.forEach( ( item, index ) => {

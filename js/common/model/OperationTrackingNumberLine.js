@@ -126,7 +126,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
           // state checking
           assert && assert( endpoint, 'there is no endpoint for this operation, internal state is incorrect' );
 
-          // the operation is active, so make sure its endpoint is on the number line
+          // The operation is active, so make sure its endpoint is on the number line.
           if ( !this.hasPoint( endpoint ) ) {
             this.addPoint( endpoint );
           }
@@ -275,7 +275,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
         value = operation.getResult( value );
       }
 
-      // test if we're done
+      // Test if we're done.
       if ( operation === targetOperation ) {
         break;
       }
@@ -437,11 +437,11 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     super.reset();
 
-    // reset the properties that were defined in this subclass
+    // Reset the properties that were defined in this subclass.
     this.showOperationLabelsProperty.reset();
     this.showOperationDescriptionsProperty.reset();
 
-    // resetting the number line removes all points, so we need to add back the starting point
+    // Resetting the number line removes all points, so we need to add back the starting point.
     this.startingPoint.colorProperty.reset();
     this.addPoint( this.startingPoint );
   }

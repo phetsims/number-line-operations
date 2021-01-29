@@ -129,7 +129,7 @@ class BalanceSheetItemNode extends Node {
    */
   constructor( balanceSheetItem ) {
 
-    // get the imageInfo that is associated with this balance sheet item's value
+    // Get the imageInfo that is associated with this balance sheet item's value.
     const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
     assert && assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
 
@@ -210,7 +210,7 @@ class BalanceSheetItemNode extends Node {
       cursor: 'pointer'
     } );
 
-    // prevent from being grabbed when animating, unlink not needed
+    // Prevent from being grabbed when animating, unlink not needed.
     balanceSheetItem.inProgressAnimationProperty.link( inProgressAnimation => {
       this.pickable = inProgressAnimation === null;
     } );

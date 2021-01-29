@@ -50,10 +50,10 @@ class ValueItem {
    */
   animateTo( destination ) {
 
-    // if there is an active animation, stop it
+    // If there is an active animation, stop it.
     this.stopAnimation();
 
-    // create the animation for moving to the provided destination
+    // Create the animation for moving to the provided destination.
     const animation = new Animation( {
       duration: Math.max(
         MIN_ANIMATION_TIME,
@@ -71,7 +71,7 @@ class ValueItem {
     this.inProgressAnimationProperty.value = animation;
     animation.start();
 
-    // when the animation is finished, clear the Property that is keeping track of it
+    // When the animation is finished, clear the Property that is keeping track of it.
     animation.finishEmitter.addListener( () => {
       this.inProgressAnimationProperty.value = null;
     } );
@@ -87,10 +87,10 @@ class ValueItem {
    */
   teleportTo( position ) {
 
-    // just in case, is a no-op if no animation is happening
+    // just in case - this is a no-op if no animation is happening
     this.stopAnimation();
 
-    // go to the position
+    // Go to the position.
     this.positionProperty.set( position );
 
   }

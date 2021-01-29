@@ -26,7 +26,7 @@ class HoldingBagNode extends Node {
    */
   constructor( holdingBag, labelText ) {
 
-    // get the image that is associated with this bag's supported values
+    // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
                   negativeValueItemsBagImage :
                   positiveValueItemsBagImage;
@@ -36,7 +36,7 @@ class HoldingBagNode extends Node {
       maxWidth: holdingBag.radius * 2,
       centerX: holdingBag.position.x,
 
-      // because the bag images have a sort of "tied off" area on top, position the bag based on the bottom
+      // Because the bag images have a sort of "tied off" area on top, position the bag based on the bottom.
       bottom: holdingBag.position.y + holdingBag.radius
     } );
 

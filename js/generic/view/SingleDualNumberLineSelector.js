@@ -41,7 +41,7 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
       touchAreaYDilation: 2
     }, options );
 
-    // create the single/dual number line selection icons
+    // Create the single/dual number line selection icons.
     const singleNumberLineIcon = createDoubleArrowNode();
     const dualNumberLineIcon = new VBox( {
       children: [

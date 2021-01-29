@@ -59,7 +59,7 @@ class TotalValueIndicatorNode extends Node {
     // duration of the sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
 
-      // update value
+      // Update the label text.
       const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.isCurrency ) {
         labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {

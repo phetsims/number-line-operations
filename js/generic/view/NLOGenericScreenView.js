@@ -65,7 +65,7 @@ class NLOGenericScreenView extends ScreenView {
     const checkboxGroup = new NLCheckboxGroup( checkboxes );
     this.addChild( checkboxGroup );
 
-    // create and add the representation of the primary number line
+    // Create and add the representation of the primary number line.
     const primaryNumberLineView = new InteractiveNumberLineView(
       model.primaryNumberLine,
       model.primaryLineInitialValuePointController,
@@ -89,7 +89,7 @@ class NLOGenericScreenView extends ScreenView {
     } );
     this.addChild( secondaryNumberLineLayer );
 
-    // create and add the representation of the secondary number line
+    // Create and add the representation of the secondary number line.
     const secondaryNumberLineView = new InteractiveNumberLineView(
       model.secondaryNumberLine,
       model.secondaryLineInitialValuePointController,
@@ -182,7 +182,7 @@ class NLOGenericScreenView extends ScreenView {
       }
     } );
 
-    // add the number line range selector
+    // Add the number line range selector.
     this.addChild( new NumberLineRangeSelector(
       model.primaryNumberLine.displayedRangeProperty,
       NLOGenericModel.NUMBER_LINE_RANGES,

@@ -109,7 +109,7 @@ class OperationArrowNode extends Node {
           const startPosition = numberLine.valueToModelPosition( numberLine.getOperationStartValue( operation ) );
           const endPosition = numberLine.valueToModelPosition( numberLine.getOperationResult( operation ) );
 
-          // stop any animation that was in progress
+          // Stop any animation that was in progress.
           if ( growArrowAnimation ) {
             growArrowAnimation.stop();
             growArrowAnimation = null;
@@ -117,7 +117,7 @@ class OperationArrowNode extends Node {
 
           if ( armedForAnimation && startPosition.distance( endPosition ) > 0 ) {
 
-            // create an animation to make the change
+            // Create an animation to make the change.
             growArrowAnimation = new Animation( {
               duration: 0.75, // in seconds, empirically determined
               from: 0,
@@ -130,12 +130,12 @@ class OperationArrowNode extends Node {
             growArrowAnimation.start();
             growArrowAnimation.finishEmitter.addListener( () => { growArrowAnimation = null; } );
 
-            // clear the flag until another transition occurs
+            // Clear the flag until another transition occurs.
             armedForAnimation = false;
           }
           else {
 
-            // make the change instantaneously
+            // Make the change instantaneously.
             this.updateArrow( aboveNumberLine, 1 );
           }
         }
@@ -158,7 +158,7 @@ class OperationArrowNode extends Node {
     let lineShape;
     let arrowheadAngle;
 
-    // calculate the start and end points of the curved line
+    // Calculate the start and end points of the curved line.
     const sign = operation.operationTypeProperty.value === Operation.SUBTRACTION ? -1 : 1;
     const deltaX = ( numberLine.valueToModelPosition( operation.amountProperty.value ).x -
                      numberLine.valueToModelPosition( 0 ).x ) * sign;
@@ -196,7 +196,7 @@ class OperationArrowNode extends Node {
         drawArcAnticlockwise = endPoint.x > startPoint.x;
       }
 
-      // create the arc
+      // Create the arc.
       lineShape = Shape.arc(
         centerOfCircle.x,
         centerOfCircle.y,
@@ -334,7 +334,7 @@ class OperationArrowNode extends Node {
     this.curvedLineNode.shape = lineShape;
     this.arrowheadNode.updateShape( arrowheadAngle, endPoint );
 
-    // only show the arrowhead for full or nearly full depictions of the operation
+    // Only show the arrowhead for full or nearly full depictions of the operation.
     this.arrowheadNode.visible = proportion > 0.9;
 
     // If necessary, set a clip area for the line and the arrowhead so that they don't extend beyond the edges of the

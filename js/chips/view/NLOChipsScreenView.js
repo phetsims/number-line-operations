@@ -84,20 +84,20 @@ class NLOChipsScreenView extends ScreenView {
     );
     this.addChild( totalValueIndicatorNode );
 
-    // update the position of the piggy bank node when the net worth changes - no unlink necessary
+    // Update the position of the piggy bank node when the net worth changes - no unlink necessary.
     model.totalInBagsProperty.link( netWorth => {
       totalValueIndicatorNode.centerX = model.numberLine.valueToModelPosition( netWorth ).x;
     } );
 
-    // add the view representation for the storage areas where the chips will reside when not in use
+    // Add the view representation for the storage areas where the chips will reside when not in use.
     this.addChild( new HoldingBoxNode( model.positiveChipsBox ) );
     this.addChild( new HoldingBoxNode( model.negativeChipsBox ) );
 
-    // add the view representations for the bags into which the chips can be placed
+    // Add the view representations for the bags into which the chips can be placed.
     this.addChild( new HoldingBagNode( model.positiveChipsBag, numberLineOperationsStrings.positives ) );
     this.addChild( new HoldingBagNode( model.negativeChipsBag, numberLineOperationsStrings.negatives ) );
 
-    // add the chip nodes
+    // Add the chip nodes.
     model.chips.forEach( chip => {
       this.addChild( new ChipStackNode( chip ) );
     } );

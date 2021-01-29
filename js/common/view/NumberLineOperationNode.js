@@ -157,7 +157,7 @@ class NumberLineOperationNode extends Node {
       }
     ) );
 
-    // update the labels and label positions as the attributes of the operation and number line change
+    // Update the labels and label positions as the attributes of the operation and number line change.
     const updateMultilink = Property.multilink(
       [
         operation.isActiveProperty,
@@ -178,7 +178,7 @@ class NumberLineOperationNode extends Node {
           const startPosition = numberLine.valueToModelPosition( operationStartValue );
           const endPosition = numberLine.valueToModelPosition( operationEndValue );
 
-          // update the operation label text and background
+          // Update the operation label text and background.
           if ( numberLine.isOperationCompletelyOutOfDisplayedRange( operation ) ||
                ( numberLine.isOperationAtEdgeOfDisplayedRange( operation ) && operation.amountProperty.value !== 0 ) ) {
 
@@ -189,7 +189,7 @@ class NumberLineOperationNode extends Node {
             // Use a different (generally smaller) font in this case.
             operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
 
-            // make label stroked in this case
+            // Make the label stroked in this case.
             operationLabel.background.stroke = Color.BLACK;
           }
           else {
@@ -211,7 +211,7 @@ class NumberLineOperationNode extends Node {
             operationLabel.background.stroke = null;
           }
 
-          // position the operation label
+          // Position the operation label.
           if ( aboveNumberLine ) {
             operationLabel.bottom = startPosition.y - DISTANCE_NUMBER_LINE_TO_LABELS;
           }
@@ -219,7 +219,7 @@ class NumberLineOperationNode extends Node {
             operationLabel.top = startPosition.y + DISTANCE_NUMBER_LINE_TO_LABELS;
           }
 
-          // update the operation description
+          // Update the operation description.
           operationDescriptionTextNode.text = NumberLineOperationNode.getOperationDescriptionString(
             operation,
             options.useFinancialDescriptions
@@ -279,7 +279,7 @@ class NumberLineOperationNode extends Node {
     };
     showLabelProperty.lazyLink( labelVisible => {
 
-      // stop any in-progress animation of the label position
+      // Stop any in-progress animation of the label position.
       descriptionMovementAnimation && descriptionMovementAnimation.stop();
 
       if ( labelVisible && operationDescription.centerY !== descriptionCenterYWhenLabelVisible ) {

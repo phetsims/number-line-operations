@@ -168,7 +168,7 @@ class HoldingBag {
     }
     else if ( this.capacity === 5 ) {
 
-      // find the first unoccupied position
+      // Find the first unoccupied position.
       const firstUnoccupiedPosition = this.possibleItemPositions.find( position => {
         return this.containedItemList.find( item => item.positionProperty.value.equals( position ) ) === undefined;
       } );

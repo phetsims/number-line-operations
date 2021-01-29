@@ -65,7 +65,7 @@ class NLONetWorthModel {
       new ValueItem( 400 )
     ];
 
-    // add the storage areas for the balance sheet items - this is where they reside when not in use
+    // Add the storage areas for the balance sheet items - this is where they reside when not in use.
     const balanceItemBoxesTop = 310;
     this.debtsBox = new HoldingBox(
       new Vector2( 105, balanceItemBoxesTop ),
@@ -79,7 +79,7 @@ class NLONetWorthModel {
     );
     this.storageBoxes = [ this.assetsBox, this.debtsBox ];
 
-    // add the asset and debt bags
+    // Add the asset and debt bags.
     const balanceItemBagsCenterY = 475;
     this.debtsBag = new HoldingBag( new Vector2( 380, balanceItemBagsCenterY ), {
       itemAcceptanceTest: HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES
@@ -95,7 +95,7 @@ class NLONetWorthModel {
       balanceSheetItem.isDraggingProperty.lazyLink( isDragging => {
         if ( isDragging ) {
 
-          // if the item was in one of the bags, remove it
+          // If the item was in one of the bags, remove it.
           this.bags.forEach( bag => {
             if ( bag.containsItem( balanceSheetItem ) ) {
               bag.removeItem( balanceSheetItem );
@@ -144,10 +144,10 @@ class NLONetWorthModel {
    */
   reset() {
 
-    // reset initial state of all balance sheet items
+    // Reset initial state of all balance sheet items.
     this.balanceSheetItems.forEach( balanceSheetItem => {
 
-      // see if this item is in a bag and remove it if so
+      // See if this item is in a bag and remove it if so.
       let itemRemovedFromBag = false;
       this.bags.forEach( bag => {
         if ( bag.containsItem( balanceSheetItem ) ) {
@@ -156,7 +156,7 @@ class NLONetWorthModel {
         }
       } );
 
-      // if it was removed from a bag, add it back to its storage box
+      // If it was removed from a bag, add it back to its storage box.
       if ( itemRemovedFromBag ) {
         this.returnItemToStorage( balanceSheetItem );
       }

@@ -71,7 +71,7 @@ class DynamicOperationDescription extends Text {
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
 
-    // control overall visibility, unlink not needed
+    // Control overall visibility, unlink not needed.
     operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
 
     // Update the text as the attributes of the operation change.
@@ -174,7 +174,7 @@ class DynamicOperationDescription extends Text {
       }
     } );
 
-    // go instantly invisible on a reset, unlink not needed
+    // Go instantly invisible on a reset, unlink not needed.
     resetInProgressProperty.lazyLink( resetInProgress => {
       if ( resetInProgress ) {
         this.cancelInProgressAnimations();
@@ -194,7 +194,7 @@ class DynamicOperationDescription extends Text {
 
     this.cancelInProgressAnimations();
 
-    // create and start the fade-in animation
+    // Create and start the fade-in animation.
     this.fadeAnimation = new Animation( {
       duration: FADE_TIME,
       delay: preFadeInDelay,
@@ -234,7 +234,7 @@ class DynamicOperationDescription extends Text {
 
     this.cancelInProgressAnimations();
 
-    // create and start the fade-out animation
+    // Create and start the fade-out animation.
     this.fadeAnimation = new Animation( {
       duration: FADE_TIME,
       targets: [
@@ -258,10 +258,10 @@ class DynamicOperationDescription extends Text {
    */
   initiateMovementToActivePosition() {
 
-    // if the node is already on its way, there is no need to re-initiate
+    // If the node is already on its way, there is no need to re-initiate.
     if ( !this.movementAnimation ) {
 
-      // create and start the fade-out animation
+      // Create and start the fade-out animation.
       this.movementAnimation = new Animation( {
         duration: TRAVEL_TIME,
         targets: [

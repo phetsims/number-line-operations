@@ -41,13 +41,13 @@ class ChipStackNode extends Node {
     const chipFill = valueItem.value > 0 ? Color.YELLOW : Color.RED;
     const nextChipCenter = STACKING_STAGGER_AMOUNT.timesScalar( Math.abs( valueItem.value ) - 1 );
 
-    // add the layer where the chips will reside
+    // Add the layer where the chips will reside.
     const chipsLayer = new Node();
 
-    // create a shape that will be used to create the shadow
+    // Create a shape that will be used to create the shadow.
     let shadowShape = null;
 
-    // create the chips and their shadows and add them to their respective layers
+    // Create the chips and their shadows and add them to their respective layers.
     let topChip = null;
     _.times( Math.abs( valueItem.value ), () => {
       const chip = new Circle( CHIP_RADIUS, {
@@ -70,7 +70,7 @@ class ChipStackNode extends Node {
       nextChipCenter.subtract( STACKING_STAGGER_AMOUNT );
     } );
 
-    // add the label to the top chip on the stack
+    // Add the label to the top chip on the stack.
     const signChar = valueItem.value > 0 ? '+' : '';
     const labelNode = new Text(
       signChar + valueItem.value,
@@ -105,7 +105,7 @@ class ChipStackNode extends Node {
       }
     } );
 
-    // prevent from being grabbed when animating, unlink not necessary
+    // Prevent this node from being grabbed when animating, unlink not necessary.
     valueItem.inProgressAnimationProperty.link( inProgressAnimation => {
       this.pickable = inProgressAnimation === null;
     } );

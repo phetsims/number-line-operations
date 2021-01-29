@@ -67,7 +67,7 @@ class NLOOperationsModel {
     this.pointControllers = createObservableArray();
     this.numberLine.residentPoints.addItemAddedListener( addedPoint => {
 
-      // add a point controller for the newly added point
+      // Add a point controller for the newly added point.
       const pointController = new PointController( {
         color: addedPoint.colorProperty.value,
         numberLines: [ this.numberLine ],
@@ -76,7 +76,7 @@ class NLOOperationsModel {
       } );
       this.pointControllers.push( pointController );
 
-      // remove the point controller when the associated point goes away
+      // Remove the point controller when the associated point goes away.
       const removalListener = removedPoint => {
         if ( removedPoint === addedPoint ) {
           this.pointControllers.remove( pointController );

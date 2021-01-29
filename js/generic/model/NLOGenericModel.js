@@ -82,7 +82,7 @@ class NLOGenericModel {
     this.primaryNumberLinePointControllers = createObservableArray();
     this.primaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
-      // add a point controller for the newly added point
+      // Add a point controller for the newly added point.
       const pointController = new PointController( {
         color: addedPoint.colorProperty.value,
         numberLines: [ this.primaryNumberLine ],
@@ -91,7 +91,7 @@ class NLOGenericModel {
       } );
       this.primaryNumberLinePointControllers.push( pointController );
 
-      // remove the point controller when the associated point goes away
+      // Remove the point controller when the associated point goes away.
       const removalListener = removedPoint => {
         if ( removedPoint === addedPoint ) {
           this.primaryNumberLinePointControllers.remove( pointController );
@@ -139,7 +139,7 @@ class NLOGenericModel {
     this.secondaryNumberLinePointControllers = createObservableArray();
     this.secondaryNumberLine.residentPoints.addItemAddedListener( addedPoint => {
 
-      // add a point controller for the newly added point
+      // Add a point controller for the newly added point.
       const pointController = new PointController( {
         color: addedPoint.colorProperty.value,
         numberLines: [ this.secondaryNumberLine ],
@@ -148,7 +148,7 @@ class NLOGenericModel {
       } );
       this.secondaryNumberLinePointControllers.push( pointController );
 
-      // remove the point controller when the associated point goes away
+      // Remove the point controller when the associated point goes away.
       const removalListener = removedPoint => {
         if ( removedPoint === addedPoint ) {
           this.secondaryNumberLinePointControllers.remove( pointController );
@@ -169,12 +169,12 @@ class NLOGenericModel {
                           PRIMARY_NUMBER_LINE_LOWER_POSITION;
       if ( !this.primaryNumberLine.centerPositionProperty.value.equals( destination ) ) {
 
-        // stop any previous animation
+        // Stop any previous animation.
         if ( this.primaryNumberLineAnimation ) {
           this.primaryNumberLineAnimation.stop();
         }
 
-        // start an animation to move the number line to the desired position
+        // Start an animation to move the number line to the desired position.
         this.primaryNumberLineAnimation = new Animation( {
           duration: 0.5,
           targets: [
