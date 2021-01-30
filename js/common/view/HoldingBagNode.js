@@ -7,16 +7,28 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import positiveValueItemsBagImage from '../../../images/assets-bag_png.js';
 import negativeValueItemsBagImage from '../../../images/debts-bag_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
+
+// constants
+const TAG_RECTANGLE_COMMON_OPTIONS = {
+  fill: Color.WHITE,
+  stroke: Color.BLACK,
+  cornerRadius: 5
+};
+
+// value for sizing the tag and positioning the text within, empirically determined to look good with various strings
+const TAG_Y_MARGIN = 8;
+const TAG_X_MARGIN = 8;
+const TAG_ATTACHMENT_POINT_OFFSET = 9;
 
 class HoldingBagNode extends Node {
 
@@ -40,34 +52,40 @@ class HoldingBagNode extends Node {
       bottom: holdingBag.position.y + holdingBag.radius
     } );
 
-    // label
-    const labelNode = new BackgroundNode(
-      new Text( labelText, {
-        font: new PhetFont( 20 ),
-        maxWidth: 100
-      } ),
-      {
-        xMargin: 15,
-        yMargin: 4,
-        backgroundOptions: {
-          opacity: 1,
-          stroke: Color.BLACK,
-          cornerRadius: 4
-        }
-      }
+    // label text that will go on the tag
+    const labelTextNode = new Text( labelText, {
+      font: new PhetFont( 20 ),
+      maxWidth: 100
+    } );
+
+    // The tag is a rectangle with a white background and a textual label on it.  It is intended to like the sort of tag
+    // that one would attach to a gift.  Because the artwork has a ribbon that ends where the tags are supposed to be
+    // placed, some of the positioning and layout below are fairly "tweaky" and will need to be adjusted if the artwork
+    // changes.
+    const tag = new Rectangle(
+      0,
+      0,
+      labelTextNode.width + 2 * TAG_X_MARGIN + TAG_ATTACHMENT_POINT_OFFSET,
+      labelTextNode.height + 2 * TAG_Y_MARGIN,
+      TAG_RECTANGLE_COMMON_OPTIONS
     );
 
-    // Position the label.  This is a bit tweaky, and will need to change if the artwork does.
-    if ( holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ) {
-      labelNode.right = imageNode.centerX - 20;
-      labelNode.centerY = imageNode.top + 3;
+    // Position the text and the label based on whether the tag's ribbon attaches on the left or right side.
+    labelTextNode.centerY = tag.height / 2;
+    if ( image === negativeValueItemsBagImage ) {
+      labelTextNode.left = TAG_X_MARGIN;
+      tag.right = imageNode.centerX - 19;
+      tag.centerY = imageNode.top + 4;
     }
     else {
-      labelNode.left = imageNode.centerX + 22;
-      labelNode.centerY = imageNode.top + 3;
+      labelTextNode.right = tag.width - TAG_X_MARGIN;
+      tag.left = imageNode.centerX + 20;
+      tag.centerY = imageNode.top + 4;
     }
 
-    super( { children: [ labelNode, imageNode ] } );
+    tag.addChild( labelTextNode );
+
+    super( { children: [ tag, imageNode ] } );
   }
 }
 
