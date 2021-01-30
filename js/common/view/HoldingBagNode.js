@@ -27,7 +27,7 @@ const TAG_RECTANGLE_COMMON_OPTIONS = {
 
 // value for sizing the tag and positioning the text within, empirically determined to look good with various strings
 const TAG_Y_MARGIN = 8;
-const TAG_X_MARGIN = 8;
+const TAG_X_MARGIN = 12;
 const TAG_ATTACHMENT_POINT_OFFSET = 9;
 
 class HoldingBagNode extends Node {
@@ -55,7 +55,7 @@ class HoldingBagNode extends Node {
     // label text that will go on the tag
     const labelTextNode = new Text( labelText, {
       font: new PhetFont( 20 ),
-      maxWidth: 100
+      maxWidth: 95
     } );
 
     // The tag is a rectangle with a white background and a textual label on it.  It is intended to like the sort of tag
