@@ -22,7 +22,7 @@ const simOptions = {
     leadDesign: 'Amanda McGarry',
     softwareDevelopment: 'John Blanco',
     team: 'Kathy Perkins',
-    qualityAssurance: 'Katie Woessner',
+    qualityAssurance: 'Logan Bray, Brooklyn Lash, Liam Mulhall, Devon Quispe, Katie Woessner',
     graphicArts: 'Megan Lai'
   }
 };
