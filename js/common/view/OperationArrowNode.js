@@ -283,14 +283,8 @@ class OperationArrowNode extends Node {
     }
     else {
 
-      // The amount of the operation is zero, so the curved line will be a loop that starts and ends at a point.
-      // However, odd shapes were produced when trying to loop to and from the exact same point, so there are some
-      // small offsets used in the X direction.
-      // TODO: Why is the adjustment necessary?  See https://github.com/phetsims/kite/issues/87.
+      // The amount of the operation is zero, so the curved line will be a loop that starts and ends at the same point.
       const loopStartAndEndPoint = startPoint;
-      const adjustmentAmount = 1; // in screen coordinates
-      const adjustedStartPoint = loopStartAndEndPoint.plusXY( -adjustmentAmount / 2, 0 );
-      const adjustedEndPoint = loopStartAndEndPoint.plusXY( adjustmentAmount / 2, 0 );
       const yAddFactor = APEX_DISTANCE_FROM_NUMBER_LINE * ( aboveNumberLine ? -1.5 : 1.5 ); // empirical for desired height
       const controlPointHeightMultiplier = 0.6; // empirically determined to get the desired loop width
       const controlPoint1 = new Vector2(
@@ -302,8 +296,8 @@ class OperationArrowNode extends Node {
         loopStartAndEndPoint.y + yAddFactor
       );
       lineShape = new Shape()
-        .moveToPoint( adjustedStartPoint )
-        .cubicCurveToPoint( controlPoint1, controlPoint2, adjustedEndPoint );
+        .moveToPoint( loopStartAndEndPoint )
+        .cubicCurveToPoint( controlPoint1, controlPoint2, loopStartAndEndPoint );
 
       // The formula for the arrowhead angle was determined through trial and error, which isn't a great way to do it
       // because it may not work if significant changes are made to the shape of the loop, but evaluating the Bezier
