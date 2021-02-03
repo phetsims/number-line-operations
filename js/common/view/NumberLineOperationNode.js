@@ -97,7 +97,7 @@ class NumberLineOperationNode extends Node {
       merge(
         {},
         NLCConstants.LABEL_BACKGROUND_OPTIONS,
-        { maxWidth: 280 } // empirically determined so as to never end up partially outside the dev bounds
+        { maxWidth: 225 } // empirically determined so as to never end up partially outside the dev bounds
       )
     );
     this.addChild( operationDescription );
