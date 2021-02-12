@@ -1,5 +1,5 @@
 {
-  "comment": "# number-line-operations 1.0.0 Wed Feb 03 2021 11:18:39 GMT-0700 (Mountain Standard Time)",
+  "comment": "# number-line-operations 1.0.0 Fri Feb 12 2021 00:19:00 GMT-0500 (Eastern Standard Time)",
   "assert": {
     "sha": "3df8c5ff9a465b031f84195a90bbb7e1be10a14d",
     "branch": "HEAD"
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "83e3ad776d29bc7d7713726578dac537e9464fc8",
+    "sha": "103fadbbd4b905c6307c1c21c651b5e59bbb8b31",
     "branch": "1.0"
   },
   "phet-core": {
@@ -65,8 +65,8 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "03b22ab6aaa6a85b38c5fd98e30116fabf05e9a6",
-    "branch": "HEAD"
+    "sha": "a82b7aad4b3f3e2e4bf5d4763b1342202305ce76",
+    "branch": "number-line-operations-1.0"
   },
   "scenery-phet": {
     "sha": "f9cc52056c13b669ffb66e5ad5ef487afd612326",
