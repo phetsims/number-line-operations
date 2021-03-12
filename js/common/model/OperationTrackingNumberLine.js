@@ -60,7 +60,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
 
     assert && assert(
     options.numberOfOperationsTracked > 0 && options.numberOfOperationsTracked <= 2,
-      'unsupported number of operations specified: ' + options.numberOfOperationsTracked
+      `unsupported number of operations specified: ${options.numberOfOperationsTracked}`
     );
     assert && assert(
       options.pointColorList.length = options.numberOfOperationsTracked + 1,

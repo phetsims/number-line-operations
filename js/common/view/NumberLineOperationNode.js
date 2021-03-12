@@ -201,10 +201,10 @@ class NumberLineOperationNode extends Node {
                              operation.amountProperty.value > 0 ?
                              MathSymbols.UNARY_PLUS :
                              '';
-            operationLabelTextNode.text = operationChar +
-                                          ' ' +
-                                          signChar +
-                                          Math.abs( operation.amountProperty.value ).toString( 10 );
+            operationLabelTextNode.text = `${operationChar
+                                          } ${
+                                          signChar
+                                          }${Math.abs( operation.amountProperty.value ).toString( 10 )}`;
             operationLabelTextNode.font = options.operationLabelFont;
 
             // no stroke in this case

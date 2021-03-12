@@ -38,7 +38,7 @@ class HoldingBag {
     }, options );
 
     // options validation
-    assert && assert( options.capacity >= 4 && options.capacity <= 5, 'unsupported capacity: ' + options.capacity );
+    assert && assert( options.capacity >= 4 && options.capacity <= 5, `unsupported capacity: ${options.capacity}` );
 
     // @public (read-only)
     this.position = position;

@@ -260,7 +260,7 @@ class NumericalExpression extends Text {
           }
           else {
             const operationChar = valueOrOperation === Operation.ADDITION ? MathSymbols.PLUS : MathSymbols.MINUS;
-            numericalExpressionString += ' ' + operationChar + ' ';
+            numericalExpressionString += ` ${operationChar} `;
           }
         } );
         this.text = numericalExpressionString;

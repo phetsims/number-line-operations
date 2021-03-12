@@ -41,7 +41,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
       maxWidth: 150 // empirically determined using stringTest=long
     } );
 
-    const equalsAndCurrencyUnits = new Text( '= ' + numberLineOperationsStrings.currencyUnits, {
+    const equalsAndCurrencyUnits = new Text( `= ${numberLineOperationsStrings.currencyUnits}`, {
       font: new PhetFont( 24 ),
       maxWidth: 150 // empirically determined using stringTest=long
     } );

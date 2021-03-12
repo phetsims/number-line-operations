@@ -35,7 +35,7 @@ class ChipStackNode extends Node {
 
     assert && assert(
     valueItem.value >= -5 && valueItem.value <= 5 && valueItem.value !== 0,
-      'cannot represent item with value ' + valueItem.value
+      `cannot represent item with value ${valueItem.value}`
     );
 
     const chipFill = valueItem.value > 0 ? Color.YELLOW : Color.RED;

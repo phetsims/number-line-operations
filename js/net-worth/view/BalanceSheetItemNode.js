@@ -131,7 +131,7 @@ class BalanceSheetItemNode extends Node {
 
     // Get the imageInfo that is associated with this balance sheet item's value.
     const imageInfo = MAP_OF_VALUES_TO_IMAGE_INFO.get( balanceSheetItem.value );
-    assert && assert( imageInfo, 'no imageInfo found for value ' + balanceSheetItem.value );
+    assert && assert( imageInfo, `no imageInfo found for value ${balanceSheetItem.value}` );
 
     // out-of-bag image - shown when the balance sheet item is not in a balance sheet item bag
     const outOfBagImageNode = new Image( imageInfo.outOfBagImage, {
