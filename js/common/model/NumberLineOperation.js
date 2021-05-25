@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * NumberLineOperation is a class used to track arithmetic operations of addition and subtraction that have been

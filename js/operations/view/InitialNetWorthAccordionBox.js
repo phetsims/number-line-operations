@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * InitialNetWorthAccordionBox displays the initial net worth value, which is provided as a Property, in an accordion

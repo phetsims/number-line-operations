@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * DynamicOperationDescription instances are used to provide a textual description of a number line operation BEFORE it

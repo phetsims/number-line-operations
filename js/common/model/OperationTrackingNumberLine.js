@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * OperationTrackingNumberLine is a specialization of the spatialized number line that tracks a set of addition and

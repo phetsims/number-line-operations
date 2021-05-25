@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2021, University of Colorado Boulder
 
 /**
  * OperationArrowNode (which, by the way, totally sounds like a movie title) is a Scenery node that depicts an operation
