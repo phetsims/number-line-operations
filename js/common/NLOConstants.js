@@ -9,7 +9,7 @@
 import Range from '../../../dot/js/Range.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import Color from '../../../scenery/js/util/Color.js';
+import { Color } from '../../../scenery/js/imports.js';
 import numberLineOperations from '../numberLineOperations.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 

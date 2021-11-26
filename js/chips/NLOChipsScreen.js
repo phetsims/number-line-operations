@@ -7,7 +7,7 @@
 import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
-import Image from '../../../scenery/js/nodes/Image.js';
+import { Image } from '../../../scenery/js/imports.js';
 import chipsHomeScreenIcon from '../../images/chips-home-screen-icon_png.js';
 import numberLineOperations from '../numberLineOperations.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';

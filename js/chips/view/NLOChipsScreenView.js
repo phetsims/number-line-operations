@@ -12,7 +12,7 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import NLCheckboxGroup from '../../../../number-line-common/js/common/view/NLCheckboxGroup.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
-import Color from '../../../../scenery/js/util/Color.js';
+import { Color } from '../../../../scenery/js/imports.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
 import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
