@@ -7,7 +7,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Color } from '../../../../scenery/js/imports.js';
@@ -18,7 +18,7 @@ import OperationEntryControl from './OperationEntryControl.js';
 
 // constants
 const DEFAULT_THEME_COLOR = new Color( 153, 206, 255 );
-const PageControlPosition = Enumeration.byKeys( [ 'ABOVE', 'BELOW' ] );
+const PageControlPosition = EnumerationDeprecated.byKeys( [ 'ABOVE', 'BELOW' ] );
 
 class OperationEntryCarousel extends Node {
 

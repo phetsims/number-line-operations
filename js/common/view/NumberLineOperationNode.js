@@ -11,7 +11,7 @@
 import Property from '../../../../axon/js/Property.js';
 import Utils from '../../../../dot/js/Utils.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
@@ -28,7 +28,7 @@ import Operation from '../model/Operation.js';
 import OperationArrowNode from './OperationArrowNode.js';
 
 // constants
-const RelativePosition = Enumeration.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
+const RelativePosition = EnumerationDeprecated.byKeys( [ 'ABOVE_NUMBER_LINE', 'BELOW_NUMBER_LINE' ] );
 const DISTANCE_BETWEEN_LABELS = 3; // in screen coordinates
 const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
 const OPERATION_DESCRIPTION_PRE_FADE_DELAY = 0.7; // in seconds

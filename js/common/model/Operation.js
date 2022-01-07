@@ -6,9 +6,9 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Enumeration from '../../../../phet-core/js/Enumeration.js';
+import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
-const Operation = Enumeration.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
+const Operation = EnumerationDeprecated.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
 numberLineOperations.register( 'Operation', Operation );
 export default Operation;
