@@ -8,7 +8,7 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -34,7 +34,7 @@ class NumberLineOperation {
     }, options );
 
     // @public {Property.<OperationType>} - type of operation, e.g. addition or subtraction
-    this.operationTypeProperty = new EnumerationProperty( Operation, options.initialOperationType );
+    this.operationTypeProperty = new EnumerationDeprecatedProperty( Operation, options.initialOperationType );
 
     // @public - amount of the operation
     this.amountProperty = new NumberProperty( options.initialAmount );
