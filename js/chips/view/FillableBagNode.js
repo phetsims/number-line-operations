@@ -12,8 +12,8 @@ import merge from '../../../../phet-core/js/merge.js';
 import { Image } from '../../../../scenery/js/imports.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import { Path } from '../../../../scenery/js/imports.js';
-import bagForeground from '../../../images/nl-bag-foreground_png.js';
-import numberLineCommon from '../../numberLineOperations.js';
+import nlBagForeground_png from '../../../images/nlBagForeground_png.js';
+import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const BAG_OUTLINE_SVG_STRING = 'M367.541,188.392c0,0-7.992-7.075,39.988-42.405\n' +
@@ -44,7 +44,7 @@ class FillableBagNode extends Node {
       lineWidth: options.lineWidth,
       center: Vector2.ZERO
     } );
-    const overlayImage = new Image( bagForeground, { opacity: 0.9 } );
+    const overlayImage = new Image( nlBagForeground_png, { opacity: 0.9 } );
     overlayImage.setScaleMagnitude( bagOutlineNode.width / overlayImage.width );
     overlayImage.center = Vector2.ZERO;
     options.children = [ bagOutlineNode, overlayImage ];
@@ -75,5 +75,5 @@ class FillableBagNode extends Node {
   set fill( fill ) { this.setFill( fill ); }
 }
 
-numberLineCommon.register( 'FillableBagNode', FillableBagNode );
+numberLineOperations.register( 'FillableBagNode', FillableBagNode );
 export default FillableBagNode;

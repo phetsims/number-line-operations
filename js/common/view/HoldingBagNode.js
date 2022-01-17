@@ -13,8 +13,8 @@ import { Node } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import { Color } from '../../../../scenery/js/imports.js';
-import positiveValueItemsBagImage from '../../../images/assets-bag_png.js';
-import negativeValueItemsBagImage from '../../../images/debts-bag_png.js';
+import assetsBag_png from '../../../images/assetsBag_png.js';
+import debtsBag_png from '../../../images/debtsBag_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
 
@@ -40,8 +40,8 @@ class HoldingBagNode extends Node {
 
     // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
-                  negativeValueItemsBagImage :
-                  positiveValueItemsBagImage;
+                  debtsBag_png :
+                  assetsBag_png;
 
     const imageNode = new Image( image, {
       minWidth: holdingBag.radius * 2,
@@ -72,7 +72,7 @@ class HoldingBagNode extends Node {
 
     // Position the text and the label based on whether the tag's ribbon attaches on the left or right side.
     labelTextNode.centerY = tag.height / 2;
-    if ( image === negativeValueItemsBagImage ) {
+    if ( image === debtsBag_png ) {
       labelTextNode.left = TAG_X_MARGIN;
       tag.right = imageNode.centerX - 19;
       tag.centerY = imageNode.top + 4;

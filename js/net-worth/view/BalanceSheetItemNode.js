@@ -19,22 +19,22 @@ import { Node } from '../../../../scenery/js/imports.js';
 import { Rectangle } from '../../../../scenery/js/imports.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import { Color } from '../../../../scenery/js/imports.js';
-import asset100OutOfBagImage from '../../../images/asset-100-value_png.js';
-import asset100InBagImage from '../../../images/asset-100_png.js';
-import asset200OutOfBagImage from '../../../images/asset-200-value_png.js';
-import asset200InBagImage from '../../../images/asset-200_png.js';
-import asset300OutOfBagImage from '../../../images/asset-300-value_png.js';
-import asset300InBagImage from '../../../images/asset-300_png.js';
-import asset400OutOfBagImage from '../../../images/asset-400-value_png.js';
-import asset400InBagImage from '../../../images/asset-400_png.js';
-import debt100OutOfBagImage from '../../../images/debt-100-value_png.js';
-import debt100InBagImage from '../../../images/debt-100_png.js';
-import debt200OutOfBagImage from '../../../images/debt-200-value_png.js';
-import debt200InBagImage from '../../../images/debt-200_png.js';
-import debt300OutOfBagImage from '../../../images/debt-300-value_png.js';
-import debt300InBagImage from '../../../images/debt-300_png.js';
-import debt400OutOfBagImage from '../../../images/debt-400-value_png.js';
-import debt400InBagImage from '../../../images/debt-400_png.js';
+import asset100Value_png from '../../../images/asset100Value_png.js';
+import asset100_png from '../../../images/asset100_png.js';
+import asset200Value_png from '../../../images/asset200Value_png.js';
+import asset200_png from '../../../images/asset200_png.js';
+import asset300Value_png from '../../../images/asset300Value_png.js';
+import asset300_png from '../../../images/asset300_png.js';
+import asset400Value_png from '../../../images/asset400Value_png.js';
+import asset400_png from '../../../images/asset400_png.js';
+import debt100Value_png from '../../../images/debt100Value_png.js';
+import debt100_png from '../../../images/debt100_png.js';
+import debt200Value_png from '../../../images/debt200Value_png.js';
+import debt200_png from '../../../images/debt200_png.js';
+import debt300Value_png from '../../../images/debt300Value_png.js';
+import debt300_png from '../../../images/debt300_png.js';
+import debt400Value_png from '../../../images/debt400Value_png.js';
+import debt400_png from '../../../images/debt400_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
 
@@ -53,71 +53,71 @@ const MAP_OF_VALUES_TO_IMAGE_INFO = new Map( [
   [
     100,
     {
-      outOfBagImage: asset100OutOfBagImage,
+      outOfBagImage: asset100Value_png,
       outOfBagWidth: 80,
-      inBagImage: asset100InBagImage
+      inBagImage: asset100_png
     }
   ],
   [
     200,
     {
-      outOfBagImage: asset200OutOfBagImage,
+      outOfBagImage: asset200Value_png,
       outOfBagWidth: 85,
       outOfBagLabelOffset: new Vector2( 0, -3 ),
-      inBagImage: asset200InBagImage
+      inBagImage: asset200_png
     }
   ],
   [
     300,
     {
-      outOfBagImage: asset300OutOfBagImage,
+      outOfBagImage: asset300Value_png,
       outOfBagWidth: 100,
       outOfBagLabelOffset: new Vector2( 0, 5 ),
-      inBagImage: asset300InBagImage
+      inBagImage: asset300_png
     }
   ],
   [
     400,
     {
-      outOfBagImage: asset400OutOfBagImage,
+      outOfBagImage: asset400Value_png,
       outOfBagWidth: 50,
       outOfBagLabelOffset: new Vector2( 0, 7 ),
-      inBagImage: asset400InBagImage
+      inBagImage: asset400_png
     }
   ],
   [
     -100,
     {
-      outOfBagImage: debt100OutOfBagImage,
+      outOfBagImage: debt100Value_png,
       outOfBagWidth: 65,
       outOfBagLabelOffset: new Vector2( 0, 2 ),
-      inBagImage: debt100InBagImage
+      inBagImage: debt100_png
     }
   ],
   [
     -200,
     {
-      outOfBagImage: debt200OutOfBagImage,
+      outOfBagImage: debt200Value_png,
       outOfBagWidth: 70,
       outOfBagLabelOffset: new Vector2( 8, -2 ),
-      inBagImage: debt200InBagImage
+      inBagImage: debt200_png
     }
   ],
   [
     -300,
     {
-      outOfBagImage: debt300OutOfBagImage,
+      outOfBagImage: debt300Value_png,
       outOfBagWidth: 65,
-      inBagImage: debt300InBagImage
+      inBagImage: debt300_png
     }
   ],
   [
     -400,
     {
-      outOfBagImage: debt400OutOfBagImage,
+      outOfBagImage: debt400Value_png,
       outOfBagWidth: 70,
       outOfBagLabelOffset: new Vector2( 8, -2 ),
-      inBagImage: debt400InBagImage
+      inBagImage: debt400_png
     }
   ]
 ] );

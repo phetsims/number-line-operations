@@ -8,7 +8,7 @@ import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import { Image } from '../../../scenery/js/imports.js';
-import operationsHomeScreenIcon from '../../images/operations-home-screen-icon_png.js';
+import operationsHomeScreenIcon_png from '../../images/operationsHomeScreenIcon_png.js';
 import numberLineOperations from '../numberLineOperations.js';
 import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
 import NLOOperationsModel from './model/NLOOperationsModel.js';
@@ -24,7 +24,7 @@ class NLOOperationsScreen extends Screen {
     const options = {
       name: numberLineOperationsStrings.screen.operations,
       backgroundColorProperty: new Property( '#fffef3' ),
-      homeScreenIcon: new ScreenIcon( new Image( operationsHomeScreenIcon ), {
+      homeScreenIcon: new ScreenIcon( new Image( operationsHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,
         maxIconHeightProportion: 1
       } ),
