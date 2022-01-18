@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2022, University of Colorado Boulder
 
 /**
  * BalanceSheetItemNode is the view representation of a ValueItem, which is the general term being used in this
