@@ -7,7 +7,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Matrix3 from '../../../../dot/js/Matrix3.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
@@ -92,7 +92,7 @@ class OperationArrowNode extends Node {
     let growArrowAnimation = null;
 
     // Update the appearance as the things that can affect it change.
-    Property.multilink(
+    Multilink.multilink(
       [
         operation.isActiveProperty,
         operation.operationTypeProperty,

@@ -8,7 +8,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Utils from '../../../../dot/js/Utils.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
@@ -158,7 +158,7 @@ class NumberLineOperationNode extends Node {
     ) );
 
     // Update the labels and label positions as the attributes of the operation and number line change.
-    const updateMultilink = Property.multilink(
+    const updateMultilink = Multilink.multilink(
       [
         operation.isActiveProperty,
         originPoint.valueProperty,

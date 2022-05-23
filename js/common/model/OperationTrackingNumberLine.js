@@ -11,7 +11,7 @@
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -183,7 +183,7 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
     this.operations.forEach( operation => {
 
       // Set up listeners to update the endpoint values as the operations change.
-      Property.multilink(
+      Multilink.multilink(
         [ operation.isActiveProperty, operation.amountProperty, operation.operationTypeProperty ],
         updateEndpoints
       );

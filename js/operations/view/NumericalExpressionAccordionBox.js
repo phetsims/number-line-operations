@@ -10,7 +10,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
@@ -271,7 +271,7 @@ class NumericalExpression extends Text {
     // Hook up the various properties that should trigger an update.  No unlink is needed.
     numberLine.startingValueProperty.link( update );
     numberLine.operations.forEach( operation => {
-      Property.multilink(
+      Multilink.multilink(
         [ operation.isActiveProperty, operation.amountProperty, operation.operationTypeProperty ],
         update
       );

@@ -10,7 +10,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Property from '../../../../axon/js/Property.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 import merge from '../../../../phet-core/js/merge.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -75,7 +75,7 @@ class DynamicOperationDescription extends Text {
     operationDescriptionsVisibleProperty.linkAttribute( this, 'visible' );
 
     // Update the text as the attributes of the operation change.
-    Property.multilink(
+    Multilink.multilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
         if ( amount === 0 ) {
@@ -105,7 +105,7 @@ class DynamicOperationDescription extends Text {
 
     // Listen for changes to the attributes of the operation and, if the other conditions check out, initiate a fade-in
     // when changes occur.
-    Property.lazyMultilink(
+    Multilink.lazyMultilink(
       [ operationDescriptionsVisibleProperty, operation.amountProperty, operation.operationTypeProperty ],
       () => {
         if ( !resetInProgressProperty.value && operationDescriptionsVisibleProperty.value &&
