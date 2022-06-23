@@ -57,22 +57,10 @@ class NLOOperationsScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox(
-        numberLineOperationsStrings.operationDescriptions,
-        model.numberLine.showOperationDescriptionsProperty
-      ),
-      new NLCheckbox(
-        numberLineOperationsStrings.operationLabels,
-        model.numberLine.showOperationLabelsProperty
-      ),
-      new NLCheckbox(
-        numberLineOperationsStrings.pointLabels,
-        model.numberLine.showPointLabelsProperty
-      ),
-      new NLCheckbox(
-        numberLineOperationsStrings.tickMarks,
-        model.numberLine.showTickMarksProperty
-      )
+      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, numberLineOperationsStrings.operationDescriptions ),
+      new NLCheckbox( model.numberLine.showOperationLabelsProperty, numberLineOperationsStrings.operationLabels ),
+      new NLCheckbox( model.numberLine.showPointLabelsProperty, numberLineOperationsStrings.pointLabels ),
+      new NLCheckbox( model.numberLine.showTickMarksProperty, numberLineOperationsStrings.tickMarks )
     ];
     this.addChild( new NLCheckboxGroup( checkboxes ) );
 
