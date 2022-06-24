@@ -65,15 +65,11 @@ class OperationEntryCarousel extends Node {
     } );
 
     // page indicator
-    const pageControl = new PageControl(
-      carousel.numberOfPages,
-      carousel.pageNumberProperty,
-      {
-        orientation: 'horizontal',
-        interactive: true,
-        centerX: carousel.centerX
-      }
-    );
+    const pageControl = new PageControl( carousel.pageNumberProperty, carousel.numberOfPages, {
+      orientation: 'horizontal',
+      interactive: true,
+      centerX: carousel.centerX
+    } );
     if ( options.pageControlPosition === PageControlPosition.BELOW ) {
       pageControl.top = carousel.bottom + 10;
     }
