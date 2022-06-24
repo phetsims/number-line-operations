@@ -89,7 +89,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     // simplify button
     const simplifyProperty = new BooleanProperty( false );
-    const simplifyButton = new RectangularMomentaryButton( false, true, simplifyProperty, {
+    const simplifyButton = new RectangularMomentaryButton( simplifyProperty, false, true, {
       content: new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 16 ), maxWidth: 200 } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
@@ -113,7 +113,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     // evaluate button
     const evaluateProperty = new BooleanProperty( false );
-    const evaluateButton = new RectangularMomentaryButton( false, true, evaluateProperty, {
+    const evaluateButton = new RectangularMomentaryButton( evaluateProperty, false, true, {
       content: new Text( MathSymbols.EQUAL_TO, { font: new PhetFont( 20 ) } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: evaluationPossibleProperty,
