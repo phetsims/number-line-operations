@@ -29,16 +29,18 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
   constructor( secondNumberLineVisibleProperty, options ) {
 
     options = merge( {
-      buttonContentXMargin: 5,
-      buttonContentYMargin: 10,
-      baseColor: 'white',
-      selectedLineWidth: 2,
-      deselectedLineWidth: 0.5,
-      deselectedButtonOpacity: 0.5,
       orientation: 'horizontal',
       spacing: 12,
       touchAreaXDilation: 2,
-      touchAreaYDilation: 2
+      touchAreaYDilation: 2,
+      radioButtonOptions: {
+        xMargin: 5,
+        yMargin: 10,
+        baseColor: 'white',
+        selectedLineWidth: 2,
+        deselectedLineWidth: 0.5,
+        deselectedButtonOpacity: 0.5
+      }
     }, options );
 
     // Create the single/dual number line selection icons.

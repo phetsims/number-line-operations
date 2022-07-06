@@ -87,14 +87,16 @@ class OperationEntryControl extends HBox {
         { value: Operation.SUBTRACTION, node: new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
       ],
       {
-        baseColor: Color.WHITE,
         orientation: 'vertical',
         spacing: interButtonSpacing,
-        buttonContentXMargin: 8,
-        buttonContentYMargin: 0,
-        selectedLineWidth: 2.5,
         touchAreaXDilation: 4,
-        touchAreaYDilation: interButtonSpacing / 2
+        touchAreaYDilation: interButtonSpacing / 2,
+        radioButtonOptions: {
+          baseColor: Color.WHITE,
+          xMargin: 8,
+          yMargin: 0,
+          selectedLineWidth: 2.5
+        }
       }
     );
 
