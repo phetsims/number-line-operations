@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2022, University of Colorado Boulder
 
 /**
  * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
