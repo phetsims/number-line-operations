@@ -10,8 +10,8 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import merge from '../../../../phet-core/js/merge.js';

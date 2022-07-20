@@ -9,8 +9,7 @@
 
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Color } from '../../../../scenery/js/imports.js';
+import { Color, Node } from '../../../../scenery/js/imports.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import numberLineOperations from '../../numberLineOperations.js';

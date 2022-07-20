@@ -8,11 +8,7 @@
  */
 
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Image } from '../../../../scenery/js/imports.js';
-import { Node } from '../../../../scenery/js/imports.js';
-import { Rectangle } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
-import { Color } from '../../../../scenery/js/imports.js';
+import { Color, Image, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import assetsBag_png from '../../../images/assetsBag_png.js';
 import debtsBag_png from '../../../images/debtsBag_png.js';
 import numberLineOperations from '../../numberLineOperations.js';

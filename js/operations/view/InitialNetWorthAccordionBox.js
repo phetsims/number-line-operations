@@ -9,12 +9,10 @@
 
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
-import NumberPicker from '../../../../sun/js/NumberPicker.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { HBox } from '../../../../scenery/js/imports.js';
-import { RichText } from '../../../../scenery/js/imports.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { HBox, RichText, Text } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
+import NumberPicker from '../../../../sun/js/NumberPicker.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
