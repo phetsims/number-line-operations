@@ -92,7 +92,9 @@ class OperationEntryControl extends HBox {
           baseColor: Color.WHITE,
           xMargin: 8,
           yMargin: 0,
-          selectedLineWidth: 2.5
+          buttonAppearanceStrategyOptions: {
+            selectedLineWidth: 2.5
+          }
         }
       }
     );

@@ -37,9 +37,11 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
         xMargin: 5,
         yMargin: 10,
         baseColor: 'white',
-        selectedLineWidth: 2,
-        deselectedLineWidth: 0.5,
-        deselectedButtonOpacity: 0.5
+        buttonAppearanceStrategyOptions: {
+          selectedLineWidth: 2,
+          deselectedLineWidth: 0.5,
+          deselectedButtonOpacity: 0.5
+        }
       }
     }, options );
 
