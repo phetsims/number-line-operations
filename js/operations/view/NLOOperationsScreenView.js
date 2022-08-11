@@ -102,7 +102,7 @@ class NLOOperationsScreenView extends ScreenView {
     // https://github.com/phetsims/number-line-operations/issues/23.
     phet.joist.display.addInputListener( {
       down: event => {
-        const screen = phet.joist.sim.screenProperty.value;
+        const screen = phet.joist.sim.selectedScreenProperty.value;
         if ( screen && screen.view === this ) {
 
           // See if our press was a "miss" (trail length 1) or a hit on our screen (screen.view in the trail). This is
