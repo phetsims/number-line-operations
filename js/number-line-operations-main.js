@@ -15,7 +15,7 @@ import NLONetWorthScreen from './net-worth/NLONetWorthScreen.js';
 import numberLineOperationsStrings from './numberLineOperationsStrings.js';
 import NLOOperationsScreen from './operations/NLOOperationsScreen.js';
 
-const numberLineOperationsTitleString = numberLineOperationsStrings[ 'number-line-operations' ].title;
+const numberLineOperationsTitleStringProperty = numberLineOperationsStrings[ 'number-line-operations' ].titleStringProperty;
 
 const simOptions = {
   credits: {
@@ -36,6 +36,6 @@ simLauncher.launch( () => {
     new NLOOperationsScreen( Tandem.ROOT.createTandem( 'operationsScreen' ) ),
     new NLOGenericScreen( Tandem.ROOT.createTandem( 'genericScreen' ) )
   ];
-  const sim = new Sim( numberLineOperationsTitleString, screens, simOptions );
+  const sim = new Sim( numberLineOperationsTitleStringProperty, screens, simOptions );
   sim.start();
 } );
