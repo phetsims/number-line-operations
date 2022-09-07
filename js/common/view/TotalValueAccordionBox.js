@@ -15,7 +15,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 // constants
 const DEFAULT_WIDTH = 350; // empirically determined to look decent
@@ -29,8 +29,8 @@ class TotalValueAccordionBox extends AccordionBox {
   constructor( totalValueProperty, options ) {
 
     options = merge( {
-      titleText: numberLineOperationsStrings.total,
-      labelText: numberLineOperationsStrings.total,
+      titleText: NumberLineOperationsStrings.total,
+      labelText: NumberLineOperationsStrings.total,
       showTotalAsCurrency: false,
       minWidth: DEFAULT_WIDTH,
       maxWidth: DEFAULT_WIDTH
@@ -47,15 +47,15 @@ class TotalValueAccordionBox extends AccordionBox {
       let readoutText;
       const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.showTotalAsCurrency ) {
-        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalCurrencyPattern, {
+        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalCurrencyPattern, {
           totalString: options.labelText,
           sign: sign,
-          currencyUnits: numberLineOperationsStrings.currencyUnits,
+          currencyUnits: NumberLineOperationsStrings.currencyUnits,
           totalValue: Math.abs( totalValue )
         } );
       }
       else {
-        readoutText = StringUtils.fillIn( numberLineOperationsStrings.totalValuePattern, {
+        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalValuePattern, {
           totalString: options.labelText,
           totalValue: sign + Math.abs( totalValue ).toString( 10 )
         } );

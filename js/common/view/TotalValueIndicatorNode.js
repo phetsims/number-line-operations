@@ -14,7 +14,7 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 class TotalValueIndicatorNode extends Node {
 
@@ -60,9 +60,9 @@ class TotalValueIndicatorNode extends Node {
       // Update the label text.
       const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.isCurrency ) {
-        labelNode.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
+        labelNode.text = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
           sign: sign,
-          currencyUnits: numberLineOperationsStrings.currencyUnits,
+          currencyUnits: NumberLineOperationsStrings.currencyUnits,
           value: Math.abs( totalValue )
         } );
       }

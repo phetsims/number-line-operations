@@ -21,7 +21,7 @@ import { Color, Node, Text } from '../../../../scenery/js/imports.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import Operation from '../model/Operation.js';
 import OperationArrowNode from './OperationArrowNode.js';
 
@@ -182,7 +182,7 @@ class NumberLineOperationNode extends Node {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
-            operationLabelTextNode.text = numberLineOperationsStrings.operationOffScale;
+            operationLabelTextNode.text = NumberLineOperationsStrings.operationOffScale;
 
             // Use a different (generally smaller) font in this case.
             operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
@@ -316,39 +316,39 @@ class NumberLineOperationNode extends Node {
   static getOperationDescriptionString( operation, useFinancialDescriptions ) {
 
     const addOrRemoveString = operation.operationTypeProperty.value === Operation.ADDITION ?
-                              numberLineOperationsStrings.add :
-                              numberLineOperationsStrings.remove;
+                              NumberLineOperationsStrings.add :
+                              NumberLineOperationsStrings.remove;
     let operationDescriptionString;
     if ( useFinancialDescriptions ) {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
           addOrRemove: addOrRemoveString,
-          currencyUnits: numberLineOperationsStrings.currencyUnits
+          currencyUnits: NumberLineOperationsStrings.currencyUnits
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
           addOrRemove: addOrRemoveString,
           assetOrDebt: operation.amountProperty.value > 0 ?
-                       numberLineOperationsStrings.asset :
-                       numberLineOperationsStrings.debt,
-          currencyUnits: numberLineOperationsStrings.currencyUnits,
+                       NumberLineOperationsStrings.asset :
+                       NumberLineOperationsStrings.debt,
+          currencyUnits: NumberLineOperationsStrings.currencyUnits,
           value: Math.abs( operation.amountProperty.value )
         } );
       }
     }
     else {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroPattern, {
           addOrRemove: addOrRemoveString
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( numberLineOperationsStrings.addRemovePositiveNegativePattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemovePositiveNegativePattern, {
           addOrRemove: addOrRemoveString,
           positiveOrNegative: operation.amountProperty.value > 0 ?
-                              numberLineOperationsStrings.positive :
-                              numberLineOperationsStrings.negative,
+                              NumberLineOperationsStrings.positive :
+                              NumberLineOperationsStrings.negative,
           value: Math.abs( operation.amountProperty.value )
         } );
       }

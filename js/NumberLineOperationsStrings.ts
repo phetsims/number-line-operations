@@ -87,8 +87,8 @@ type StringsType = {
   'loanStringProperty': TReadOnlyProperty<string>;
 };
 
-const numberLineOperationsStrings = getStringModule( 'NUMBER_LINE_OPERATIONS' ) as StringsType;
+const NumberLineOperationsStrings = getStringModule( 'NUMBER_LINE_OPERATIONS' ) as StringsType;
 
-numberLineOperations.register( 'numberLineOperationsStrings', numberLineOperationsStrings );
+numberLineOperations.register( 'NumberLineOperationsStrings', NumberLineOperationsStrings );
 
-export default numberLineOperationsStrings;
+export default NumberLineOperationsStrings;

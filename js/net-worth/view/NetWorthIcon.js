@@ -12,13 +12,13 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Image, Text } from '../../../../scenery/js/imports.js';
 import netWorthHomeScreenIcon_png from '../../../images/netWorthHomeScreenIcon_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 class NetWorthIcon extends ScreenIcon {
 
   constructor() {
     const piggyBankImage = new Image( netWorthHomeScreenIcon_png );
-    const currencySymbol = new Text( numberLineOperationsStrings.currencyUnits, {
+    const currencySymbol = new Text( NumberLineOperationsStrings.currencyUnits, {
 
       fill: Color.WHITE,
       stroke: Color.black,

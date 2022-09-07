@@ -7,7 +7,7 @@
 import Property from '../../../axon/js/Property.js';
 import Screen from '../../../joist/js/Screen.js';
 import numberLineOperations from '../numberLineOperations.js';
-import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLONetWorthModel from './model/NLONetWorthModel.js';
 import NetWorthIcon from './view/NetWorthIcon.js';
 import NLONetWorthScreenView from './view/NLONetWorthScreenView.js';
@@ -20,7 +20,7 @@ class NLONetWorthScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: numberLineOperationsStrings.screen.netWorth,
+      name: NumberLineOperationsStrings.screen.netWorth,
       backgroundColorProperty: new Property( '#f8f6fe' ),
       homeScreenIcon: new NetWorthIcon(),
       tandem: tandem

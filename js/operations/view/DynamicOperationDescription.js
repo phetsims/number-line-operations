@@ -19,7 +19,7 @@ import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Operation from '../../common/model/Operation.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 // constants
 const FADE_TIME = 0.25; // in seconds
@@ -79,22 +79,22 @@ class DynamicOperationDescription extends Text {
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
         if ( amount === 0 ) {
-          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+          this.text = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
             addOrRemove: operationType === Operation.ADDITION ?
-                         numberLineOperationsStrings.add :
-                         numberLineOperationsStrings.remove,
-            currencyUnits: numberLineOperationsStrings.currencyUnits
+                         NumberLineOperationsStrings.add :
+                         NumberLineOperationsStrings.remove,
+            currencyUnits: NumberLineOperationsStrings.currencyUnits
           } );
         }
         else {
-          this.text = StringUtils.fillIn( numberLineOperationsStrings.addRemoveAssetDebtPattern, {
+          this.text = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
             addOrRemove: operationType === Operation.ADDITION ?
-                         numberLineOperationsStrings.add :
-                         numberLineOperationsStrings.remove,
+                         NumberLineOperationsStrings.add :
+                         NumberLineOperationsStrings.remove,
             assetOrDebt: amount > 0 ?
-                         numberLineOperationsStrings.asset :
-                         numberLineOperationsStrings.debt,
-            currencyUnits: numberLineOperationsStrings.currencyUnits,
+                         NumberLineOperationsStrings.asset :
+                         NumberLineOperationsStrings.debt,
+            currencyUnits: NumberLineOperationsStrings.currencyUnits,
             value: Math.abs( amount )
           } );
         }

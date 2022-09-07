@@ -22,7 +22,7 @@ import NLOConstants from '../../common/NLOConstants.js';
 import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import NumericalExpressionAccordionBox from '../../operations/view/NumericalExpressionAccordionBox.js';
 import NLOGenericModel from '../model/NLOGenericModel.js';
 import SingleDualNumberLineSelector from './SingleDualNumberLineSelector.js';
@@ -47,9 +47,9 @@ class NLOGenericScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.primaryNumberLine.showOperationLabelsProperty, numberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.primaryNumberLine.showPointLabelsProperty, numberLineOperationsStrings.pointLabels ),
-      new NLCheckbox( model.primaryNumberLine.showTickMarksProperty, numberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.primaryNumberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
+      new NLCheckbox( model.primaryNumberLine.showPointLabelsProperty, NumberLineOperationsStrings.pointLabels ),
+      new NLCheckbox( model.primaryNumberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
     ];
     const checkboxGroup = new NLCheckboxGroup( checkboxes );
     this.addChild( checkboxGroup );
@@ -210,7 +210,7 @@ class InteractiveNumberLineView extends Node {
     options = merge( {
 
       numericalExpressionAccordionBoxOptions: {
-        titleNode: new Text( numberLineOperationsStrings.numericalExpression, {
+        titleNode: new Text( NumberLineOperationsStrings.numericalExpression, {
           font: new PhetFont( 18 ),
           maxWidth: 250
         } ),

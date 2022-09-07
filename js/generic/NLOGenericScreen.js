@@ -10,7 +10,7 @@ import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import { Image } from '../../../scenery/js/imports.js';
 import genericHomeScreenIcon_png from '../../images/genericHomeScreenIcon_png.js';
 import numberLineOperations from '../numberLineOperations.js';
-import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLOGenericModel from './model/NLOGenericModel.js';
 import NLOGenericScreenView from './view/NLOGenericScreenView.js';
 
@@ -22,7 +22,7 @@ class NLOGenericScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: numberLineOperationsStrings.screen.generic,
+      name: NumberLineOperationsStrings.screen.generic,
       backgroundColorProperty: new Property( '#f3fffe' ),
       homeScreenIcon: new ScreenIcon( new Image( genericHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

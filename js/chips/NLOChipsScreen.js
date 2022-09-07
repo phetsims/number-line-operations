@@ -10,7 +10,7 @@ import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import { Image } from '../../../scenery/js/imports.js';
 import chipsHomeScreenIcon_png from '../../images/chipsHomeScreenIcon_png.js';
 import numberLineOperations from '../numberLineOperations.js';
-import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLOChipsModel from './model/NLOChipsModel.js';
 import NLOChipsScreenView from './view/NLOChipsScreenView.js';
 
@@ -22,7 +22,7 @@ class NLOChipsScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: numberLineOperationsStrings.screen.chips,
+      name: NumberLineOperationsStrings.screen.chips,
       backgroundColorProperty: new Property( '#f8f6fe' ),
       homeScreenIcon: new ScreenIcon( new Image( chipsHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

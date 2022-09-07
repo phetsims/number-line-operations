@@ -10,7 +10,7 @@ import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import { Image } from '../../../scenery/js/imports.js';
 import operationsHomeScreenIcon_png from '../../images/operationsHomeScreenIcon_png.js';
 import numberLineOperations from '../numberLineOperations.js';
-import numberLineOperationsStrings from '../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLOOperationsModel from './model/NLOOperationsModel.js';
 import NLOOperationsScreenView from './view/NLOOperationsScreenView.js';
 
@@ -22,7 +22,7 @@ class NLOOperationsScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: numberLineOperationsStrings.screen.operations,
+      name: NumberLineOperationsStrings.screen.operations,
       backgroundColorProperty: new Property( '#fffef3' ),
       homeScreenIcon: new ScreenIcon( new Image( operationsHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

@@ -17,7 +17,7 @@ import NLOConstants from '../../common/NLOConstants.js';
 import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import DynamicOperationDescription from './DynamicOperationDescription.js';
 import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
 import NumericalExpressionAccordionBox from './NumericalExpressionAccordionBox.js';
@@ -57,10 +57,10 @@ class NLOOperationsScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, numberLineOperationsStrings.operationDescriptions ),
-      new NLCheckbox( model.numberLine.showOperationLabelsProperty, numberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.numberLine.showPointLabelsProperty, numberLineOperationsStrings.pointLabels ),
-      new NLCheckbox( model.numberLine.showTickMarksProperty, numberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptions ),
+      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
+      new NLCheckbox( model.numberLine.showPointLabelsProperty, NumberLineOperationsStrings.pointLabels ),
+      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
     ];
     this.addChild( new NLCheckboxGroup( checkboxes ) );
 

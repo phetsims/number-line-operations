@@ -15,7 +15,7 @@ import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import NumberPicker from '../../../../sun/js/NumberPicker.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 class InitialNetWorthAccordionBox extends AccordionBox {
 
@@ -27,19 +27,19 @@ class InitialNetWorthAccordionBox extends AccordionBox {
   constructor( initialNetWorthProperty, netWorthRangeProperty, options ) {
 
     options = merge( {
-      titleNode: new Text( numberLineOperationsStrings.initialNetWorth, {
+      titleNode: new Text( NumberLineOperationsStrings.initialNetWorth, {
         font: new PhetFont( 18 ),
         maxWidth: 200 // empirically determined using stringTest=long
       } )
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
-    const label = new RichText( numberLineOperationsStrings.initialNetWorthWithBreak, {
+    const label = new RichText( NumberLineOperationsStrings.initialNetWorthWithBreak, {
       align: 'center',
       font: new PhetFont( 24 ),
       maxWidth: 150 // empirically determined using stringTest=long
     } );
 
-    const equalsAndCurrencyUnits = new Text( `= ${numberLineOperationsStrings.currencyUnits}`, {
+    const equalsAndCurrencyUnits = new Text( `= ${NumberLineOperationsStrings.currencyUnits}`, {
       font: new PhetFont( 24 ),
       maxWidth: 150 // empirically determined using stringTest=long
     } );

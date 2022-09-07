@@ -19,7 +19,7 @@ import OperationTrackingNumberLineNode from '../../common/view/OperationTracking
 import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js';
 import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import NLOChipsModel from '../model/NLOChipsModel.js';
 import ChipStackNode from './ChipStackNode.js';
 import FillableBagNode from './FillableBagNode.js';
@@ -38,9 +38,9 @@ class NLOChipsScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, numberLineOperationsStrings.operationDescriptions ),
-      new NLCheckbox( model.numberLine.showOperationLabelsProperty, numberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.numberLine.showTickMarksProperty, numberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptions ),
+      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
+      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
     ];
     this.addChild( new NLCheckboxGroup( checkboxes ) );
 
@@ -85,8 +85,8 @@ class NLOChipsScreenView extends ScreenView {
     this.addChild( new HoldingBoxNode( model.negativeChipsBox ) );
 
     // Add the view representations for the bags into which the chips can be placed.
-    this.addChild( new HoldingBagNode( model.positiveChipsBag, numberLineOperationsStrings.positives ) );
-    this.addChild( new HoldingBagNode( model.negativeChipsBag, numberLineOperationsStrings.negatives ) );
+    this.addChild( new HoldingBagNode( model.positiveChipsBag, NumberLineOperationsStrings.positives ) );
+    this.addChild( new HoldingBagNode( model.negativeChipsBag, NumberLineOperationsStrings.negatives ) );
 
     // Add the chip nodes.
     model.chips.forEach( chip => {

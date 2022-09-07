@@ -12,10 +12,10 @@ import Tandem from '../../tandem/js/Tandem.js';
 import NLOChipsScreen from './chips/NLOChipsScreen.js';
 import NLOGenericScreen from './generic/NLOGenericScreen.js';
 import NLONetWorthScreen from './net-worth/NLONetWorthScreen.js';
-import numberLineOperationsStrings from './numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from './NumberLineOperationsStrings.js';
 import NLOOperationsScreen from './operations/NLOOperationsScreen.js';
 
-const numberLineOperationsTitleStringProperty = numberLineOperationsStrings[ 'number-line-operations' ].titleStringProperty;
+const numberLineOperationsTitleStringProperty = NumberLineOperationsStrings[ 'number-line-operations' ].titleStringProperty;
 
 const simOptions = {
   credits: {

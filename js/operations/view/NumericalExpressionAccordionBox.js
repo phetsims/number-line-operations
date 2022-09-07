@@ -23,7 +23,7 @@ import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMo
 import Operation from '../../common/model/Operation.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 // constants
 const CONTENT_DIMENSIONS = new Dimension2( 280, 70 ); // size based on design doc
@@ -87,7 +87,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // simplify button
     const simplifyProperty = new BooleanProperty( false );
     const simplifyButton = new RectangularMomentaryButton( simplifyProperty, false, true, {
-      content: new Text( numberLineOperationsStrings.simplify, { font: new PhetFont( 16 ), maxWidth: 200 } ),
+      content: new Text( NumberLineOperationsStrings.simplify, { font: new PhetFont( 16 ), maxWidth: 200 } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
       xMargin: 5,
@@ -200,9 +200,9 @@ class NumericalExpression extends Text {
 
         // Use currency units if specified when displaying the simplified total.
         if ( evaluateProperty.value && options.showCurrencyWhenEvaluated ) {
-          this.text = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
+          this.text = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
             sign: signChar,
-            currencyUnits: numberLineOperationsStrings.currencyUnits,
+            currencyUnits: NumberLineOperationsStrings.currencyUnits,
             value: Math.abs( endValue )
           } );
         }

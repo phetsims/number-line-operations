@@ -30,7 +30,7 @@ import debt300Value_png from '../../../images/debt300Value_png.js';
 import debt400_png from '../../../images/debt400_png.js';
 import debt400Value_png from '../../../images/debt400Value_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
-import numberLineOperationsStrings from '../../numberLineOperationsStrings.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 //---------------------------------------------------------------------------------------------------------------------
 // constants
@@ -149,9 +149,9 @@ class BalanceSheetItemNode extends Node {
       children: [ inBagImageNode ]
     } );
 
-    const currencyString = StringUtils.fillIn( numberLineOperationsStrings.currencyValuePattern, {
+    const currencyString = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
       sign: '', // don't show minus sign for debts, since that would be a sort of double negative
-      currencyUnits: numberLineOperationsStrings.currencyUnits,
+      currencyUnits: NumberLineOperationsStrings.currencyUnits,
       value: Math.abs( balanceSheetItem.value )
     } );
 
@@ -181,7 +181,7 @@ class BalanceSheetItemNode extends Node {
     if ( balanceSheetItem.value === -100 || balanceSheetItem.value === -300 ) {
 
       // out-of-bag representation
-      const outOfBagTextLabelNode = new Text( numberLineOperationsStrings.loan, {
+      const outOfBagTextLabelNode = new Text( NumberLineOperationsStrings.loan, {
         font: new PhetFont( { size: 11, family: 'serif', style: 'italic' } ),
         centerX: 0,
         centerY: outOfBagImageNode.bottom - 15, // offset empirically determined
@@ -190,7 +190,7 @@ class BalanceSheetItemNode extends Node {
       outOfBagRepresentationNode.addChild( outOfBagTextLabelNode );
 
       // in-bag representation
-      const inBagTextLabelNode = new Text( numberLineOperationsStrings.loan, {
+      const inBagTextLabelNode = new Text( NumberLineOperationsStrings.loan, {
         font: new PhetFont( { size: 8, family: 'serif', style: 'italic' } ),
         centerX: inBagImageNode.centerX,
         centerY: inBagImageNode.bottom - 8, // offset empirically determined
