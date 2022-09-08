@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2022, University of Colorado Boulder
 
 /**
  * TotalValueAccordionBox is an accordion box that displays the value of a provided Property and allows customization of
