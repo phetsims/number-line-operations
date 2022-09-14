@@ -22,7 +22,7 @@ class NLOGenericScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: NumberLineOperationsStrings.screen.generic,
+      name: NumberLineOperationsStrings.screen.genericStringProperty,
       backgroundColorProperty: new Property( '#f3fffe' ),
       homeScreenIcon: new ScreenIcon( new Image( genericHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

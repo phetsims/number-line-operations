@@ -22,7 +22,7 @@ class NLOChipsScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: NumberLineOperationsStrings.screen.chips,
+      name: NumberLineOperationsStrings.screen.chipsStringProperty,
       backgroundColorProperty: new Property( '#f8f6fe' ),
       homeScreenIcon: new ScreenIcon( new Image( chipsHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

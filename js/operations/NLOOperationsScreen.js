@@ -22,7 +22,7 @@ class NLOOperationsScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: NumberLineOperationsStrings.screen.operations,
+      name: NumberLineOperationsStrings.screen.operationsStringProperty,
       backgroundColorProperty: new Property( '#fffef3' ),
       homeScreenIcon: new ScreenIcon( new Image( operationsHomeScreenIcon_png ), {
         maxIconWidthProportion: 1,

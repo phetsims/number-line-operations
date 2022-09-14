@@ -20,7 +20,7 @@ class NLONetWorthScreen extends Screen {
   constructor( tandem ) {
 
     const options = {
-      name: NumberLineOperationsStrings.screen.netWorth,
+      name: NumberLineOperationsStrings.screen.netWorthStringProperty,
       backgroundColorProperty: new Property( '#f8f6fe' ),
       homeScreenIcon: new NetWorthIcon(),
       tandem: tandem
