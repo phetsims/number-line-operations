@@ -45,25 +45,21 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
       }
     }, options );
 
-    // Create the single/dual number line selection icons.
-    const singleNumberLineIcon = createDoubleArrowNode();
-    const dualNumberLineIcon = new VBox( {
-      children: [
-        createDoubleArrowNode(),
-        createDoubleArrowNode()
-      ],
-      spacing: 10
-    } );
-
     // radio button descriptor items
     const items = [
       {
         value: false,
-        node: singleNumberLineIcon
+        createNode: tandem => createDoubleArrowNode()
       },
       {
         value: true,
-        node: dualNumberLineIcon
+        createNode: tandem => new VBox( {
+          children: [
+            createDoubleArrowNode(),
+            createDoubleArrowNode()
+          ],
+          spacing: 10
+        } )
       }
     ];
 
