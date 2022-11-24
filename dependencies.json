@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "46fc29f9d2059b82e3271d72be80f2cb5ab0ba51",
+    "sha": "8df932fc8f1a3d387b36d1f012aad7232fea0681",
     "branch": "1.0"
   },
   "phet-core": {
@@ -65,7 +65,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "df1762740d7e08ec834220915c7808a2afaf4732",
+    "sha": "ec0ab082d80e458b2756902e9a8f5c24c8a8fa24",
     "branch": "HEAD"
   },
   "scenery-phet": {
