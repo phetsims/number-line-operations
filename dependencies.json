@@ -1,5 +1,5 @@
 {
-  "comment": "# number-line-operations 1.0.5 Mon Jan 31 2022 11:54:47 GMT-0700 (Mountain Standard Time)",
+  "comment": "# number-line-operations 1.0.6-rc.1 Sat Nov 26 2022 11:54:04 GMT-0700 (Mountain Standard Time)",
   "assert": {
     "sha": "3df8c5ff9a465b031f84195a90bbb7e1be10a14d",
     "branch": "HEAD"
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "c48c385a2a4d30a66bcd79d69af3198089a80d00",
+    "sha": "521b54698690da4aaa24e90ee967f866c8dcfd4f",
     "branch": "1.0"
   },
   "phet-core": {
