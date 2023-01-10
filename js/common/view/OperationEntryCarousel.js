@@ -42,16 +42,17 @@ class OperationEntryCarousel extends Node {
     }, options );
 
     // @private {OperationEntryControl[]} - operation entry controls
-    const operationEntryControls = [
-      new OperationEntryControl(
+    const operationEntryControls = [ {
+      createNode: tandem => new OperationEntryControl(
         numberLine.operations[ 0 ],
         options.entryControl1Options
-      ),
-      new OperationEntryControl(
+      )
+    }, {
+      createNode: tandem => new OperationEntryControl(
         numberLine.operations[ 1 ],
         options.entryControl2Options
       )
-    ];
+    } ];
 
     // carousel in which the operation entry controls reside
     const carousel = new Carousel( operationEntryControls, {
