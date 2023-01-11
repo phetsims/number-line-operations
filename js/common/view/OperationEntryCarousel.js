@@ -58,9 +58,11 @@ class OperationEntryCarousel extends Node {
     const carousel = new Carousel( operationEntryControls, {
       orientation: 'horizontal',
       itemsPerPage: 1,
+      margin: 10,
       fill: new Color( 255, 255, 255, 0.5 ),
       stroke: options.themeColor,
       buttonColor: options.themeColor,
+      buttonStroke: new Color( 255, 255, 255, 0.1 ),
       buttonDisabledColor: new Color( 255, 255, 255, 0.1 )
     } );
 
