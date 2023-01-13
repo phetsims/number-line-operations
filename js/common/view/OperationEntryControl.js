@@ -80,8 +80,8 @@ class OperationEntryControl extends HBox {
     const operationSelectorRadioButtonGroup = new RectangularRadioButtonGroup(
       controlledOperation.operationTypeProperty,
       [
-        { value: Operation.ADDITION, createNode: tandem => new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
-        { value: Operation.SUBTRACTION, createNode: tandem => new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
+        { value: Operation.ADDITION, createNode: () => new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
+        { value: Operation.SUBTRACTION, createNode: () => new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
       ],
       {
         orientation: 'vertical',

@@ -49,11 +49,11 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
     const items = [
       {
         value: false,
-        createNode: tandem => createDoubleArrowNode()
+        createNode: () => createDoubleArrowNode()
       },
       {
         value: true,
-        createNode: tandem => new VBox( {
+        createNode: () => new VBox( {
           children: [
             createDoubleArrowNode(),
             createDoubleArrowNode()
