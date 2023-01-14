@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * OperationEntryControl is a control that allows users to add operations to a number line.  Operation can be either
