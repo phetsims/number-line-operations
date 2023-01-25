@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * OperationEntryControl is a control that allows users to add operations to a number line.  Operation can be either
@@ -80,8 +80,8 @@ class OperationEntryControl extends HBox {
     const operationSelectorRadioButtonGroup = new RectangularRadioButtonGroup(
       controlledOperation.operationTypeProperty,
       [
-        { value: Operation.ADDITION, createNode: tandem => new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
-        { value: Operation.SUBTRACTION, createNode: tandem => new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
+        { value: Operation.ADDITION, createNode: () => new Text( MathSymbols.PLUS, MATH_SYMBOL_OPTIONS ) },
+        { value: Operation.SUBTRACTION, createNode: () => new Text( MathSymbols.MINUS, MATH_SYMBOL_OPTIONS ) }
       ],
       {
         orientation: 'vertical',

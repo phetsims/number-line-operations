@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * SingleDualNumberLineSelector defines a Scenery node with two radio buttons that are used to choose between "single
@@ -49,11 +49,11 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
     const items = [
       {
         value: false,
-        createNode: tandem => createDoubleArrowNode()
+        createNode: () => createDoubleArrowNode()
       },
       {
         value: true,
-        createNode: tandem => new VBox( {
+        createNode: () => new VBox( {
           children: [
             createDoubleArrowNode(),
             createDoubleArrowNode()
