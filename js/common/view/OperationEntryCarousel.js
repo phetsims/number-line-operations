@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * OperationEntryCarousel is a carousel and page control that contains controls used for entering operations on to a
