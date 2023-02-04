@@ -120,7 +120,7 @@ class OperationEntryCarousel extends Node {
    */
   reset() {
     this.carousel.pageNumberProperty.reset();
-    this.operationEntryControls.forEach( control => {control.reset(); } );
+    this.operationEntryControls.forEach( control => this.carousel.getNodeForItem( control ).reset() );
   }
 }
 
