@@ -182,7 +182,7 @@ class NumberLineOperationNode extends Node {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
-            operationLabelTextNode.text = NumberLineOperationsStrings.operationOffScale;
+            operationLabelTextNode.string = NumberLineOperationsStrings.operationOffScale;
 
             // Use a different (generally smaller) font in this case.
             operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
@@ -199,7 +199,7 @@ class NumberLineOperationNode extends Node {
                              operation.amountProperty.value > 0 ?
                              MathSymbols.UNARY_PLUS :
                              '';
-            operationLabelTextNode.text = `${operationChar
+            operationLabelTextNode.string = `${operationChar
             } ${
               signChar
             }${Math.abs( operation.amountProperty.value ).toString( 10 )}`;
@@ -218,7 +218,7 @@ class NumberLineOperationNode extends Node {
           }
 
           // Update the operation description.
-          operationDescriptionTextNode.text = NumberLineOperationNode.getOperationDescriptionString(
+          operationDescriptionTextNode.string = NumberLineOperationNode.getOperationDescriptionString(
             operation,
             options.useFinancialDescriptions
           );

@@ -79,7 +79,7 @@ class DynamicOperationDescription extends Text {
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
         if ( amount === 0 ) {
-          this.text = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
             addOrRemove: operationType === Operation.ADDITION ?
                          NumberLineOperationsStrings.add :
                          NumberLineOperationsStrings.remove,
@@ -87,7 +87,7 @@ class DynamicOperationDescription extends Text {
           } );
         }
         else {
-          this.text = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
             addOrRemove: operationType === Operation.ADDITION ?
                          NumberLineOperationsStrings.add :
                          NumberLineOperationsStrings.remove,

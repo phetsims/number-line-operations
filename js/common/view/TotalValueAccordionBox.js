@@ -60,7 +60,7 @@ class TotalValueAccordionBox extends AccordionBox {
           totalValue: sign + Math.abs( totalValue ).toString( 10 )
         } );
       }
-      totalReadoutNode.text = readoutText;
+      totalReadoutNode.string = readoutText;
     } );
 
     // accordion box title node

@@ -200,14 +200,14 @@ class NumericalExpression extends Text {
 
         // Use currency units if specified when displaying the simplified total.
         if ( evaluateProperty.value && options.showCurrencyWhenEvaluated ) {
-          this.text = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
             sign: signChar,
             currencyUnits: NumberLineOperationsStrings.currencyUnits,
             value: Math.abs( endValue )
           } );
         }
         else {
-          this.text = signChar + Math.abs( endValue ).toString( 10 );
+          this.string = signChar + Math.abs( endValue ).toString( 10 );
         }
       }
       else {
@@ -260,7 +260,7 @@ class NumericalExpression extends Text {
             numericalExpressionString += ` ${operationChar} `;
           }
         } );
-        this.text = numericalExpressionString;
+        this.string = numericalExpressionString;
       }
       this.updatedEmitter.emit();
     };
