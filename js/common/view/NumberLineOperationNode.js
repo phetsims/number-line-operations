@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * NumberLineOperationNode is used to depict an operation on a number line.  It looks like a curved arrow with a label
