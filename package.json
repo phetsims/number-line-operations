@@ -20,6 +20,12 @@
     "supportedBrands": [
       "phet",
       "adapted-from-phet"
+    ],
+    "screenNameKeys": [
+      "NUMBER_LINE_OPERATIONS/screen.chips",
+      "NUMBER_LINE_OPERATIONS/screen.netWorth",
+      "NUMBER_LINE_OPERATIONS/screen.operations",
+      "NUMBER_LINE_OPERATIONS/screen.generic"
     ]
   },
   "eslintConfig": {
