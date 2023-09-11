@@ -10,9 +10,9 @@ itself should be considered the "ground truth".
 
 The central concepts for the pedagogy of this simulation are numerical operations and number lines. Each of the four
 screens depicts at least one number line, and numerical operations are shown on all of them. This has led to a lot of
-the code being shared, and relatively little code associated with each of the screens. Also, this simulation is part
-of the "Number Line Suite" of sims, and as such shares code with the other sims in the suite through the
-number-line-common repository.
+the code being shared, and relatively little code associated with each of the screens. Also, this simulation is part of
+the "Number Line Suite" of sims, and as such shares code with the other sims in the suite through the number-line-common
+repository.
 
 This sharing of code is good in terms of development, and will likely be beneficial if general bugs are found or if
 other number line sims are added. On the other hand, if and when new features are added, care must be taken not to
@@ -29,8 +29,8 @@ well in this context nonetheless.
 
 During the design and implementation, a conscious effort was made to keep the most essential classes very simple so that
 their implementation would match the common understanding of what terms like a "number line" mean without a lot of
-extra, sim-specific baggage. Functionality that was specific to the needs of this simulation and the others in the
-suite was either added in subclasses or created through composition.
+extra, sim-specific baggage. Functionality that was specific to the needs of this simulation and the others in the suite
+was either added in subclasses or created through composition.
 
 ## General Considerations
 
@@ -71,9 +71,9 @@ modifications to this sim, do so with assertions enabled via the `ea` query para
 ## Terminology
 
 Below are some terms that are used throughout the code in places like class names, variable names, and comments, and
-that were either made up for this sim or whose meaning is more specific in this context. There are a lot of terms
-whose generally accepted definitions are close enough to how they are used in the sim that they are not listed here,
-such as "number line" and "point".
+that were either made up for this sim or whose meaning is more specific in this context. There are a lot of terms whose
+generally accepted definitions are close enough to how they are used in the sim that they are not listed here, such as "
+number line" and "point".
 
 * _balance sheet item_ - In general, a balance sheet is a financial statement that lists a company's assets and debts.
   This sim uses the terms "asset" and "debt" in some places, and the term "balance sheet item" is intended to be a
@@ -110,10 +110,10 @@ and deactivated based on the user's interaction with the sim. There is a single 
 on the first two screens and two tracked operations per number line on both the third and fourth screens.
 
 Instances of `NumberLinePoint` are added to and removed from the number line as the user interacts with a screen. There
-is always an initial starting point present, and the operations move from there. When an operation is added, it uses
-the initial endpoint or the most recently added endpoint as its starting point, and added a new point to the number
-line for its endpoint. So, each time an operation is activated, there is a net gain of one point on the nuber line, and
-when an operation is deactivated, there is a net reduction of one point.
+is always an initial starting point present, and the operations move from there. When an operation is added, it uses the
+initial endpoint or the most recently added endpoint as its starting point, and added a new point to the number line for
+its endpoint. So, each time an operation is activated, there is a net gain of one point on the nuber line, and when an
+operation is deactivated, there is a net reduction of one point.
 
 It's important to note that operations do _not_ keep references to points. The operation _only_ has a type and an
 amount (and the aforementioned active indicator). The responsibility of maintaining the relationships between the start
@@ -125,20 +125,20 @@ Each of the key classes in the model section above have a peer in the view. For 
 same as their model peer with "Node" stuck on the end, i.e. `OperationTrackingNumberLineNode` and
 `NumberLineOperationNode`.  `PointNode` is the view representation of `NumberLinePoint`.
 
-The presentation of operations is animated a couple of different ways. The operation, which is generally represented
-as a curved arrow either above or below the number line, generally grows from its origin to its destination. On the
-first two screens, operations fade away over time if the user doesn't change anything. For various reasons, it worked
-out best to have the start-to-end point animation handled by `NumberLineOperationNode` and the fading of operations
-handled by `OperationTrackingNumberLineNode`.
+The presentation of operations is animated a couple of different ways. The operation, which is generally represented as
+a curved arrow either above or below the number line, generally grows from its origin to its destination. On the first
+two screens, operations fade away over time if the user doesn't change anything. For various reasons, it worked out best
+to have the start-to-end point animation handled by `NumberLineOperationNode` and the fading of operations handled
+by `OperationTrackingNumberLineNode`.
 
 ## Chips Screen and Net Worth Screen
 
 The "Chips" and "Net Worth" screens are very similar and share a lot of code. Both have only one instance of
-`OperationTrackingNumberLine` and configure it to track a single operation. That operation is updated each time the
-user adds something to or removes something from one of the two holding bags. When operations are created rapidly,
-an operation that is on the number line will look like it disappears and is replaced by next operation. When operations
-are created more slowly, the most recent operation will fade out over time. In both cases, there is only ever one
-operation, and its active state is changing and the initial value is being updated.
+`OperationTrackingNumberLine` and configure it to track a single operation. That operation is updated each time the user
+adds something to or removes something from one of the two holding bags. When operations are created rapidly, an
+operation that is on the number line will look like it disappears and is replaced by next operation. When operations are
+created more slowly, the most recent operation will fade out over time. In both cases, there is only ever one operation,
+and its active state is changing and the initial value is being updated.
 
 ## Operations Screen
 
