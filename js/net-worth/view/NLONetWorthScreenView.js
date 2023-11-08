@@ -11,8 +11,8 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
 import NLCheckboxGroup from '../../../../number-line-common/js/common/view/NLCheckboxGroup.js';
-import PiggyBankDecoration from '../../../../number-line-common/js/explore/model/PiggyBankDecoration.js';
-import PiggyBankNode from '../../../../number-line-common/js/explore/view/PiggyBankNode.js';
+import MoneyBoxDecoration from '../../../../number-line-common/js/explore/model/MoneyBoxDecoration.js';
+import MoneyBoxNode from '../../../../number-line-common/js/explore/view/MoneyBoxNode.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import HoldingBagNode from '../../common/view/HoldingBagNode.js';
@@ -68,8 +68,8 @@ class NLONetWorthScreenView extends ScreenView {
     // piggy bank that displays the net worth and moves as the value changes
     const netWorthPiggyBankNode = new TotalValueIndicatorNode(
       model.netWorthProperty,
-      new PiggyBankNode( {
-        decorationType: PiggyBankDecoration.NONE,
+      new MoneyBoxNode( {
+        decorationType: MoneyBoxDecoration.NONE,
         maxWidth: 85 // empirically determined to match design doc
       } ),
       NLOConstants.NET_WORTH_RANGE,
