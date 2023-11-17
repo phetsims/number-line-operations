@@ -6,7 +6,6 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import Vector2 from '../../../../dot/js/Vector2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import NLCheckbox from '../../../../number-line-common/js/common/view/NLCheckbox.js';
@@ -70,13 +69,12 @@ class NLONetWorthScreenView extends ScreenView {
       model.netWorthProperty,
       new MoneyBoxNode( {
         decorationType: MoneyBoxDecoration.NONE,
-        maxWidth: 85 // empirically determined to match design doc
+        maxHeight: 65 // empirically determined to match design doc
       } ),
       NLOConstants.NET_WORTH_RANGE,
       {
         isCurrency: true,
-        labelCenterOffset: new Vector2( -8, 0 ),
-        centerY: model.numberLine.centerPositionProperty.value.y + 68
+        centerY: model.numberLine.centerPositionProperty.value.y + 72
       }
     );
     this.addChild( netWorthPiggyBankNode );

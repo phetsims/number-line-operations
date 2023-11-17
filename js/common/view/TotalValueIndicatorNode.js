@@ -48,7 +48,7 @@ class TotalValueIndicatorNode extends Node {
       fill: 'white',
       stroke: 'black',
       center: Vector2.ZERO,
-      maxWidth: 65
+      maxWidth: 45
     } );
 
     super( merge( { children: [ fillableBackgroundNode, labelNode ] }, options ) );
