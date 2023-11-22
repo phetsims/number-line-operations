@@ -7,10 +7,10 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, DragListener, HBox, Image, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import asset100_png from '../../../images/asset100_png.js';
@@ -149,7 +149,7 @@ class BalanceSheetItemNode extends Node {
       children: [ inBagImageNode ]
     } );
 
-    const currencyString = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
+    const currencyString = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
       sign: '', // don't show minus sign for debts, since that would be a sort of double negative
       currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
       value: Math.abs( balanceSheetItem.value )
