@@ -7,9 +7,10 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
@@ -36,37 +37,41 @@ class TotalValueAccordionBox extends AccordionBox {
       maxWidth: DEFAULT_WIDTH
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
-    const totalReadoutNode = new Text( '', {
+    const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? MathSymbols.MINUS : '' );
+
+    let readoutStringProperty;
+    if ( options.showTotalAsCurrency ) {
+        readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
+            totalString: options.labelText,
+            sign: signProperty,
+            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+            totalValue: totalValueProperty
+        }, {
+            maps: {
+                totalValue: value => Math.abs( value )
+            }
+        } );
+    }
+    else {
+        readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalValuePatternStringProperty, {
+          totalString: options.labelText,
+            totalValue: totalValueProperty
+        }, {
+            maps: {
+                totalValue: value => signProperty.value + Math.abs( value ).toString( 10 )
+            }
+        } );
+    }
+
+    const totalReadoutText = new Text( readoutStringProperty, {
       font: new PhetFont( 26 ),
       maxWidth: DEFAULT_WIDTH * 0.9
-    } );
-
-    // Update readout when total value changes.  Instances of this class are assumed to exist for the duration of the
-    // sim, so no unlink is necessary.
-    totalValueProperty.link( totalValue => {
-      let readoutText;
-      const sign = totalValue < 0 ? MathSymbols.MINUS : '';
-      if ( options.showTotalAsCurrency ) {
-        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
-          totalString: options.labelText,
-          sign: sign,
-          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-          totalValue: Math.abs( totalValue )
-        } );
-      }
-      else {
-        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalValuePatternStringProperty, {
-          totalString: options.labelText,
-          totalValue: sign + Math.abs( totalValue ).toString( 10 )
-        } );
-      }
-      totalReadoutNode.string = readoutText;
     } );
 
     // accordion box title node
     const titleNode = new Text( options.titleText, { font: new PhetFont( 18 ) } );
 
-    super( totalReadoutNode, merge( options, { titleNode: titleNode } ) );
+    super( totalReadoutText, merge( options, { titleNode: titleNode } ) );
   }
 }
 
