@@ -10,11 +10,12 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { Text, Node } from '../../../../scenery/js/imports.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Operation from '../../common/model/Operation.js';
@@ -26,7 +27,7 @@ const FADE_TIME = 0.25; // in seconds
 const TRAVEL_TIME = 0.7; // in seconds
 const FONT = new PhetFont( 22 );
 
-class DynamicOperationDescription extends Text {
+class DynamicOperationDescription extends Node {
 
   /**
    * @param {BooleanProperty} operationDescriptionsVisibleProperty - general viz param, the label will never be shown
@@ -60,13 +61,51 @@ class DynamicOperationDescription extends Text {
     // This is intended to be constructed prior to the operation becoming active.
     assert && assert( !operation.isActiveProperty.value, 'operation must be inactive when this node is constructed' );
 
-    // Construct with no initial text and in the inactive position.
-    super( '', merge( {
+    const addRemoveZeroStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
+      addOrRemove: operation.operationTypeProperty,
+      currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
+    }, {
+      maps: {
+        addOrRemove: operationType => operationType === Operation.ADDITION ?
+                                      NumberLineOperationsStrings.addStringProperty :
+                                      NumberLineOperationsStrings.removeStringProperty
+      }
+    } );
+
+    const assetOrDebtProperty = new DerivedProperty( [ operation.amountProperty ], amount => amount > 0 ?
+                                                                                             NumberLineOperationsStrings.assetStringProperty :
+                                                                                             NumberLineOperationsStrings.debtStringProperty );
+    const addRemoveAssetDebtStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
+      addOrRemove: operation.operationTypeProperty,
+      assetOrDebt: assetOrDebtProperty,
+      currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+      value: operation.amountProperty
+    }, {
+      maps: {
+        addOrRemove: operationType => operationType === Operation.ADDITION ?
+                                      NumberLineOperationsStrings.addStringProperty :
+                                      NumberLineOperationsStrings.removeStringProperty,
+        value: value => Math.abs( value )
+      }
+    } );
+
+
+    const addRemoveZeroText = new Text( addRemoveZeroStringProperty, merge( {
       font: FONT,
       center: inactivePosition,
-      visible: false,
+      visibleProperty: DerivedProperty.valueEqualsConstant( operation.amountProperty, 0 ),
       opacity: 0
     }, options ) );
+
+    const addRemoveAssetDebtText = new Text( addRemoveAssetDebtStringProperty, merge( {
+      font: FONT,
+      center: inactivePosition,
+      visibleProperty: new DerivedProperty( [ operation.amountProperty ], amount => amount !== 0 ),
+      opacity: 0
+    }, options ) );
+
+    // Construct with no initial text and in the inactive position.
+    super( { children: [ addRemoveZeroText, addRemoveAssetDebtText ], visible: false } );
 
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
@@ -77,28 +116,7 @@ class DynamicOperationDescription extends Text {
     // Update the text as the attributes of the operation change.
     Multilink.multilink(
       [ operation.amountProperty, operation.operationTypeProperty ],
-      ( amount, operationType ) => {
-        if ( amount === 0 ) {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
-            addOrRemove: operationType === Operation.ADDITION ?
-                         NumberLineOperationsStrings.addStringProperty :
-                         NumberLineOperationsStrings.removeStringProperty,
-            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
-          } );
-        }
-        else {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
-            addOrRemove: operationType === Operation.ADDITION ?
-                         NumberLineOperationsStrings.addStringProperty :
-                         NumberLineOperationsStrings.removeStringProperty,
-            assetOrDebt: amount > 0 ?
-                         NumberLineOperationsStrings.assetStringProperty :
-                         NumberLineOperationsStrings.debtStringProperty,
-            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-            value: Math.abs( amount )
-          } );
-        }
-
+      () => {
         this.center = inactivePosition;
       }
     );
