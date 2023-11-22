@@ -67,14 +67,14 @@ class DynamicOperationDescription extends Node {
     }, {
       maps: {
         addOrRemove: operationType => operationType === Operation.ADDITION ?
-                                      NumberLineOperationsStrings.addStringProperty :
-                                      NumberLineOperationsStrings.removeStringProperty
+                                      NumberLineOperationsStrings.addStringProperty.value :
+                                      NumberLineOperationsStrings.removeStringProperty.value
       }
     } );
 
     const assetOrDebtProperty = new DerivedProperty( [ operation.amountProperty ], amount => amount > 0 ?
-                                                                                             NumberLineOperationsStrings.assetStringProperty :
-                                                                                             NumberLineOperationsStrings.debtStringProperty );
+                                                                                             NumberLineOperationsStrings.assetStringProperty.value :
+                                                                                             NumberLineOperationsStrings.debtStringProperty.value );
     const addRemoveAssetDebtStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
       addOrRemove: operation.operationTypeProperty,
       assetOrDebt: assetOrDebtProperty,
@@ -83,8 +83,8 @@ class DynamicOperationDescription extends Node {
     }, {
       maps: {
         addOrRemove: operationType => operationType === Operation.ADDITION ?
-                                      NumberLineOperationsStrings.addStringProperty :
-                                      NumberLineOperationsStrings.removeStringProperty,
+                                      NumberLineOperationsStrings.addStringProperty.value :
+                                      NumberLineOperationsStrings.removeStringProperty.value,
         value: value => Math.abs( value )
       }
     } );
@@ -93,19 +93,17 @@ class DynamicOperationDescription extends Node {
     const addRemoveZeroText = new Text( addRemoveZeroStringProperty, merge( {
       font: FONT,
       center: inactivePosition,
-      visibleProperty: DerivedProperty.valueEqualsConstant( operation.amountProperty, 0 ),
-      opacity: 0
+      visibleProperty: DerivedProperty.valueEqualsConstant( operation.amountProperty, 0 )
     }, options ) );
 
     const addRemoveAssetDebtText = new Text( addRemoveAssetDebtStringProperty, merge( {
       font: FONT,
       center: inactivePosition,
-      visibleProperty: new DerivedProperty( [ operation.amountProperty ], amount => amount !== 0 ),
-      opacity: 0
+      visibleProperty: new DerivedProperty( [ operation.amountProperty ], amount => amount !== 0 )
     }, options ) );
 
     // Construct with no initial text and in the inactive position.
-    super( { children: [ addRemoveZeroText, addRemoveAssetDebtText ], visible: false } );
+    super( { children: [ addRemoveZeroText, addRemoveAssetDebtText ], visible: false, opacity: 0 } );
 
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
