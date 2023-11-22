@@ -39,7 +39,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
       maxWidth: 150 // empirically determined using stringTest=long
     } );
 
-    const equalsAndCurrencyUnits = new Text( `= ${NumberLineOperationsStrings.currencyUnitsStringProperty}`, {
+    const currencyUnits = new Text( NumberLineOperationsStrings.currencyUnitsStringProperty, {
       font: new PhetFont( 24 ),
       maxWidth: 150 // empirically determined using stringTest=long
     } );
@@ -58,7 +58,7 @@ class InitialNetWorthAccordionBox extends AccordionBox {
     );
 
     const content = new HBox( {
-      children: [ label, equalsAndCurrencyUnits, initialNetWorthPicker ],
+      children: [ label, new Text( '=', { font: new PhetFont( 24 ) } ), currencyUnits, initialNetWorthPicker ],
       spacing: 15
     } );
 
