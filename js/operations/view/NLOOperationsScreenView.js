@@ -68,10 +68,7 @@ class NLOOperationsScreenView extends ScreenView {
     const numericalExpressionAccordionBox = new NumericalExpressionAccordionBox( model.numberLine, {
       centerX: this.layoutBounds.centerX,
       top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN,
-      showTitleWhenExpanded: true,
-      numericalExpressionOptions: {
-        showCurrencyWhenEvaluated: true
-      }
+      showTitleWhenExpanded: true
     } );
     this.addChild( numericalExpressionAccordionBox );
 

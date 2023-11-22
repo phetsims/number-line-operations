@@ -11,10 +11,11 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../../axon/js/Emitter.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
@@ -167,7 +168,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
  * NumericalExpression is a Scenery Text Node that represent a numerical expression that describes the operations on the
  * number line, for example "1 + 7 - 2".
  */
-class NumericalExpression extends Text {
+class NumericalExpression extends Node {
 
   /**
    * @param {OperationTrackingNumberLine} numberLine
@@ -183,7 +184,42 @@ class NumericalExpression extends Text {
       showCurrencyWhenEvaluated: false
     }, options );
 
-    super( '', options );
+    const currentEndValueProperty = new NumberProperty( numberLine.getCurrentEndValue() );
+    const signProperty = new DerivedProperty( [ currentEndValueProperty ], value => value < 0 ? MathSymbols.MINUS : '' );
+
+    let stringProperty;
+    if ( options.showCurrencyWhenEvaluated ) {
+      stringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
+        sign: signProperty,
+        currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+        value: currentEndValueProperty
+      }, {
+        maps: {
+          value: value => Math.abs( value )
+        }
+      } );
+    }
+    else {
+      stringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
+        sign: signProperty,
+        currencyUnits: '',
+        value: currentEndValueProperty
+      }, {
+        maps: {
+          value: value => Math.abs( value )
+        }
+      } );
+    }
+
+    const evaluateText = new Text( stringProperty, merge( {
+      visibleProperty: new DerivedProperty( [ evaluateProperty ], evaluate => evaluate || numberLine.getActiveOperations().length === 0 )
+    }, options ) );
+
+    const numericalExpressionText = new Text( '', merge( {
+      visibleProperty: new DerivedProperty( [ evaluateProperty ], evaluate => !evaluate || numberLine.getActiveOperations().length !== 0 )
+    }, options ) );
+
+    super( { children: [ evaluateText, numericalExpressionText ] } );
 
     // @public (listen-only) - used to signal updates, was necessary because listening to bounds changes wasn't working
     this.updatedEmitter = new Emitter();
@@ -192,23 +228,7 @@ class NumericalExpression extends Text {
     const update = () => {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
-
-        const endValue = numberLine.getCurrentEndValue();
-
-        // Use minus sign instead of unary minus, see https://github.com/phetsims/number-line-operations/issues/9.
-        const signChar = endValue < 0 ? MathSymbols.MINUS : '';
-
-        // Use currency units if specified when displaying the simplified total.
-        if ( evaluateProperty.value && options.showCurrencyWhenEvaluated ) {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
-            sign: signChar,
-            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-            value: Math.abs( endValue )
-          } );
-        }
-        else {
-          this.string = signChar + Math.abs( endValue ).toString( 10 );
-        }
+        currentEndValueProperty.set( numberLine.getCurrentEndValue() );
       }
       else {
 
@@ -260,7 +280,7 @@ class NumericalExpression extends Text {
             numericalExpressionString += ` ${operationChar} `;
           }
         } );
-        this.string = numericalExpressionString;
+        numericalExpressionText.string = numericalExpressionString;
       }
       this.updatedEmitter.emit();
     };
