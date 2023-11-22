@@ -41,26 +41,26 @@ class TotalValueAccordionBox extends AccordionBox {
 
     let readoutStringProperty;
     if ( options.showTotalAsCurrency ) {
-        readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
-            totalString: options.labelText,
-            sign: signProperty,
-            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-            totalValue: totalValueProperty
-        }, {
-            maps: {
-                totalValue: value => Math.abs( value )
-            }
-        } );
+      readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
+        totalString: options.labelText,
+        sign: signProperty,
+        currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+        totalValue: totalValueProperty
+      }, {
+        maps: {
+          totalValue: value => Math.abs( value )
+        }
+      } );
     }
     else {
-        readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalValuePatternStringProperty, {
-          totalString: options.labelText,
-            totalValue: totalValueProperty
-        }, {
-            maps: {
-                totalValue: value => signProperty.value + Math.abs( value ).toString( 10 )
-            }
-        } );
+      readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalValuePatternStringProperty, {
+        totalString: options.labelText,
+        totalValue: totalValueProperty
+      }, {
+        maps: {
+          totalValue: value => signProperty.value + Math.abs( value ).toString( 10 )
+        }
+      } );
     }
 
     const totalReadoutText = new Text( readoutStringProperty, {

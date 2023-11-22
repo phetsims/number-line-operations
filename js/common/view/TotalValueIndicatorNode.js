@@ -7,9 +7,10 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, Text } from '../../../../scenery/js/imports.js';
@@ -42,8 +43,32 @@ class TotalValueIndicatorNode extends Node {
       leastNegativeFill: new Color( '#fda5a8' )
     }, options );
 
+    const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? MathSymbols.MINUS : '' );
+
+    let valueStringProperty;
+    if ( options.isCurrency ) {
+      valueStringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
+        sign: signProperty,
+        currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+        value: totalValueProperty
+      }, {
+        maps: {
+          value: value => Math.abs( value )
+        }
+      } );
+    }
+    else {
+      valueStringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
+        sign: signProperty,
+        currencyUnits: '',
+        value: totalValueProperty
+      }, {
+        maps: { value: value => Math.abs( value ) }
+      } );
+    }
+
     // label that represents the value
-    const labelNode = new Text( '', {
+    const labelNode = new Text( valueStringProperty, {
       font: new PhetFont( 20 ),
       fill: 'white',
       stroke: 'black',
@@ -56,19 +81,6 @@ class TotalValueIndicatorNode extends Node {
     // Update the fill and label as the total value changes.  Instances of this type are assumed to exist for the
     // duration of the sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
-
-      // Update the label text.
-      const sign = totalValue < 0 ? MathSymbols.MINUS : '';
-      if ( options.isCurrency ) {
-        labelNode.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
-          sign: sign,
-          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-          value: Math.abs( totalValue )
-        } );
-      }
-      else {
-        labelNode.string = sign + Math.abs( totalValue ).toString( 10 );
-      }
 
       // Reposition the label.
       labelNode.center = fillableBackgroundNode.center.plus( options.labelCenterOffset );
