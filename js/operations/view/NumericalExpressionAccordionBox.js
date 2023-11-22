@@ -47,7 +47,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     options = merge( {
       contentXMargin: contentXMargin,
       titleNode: new Text(
-        NLOConstants.NET_WORTH_WITH_CURRENCY_STRING,
+        NLOConstants.NET_WORTH_WITH_CURRENCY_STRING_PROPERTY,
         {
           font: new PhetFont( 18 ),
           maxWidth: CONTENT_DIMENSIONS.width * 0.9

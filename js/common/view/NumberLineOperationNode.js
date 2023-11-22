@@ -9,11 +9,11 @@
  */
 
 import Multilink from '../../../../axon/js/Multilink.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Utils from '../../../../dot/js/Utils.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
 import merge from '../../../../phet-core/js/merge.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import BackgroundNode from '../../../../scenery-phet/js/BackgroundNode.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -87,11 +87,9 @@ class NumberLineOperationNode extends Node {
     this.addChild( operationLabel );
 
     // operation description
-    const operationDescriptionTextNode = new Text( '', {
-      font: options.operationDescriptionFont
-    } );
+    const operationDescriptionNode = new Node();
     const operationDescription = new BackgroundNode(
-      operationDescriptionTextNode,
+      operationDescriptionNode,
       merge(
         {},
         NLCConstants.LABEL_BACKGROUND_OPTIONS,
@@ -218,10 +216,12 @@ class NumberLineOperationNode extends Node {
           }
 
           // Update the operation description.
-          operationDescriptionTextNode.string = NumberLineOperationNode.getOperationDescriptionString(
+          operationDescriptionNode.children = [ new Text( NumberLineOperationNode.getOperationDescriptionString(
             operation,
             options.useFinancialDescriptions
-          );
+          ), {
+            font: options.operationDescriptionFont
+          } ) ];
 
           descriptionCenterYWhenLabelVisible = aboveNumberLine ?
                                                operationLabel.top - operationDescription.height / 2 - DISTANCE_BETWEEN_LABELS :
@@ -315,41 +315,49 @@ class NumberLineOperationNode extends Node {
    */
   static getOperationDescriptionString( operation, useFinancialDescriptions ) {
 
-    const addOrRemoveString = operation.operationTypeProperty.value === Operation.ADDITION ?
-                              NumberLineOperationsStrings.addStringProperty :
-                              NumberLineOperationsStrings.removeStringProperty;
+    const addOrRemoveStringProperty = operation.operationTypeProperty.value === Operation.ADDITION ?
+                                      NumberLineOperationsStrings.addStringProperty :
+                                      NumberLineOperationsStrings.removeStringProperty;
     let operationDescriptionString;
     if ( useFinancialDescriptions ) {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
-          addOrRemove: addOrRemoveString,
+        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
+          addOrRemove: addOrRemoveStringProperty,
           currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
-          addOrRemove: addOrRemoveString,
+        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
+          addOrRemove: addOrRemoveStringProperty,
           assetOrDebt: operation.amountProperty.value > 0 ?
                        NumberLineOperationsStrings.assetStringProperty :
                        NumberLineOperationsStrings.debtStringProperty,
           currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-          value: Math.abs( operation.amountProperty.value )
+          value: operation.amountProperty
+        }, {
+          maps: {
+            value: value => Math.abs( value )
+          }
         } );
       }
     }
     else {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
-          addOrRemove: addOrRemoveString
+        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
+          addOrRemove: addOrRemoveStringProperty
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
-          addOrRemove: addOrRemoveString,
+        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
+          addOrRemove: addOrRemoveStringProperty,
           positiveOrNegative: operation.amountProperty.value > 0 ?
                               NumberLineOperationsStrings.positiveStringProperty :
                               NumberLineOperationsStrings.negativeStringProperty,
-          value: Math.abs( operation.amountProperty.value )
+          value: operation.amountProperty
+        }, {
+          maps: {
+            value: value => Math.abs( value )
+          }
         } );
       }
     }

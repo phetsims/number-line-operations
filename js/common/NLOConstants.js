@@ -6,9 +6,9 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Range from '../../../dot/js/Range.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
-import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import { Color } from '../../../scenery/js/imports.js';
 import numberLineOperations from '../numberLineOperations.js';
 import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
@@ -32,7 +32,7 @@ const NLOConstants = {
   OPERATION_FADE_OUT_TIME: 1500, // in milliseconds,
 
   // patternized string for net worth with a currency symbol that is used in multiple places
-  NET_WORTH_WITH_CURRENCY_STRING: StringUtils.fillIn( NumberLineOperationsStrings.netWorthWithCurrencyPatternStringProperty, {
+  NET_WORTH_WITH_CURRENCY_STRING_PROPERTY: new PatternStringProperty( NumberLineOperationsStrings.netWorthWithCurrencyPatternStringProperty, {
     netWorthString: NumberLineOperationsStrings.netWorthStringProperty,
     currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
   } ),
