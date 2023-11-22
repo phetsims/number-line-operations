@@ -18,7 +18,7 @@ class NetWorthIcon extends ScreenIcon {
 
   constructor() {
     const piggyBankImage = new Image( netWorthHomeScreenIcon_png );
-    const currencySymbol = new Text( NumberLineOperationsStrings.currencyUnits, {
+    const currencySymbol = new Text( NumberLineOperationsStrings.currencyUnitsStringProperty, {
 
       fill: Color.WHITE,
       stroke: Color.black,

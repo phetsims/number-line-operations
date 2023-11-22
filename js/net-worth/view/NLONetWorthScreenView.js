@@ -37,16 +37,16 @@ class NLONetWorthScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptions ),
-      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptionsStringProperty ),
+      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabelsStringProperty ),
+      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarksStringProperty )
     ];
     this.addChild( new NLCheckboxGroup( checkboxes ) );
 
     // accordion box that displays the net worth when open
     this.addChild( new TotalValueAccordionBox( model.netWorthProperty, {
       titleText: NLOConstants.NET_WORTH_WITH_CURRENCY_STRING,
-      labelText: NumberLineOperationsStrings.netWorth,
+      labelText: NumberLineOperationsStrings.netWorthStringProperty,
       showTotalAsCurrency: true,
       expandedProperty: model.netWorthAccordionBoxExpandedProperty,
       centerX: this.layoutBounds.centerX,
@@ -89,8 +89,8 @@ class NLONetWorthScreenView extends ScreenView {
     this.addChild( new HoldingBoxNode( model.debtsBox ) );
 
     // add the view representations for the areas where the assets and debts will be stored when in use
-    this.addChild( new HoldingBagNode( model.assetsBag, NumberLineOperationsStrings.assets ) );
-    this.addChild( new HoldingBagNode( model.debtsBag, NumberLineOperationsStrings.debts ) );
+    this.addChild( new HoldingBagNode( model.assetsBag, NumberLineOperationsStrings.assetsStringProperty ) );
+    this.addChild( new HoldingBagNode( model.debtsBag, NumberLineOperationsStrings.debtsStringProperty ) );
 
     // add the assets and debts
     model.balanceSheetItems.forEach( balanceSheetItem => {

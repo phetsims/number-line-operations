@@ -28,7 +28,10 @@
       "NUMBER_LINE_OPERATIONS/screen.netWorth",
       "NUMBER_LINE_OPERATIONS/screen.operations",
       "NUMBER_LINE_OPERATIONS/screen.generic"
-    ]
+    ],
+    "simFeatures": {
+      "supportsDynamicLocale": true
+    }
   },
   "eslintConfig": {
     "extends": "../chipper/eslint/sim_eslintrc.js"

@@ -60,9 +60,9 @@ class TotalValueIndicatorNode extends Node {
       // Update the label text.
       const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.isCurrency ) {
-        labelNode.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
+        labelNode.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
           sign: sign,
-          currencyUnits: NumberLineOperationsStrings.currencyUnits,
+          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
           value: Math.abs( totalValue )
         } );
       }

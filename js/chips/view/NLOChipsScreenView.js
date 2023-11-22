@@ -38,9 +38,9 @@ class NLOChipsScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptions ),
-      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.numberLine.showOperationDescriptionsProperty, NumberLineOperationsStrings.operationDescriptionsStringProperty ),
+      new NLCheckbox( model.numberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabelsStringProperty ),
+      new NLCheckbox( model.numberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarksStringProperty )
     ];
     this.addChild( new NLCheckboxGroup( checkboxes ) );
 
@@ -85,8 +85,8 @@ class NLOChipsScreenView extends ScreenView {
     this.addChild( new HoldingBoxNode( model.negativeChipsBox ) );
 
     // Add the view representations for the bags into which the chips can be placed.
-    this.addChild( new HoldingBagNode( model.positiveChipsBag, NumberLineOperationsStrings.positives ) );
-    this.addChild( new HoldingBagNode( model.negativeChipsBag, NumberLineOperationsStrings.negatives ) );
+    this.addChild( new HoldingBagNode( model.positiveChipsBag, NumberLineOperationsStrings.positivesStringProperty ) );
+    this.addChild( new HoldingBagNode( model.negativeChipsBag, NumberLineOperationsStrings.negativesStringProperty ) );
 
     // Add the chip nodes.
     model.chips.forEach( chip => {

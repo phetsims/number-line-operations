@@ -47,9 +47,9 @@ class NLOGenericScreenView extends ScreenView {
 
     // checkboxes that will control the presentation options
     const checkboxes = [
-      new NLCheckbox( model.primaryNumberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabels ),
-      new NLCheckbox( model.primaryNumberLine.showPointLabelsProperty, NumberLineOperationsStrings.pointLabels ),
-      new NLCheckbox( model.primaryNumberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarks )
+      new NLCheckbox( model.primaryNumberLine.showOperationLabelsProperty, NumberLineOperationsStrings.operationLabelsStringProperty ),
+      new NLCheckbox( model.primaryNumberLine.showPointLabelsProperty, NumberLineOperationsStrings.pointLabelsStringProperty ),
+      new NLCheckbox( model.primaryNumberLine.showTickMarksProperty, NumberLineOperationsStrings.tickMarksStringProperty )
     ];
     const checkboxGroup = new NLCheckboxGroup( checkboxes );
     this.addChild( checkboxGroup );
@@ -210,7 +210,7 @@ class InteractiveNumberLineView extends Node {
     options = merge( {
 
       numericalExpressionAccordionBoxOptions: {
-        titleNode: new Text( NumberLineOperationsStrings.numericalExpression, {
+        titleNode: new Text( NumberLineOperationsStrings.numericalExpressionStringProperty, {
           font: new PhetFont( 18 ),
           maxWidth: 250
         } ),

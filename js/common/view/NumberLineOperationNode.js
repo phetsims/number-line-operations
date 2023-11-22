@@ -182,7 +182,7 @@ class NumberLineOperationNode extends Node {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
-            operationLabelTextNode.string = NumberLineOperationsStrings.operationOffScale;
+            operationLabelTextNode.string = NumberLineOperationsStrings.operationOffScaleStringProperty;
 
             // Use a different (generally smaller) font in this case.
             operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
@@ -316,39 +316,39 @@ class NumberLineOperationNode extends Node {
   static getOperationDescriptionString( operation, useFinancialDescriptions ) {
 
     const addOrRemoveString = operation.operationTypeProperty.value === Operation.ADDITION ?
-                              NumberLineOperationsStrings.add :
-                              NumberLineOperationsStrings.remove;
+                              NumberLineOperationsStrings.addStringProperty :
+                              NumberLineOperationsStrings.removeStringProperty;
     let operationDescriptionString;
     if ( useFinancialDescriptions ) {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
           addOrRemove: addOrRemoveString,
-          currencyUnits: NumberLineOperationsStrings.currencyUnits
+          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
           addOrRemove: addOrRemoveString,
           assetOrDebt: operation.amountProperty.value > 0 ?
-                       NumberLineOperationsStrings.asset :
-                       NumberLineOperationsStrings.debt,
-          currencyUnits: NumberLineOperationsStrings.currencyUnits,
+                       NumberLineOperationsStrings.assetStringProperty :
+                       NumberLineOperationsStrings.debtStringProperty,
+          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
           value: Math.abs( operation.amountProperty.value )
         } );
       }
     }
     else {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroPattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
           addOrRemove: addOrRemoveString
         } );
       }
       else {
-        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemovePositiveNegativePattern, {
+        operationDescriptionString = StringUtils.fillIn( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
           addOrRemove: addOrRemoveString,
           positiveOrNegative: operation.amountProperty.value > 0 ?
-                              NumberLineOperationsStrings.positive :
-                              NumberLineOperationsStrings.negative,
+                              NumberLineOperationsStrings.positiveStringProperty :
+                              NumberLineOperationsStrings.negativeStringProperty,
           value: Math.abs( operation.amountProperty.value )
         } );
       }

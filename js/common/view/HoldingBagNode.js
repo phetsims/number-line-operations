@@ -30,9 +30,9 @@ class HoldingBagNode extends Node {
 
   /**
    * @param {HoldingBag} holdingBag
-   * @param {string} labelText
+   * @param {LocalizedStringProperty} labelTextProperty
    */
-  constructor( holdingBag, labelText ) {
+  constructor( holdingBag, labelTextProperty ) {
 
     // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
@@ -49,7 +49,7 @@ class HoldingBagNode extends Node {
     } );
 
     // label text that will go on the tag
-    const labelTextNode = new Text( labelText, {
+    const labelTextNode = new Text( labelTextProperty, {
       font: new PhetFont( 20 ),
       maxWidth: 95
     } );

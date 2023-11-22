@@ -29,8 +29,8 @@ class TotalValueAccordionBox extends AccordionBox {
   constructor( totalValueProperty, options ) {
 
     options = merge( {
-      titleText: NumberLineOperationsStrings.total,
-      labelText: NumberLineOperationsStrings.total,
+      titleText: NumberLineOperationsStrings.totalStringProperty,
+      labelText: NumberLineOperationsStrings.totalStringProperty,
       showTotalAsCurrency: false,
       minWidth: DEFAULT_WIDTH,
       maxWidth: DEFAULT_WIDTH
@@ -47,15 +47,15 @@ class TotalValueAccordionBox extends AccordionBox {
       let readoutText;
       const sign = totalValue < 0 ? MathSymbols.MINUS : '';
       if ( options.showTotalAsCurrency ) {
-        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalCurrencyPattern, {
+        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
           totalString: options.labelText,
           sign: sign,
-          currencyUnits: NumberLineOperationsStrings.currencyUnits,
+          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
           totalValue: Math.abs( totalValue )
         } );
       }
       else {
-        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalValuePattern, {
+        readoutText = StringUtils.fillIn( NumberLineOperationsStrings.totalValuePatternStringProperty, {
           totalString: options.labelText,
           totalValue: sign + Math.abs( totalValue ).toString( 10 )
         } );

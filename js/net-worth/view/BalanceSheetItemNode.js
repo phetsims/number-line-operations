@@ -149,9 +149,9 @@ class BalanceSheetItemNode extends Node {
       children: [ inBagImageNode ]
     } );
 
-    const currencyString = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
+    const currencyString = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
       sign: '', // don't show minus sign for debts, since that would be a sort of double negative
-      currencyUnits: NumberLineOperationsStrings.currencyUnits,
+      currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
       value: Math.abs( balanceSheetItem.value )
     } );
 
@@ -181,7 +181,7 @@ class BalanceSheetItemNode extends Node {
     if ( balanceSheetItem.value === -100 || balanceSheetItem.value === -300 ) {
 
       // out-of-bag representation
-      const outOfBagTextLabelNode = new Text( NumberLineOperationsStrings.loan, {
+      const outOfBagTextLabelNode = new Text( NumberLineOperationsStrings.loanStringProperty, {
         font: new PhetFont( { size: 11, family: 'serif', style: 'italic' } ),
         centerX: 0,
         centerY: outOfBagImageNode.bottom - 15, // offset empirically determined
@@ -190,7 +190,7 @@ class BalanceSheetItemNode extends Node {
       outOfBagRepresentationNode.addChild( outOfBagTextLabelNode );
 
       // in-bag representation
-      const inBagTextLabelNode = new Text( NumberLineOperationsStrings.loan, {
+      const inBagTextLabelNode = new Text( NumberLineOperationsStrings.loanStringProperty, {
         font: new PhetFont( { size: 8, family: 'serif', style: 'italic' } ),
         centerX: inBagImageNode.centerX,
         centerY: inBagImageNode.bottom - 8, // offset empirically determined

@@ -79,22 +79,22 @@ class DynamicOperationDescription extends Text {
       [ operation.amountProperty, operation.operationTypeProperty ],
       ( amount, operationType ) => {
         if ( amount === 0 ) {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
             addOrRemove: operationType === Operation.ADDITION ?
-                         NumberLineOperationsStrings.add :
-                         NumberLineOperationsStrings.remove,
-            currencyUnits: NumberLineOperationsStrings.currencyUnits
+                         NumberLineOperationsStrings.addStringProperty :
+                         NumberLineOperationsStrings.removeStringProperty,
+            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
           } );
         }
         else {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
             addOrRemove: operationType === Operation.ADDITION ?
-                         NumberLineOperationsStrings.add :
-                         NumberLineOperationsStrings.remove,
+                         NumberLineOperationsStrings.addStringProperty :
+                         NumberLineOperationsStrings.removeStringProperty,
             assetOrDebt: amount > 0 ?
-                         NumberLineOperationsStrings.asset :
-                         NumberLineOperationsStrings.debt,
-            currencyUnits: NumberLineOperationsStrings.currencyUnits,
+                         NumberLineOperationsStrings.assetStringProperty :
+                         NumberLineOperationsStrings.debtStringProperty,
+            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
             value: Math.abs( amount )
           } );
         }

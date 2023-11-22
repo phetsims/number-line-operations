@@ -87,7 +87,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // simplify button
     const simplifyProperty = new BooleanProperty( false );
     const simplifyButton = new RectangularMomentaryButton( simplifyProperty, false, true, {
-      content: new Text( NumberLineOperationsStrings.simplify, { font: new PhetFont( 16 ), maxWidth: 200 } ),
+      content: new Text( NumberLineOperationsStrings.simplifyStringProperty, { font: new PhetFont( 16 ), maxWidth: 200 } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
       xMargin: 5,
@@ -200,9 +200,9 @@ class NumericalExpression extends Text {
 
         // Use currency units if specified when displaying the simplified total.
         if ( evaluateProperty.value && options.showCurrencyWhenEvaluated ) {
-          this.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePattern, {
+          this.string = StringUtils.fillIn( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
             sign: signChar,
-            currencyUnits: NumberLineOperationsStrings.currencyUnits,
+            currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
             value: Math.abs( endValue )
           } );
         }

@@ -32,9 +32,9 @@ const NLOConstants = {
   OPERATION_FADE_OUT_TIME: 1500, // in milliseconds,
 
   // patternized string for net worth with a currency symbol that is used in multiple places
-  NET_WORTH_WITH_CURRENCY_STRING: StringUtils.fillIn( NumberLineOperationsStrings.netWorthWithCurrencyPattern, {
-    netWorthString: NumberLineOperationsStrings.netWorth,
-    currencyUnits: NumberLineOperationsStrings.currencyUnits
+  NET_WORTH_WITH_CURRENCY_STRING: StringUtils.fillIn( NumberLineOperationsStrings.netWorthWithCurrencyPatternStringProperty, {
+    netWorthString: NumberLineOperationsStrings.netWorthStringProperty,
+    currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
   } ),
 
   // net worth range, used in a couple of places
