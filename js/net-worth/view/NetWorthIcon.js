@@ -1,4 +1,4 @@
-// Copyright 2021-2022, University of Colorado Boulder
+// Copyright 2021-2023, University of Colorado Boulder
 
 /**
  * NetWorthIcon is the icon that is used for the home screen and nav bar for the "Net Worth" screen.  It consists of an
