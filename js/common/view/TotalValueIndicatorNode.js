@@ -13,7 +13,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, Node, Text } from '../../../../scenery/js/imports.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
@@ -73,17 +73,19 @@ class TotalValueIndicatorNode extends Node {
       fill: 'white',
       stroke: 'black',
       center: Vector2.ZERO,
-      maxWidth: 45
+      maxWidth: 43
     } );
 
-    super( merge( { children: [ fillableBackgroundNode, labelNode ] }, options ) );
+    const labelAlignBox = new AlignBox( labelNode, { alignBounds: fillableBackgroundNode.bounds, xAlign: 'center' } );
+
+    super( merge( { children: [ fillableBackgroundNode, labelAlignBox ] }, options ) );
 
     // Update the fill and label as the total value changes.  Instances of this type are assumed to exist for the
     // duration of the sim, so no unlink is necessary.
     totalValueProperty.link( totalValue => {
 
       // Reposition the label.
-      labelNode.center = fillableBackgroundNode.center.plus( options.labelCenterOffset );
+      labelAlignBox.center = fillableBackgroundNode.center.plus( options.labelCenterOffset );
 
       // Set the fill.
       let fill = options.zeroFill;

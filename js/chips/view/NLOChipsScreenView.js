@@ -59,7 +59,7 @@ class NLOChipsScreenView extends ScreenView {
     } );
     this.addChild( this.numberLineNode );
 
-    // piggy bank that displays the net worth and moves as the value changes
+    // money bag that displays the net worth and moves as the value changes
     const totalValueIndicatorNode = new TotalValueIndicatorNode(
       model.totalInBagsProperty,
       new FillableBagNode( {
