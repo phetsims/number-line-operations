@@ -9,7 +9,7 @@
 
 import ScreenIcon from '../../../../joist/js/ScreenIcon.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, Image, Text } from '../../../../scenery/js/imports.js';
+import { Color, Image, ManualConstraint, Text } from '../../../../scenery/js/imports.js';
 import netWorthHomeScreenIcon_png from '../../../images/netWorthHomeScreenIcon_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
@@ -26,25 +26,19 @@ class NetWorthIcon extends ScreenIcon {
       // font size and scale were arrived at empirically
       font: new PhetFont( 32 ),
       scale: 8,
-
-      // position determined empirically
-      centerX: piggyBankImage.width * 0.475,
-      centerY: piggyBankImage.height * 0.5
+      maxWidth: 40
     } );
 
-    // Because there is a scale factor in the options, the maxWidth parameter doesn't work very well, so limiting the
-    // width of the string is explicitly handled here.
-    const maxWidthOfCurrencySymbol = piggyBankImage.width * 0.6;
-    if ( currencySymbol.width > maxWidthOfCurrencySymbol ) {
-      currencySymbol.scale( maxWidthOfCurrencySymbol / currencySymbol.width );
-      currencySymbol.centerX = piggyBankImage.width * 0.5;
-      currencySymbol.centerY = piggyBankImage.height * 0.5;
-    }
     piggyBankImage.addChild( currencySymbol );
 
     super( piggyBankImage, {
       maxIconWidthProportion: 1,
       maxIconHeightProportion: 1
+    } );
+
+    ManualConstraint.create( this, [ currencySymbol ], symbolProxy => {
+      symbolProxy.centerX = piggyBankImage.width * 0.5;
+      symbolProxy.centerY = piggyBankImage.height * 0.5;
     } );
   }
 }
