@@ -89,8 +89,8 @@ class NLONetWorthScreenView extends ScreenView {
     this.addChild( new HoldingBoxNode( model.debtsBox ) );
 
     // add the view representations for the areas where the assets and debts will be stored when in use
-    this.addChild( new HoldingBagNode( model.assetsBag, NumberLineOperationsStrings.assetsStringProperty ) );
-    this.addChild( new HoldingBagNode( model.debtsBag, NumberLineOperationsStrings.debtsStringProperty ) );
+    this.addChild( new HoldingBagNode( model.assetsBag, NumberLineOperationsStrings.assetsStringProperty, { labelMaxWidth: 60 } ) );
+    this.addChild( new HoldingBagNode( model.debtsBag, NumberLineOperationsStrings.debtsStringProperty, { labelMaxWidth: 60 } ) );
 
     // add the assets and debts
     model.balanceSheetItems.forEach( balanceSheetItem => {
