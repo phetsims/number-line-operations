@@ -18,7 +18,8 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Operation from '../../common/model/Operation.js';
@@ -65,11 +66,6 @@ class NumericalExpressionAccordionBox extends AccordionBox {
 
     assert && assert( numberLine.operations.length === 2, 'this indicator is designed to work with exactly two operations' );
 
-    // Create a transparent background that will serve as the root node.  Everything should be made to fit within this.
-    const contentRoot = new Rectangle( 0, 0, CONTENT_DIMENSIONS.width, CONTENT_DIMENSIONS.height, 5, 5, {
-      fill: Color.TRANSPARENT
-    } );
-
     // Create a DerivedProperty that is true when there are negative values in the expression, which means that
     // simplification is possible.  This will be used as the enabled Property for the simplify button.
     const simplificationPossibleProperty = new DerivedProperty(
@@ -88,7 +84,7 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     // simplify button
     const simplifyProperty = new BooleanProperty( false );
     const simplifyButton = new RectangularMomentaryButton( simplifyProperty, false, true, {
-      content: new Text( NumberLineOperationsStrings.simplifyStringProperty, { font: new PhetFont( 16 ), maxWidth: 200 } ),
+      content: new Text( NumberLineOperationsStrings.simplifyStringProperty, { font: new PhetFont( 16 ), maxWidth: 150 } ),
       baseColor: MOMENTARY_BUTTON_BASE_COLOR,
       enabledProperty: simplificationPossibleProperty,
       xMargin: 5,
@@ -122,14 +118,12 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     } );
 
     // Position the buttons so that they are collectively centered under the equation.
-    simplifyButton.x = 0;
-    evaluateButton.left = simplifyButton.width + 20;
-    const buttonsNode = new Node( {
+    const buttonsNode = new HBox( {
       children: [ simplifyButton, evaluateButton ],
+      spacing: 20,
       centerX: CONTENT_DIMENSIONS.width / 2,
       bottom: CONTENT_DIMENSIONS.height
     } );
-    contentRoot.addChild( buttonsNode );
 
     // numerical expression
     const numericalExpression = new NumericalExpression(
@@ -138,7 +132,6 @@ class NumericalExpressionAccordionBox extends AccordionBox {
       evaluateProperty,
       options.numericalExpressionOptions
     );
-    contentRoot.addChild( numericalExpression );
 
     // Keep the numerical expression centered.
     const centerNumericalExpression = () => {
@@ -147,6 +140,13 @@ class NumericalExpressionAccordionBox extends AccordionBox {
     };
     centerNumericalExpression();
     numericalExpression.updatedEmitter.addListener( centerNumericalExpression );
+
+    const contentVBox = new VBox( { children: [ numericalExpression, buttonsNode ], spacing: 12 } );
+
+    // Everything should be made to fit within the CONTENT_DIMENSIONS.
+    const contentRoot = new AlignBox( contentVBox, {
+      alignBounds: new Bounds2( 0, 0, CONTENT_DIMENSIONS.width, CONTENT_DIMENSIONS.height )
+    } );
 
     super( contentRoot, options );
 
