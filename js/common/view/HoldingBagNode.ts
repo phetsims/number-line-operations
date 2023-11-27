@@ -13,6 +13,7 @@ import assetsBag_png from '../../../images/assetsBag_png.js';
 import debtsBag_png from '../../../images/debtsBag_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
+import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 
 // constants
 const TAG_RECTANGLE_COMMON_OPTIONS = {
@@ -28,11 +29,7 @@ const TAG_ATTACHMENT_POINT_OFFSET = 9;
 
 class HoldingBagNode extends Node {
 
-  /**
-   * @param {HoldingBag} holdingBag
-   * @param {LocalizedStringProperty} labelTextProperty
-   */
-  constructor( holdingBag, labelTextProperty ) {
+  public constructor( holdingBag: HoldingBag, labelTextProperty: LocalizedStringProperty ) {
 
     // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
@@ -40,7 +37,6 @@ class HoldingBagNode extends Node {
                   assetsBag_png;
 
     const imageNode = new Image( image, {
-      minWidth: holdingBag.radius * 2,
       maxWidth: holdingBag.radius * 2,
       centerX: holdingBag.position.x,
 
