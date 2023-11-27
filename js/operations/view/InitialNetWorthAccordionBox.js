@@ -29,19 +29,20 @@ class InitialNetWorthAccordionBox extends AccordionBox {
     options = merge( {
       titleNode: new Text( NumberLineOperationsStrings.initialNetWorthStringProperty, {
         font: new PhetFont( 18 ),
-        maxWidth: 200 // empirically determined using stringTest=long
+        maxWidth: 200
       } )
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
     const label = new RichText( NumberLineOperationsStrings.initialNetWorthWithBreakStringProperty, {
       align: 'center',
       font: new PhetFont( 24 ),
-      maxWidth: 150 // empirically determined using stringTest=long
+      maxWidth: 150,
+      maxHeight: 90
     } );
 
     const currencyUnits = new Text( NumberLineOperationsStrings.currencyUnitsStringProperty, {
       font: new PhetFont( 24 ),
-      maxWidth: 150 // empirically determined using stringTest=long
+      maxWidth: 100
     } );
 
     const initialNetWorthPicker = new NumberPicker(
