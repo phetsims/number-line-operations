@@ -12,7 +12,7 @@ import Property from '../../../../axon/js/Property.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, DragListener, HBox, Image, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, DragListener, HBox, Image, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import asset100_png from '../../../images/asset100_png.js';
 import asset100Value_png from '../../../images/asset100Value_png.js';
 import asset200_png from '../../../images/asset200_png.js';
@@ -157,10 +157,11 @@ class BalanceSheetItemNode extends Node {
 
     const outOfBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 18 ),
-      center: imageInfo.outOfBagLabelOffset || Vector2.ZERO,
-      maxWidth: outOfBagImageNode.width * 0.75 // empirically determined such that the label fits on all artwork
+      maxWidth: outOfBagImageNode.width * 0.74 // empirically determined such that the label fits on all artwork
     } );
-    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
+
+    const outOfBagAlignBox = new AlignBox( outOfBagLabelNode, { alignBounds: outOfBagImageNode.bounds, xAlign: 'center', center: imageInfo.outOfBagLabelOffset || Vector2.ZERO } );
+    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagAlignBox ] } );
 
     const inBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 20 ),
@@ -183,20 +184,29 @@ class BalanceSheetItemNode extends Node {
       // out-of-bag representation
       const outOfBagTextLabelNode = new Text( NumberLineOperationsStrings.loanStringProperty, {
         font: new PhetFont( { size: 11, family: 'serif', style: 'italic' } ),
-        centerX: 0,
-        centerY: outOfBagImageNode.bottom - 15, // offset empirically determined
         maxWidth: outOfBagImageNode.width * 0.65
       } );
-      outOfBagRepresentationNode.addChild( outOfBagTextLabelNode );
+
+      const outOfBagTextLabelAlignBox = new AlignBox( outOfBagTextLabelNode, {
+        alignBounds: outOfBagImageNode.bounds,
+        xAlign: 'center',
+        yAlign: 'bottom',
+        yMargin: 8.5
+        } );
+      outOfBagRepresentationNode.addChild( outOfBagTextLabelAlignBox );
 
       // in-bag representation
       const inBagTextLabelNode = new Text( NumberLineOperationsStrings.loanStringProperty, {
         font: new PhetFont( { size: 8, family: 'serif', style: 'italic' } ),
-        centerX: inBagImageNode.centerX,
-        centerY: inBagImageNode.bottom - 8, // offset empirically determined
         maxWidth: inBagImageNode.width * 0.65
       } );
-      inBagIconBackground.addChild( inBagTextLabelNode );
+      const inBagTextLabelAlignBox = new AlignBox( inBagTextLabelNode, {
+        alignBounds: inBagImageNode.bounds,
+        xAlign: 'center',
+        yAlign: 'bottom',
+        yMargin: 3.5
+      } );
+      inBagIconBackground.addChild( inBagTextLabelAlignBox );
     }
 
     super( {
