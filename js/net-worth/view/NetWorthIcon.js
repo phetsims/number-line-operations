@@ -26,7 +26,7 @@ class NetWorthIcon extends ScreenIcon {
       // font size and scale were arrived at empirically
       font: new PhetFont( 32 ),
       scale: 8,
-      maxWidth: 40
+      maxWidth: 50
     } );
 
     piggyBankImage.addChild( currencySymbol );
@@ -38,7 +38,7 @@ class NetWorthIcon extends ScreenIcon {
 
     ManualConstraint.create( this, [ currencySymbol ], symbolProxy => {
       symbolProxy.centerX = piggyBankImage.width * 0.5;
-      symbolProxy.centerY = piggyBankImage.height * 0.5;
+      symbolProxy.centerY = piggyBankImage.height * 0.5 + 25;
     } );
   }
 }
