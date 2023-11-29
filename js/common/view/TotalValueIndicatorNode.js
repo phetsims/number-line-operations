@@ -11,7 +11,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, Color, Node, Text } from '../../../../scenery/js/imports.js';
 import numberLineOperations from '../../numberLineOperations.js';
@@ -43,7 +42,7 @@ class TotalValueIndicatorNode extends Node {
       leastNegativeFill: new Color( '#fda5a8' )
     }, options );
 
-    const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? MathSymbols.MINUS : '' );
+    const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? '-' : '' );
 
     let valueStringProperty;
     if ( options.isCurrency ) {
@@ -70,10 +69,11 @@ class TotalValueIndicatorNode extends Node {
     // label that represents the value
     const labelNode = new Text( valueStringProperty, {
       font: new PhetFont( 20 ),
+      lineWidth: 0.5,
       fill: 'white',
       stroke: 'black',
       center: Vector2.ZERO,
-      maxWidth: 43
+      maxWidth: 50
     } );
 
     const labelAlignBox = new AlignBox( labelNode, { alignBounds: fillableBackgroundNode.bounds, xAlign: 'center' } );
