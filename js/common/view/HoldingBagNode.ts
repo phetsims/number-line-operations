@@ -15,12 +15,6 @@ import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
 import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 
-type SelfOptions = {
-  labelMaxWidth: number;
-};
-
-type HoldingBagNodeOptions = SelfOptions;
-
 // constants
 const TAG_RECTANGLE_COMMON_OPTIONS = {
   fill: Color.WHITE,
@@ -32,12 +26,12 @@ const TAG_RECTANGLE_COMMON_OPTIONS = {
 const TAG_Y_MARGIN = 8;
 const TAG_X_MARGIN = 12;
 const TAG_ATTACHMENT_POINT_OFFSET = 9;
+const LABEL_WIDTH = 90;
 
 class HoldingBagNode extends Node {
 
-  public constructor( holdingBag: HoldingBag, labelTextProperty: LocalizedStringProperty, providedOptions: HoldingBagNodeOptions ) {
+  public constructor( holdingBag: HoldingBag, labelTextProperty: LocalizedStringProperty ) {
 
-    const options = providedOptions;
     // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
                   debtsBag_png :
@@ -54,7 +48,7 @@ class HoldingBagNode extends Node {
     // label text that will go on the tag
     const labelTextNode = new Text( labelTextProperty, {
       font: new PhetFont( 20 ),
-      maxWidth: options.labelMaxWidth
+      maxWidth: LABEL_WIDTH
     } );
 
     // The tag is a rectangle with a white background and a textual label on it.  It is intended to like the sort of tag
@@ -64,7 +58,7 @@ class HoldingBagNode extends Node {
     const tag = new Rectangle(
       0,
       0,
-      options.labelMaxWidth + 2 * TAG_X_MARGIN + TAG_ATTACHMENT_POINT_OFFSET,
+      LABEL_WIDTH + 2 * TAG_X_MARGIN + TAG_ATTACHMENT_POINT_OFFSET,
       labelTextNode.height + 2 * TAG_Y_MARGIN,
       TAG_RECTANGLE_COMMON_OPTIONS
     );

@@ -85,8 +85,8 @@ class NLOChipsScreenView extends ScreenView {
     this.addChild( new HoldingBoxNode( model.negativeChipsBox ) );
 
     // Add the view representations for the bags into which the chips can be placed.
-    this.addChild( new HoldingBagNode( model.positiveChipsBag, NumberLineOperationsStrings.positivesStringProperty, { labelMaxWidth: 89 } ) );
-    this.addChild( new HoldingBagNode( model.negativeChipsBag, NumberLineOperationsStrings.negativesStringProperty, { labelMaxWidth: 89 } ) );
+    this.addChild( new HoldingBagNode( model.positiveChipsBag, NumberLineOperationsStrings.positivesStringProperty ) );
+    this.addChild( new HoldingBagNode( model.negativeChipsBag, NumberLineOperationsStrings.negativesStringProperty ) );
 
     // Add the chip nodes.
     model.chips.forEach( chip => {
