@@ -214,13 +214,11 @@ class NumericalExpression extends Node {
     const evaluateTextVisibleProperty = new BooleanProperty( false );
     const numericalExpressionTextVisibleProperty = new BooleanProperty( false );
     const evaluateText = new Text( stringProperty, merge( {
-      visibleProperty: evaluateTextVisibleProperty,
-      fill: 'red'
+      visibleProperty: evaluateTextVisibleProperty
     }, options ) );
 
     const numericalExpressionText = new Text( '', merge( {
-      visibleProperty: numericalExpressionTextVisibleProperty,
-      fill: 'blue'
+      visibleProperty: numericalExpressionTextVisibleProperty
     }, options ) );
 
     super( { children: [ evaluateText, numericalExpressionText ], excludeInvisibleChildrenFromBounds: true } );
