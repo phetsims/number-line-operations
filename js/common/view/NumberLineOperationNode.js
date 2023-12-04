@@ -79,11 +79,18 @@ class NumberLineOperationNode extends Node {
     const aboveNumberLine = options.relativePosition === RelativePosition.ABOVE_NUMBER_LINE;
 
     // operation label
-    const operationLabelTextNode = new Text( '', {
+    const operationLabelText = new Text( '', {
       font: options.operationLabelFont,
       maxWidth: 150 // empirically determined
     } );
-    const operationLabel = new BackgroundNode( operationLabelTextNode, NLCConstants.LABEL_BACKGROUND_OPTIONS );
+
+    const operationOffScaleText = new Text( NumberLineOperationsStrings.operationOffScaleStringProperty, {
+      font: OPERATION_OFF_SCALE_LABEL_FONT,
+      maxWidth: 150 // empirically determined
+    } );
+
+    const operationTextWrapper = new Node( { children: [ operationLabelText, operationOffScaleText ], excludeInvisibleChildrenFromBounds: true } );
+    const operationLabel = new BackgroundNode( operationTextWrapper, NLCConstants.LABEL_BACKGROUND_OPTIONS );
     this.addChild( operationLabel );
 
     // operation description
@@ -180,15 +187,17 @@ class NumberLineOperationNode extends Node {
 
             // The depiction of the arrow portion of the operation is either at the very edge of the number line or
             // completely off of it, so use a special label that indicates this.
-            operationLabelTextNode.string = NumberLineOperationsStrings.operationOffScaleStringProperty;
-
-            // Use a different (generally smaller) font in this case.
-            operationLabelTextNode.font = OPERATION_OFF_SCALE_LABEL_FONT;
+            operationOffScaleText.visible = true;
+            operationLabelText.visible = false;
 
             // Make the label stroked in this case.
             operationLabel.background.stroke = Color.BLACK;
           }
           else {
+
+            operationOffScaleText.visible = false;
+            operationLabelText.visible = true;
+
             const operationChar = operation.operationTypeProperty.value === Operation.ADDITION ?
                                   MathSymbols.UNARY_PLUS :
                                   MathSymbols.MINUS;
@@ -197,11 +206,11 @@ class NumberLineOperationNode extends Node {
                              operation.amountProperty.value > 0 ?
                              MathSymbols.UNARY_PLUS :
                              '';
-            operationLabelTextNode.string = `${operationChar
+            operationLabelText.string = `${operationChar
             } ${
               signChar
             }${Math.abs( operation.amountProperty.value ).toString( 10 )}`;
-            operationLabelTextNode.font = options.operationLabelFont;
+            operationLabelText.font = options.operationLabelFont;
 
             // no stroke in this case
             operationLabel.background.stroke = null;
