@@ -211,15 +211,19 @@ class NumericalExpression extends Node {
       } );
     }
 
+    const evaluateTextVisibleProperty = new BooleanProperty( false );
+    const numericalExpressionTextVisibleProperty = new BooleanProperty( false );
     const evaluateText = new Text( stringProperty, merge( {
-      visibleProperty: new DerivedProperty( [ evaluateProperty ], evaluate => evaluate || numberLine.getActiveOperations().length === 0 )
+      visibleProperty: evaluateTextVisibleProperty,
+      fill: 'red'
     }, options ) );
 
     const numericalExpressionText = new Text( '', merge( {
-      visibleProperty: new DerivedProperty( [ evaluateProperty ], evaluate => !evaluate || numberLine.getActiveOperations().length !== 0 )
+      visibleProperty: numericalExpressionTextVisibleProperty,
+      fill: 'blue'
     }, options ) );
 
-    super( { children: [ evaluateText, numericalExpressionText ] } );
+    super( { children: [ evaluateText, numericalExpressionText ], excludeInvisibleChildrenFromBounds: true } );
 
     // @public (listen-only) - used to signal updates, was necessary because listening to bounds changes wasn't working
     this.updatedEmitter = new Emitter();
@@ -229,8 +233,13 @@ class NumericalExpression extends Node {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
         currentEndValueProperty.set( numberLine.getCurrentEndValue() );
+        evaluateTextVisibleProperty.set( true );
+        numericalExpressionTextVisibleProperty.set( false );
       }
       else {
+
+        evaluateTextVisibleProperty.set( false );
+        numericalExpressionTextVisibleProperty.set( true );
 
         // {Array.<number|OperationType>} - a list of all the values and operations needed to create the expression
         const valuesAndOperations = [];
