@@ -211,15 +211,9 @@ class NumericalExpression extends Node {
       } );
     }
 
-    const evaluateTextVisibleProperty = new BooleanProperty( false );
-    const numericalExpressionTextVisibleProperty = new BooleanProperty( false );
-    const evaluateText = new Text( stringProperty, merge( {
-      visibleProperty: evaluateTextVisibleProperty
-    }, options ) );
+    const evaluateText = new Text( stringProperty, options );
 
-    const numericalExpressionText = new Text( '', merge( {
-      visibleProperty: numericalExpressionTextVisibleProperty
-    }, options ) );
+    const numericalExpressionText = new Text( '', options );
 
     super( { children: [ evaluateText, numericalExpressionText ], excludeInvisibleChildrenFromBounds: true } );
 
@@ -231,13 +225,13 @@ class NumericalExpression extends Node {
       const activeOperations = numberLine.getActiveOperations();
       if ( evaluateProperty.value || activeOperations.length === 0 ) {
         currentEndValueProperty.set( numberLine.getCurrentEndValue() );
-        evaluateTextVisibleProperty.set( true );
-        numericalExpressionTextVisibleProperty.set( false );
+        evaluateText.visible = true;
+        numericalExpressionText.visible = false;
       }
       else {
 
-        evaluateTextVisibleProperty.set( false );
-        numericalExpressionTextVisibleProperty.set( true );
+        evaluateText.visible = false;
+        numericalExpressionText.visible = true;
 
         // {Array.<number|OperationType>} - a list of all the values and operations needed to create the expression
         const valuesAndOperations = [];
