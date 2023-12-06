@@ -8,8 +8,9 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
+import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Image, Node, Path } from '../../../../scenery/js/imports.js';
+import { Image, Path } from '../../../../scenery/js/imports.js';
 import nlBagForeground_png from '../../../images/nlBagForeground_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 
@@ -24,7 +25,7 @@ const BAG_OUTLINE_SVG_STRING = 'M367.541,188.392c0,0-7.992-7.075,39.988-42.405\n
 
 const BAG_OUTLINE_SHAPE = new Shape( BAG_OUTLINE_SVG_STRING );
 
-class FillableBagNode extends Node {
+class FillableBagNode extends FillableBackgroundNode {
 
   /**
    * @param {Object} [options]
@@ -46,31 +47,8 @@ class FillableBagNode extends Node {
     overlayImage.setScaleMagnitude( bagOutlineNode.width / overlayImage.width );
     overlayImage.center = Vector2.ZERO;
     options.children = [ bagOutlineNode, overlayImage ];
-    super( options );
-
-    // @private
-    this.outline = bagOutlineNode;
+    super( bagOutlineNode, options );
   }
-
-  /**
-   * @returns {ColorDef} the color of this piggy bank's fill
-   * @public
-   */
-  getFill() {
-    return this.outline.fill;
-  }
-
-  get fill() { return this.getFill(); }
-
-  /**
-   * @param {ColorDef} fill
-   * @public
-   */
-  setFill( fill ) {
-    this.outline.fill = fill;
-  }
-
-  set fill( fill ) { this.setFill( fill ); }
 }
 
 numberLineOperations.register( 'FillableBagNode', FillableBagNode );

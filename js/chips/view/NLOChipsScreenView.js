@@ -70,7 +70,8 @@ class NLOChipsScreenView extends ScreenView {
         centerY: model.numberLine.centerPositionProperty.value.y + 64,
         labelCenterOffset: new Vector2( 0, 5 ),
         leastPositiveFill: new Color( '#FFFFCC' ),
-        mostPositiveFill: Color.YELLOW
+        mostPositiveFill: Color.YELLOW,
+        labelMaxWidth: 44
       }
     );
     this.addChild( totalValueIndicatorNode );

@@ -10,37 +10,47 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, Node, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, Color, Node, NodeOptions, Text } from '../../../../scenery/js/imports.js';
+import Range from '../../../../dot/js/Range.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
+import Property from '../../../../axon/js/Property.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
+
+type SelfOptions = {
+  labelCenterOffset?: Vector2; // offset of the label from the center of the background node
+  isCurrency?: boolean; // if false, just shows the number, if true, uses a currency symbol and pattern
+  zeroFill?: Color; //color values used, and interpolated between, as the total value changes
+  mostPositiveFill?: Color;
+  leastPositiveFill?: Color;
+  mostNegativeFill?: Color;
+  leastNegativeFill?: Color;
+  labelMaxWidth?: number;
+};
+
+type TotalValueIndicatorNodeOptions = SelfOptions & StrictOmit<NodeOptions, 'children'>;
 
 class TotalValueIndicatorNode extends Node {
 
-  /**
-   * @param {NumberProperty} totalValueProperty
-   * @param {Node} fillableBackgroundNode - the node that will serve as the background to the value, must support setting fill
-   * @param {Range} range
-   * @param {Object} [options]
-   */
-  constructor( totalValueProperty, fillableBackgroundNode, range, options ) {
+  public constructor(
+    totalValueProperty: Property<number>,
+    fillableBackgroundNode: FillableBackgroundNode,
+    range: Range,
+    providedOptions: TotalValueIndicatorNodeOptions ) {
 
-    options = merge( {
-
-      // {Vector2} - offset of the label from the center of the background node
+    const options = optionize<TotalValueIndicatorNodeOptions, SelfOptions, NodeOptions>()( {
       labelCenterOffset: Vector2.ZERO,
-
-      // {boolean} - if false, just shows the number, if true, uses a currency symbol and pattern
       isCurrency: false,
-
-      // {Color} - color values used, and interpolated between, as the total value changes
       zeroFill: Color.WHITE,
       mostPositiveFill: new Color( '#1fb493' ),
       leastPositiveFill: new Color( '#a5e1d4' ),
       mostNegativeFill: new Color( '#fb1d25' ),
-      leastNegativeFill: new Color( '#fda5a8' )
-    }, options );
+      leastNegativeFill: new Color( '#fda5a8' ),
+      labelMaxWidth: 50
+    }, providedOptions );
 
     const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? '-' : '' );
 
@@ -73,12 +83,12 @@ class TotalValueIndicatorNode extends Node {
       fill: 'white',
       stroke: 'black',
       center: Vector2.ZERO,
-      maxWidth: 50
+      maxWidth: options.labelMaxWidth
     } );
 
     const labelAlignBox = new AlignBox( labelNode, { alignBounds: fillableBackgroundNode.bounds, xAlign: 'center' } );
 
-    super( merge( { children: [ fillableBackgroundNode, labelAlignBox ] }, options ) );
+    super( combineOptions<NodeOptions>( { children: [ fillableBackgroundNode, labelAlignBox ] }, options ) );
 
     // Update the fill and label as the total value changes.  Instances of this type are assumed to exist for the
     // duration of the sim, so no unlink is necessary.
