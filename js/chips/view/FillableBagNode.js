@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2023, University of Colorado Boulder
 
 /**
  * FillableBagNode is a Scenery Node that looks like a drawing of a bag and that can be filled with different colors.
