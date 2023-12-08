@@ -18,8 +18,7 @@
     "simulation": true,
     "runnable": true,
     "supportedBrands": [
-      "phet",
-      "adapted-from-phet"
+      "phet"
     ],
     "supportsOutputJS": true,
     "published": true,
