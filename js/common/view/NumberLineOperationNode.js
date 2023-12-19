@@ -34,6 +34,11 @@ const OPERATION_DESCRIPTION_FADE_IN_TIME = 0.4; // in seconds
 const DISTANCE_NUMBER_LINE_TO_LABELS = 45; // in screen coordinates, empirically chosen to look good
 
 class NumberLineOperationNode extends Node {
+  /**
+   *
+   * @type {null | PatternStringProperty } descriptionPatternStringProperty
+   */
+  static descriptionPatternStringProperty = null;
 
   /**
    * @param {NumberLineOperation} operation
@@ -327,16 +332,17 @@ class NumberLineOperationNode extends Node {
     const addOrRemoveStringProperty = operation.operationTypeProperty.value === Operation.ADDITION ?
                                       NumberLineOperationsStrings.addStringProperty :
                                       NumberLineOperationsStrings.removeStringProperty;
-    let operationDescriptionString;
+
+    NumberLineOperationNode.descriptionPatternStringProperty && NumberLineOperationNode.descriptionPatternStringProperty.dispose();
     if ( useFinancialDescriptions ) {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
+        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
         } );
       }
       else {
-        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
+        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           assetOrDebt: operation.amountProperty.value > 0 ?
                        NumberLineOperationsStrings.assetStringProperty :
@@ -352,12 +358,12 @@ class NumberLineOperationNode extends Node {
     }
     else {
       if ( operation.amountProperty.value === 0 ) {
-        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
+        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty
         } );
       }
       else {
-        operationDescriptionString = new PatternStringProperty( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
+        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           positiveOrNegative: operation.amountProperty.value > 0 ?
                               NumberLineOperationsStrings.positiveStringProperty :
@@ -371,7 +377,7 @@ class NumberLineOperationNode extends Node {
       }
     }
 
-    return operationDescriptionString;
+    return NumberLineOperationNode.descriptionPatternStringProperty;
   }
 
   /**
