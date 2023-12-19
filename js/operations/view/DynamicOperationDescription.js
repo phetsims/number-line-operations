@@ -72,9 +72,8 @@ class DynamicOperationDescription extends Node {
       }
     } );
 
-    const assetOrDebtProperty = new DerivedProperty( [ operation.amountProperty ], amount => amount > 0 ?
-                                                                                             NumberLineOperationsStrings.assetStringProperty.value :
-                                                                                             NumberLineOperationsStrings.debtStringProperty.value );
+    const assetOrDebtProperty = new DerivedProperty( [ operation.amountProperty, NumberLineOperationsStrings.assetStringProperty, NumberLineOperationsStrings.debtStringProperty ],
+      ( amount, assetString, debtString ) => amount > 0 ? assetString : debtString );
     const addRemoveAssetDebtStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
       addOrRemove: operation.operationTypeProperty,
       assetOrDebt: assetOrDebtProperty,
