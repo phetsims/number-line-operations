@@ -85,8 +85,7 @@ class NLOOperationsScreenView extends ScreenView {
       right: this.layoutBounds.maxX - NLOConstants.OPERATION_ENTRY_CAROUSEL_LEFT_INSET,
       top: this.layoutBounds.minY + NLCConstants.SCREEN_VIEW_Y_MARGIN,
       entryControl1Options: commonEntryControlOptions,
-      entryControl2Options: commonEntryControlOptions,
-      dragInterruptionCallback: () => { numberLineNode.interruptSubtreeInput(); }
+      entryControl2Options: commonEntryControlOptions
     } );
     this.addChild( operationEntryCarousel );
 

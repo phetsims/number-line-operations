@@ -61,8 +61,6 @@ class OperationEntryControl extends HBox {
 
       numberPickerRangeProperty: new Property( new Range( -200, 200 ) ),
 
-      dragInterruptionCallback: () => {},
-
       // options that are passed through to the number picker
       numberPickerOptions: {
         yMargin: 10,
@@ -100,23 +98,14 @@ class OperationEntryControl extends HBox {
         }
       }
     );
-    controlledOperation.operationTypeProperty.lazyLink( () => {
-      options.dragInterruptionCallback();
-    } );
 
     // amount selector
     const operationAmountPicker = new NumberPicker(
       controlledOperation.amountProperty,
       options.numberPickerRangeProperty,
       merge( {
-        incrementFunction: value => {
-          options.dragInterruptionCallback();
-          return value + options.increment;
-        },
-        decrementFunction: value => {
-          options.dragInterruptionCallback();
-          return value - options.increment;
-        }
+        incrementFunction: value => value + options.increment,
+        decrementFunction: value => value - options.increment
       }, options.numberPickerOptions )
     );
 
@@ -132,7 +121,6 @@ class OperationEntryControl extends HBox {
     const enterButton = new RoundPushButton( {
       enabledProperty: DerivedProperty.not( controlledOperation.isActiveProperty ),
       listener: () => {
-        options.dragInterruptionCallback();
         controlledOperation.isActiveProperty.set( true );
       },
       content: enterArrowNode,

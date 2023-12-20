@@ -33,12 +33,10 @@ class OperationEntryCarousel extends Node {
     // Define the rest of the options.
     options = merge( {
       entryControl1Options: {
-        buttonBaseColor: options.themeColor,
-        dragInterruptionCallback: options.dragInterruptionCallback
+        buttonBaseColor: options.themeColor
       },
       entryControl2Options: {
-        buttonBaseColor: options.themeColor,
-        dragInterruptionCallback: options.dragInterruptionCallback
+        buttonBaseColor: options.themeColor
       },
       pageControlPosition: PageControlPosition.BELOW
     }, options );
