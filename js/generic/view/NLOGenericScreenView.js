@@ -257,6 +257,11 @@ class InteractiveNumberLineView extends Node {
     );
     this.addChild( this.numericalExpressionAccordionBox );
 
+    // merge the default options with the numberLineNode interruption function
+    options.operationEntryCarouselOptions = merge( {
+      dragInterruptionCallback: () => { numberLineNode.interruptSubtreeInput(); }
+    }, options.operationEntryCarouselOptions );
+
     // @private - carousel in which the operation entry controls reside
     this.operationEntryCarousel = new OperationEntryCarousel( numberLine, options.operationEntryCarouselOptions );
     this.addChild( this.operationEntryCarousel );
