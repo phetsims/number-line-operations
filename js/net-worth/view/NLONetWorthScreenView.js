@@ -69,7 +69,7 @@ class NLONetWorthScreenView extends ScreenView {
       model.netWorthProperty,
       new MoneyJarNode( {
         decorationType: MoneyJarDecoration.NONE,
-        maxHeight: 65 // empirically determined to match design doc
+        maxHeight: 70 // empirically determined
       } ),
       NLOConstants.NET_WORTH_RANGE,
       {
