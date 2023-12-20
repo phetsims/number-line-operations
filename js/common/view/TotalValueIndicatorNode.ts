@@ -49,7 +49,7 @@ class TotalValueIndicatorNode extends Node {
       leastPositiveFill: new Color( '#a5e1d4' ),
       mostNegativeFill: new Color( '#fb1d25' ),
       leastNegativeFill: new Color( '#fda5a8' ),
-      labelMaxWidth: 50
+      labelMaxWidth: 54
     }, providedOptions );
 
     const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? '-' : '' );
@@ -78,8 +78,8 @@ class TotalValueIndicatorNode extends Node {
 
     // label that represents the value
     const labelNode = new Text( valueStringProperty, {
-      font: new PhetFont( 20 ),
-      lineWidth: 0.5,
+      font: new PhetFont( 22 ),
+      lineWidth: 0.8,
       fill: 'white',
       stroke: 'black',
       center: Vector2.ZERO,
