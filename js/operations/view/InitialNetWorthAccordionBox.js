@@ -7,6 +7,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import TinyEmitter from '../../../../axon/js/TinyEmitter.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -45,12 +46,19 @@ class InitialNetWorthAccordionBox extends AccordionBox {
       maxWidth: 100
     } );
 
+    const changingInitialNetWorthEmitter = new TinyEmitter();
     const initialNetWorthPicker = new NumberPicker(
       initialNetWorthProperty,
       netWorthRangeProperty,
       {
-        incrementFunction: value => value + 100,
-        decrementFunction: value => value - 100,
+        incrementFunction: value => {
+          changingInitialNetWorthEmitter.emit();
+          return value + 100;
+        },
+        decrementFunction: value => {
+          changingInitialNetWorthEmitter.emit();
+          return value - 100;
+        },
         yMargin: 10,
         arrowHeight: 10,
         color: NLOConstants.DARK_BLUE_POINT_COLOR,
@@ -64,6 +72,8 @@ class InitialNetWorthAccordionBox extends AccordionBox {
     } );
 
     super( content, options );
+
+    this.changingInitialNetWorthEmitter = changingInitialNetWorthEmitter;
   }
 }
 
