@@ -173,9 +173,7 @@ class NLOOperationsScreenView extends ScreenView {
       }
     );
     this.addChild( initialNetWorthAccordionBox );
-
-    // Interrupt line interactions when the initial net worth is changed
-    model.numberLine.startingValueProperty.link( () => {
+    initialNetWorthAccordionBox.changingInitialNetWorthEmitter.addListener( () => {
       numberLineNode.interruptSubtreeInput();
     } );
 
