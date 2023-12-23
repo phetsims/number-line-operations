@@ -32,13 +32,9 @@ const OPERATION_OFF_SCALE_LABEL_FONT = new PhetFont( 14 );
 const OPERATION_DESCRIPTION_PRE_FADE_DELAY = 0.7; // in seconds
 const OPERATION_DESCRIPTION_FADE_IN_TIME = 0.4; // in seconds
 const DISTANCE_NUMBER_LINE_TO_LABELS = 45; // in screen coordinates, empirically chosen to look good
+const NUMBER_LINE_OPERATION_NODE_MARGIN = 50; // in screen coordinates
 
 class NumberLineOperationNode extends Node {
-  /**
-   *
-   * @type {null | PatternStringProperty } descriptionPatternStringProperty
-   */
-  static descriptionPatternStringProperty = null;
 
   /**
    * @param {NumberLineOperation} operation
@@ -74,6 +70,9 @@ class NumberLineOperationNode extends Node {
     // @private
     this.numberLine = numberLine;
     this.operation = operation;
+
+    // @private {null | PatternStringProperty } descriptionPatternStringProperty
+    this.descriptionPatternStringProperty = null;
 
     const operationNumber = numberLine.operations.indexOf( operation );
 
@@ -175,7 +174,8 @@ class NumberLineOperationNode extends Node {
         operation.operationTypeProperty,
         operation.amountProperty,
         numberLine.displayedRangeProperty,
-        numberLine.centerPositionProperty
+        numberLine.centerPositionProperty,
+        operationDescription.boundsProperty
       ],
       ( isActive, operationStartValue, showLabel, showDescription ) => {
 
@@ -230,7 +230,7 @@ class NumberLineOperationNode extends Node {
           }
 
           // Update the operation description.
-          operationDescriptionNode.children = [ new Text( NumberLineOperationNode.getOperationDescriptionString(
+          operationDescriptionNode.children = [ new Text( this.getOperationDescriptionString(
             operation,
             options.useFinancialDescriptions
           ), {
@@ -250,8 +250,10 @@ class NumberLineOperationNode extends Node {
           // max value of the number line.
           const labelsCenterX = Utils.clamp(
             ( startPosition.x + endPosition.x ) / 2,
-            numberLine.valueToModelPosition( numberLine.displayedRangeProperty.value.min ).x,
+            numberLine.valueToModelPosition( numberLine.displayedRangeProperty.value.min ).x
+            + operationDescription.width / 2 - NUMBER_LINE_OPERATION_NODE_MARGIN,
             numberLine.valueToModelPosition( numberLine.displayedRangeProperty.value.max ).x
+            - operationDescription.width / 2 + NUMBER_LINE_OPERATION_NODE_MARGIN
           );
           operationLabel.centerX = labelsCenterX;
           operationDescription.centerX = labelsCenterX;
@@ -324,25 +326,25 @@ class NumberLineOperationNode extends Node {
    * @param {NumberLineOperation} operation
    * @param {boolean} useFinancialDescriptions - Controls whether to use financial terms like "asset" or more generic
    * terminology in the descriptions.
-   * @returns {string}
+   * @returns {PatternStringProperty}
    * @private
    */
-  static getOperationDescriptionString( operation, useFinancialDescriptions ) {
+  getOperationDescriptionString( operation, useFinancialDescriptions ) {
 
     const addOrRemoveStringProperty = operation.operationTypeProperty.value === Operation.ADDITION ?
                                       NumberLineOperationsStrings.addStringProperty :
                                       NumberLineOperationsStrings.removeStringProperty;
 
-    NumberLineOperationNode.descriptionPatternStringProperty && NumberLineOperationNode.descriptionPatternStringProperty.dispose();
+    this.descriptionPatternStringProperty && this.descriptionPatternStringProperty.dispose();
     if ( useFinancialDescriptions ) {
       if ( operation.amountProperty.value === 0 ) {
-        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
+        this.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
         } );
       }
       else {
-        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
+        this.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           assetOrDebt: operation.amountProperty.value > 0 ?
                        NumberLineOperationsStrings.assetStringProperty :
@@ -358,12 +360,12 @@ class NumberLineOperationNode extends Node {
     }
     else {
       if ( operation.amountProperty.value === 0 ) {
-        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
+        this.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroPatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty
         } );
       }
       else {
-        NumberLineOperationNode.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
+        this.descriptionPatternStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemovePositiveNegativePatternStringProperty, {
           addOrRemove: addOrRemoveStringProperty,
           positiveOrNegative: operation.amountProperty.value > 0 ?
                               NumberLineOperationsStrings.positiveStringProperty :
@@ -376,8 +378,7 @@ class NumberLineOperationNode extends Node {
         } );
       }
     }
-
-    return NumberLineOperationNode.descriptionPatternStringProperty;
+    return this.descriptionPatternStringProperty;
   }
 
   /**
