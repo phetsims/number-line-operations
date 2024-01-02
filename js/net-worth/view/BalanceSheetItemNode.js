@@ -157,11 +157,10 @@ class BalanceSheetItemNode extends Node {
 
     const outOfBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 18 ),
-      maxWidth: outOfBagImageNode.width * 0.74 // empirically determined such that the label fits on all artwork
+      maxWidth: outOfBagImageNode.width * 0.74, // empirically determined such that the label fits on all artwork
+      center: outOfBagImageNode.center.add( imageInfo.outOfBagLabelOffset || Vector2.ZERO )
     } );
-
-    const outOfBagAlignBox = new AlignBox( outOfBagLabelNode, { alignBounds: outOfBagImageNode.bounds, xAlign: 'center', center: imageInfo.outOfBagLabelOffset || Vector2.ZERO } );
-    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagAlignBox ] } );
+    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
 
     const inBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 20 ),
@@ -192,7 +191,7 @@ class BalanceSheetItemNode extends Node {
         xAlign: 'center',
         yAlign: 'bottom',
         yMargin: 8.5
-        } );
+      } );
       outOfBagRepresentationNode.addChild( outOfBagTextLabelAlignBox );
 
       // in-bag representation
