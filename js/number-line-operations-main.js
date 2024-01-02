@@ -20,9 +20,9 @@ const numberLineOperationsTitleStringProperty = NumberLineOperationsStrings[ 'nu
 const simOptions = {
   credits: {
     leadDesign: 'Amanda McGarry',
-    softwareDevelopment: 'John Blanco',
+    softwareDevelopment: 'John Blanco, Marla Schulz',
     team: 'Kathy Perkins',
-    qualityAssurance: 'Logan Bray, Brooklyn Lash, Liam Mulhall, Devon Quispe, Kathryn Woessner',
+    qualityAssurance: 'Logan Bray, Jaron Droder, Brooklyn Lash, Liam Mulhall, Nancy Salpepi, Devon Quispe, Kathryn Woessner',
     graphicArts: 'Megan Lai'
   }
 };
