@@ -13,7 +13,7 @@
     "branch": "HEAD"
   },
   "chipper": {
-    "sha": "c7994b09bfd93a1941a6dc2e86fb80b105364260",
+    "sha": "ab80eb77e02320058cb26f05278a05b886d9d4ae",
     "branch": "HEAD"
   },
   "dot": {
@@ -21,7 +21,7 @@
     "branch": "HEAD"
   },
   "joist": {
-    "sha": "c681a85da08e40b733836398368edc7954894228",
+    "sha": "cfd637e73735456c80bd89784ebff84bf6c534b9",
     "branch": "HEAD"
   },
   "kite": {
@@ -29,11 +29,11 @@
     "branch": "HEAD"
   },
   "number-line-common": {
-    "sha": "8164fd5b1b335fc2a49b5195259bde5de0b2ab20",
+    "sha": "7579c0ab31ed3440f129c691bce16c05081d1222",
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "48b51559c102ed46463687ee15b27d620ed2e378",
+    "sha": "d3c5536acb855ab844b02c02840c6bab9b344695",
     "branch": "1.1"
   },
   "perennial-alias": {
@@ -69,7 +69,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "2ae6263f8ceee5fc252df573e5717a78485c78df",
+    "sha": "b201ca264fc45c2d8a2e664bbad5f606428b4b2d",
     "branch": "HEAD"
   },
   "scenery-phet": {
