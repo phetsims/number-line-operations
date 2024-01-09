@@ -70,7 +70,7 @@ class HoldingBagNode extends Node {
     }
     else {
       tag.left = imageNode.centerX + 20;
-      tag.centerY = imageNode.top + 4;
+      tag.centerY = imageNode.top + 6;
     }
 
     tag.addChild( labelTextNode );
