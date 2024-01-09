@@ -61,29 +61,23 @@ class DynamicOperationDescription extends Node {
     // This is intended to be constructed prior to the operation becoming active.
     assert && assert( !operation.isActiveProperty.value, 'operation must be inactive when this node is constructed' );
 
+    const addOrRemoveProperty = new DerivedProperty( [ operation.operationTypeProperty, NumberLineOperationsStrings.addStringProperty, NumberLineOperationsStrings.removeStringProperty ],
+      ( operationType, addString, removeString ) => operationType === Operation.ADDITION ? addString : removeString );
+
     const addRemoveZeroStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveZeroCurrencyPatternStringProperty, {
-      addOrRemove: operation.operationTypeProperty,
+      addOrRemove: addOrRemoveProperty,
       currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty
-    }, {
-      maps: {
-        addOrRemove: operationType => operationType === Operation.ADDITION ?
-                                      NumberLineOperationsStrings.addStringProperty.value :
-                                      NumberLineOperationsStrings.removeStringProperty.value
-      }
     } );
 
     const assetOrDebtProperty = new DerivedProperty( [ operation.amountProperty, NumberLineOperationsStrings.assetStringProperty, NumberLineOperationsStrings.debtStringProperty ],
       ( amount, assetString, debtString ) => amount > 0 ? assetString : debtString );
     const addRemoveAssetDebtStringProperty = new PatternStringProperty( NumberLineOperationsStrings.addRemoveAssetDebtPatternStringProperty, {
-      addOrRemove: operation.operationTypeProperty,
+      addOrRemove: addOrRemoveProperty,
       assetOrDebt: assetOrDebtProperty,
       currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
       value: operation.amountProperty
     }, {
       maps: {
-        addOrRemove: operationType => operationType === Operation.ADDITION ?
-                                      NumberLineOperationsStrings.addStringProperty.value :
-                                      NumberLineOperationsStrings.removeStringProperty.value,
         value: value => Math.abs( value )
       }
     } );
