@@ -9,6 +9,7 @@
 
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -157,10 +158,28 @@ class BalanceSheetItemNode extends Node {
 
     const outOfBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 18 ),
-      maxWidth: outOfBagImageNode.width * 0.74, // empirically determined such that the label fits on all artwork
-      center: outOfBagImageNode.center.add( imageInfo.outOfBagLabelOffset || Vector2.ZERO )
+      maxWidth: outOfBagImageNode.width * 0.74 // empirically determined such that the label fits on all artwork
     } );
-    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagLabelNode ] } );
+
+    // Custom bounds are needed for the AlignBox in order to center the label properly according to the required offset
+    // for the image, as well as to not allow the alignBounds to expand out and effect mouse and touch areas.
+    const offsetVector = imageInfo.outOfBagLabelOffset || Vector2.ZERO;
+    const availableWidth = outOfBagImageNode.width - Math.abs( offsetVector.x );
+    const availableHeight = outOfBagImageNode.height - Math.abs( offsetVector.y );
+    const boundsMinX = outOfBagImageNode.bounds.minX + Math.max( offsetVector.x * 2, 0 );
+    const boundsMinY = outOfBagImageNode.bounds.minY + Math.max( offsetVector.y * 2, 0 );
+
+    const offsetAlignBounds = new Bounds2(
+      boundsMinX,
+      boundsMinY,
+      boundsMinX + availableWidth - offsetVector.x,
+      boundsMinY + availableHeight - offsetVector.y
+    );
+    const outOfBagAlignBox = new AlignBox( outOfBagLabelNode, {
+      alignBounds: offsetAlignBounds,
+      xAlign: 'center'
+    } );
+    const outOfBagRepresentationNode = new Node( { children: [ outOfBagImageNode, outOfBagAlignBox ] } );
 
     const inBagLabelNode = new Text( currencyString, {
       font: new PhetFont( 20 ),
