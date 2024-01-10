@@ -15,7 +15,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text, Node } from '../../../../scenery/js/imports.js';
+import { ManualConstraint, Node, Text } from '../../../../scenery/js/imports.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Operation from '../../common/model/Operation.js';
@@ -96,7 +96,12 @@ class DynamicOperationDescription extends Node {
     }, options ) );
 
     // Construct with no initial text and in the inactive position.
-    super( { children: [ addRemoveZeroText, addRemoveAssetDebtText ], visible: false, opacity: 0 } );
+    super( {
+      children: [ addRemoveZeroText, addRemoveAssetDebtText ],
+      visible: false,
+      opacity: 0,
+      excludeInvisibleChildrenFromBounds: true
+    } );
 
     // @private - location to which the description will animate when becoming active on the number line
     this.activePosition = activePosition;
@@ -145,6 +150,15 @@ class DynamicOperationDescription extends Node {
     operationEntryCarouselInFocusProperty.link( operationEntryCarouselInFocus => {
       if ( this.opacity > 0 && !operationEntryCarouselInFocus ) {
         this.initiateFadeOut();
+      }
+    } );
+
+    ManualConstraint.create( this, [ addRemoveZeroText, addRemoveAssetDebtText ], () => {
+      if ( operation.isActiveProperty.value ) {
+        this.center = this.activePosition;
+      }
+      else {
+        this.center = inactivePosition;
       }
     } );
 
