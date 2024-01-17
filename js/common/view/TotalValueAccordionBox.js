@@ -59,7 +59,8 @@ class TotalValueAccordionBox extends AccordionBox {
       }, {
         maps: {
           totalValue: value => signProperty.value + Math.abs( value ).toString( 10 )
-        }
+        },
+        strictAxonDependencies: false
       } );
     }
 
