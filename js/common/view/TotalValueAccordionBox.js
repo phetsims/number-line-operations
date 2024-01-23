@@ -8,9 +8,10 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
+import DerivedStringProperty from '../../../../axon/js/DerivedStringProperty.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
@@ -37,32 +38,39 @@ class TotalValueAccordionBox extends AccordionBox {
       maxWidth: DEFAULT_WIDTH
     }, NLCConstants.ACCORDION_BOX_COMMON_OPTIONS, options );
 
-    const signProperty = new DerivedProperty( [ totalValueProperty ], totalValue => totalValue < 0 ? MathSymbols.MINUS : '' );
+    const signProperty = new DerivedProperty(
+      [ totalValueProperty ],
+      totalValue => totalValue < 0 ? MathSymbols.MINUS : ''
+    );
 
-    let readoutStringProperty;
-    if ( options.showTotalAsCurrency ) {
-      readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalCurrencyPatternStringProperty, {
-        totalString: options.labelText,
-        sign: signProperty,
-        currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-        totalValue: totalValueProperty
-      }, {
-        maps: {
-          totalValue: value => Math.abs( value )
+    const readoutStringProperty = new DerivedStringProperty(
+      [
+        NumberLineOperationsStrings.totalCurrencyPatternStringProperty,
+        NumberLineOperationsStrings.totalValuePatternStringProperty,
+        NumberLineOperationsStrings.currencyUnitsStringProperty,
+        options.labelText,
+        totalValueProperty,
+        signProperty
+      ],
+      ( totalCurrencyPattern, totalValuePattern, currencyUnits, label, totalValue, sign ) => {
+        let readoutString;
+        if ( options.showTotalAsCurrency ) {
+          readoutString = StringUtils.fillIn( totalCurrencyPattern, {
+            totalString: label,
+            sign: sign,
+            currencyUnits: currencyUnits,
+            totalValue: Math.abs( totalValue )
+          } );
         }
-      } );
-    }
-    else {
-      readoutStringProperty = new PatternStringProperty( NumberLineOperationsStrings.totalValuePatternStringProperty, {
-        totalString: options.labelText,
-        totalValue: totalValueProperty
-      }, {
-        maps: {
-          totalValue: value => signProperty.value + Math.abs( value ).toString( 10 )
-        },
-        strictAxonDependencies: false //TODO https://github.com/phetsims/number-line-operations/issues/119
-      } );
-    }
+        else {
+          readoutString = StringUtils.fillIn( totalValuePattern, {
+            totalString: label,
+            totalValue: `${sign}${Math.abs( totalValue )}`
+          } );
+        }
+        return readoutString;
+      }
+    );
 
     const totalReadoutText = new Text( readoutStringProperty, {
       font: new PhetFont( 26 ),
