@@ -1,5 +1,5 @@
 {
-  "comment": "# number-line-operations 1.1.3-rc.2 Mon Apr 01 2024 19:04:49 GMT-0600 (Mountain Daylight Time)",
+  "comment": "# number-line-operations 1.1.3 Wed Apr 03 2024 11:26:01 GMT-0600 (Mountain Daylight Time)",
   "assert": {
     "sha": "94831413cd4dd4dc27c2a1aebbcafd3987934a99",
     "branch": "HEAD"
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "c7a197f11889899e558225e2868d8cb3cbc01f40",
+    "sha": "52f1ff56c7df84826959ec4908771dd112afe287",
     "branch": "1.1"
   },
   "perennial-alias": {
