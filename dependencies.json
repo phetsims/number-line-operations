@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "961851f5d906f5800b070605c012ca53913530f0",
+    "sha": "813cf1d85cd8bd6203ec488dc9e2ee41f3e74588",
     "branch": "1.1"
   },
   "perennial-alias": {
@@ -69,7 +69,7 @@
     "branch": "HEAD"
   },
   "scenery": {
-    "sha": "eb5e246e25d4c88a0012a464c30d3cf66b0e6f50",
+    "sha": "ac3183b04f50fdc12543a1e3f769385917f13d68",
     "branch": "HEAD"
   },
   "scenery-phet": {
