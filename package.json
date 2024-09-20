@@ -42,7 +42,7 @@
         ],
         "parserOptions": {
           "project": [
-            "../number-line-operations/tsconfig.json"
+            "../chipper/tsconfig/eslint-all/tsconfig.json"
           ]
         }
       }
