@@ -9,5 +9,16 @@
     "../chipper/phet-types-module.d.ts",
     "../chipper/node_modules/@types/lodash/index.d.ts",
     "../chipper/node_modules/@types/qunit/index.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../number-line-common/tsconfig.json"
+    },
+    {
+      "path": "../twixt/tsconfig.json"
+    },
+    {
+      "path": "../chipper/tsconfig/buildjson"
+    }
   ]
 }
