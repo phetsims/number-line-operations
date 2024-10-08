@@ -5,6 +5,8 @@
     "images/**/*",
     "mipmaps/**/*",
     "sounds/**/*",
+
+    // TODO: These are extraneous, see https://github.com/phetsims/chipper/issues/1469
     "../chipper/phet-types.d.ts",
     "../chipper/phet-types-module.d.ts",
     "../chipper/node_modules/@types/lodash/index.d.ts",
