@@ -9,16 +9,16 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, Node, NodeOptions, Text } from '../../../../scenery/js/imports.js';
-import Range from '../../../../dot/js/Range.js';
-import numberLineOperations from '../../numberLineOperations.js';
-import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import Property from '../../../../axon/js/Property.js';
+import Range from '../../../../dot/js/Range.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { AlignBox, Color, Node, NodeOptions, Text } from '../../../../scenery/js/imports.js';
+import numberLineOperations from '../../numberLineOperations.js';
+import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 type SelfOptions = {
   labelCenterOffset?: Vector2; // offset of the label from the center of the background node

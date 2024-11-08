@@ -7,13 +7,13 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Image, ManualConstraint, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import assetsBag_png from '../../../images/assetsBag_png.js';
 import debtsBag_png from '../../../images/debtsBag_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
-import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
 
 // constants
 const TAG_RECTANGLE_COMMON_OPTIONS = {
