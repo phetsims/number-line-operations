@@ -1,4 +1,4 @@
-// Copyright 2020-2023, University of Colorado Boulder
+// Copyright 2020-2024, University of Colorado Boulder
 
 /**
  * TotalValueIndicatorNode is a Scenery node that takes a background node and shows a total value over it, and fills
