@@ -7,7 +7,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import LocalizedStringProperty from '../../../../chipper/js/LocalizedStringProperty.js';
+import LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Image, ManualConstraint, Node, Rectangle, Text } from '../../../../scenery/js/imports.js';
 import assetsBag_png from '../../../images/assetsBag_png.js';
