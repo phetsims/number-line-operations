@@ -9,7 +9,10 @@
 
 import ScreenIcon from '../../../../joist/js/ScreenIcon.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, Image, ManualConstraint, Text } from '../../../../scenery/js/imports.js';
+import ManualConstraint from '../../../../scenery/js/layout/constraints/ManualConstraint.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import netWorthHomeScreenIcon_png from '../../../images/netWorthHomeScreenIcon_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';

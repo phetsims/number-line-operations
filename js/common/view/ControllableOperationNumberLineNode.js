@@ -9,7 +9,7 @@
 
 import PointControllerNode from '../../../../number-line-common/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Node } from '../../../../scenery/js/imports.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import OperationTrackingNumberLineNode from './OperationTrackingNumberLineNode.js';
 

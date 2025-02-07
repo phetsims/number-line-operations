@@ -16,7 +16,10 @@ import FillableBackgroundNode from '../../../../number-line-common/js/view/Filla
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, Node, NodeOptions, Text } from '../../../../scenery/js/imports.js';
+import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';
+import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 

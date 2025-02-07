@@ -15,7 +15,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import NumberLinePoint from '../../../../number-line-common/js/common/model/NumberLinePoint.js';
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Color } from '../../../../scenery/js/imports.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NLOConstants from '../NLOConstants.js';
 import NumberLineOperation from './NumberLineOperation.js';

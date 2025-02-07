@@ -19,7 +19,12 @@ import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, Color, HBox, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';
+import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Operation from '../../common/model/Operation.js';

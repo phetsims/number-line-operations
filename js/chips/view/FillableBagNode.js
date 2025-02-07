@@ -7,10 +7,11 @@
  */
 
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { Shape } from '../../../../kite/js/imports.js';
+import Shape from '../../../../kite/js/Shape.js';
 import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Image, Path } from '../../../../scenery/js/imports.js';
+import Image from '../../../../scenery/js/nodes/Image.js';
+import Path from '../../../../scenery/js/nodes/Path.js';
 import nlBagForeground_png from '../../../images/nlBagForeground_png.js';
 import numberLineOperations from '../../numberLineOperations.js';
 

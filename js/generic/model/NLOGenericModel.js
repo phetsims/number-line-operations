@@ -14,7 +14,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import LockToNumberLine from '../../../../number-line-common/js/common/model/LockToNumberLine.js';
 import PointController from '../../../../number-line-common/js/common/model/PointController.js';
 import merge from '../../../../phet-core/js/merge.js';
-import { Color } from '../../../../scenery/js/imports.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';

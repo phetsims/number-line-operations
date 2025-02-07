@@ -9,7 +9,7 @@
 import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Range from '../../../dot/js/Range.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
-import { Color } from '../../../scenery/js/imports.js';
+import Color from '../../../scenery/js/util/Color.js';
 import numberLineOperations from '../numberLineOperations.js';
 import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 
