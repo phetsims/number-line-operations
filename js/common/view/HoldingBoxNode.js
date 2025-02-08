@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2025, University of Colorado Boulder
 
 /**
  * HoldingBoxNode is the view representation of a box (i.e. a rectangle) where ValueItem instances are stored when not

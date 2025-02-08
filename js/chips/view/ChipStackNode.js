@@ -1,4 +1,4 @@
-// Copyright 2020-2022, University of Colorado Boulder
+// Copyright 2020-2025, University of Colorado Boulder
 
 /**
  * ChipStackNode is the view representation of a ValueItem that is intended to look like a stack of game (e.g. poker)

@@ -1,4 +1,4 @@
-// Copyright 2020-2021, University of Colorado Boulder
+// Copyright 2020-2025, University of Colorado Boulder
 
 /**
  * NLOGenericModel is the primary model for the "Generic" screen.

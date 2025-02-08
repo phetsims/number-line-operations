@@ -1,4 +1,4 @@
-// Copyright 2020-2024, University of Colorado Boulder
+// Copyright 2020-2025, University of Colorado Boulder
 
 /**
  * HoldingBagNode is the view representation of a HoldingBag, which is the place where items with value are placed so
