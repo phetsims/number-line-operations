@@ -15,6 +15,7 @@ import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import isLeftToRightProperty from '../../../../joist/js/i18n/isLeftToRightProperty.js';
 import NLCConstants from '../../../../number-line-common/js/common/NLCConstants.js';
 import merge from '../../../../phet-core/js/merge.js';
 import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
@@ -29,6 +30,7 @@ import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMomentaryButton.js';
 import Operation from '../../common/model/Operation.js';
 import NLOConstants from '../../common/NLOConstants.js';
+import removeEmbeddingMarks from '../../common/view/removeEmbeddingMarks.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
@@ -216,7 +218,14 @@ class NumericalExpression extends Node {
       } );
     }
 
-    const evaluateText = new Text( stringProperty, options );
+    // Remove embedding marks from the numerical expression string if the text direction is right-to-left.  This is
+    // necessary because the code above assembles the expression into a single string, and our default pattern embedding
+    // messes up the way this looks.  See https://github.com/phetsims/phetcommon/issues/68.
+    const adjustedStringProperty = new DerivedProperty( [ stringProperty ], stringProperty =>
+      isLeftToRightProperty.value ? stringProperty : removeEmbeddingMarks( stringProperty )
+    );
+
+    const evaluateText = new Text( adjustedStringProperty, options );
 
     const numericalExpressionText = new Text( '', options );
 

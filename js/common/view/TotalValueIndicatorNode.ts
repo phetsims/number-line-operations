@@ -12,6 +12,7 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import Property from '../../../../axon/js/Property.js';
 import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import isLeftToRightProperty from '../../../../joist/js/i18n/isLeftToRightProperty.js';
 import FillableBackgroundNode from '../../../../number-line-common/js/view/FillableBackgroundNode.js';
 import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -22,6 +23,7 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
+import removeEmbeddingMarks from './removeEmbeddingMarks.js';
 
 type SelfOptions = {
   labelCenterOffset?: Vector2; // offset of the label from the center of the background node
@@ -59,15 +61,19 @@ class TotalValueIndicatorNode extends Node {
 
     let valueStringProperty;
     if ( options.isCurrency ) {
-      valueStringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
-        sign: signProperty,
-        currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
-        value: totalValueProperty
-      }, {
-        maps: {
-          value: value => Math.abs( value )
+      valueStringProperty = new PatternStringProperty(
+        NumberLineOperationsStrings.currencyValuePatternStringProperty,
+        {
+          sign: signProperty,
+          currencyUnits: NumberLineOperationsStrings.currencyUnitsStringProperty,
+          value: totalValueProperty
+        },
+        {
+          maps: {
+            value: value => Math.abs( value )
+          }
         }
-      } );
+      );
     }
     else {
       valueStringProperty = new PatternStringProperty( NumberLineOperationsStrings.currencyValuePatternStringProperty, {
@@ -79,8 +85,15 @@ class TotalValueIndicatorNode extends Node {
       } );
     }
 
+    // Remove embedding marks from the value string if the text direction is right-to-left.  This is necessary because
+    // the code above assembles the sign, currency units, and value into a single string, and our default embedding that
+    // was being done messed up the way this looked.  See https://github.com/phetsims/phetcommon/issues/68.
+    const nonEmbeddedValueStringProperty = new DerivedProperty( [ valueStringProperty ], valueString =>
+      isLeftToRightProperty.value ? valueString : removeEmbeddingMarks( valueString )
+    );
+
     // label that represents the value
-    const labelNode = new Text( valueStringProperty, {
+    const labelNode = new Text( nonEmbeddedValueStringProperty, {
       font: new PhetFont( 22 ),
       lineWidth: 0.8,
       fill: 'white',

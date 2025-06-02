@@ -7,11 +7,13 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import isLeftToRightProperty from '../../../../joist/js/i18n/isLeftToRightProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';
 import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
@@ -37,6 +39,7 @@ import debt300_png from '../../../images/debt300_png.js';
 import debt300Value_png from '../../../images/debt300Value_png.js';
 import debt400_png from '../../../images/debt400_png.js';
 import debt400Value_png from '../../../images/debt400Value_png.js';
+import removeEmbeddingMarks from '../../common/view/removeEmbeddingMarks.js';
 import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
@@ -163,7 +166,14 @@ class BalanceSheetItemNode extends Node {
       value: Math.abs( balanceSheetItem.value )
     } );
 
-    const outOfBagLabelNode = new Text( currencyString, {
+    // Remove embedding marks from the currency string if the text direction is right-to-left.  This is necessary
+    // because the code above assembles the sign, currency units, and value into a single string, and our default
+    // embedding messes up the way this looks.  See https://github.com/phetsims/phetcommon/issues/68.
+    const adjustedCurrencyString = new DerivedProperty( [ currencyString ], stringProperty =>
+      isLeftToRightProperty.value ? stringProperty : removeEmbeddingMarks( stringProperty )
+    );
+
+    const outOfBagLabelNode = new Text( adjustedCurrencyString, {
       font: new PhetFont( 18 ),
       maxWidth: outOfBagImageNode.width * 0.74 // empirically determined such that the label fits on all artwork
     } );
