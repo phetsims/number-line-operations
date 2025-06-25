@@ -7,7 +7,7 @@
  * @author John Blanco (PhET Interactive Simulations)
  */
 
-import LocalizedStringProperty from '../../../../chipper/js/browser/LocalizedStringProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ManualConstraint from '../../../../scenery/js/layout/constraints/ManualConstraint.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
@@ -35,7 +35,7 @@ const LABEL_WIDTH = 90;
 
 class HoldingBagNode extends Node {
 
-  public constructor( holdingBag: HoldingBag, labelTextProperty: LocalizedStringProperty ) {
+  public constructor( holdingBag: HoldingBag, labelTextProperty: TReadOnlyProperty<string> ) {
 
     // Get the image that is associated with this bag's supported values.
     const image = holdingBag.itemAcceptanceTest === HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES ?
