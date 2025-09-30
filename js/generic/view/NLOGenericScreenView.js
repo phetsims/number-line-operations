@@ -104,7 +104,6 @@ class NLOGenericScreenView extends ScreenView {
     // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
-        this.interruptSubtreeInput(); // cancel interactions that may be in progress
         primaryNumberLineView.reset();
         secondaryNumberLineView.reset();
         model.reset();
