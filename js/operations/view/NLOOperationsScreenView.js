@@ -181,7 +181,6 @@ class NLOOperationsScreenView extends ScreenView {
     const resetAllButton = new ResetAllButton( {
       listener: () => {
         resetInProgressProperty.set( true );
-        this.interruptSubtreeInput(); // cancel interactions that may be in progress
         numericalExpressionAccordionBox.reset();
         initialNetWorthAccordionBox.expandedProperty.reset();
         operationEntryCarousel.reset();

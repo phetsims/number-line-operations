@@ -97,7 +97,6 @@ class NLOChipsScreenView extends ScreenView {
     // reset all button
     const resetAllButton = new ResetAllButton( {
       listener: () => {
-        this.interruptSubtreeInput(); // cancel interactions that may be in progress
         model.reset();
       },
       right: this.layoutBounds.maxX - NLCConstants.SCREEN_VIEW_X_MARGIN,
