@@ -9,7 +9,7 @@
     "branch": "HEAD"
   },
   "brand": {
-    "sha": "86c294a9b37759d162edfb9aaef23544663f532c",
+    "sha": "6bdee6c23dd1b45fcd8f973f801c4b66c6be9c03",
     "branch": "HEAD"
   },
   "chipper": {
@@ -33,7 +33,7 @@
     "branch": "HEAD"
   },
   "number-line-operations": {
-    "sha": "764bf3ed413b0a6410733c7a0b75e2777bd7fc03",
+    "sha": "43dc5734e1888cb8855785ef0a7c5a6c5db1eea9",
     "branch": "1.1"
   },
   "perennial-alias": {
