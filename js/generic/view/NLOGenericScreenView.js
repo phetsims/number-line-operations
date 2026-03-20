@@ -23,7 +23,6 @@ import Easing from '../../../../twixt/js/Easing.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import NumericalExpressionAccordionBox from '../../operations/view/NumericalExpressionAccordionBox.js';
 import NLOGenericModel from '../model/NLOGenericModel.js';
@@ -324,5 +323,4 @@ class InteractiveNumberLineView extends Node {
   }
 }
 
-numberLineOperations.register( 'NLOGenericScreenView', NLOGenericScreenView );
 export default NLOGenericScreenView;

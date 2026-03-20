@@ -17,7 +17,6 @@ import Operation from '../../common/model/Operation.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import ValueItem from '../../common/model/ValueItem.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIPS_NUMBER_LINE_RANGE = new Range( -15, 15 );
@@ -188,5 +187,4 @@ class NLOChipsModel {
 // statics
 NLOChipsModel.CHIPS_NUMBER_LINE_RANGE = CHIPS_NUMBER_LINE_RANGE;
 
-numberLineOperations.register( 'NLOChipsModel', NLOChipsModel );
 export default NLOChipsModel;

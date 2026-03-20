@@ -17,7 +17,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
 import NumberPicker from '../../../../sun/js/NumberPicker.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 class InitialNetWorthAccordionBox extends AccordionBox {
@@ -79,5 +78,4 @@ class InitialNetWorthAccordionBox extends AccordionBox {
   }
 }
 
-numberLineOperations.register( 'InitialNetWorthAccordionBox', InitialNetWorthAccordionBox );
 export default InitialNetWorthAccordionBox;

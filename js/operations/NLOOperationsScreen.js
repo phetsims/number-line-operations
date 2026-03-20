@@ -9,7 +9,6 @@ import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import operationsHomeScreenIcon_png from '../../images/operationsHomeScreenIcon_png.js';
-import numberLineOperations from '../numberLineOperations.js';
 import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLOOperationsModel from './model/NLOOperationsModel.js';
 import NLOOperationsScreenView from './view/NLOOperationsScreenView.js';
@@ -39,5 +38,4 @@ class NLOOperationsScreen extends Screen {
   }
 }
 
-numberLineOperations.register( 'NLOOperationsScreen', NLOOperationsScreen );
 export default NLOOperationsScreen;

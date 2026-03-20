@@ -16,7 +16,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import ControllableOperationNumberLineNode from '../../common/view/ControllableOperationNumberLineNode.js';
 import OperationEntryCarousel from '../../common/view/OperationEntryCarousel.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import DynamicOperationDescription from './DynamicOperationDescription.js';
 import InitialNetWorthAccordionBox from './InitialNetWorthAccordionBox.js';
@@ -196,5 +195,4 @@ class NLOOperationsScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NLOOperationsScreenView', NLOOperationsScreenView );
 export default NLOOperationsScreenView;

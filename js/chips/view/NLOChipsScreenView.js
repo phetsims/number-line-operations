@@ -18,7 +18,6 @@ import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js';
 import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import NLOChipsModel from '../model/NLOChipsModel.js';
 import ChipStackNode from './ChipStackNode.js';
@@ -114,5 +113,4 @@ class NLOChipsScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NLOChipsScreenView', NLOChipsScreenView );
 export default NLOChipsScreenView;

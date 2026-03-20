@@ -11,7 +11,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import ArrowNode from '../../../../scenery-phet/js/ArrowNode.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const ARROW_ICON_LENGTH = 40;
@@ -70,5 +69,4 @@ class SingleDualNumberLineSelector extends RectangularRadioButtonGroup {
 // convenience function for creating the arrow nodes
 const createDoubleArrowNode = () => new ArrowNode( -ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_LENGTH / 2, 0, ARROW_ICON_OPTIONS );
 
-numberLineOperations.register( 'SingleDualNumberLineSelector', SingleDualNumberLineSelector );
 export default SingleDualNumberLineSelector;

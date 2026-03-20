@@ -10,7 +10,6 @@
 import PointControllerNode from '../../../../number-line-common/js/common/view/PointControllerNode.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import OperationTrackingNumberLineNode from './OperationTrackingNumberLineNode.js';
 
 class ControllableOperationNumberLineNode extends Node {
@@ -112,5 +111,4 @@ class ControllableOperationNumberLineNode extends Node {
   }
 }
 
-numberLineOperations.register( 'ControllableOperationNumberLineNode', ControllableOperationNumberLineNode );
 export default ControllableOperationNumberLineNode;

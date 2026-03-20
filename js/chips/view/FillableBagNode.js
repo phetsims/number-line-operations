@@ -13,7 +13,6 @@ import merge from '../../../../phet-core/js/merge.js';
 import Image from '../../../../scenery/js/nodes/Image.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import nlBagForeground_png from '../../../images/nlBagForeground_png.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const BAG_OUTLINE_SVG_STRING = 'M367.541,188.392c0,0-7.992-7.075,39.988-42.405\n' +
@@ -52,5 +51,4 @@ class FillableBagNode extends FillableBackgroundNode {
   }
 }
 
-numberLineOperations.register( 'FillableBagNode', FillableBagNode );
 export default FillableBagNode;

@@ -8,7 +8,6 @@
  */
 
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CORNER_RADIUS = 7;
@@ -35,5 +34,4 @@ class HoldingBoxNode extends Rectangle {
   }
 }
 
-numberLineOperations.register( 'HoldingBoxNode', HoldingBoxNode );
 export default HoldingBoxNode;

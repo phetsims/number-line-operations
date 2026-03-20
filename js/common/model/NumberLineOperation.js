@@ -11,7 +11,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import EnumerationDeprecatedProperty from '../../../../axon/js/EnumerationDeprecatedProperty.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import merge from '../../../../phet-core/js/merge.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import Operation from './Operation.js';
 
 class NumberLineOperation {
@@ -81,5 +80,4 @@ class NumberLineOperation {
   }
 }
 
-numberLineOperations.register( 'NumberLineOperation', NumberLineOperation );
 export default NumberLineOperation;

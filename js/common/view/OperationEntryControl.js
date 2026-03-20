@@ -24,7 +24,6 @@ import RectangularRadioButtonGroup from '../../../../sun/js/buttons/RectangularR
 import RoundPushButton from '../../../../sun/js/buttons/RoundPushButton.js';
 import NumberPicker from '../../../../sun/js/NumberPicker.js';
 import Operation from '../../common/model/Operation.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const MATH_SYMBOL_OPTIONS = {
@@ -149,5 +148,4 @@ class OperationEntryControl extends HBox {
   }
 }
 
-numberLineOperations.register( 'OperationEntryControl', OperationEntryControl );
 export default OperationEntryControl;

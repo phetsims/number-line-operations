@@ -13,7 +13,6 @@ import LockToNumberLine from '../../../../number-line-common/js/common/model/Loc
 import PointController from '../../../../number-line-common/js/common/model/PointController.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const OPERATION_OPTIONS = { initialAmount: 100 };
@@ -97,5 +96,4 @@ class NLOOperationsModel {
   }
 }
 
-numberLineOperations.register( 'NLOOperationsModel', NLOOperationsModel );
 export default NLOOperationsModel;

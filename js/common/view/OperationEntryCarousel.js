@@ -13,7 +13,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import OperationEntryControl from './OperationEntryControl.js';
 
 // constants
@@ -128,5 +127,4 @@ class OperationEntryCarousel extends Node {
 // statics
 OperationEntryCarousel.PageControlPosition = PageControlPosition;
 
-numberLineOperations.register( 'OperationEntryCarousel', OperationEntryCarousel );
 export default OperationEntryCarousel;

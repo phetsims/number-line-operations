@@ -17,7 +17,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import assetsBag_png from '../../../images/assetsBag_png.js';
 import debtsBag_png from '../../../images/debtsBag_png.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import HoldingBag from '../model/HoldingBag.js';
 
 // constants
@@ -94,5 +93,4 @@ class HoldingBagNode extends Node {
   }
 }
 
-numberLineOperations.register( 'HoldingBagNode', HoldingBagNode );
 export default HoldingBagNode;

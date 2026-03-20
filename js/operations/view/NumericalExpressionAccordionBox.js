@@ -31,7 +31,6 @@ import RectangularMomentaryButton from '../../../../sun/js/buttons/RectangularMo
 import Operation from '../../common/model/Operation.js';
 import NLOConstants from '../../common/NLOConstants.js';
 import removeEmbeddingMarks from '../../common/view/removeEmbeddingMarks.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 // constants
@@ -313,5 +312,4 @@ class NumericalExpression extends Node {
   }
 }
 
-numberLineOperations.register( 'NumericalExpressionAccordionBox', NumericalExpressionAccordionBox );
 export default NumericalExpressionAccordionBox;

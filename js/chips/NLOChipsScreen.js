@@ -9,7 +9,6 @@ import Screen from '../../../joist/js/Screen.js';
 import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import chipsHomeScreenIcon_png from '../../images/chipsHomeScreenIcon_png.js';
-import numberLineOperations from '../numberLineOperations.js';
 import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 import NLOChipsModel from './model/NLOChipsModel.js';
 import NLOChipsScreenView from './view/NLOChipsScreenView.js';
@@ -39,5 +38,4 @@ class NLOChipsScreen extends Screen {
   }
 }
 
-numberLineOperations.register( 'NLOChipsScreen', NLOChipsScreen );
 export default NLOChipsScreen;

@@ -16,7 +16,6 @@ import NumberLinePoint from '../../../../number-line-common/js/common/model/Numb
 import SpatializedNumberLine from '../../../../number-line-common/js/common/model/SpatializedNumberLine.js';
 import merge from '../../../../phet-core/js/merge.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NLOConstants from '../NLOConstants.js';
 import NumberLineOperation from './NumberLineOperation.js';
 import Operation from './Operation.js';
@@ -447,5 +446,4 @@ class OperationTrackingNumberLine extends SpatializedNumberLine {
   }
 }
 
-numberLineOperations.register( 'OperationTrackingNumberLine', OperationTrackingNumberLine );
 export default OperationTrackingNumberLine;

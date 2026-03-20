@@ -56,6 +56,4 @@ type StringsType = {
 
 const NumberLineOperationsStrings = getStringModule( 'NUMBER_LINE_OPERATIONS' ) as StringsType;
 
-numberLineOperations.register( 'NumberLineOperationsStrings', NumberLineOperationsStrings );
-
 export default NumberLineOperationsStrings;

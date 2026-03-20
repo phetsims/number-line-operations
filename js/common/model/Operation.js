@@ -7,8 +7,6 @@
  */
 
 import EnumerationDeprecated from '../../../../phet-core/js/EnumerationDeprecated.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 const Operation = EnumerationDeprecated.byKeys( [ 'ADDITION', 'SUBTRACTION' ] );
-numberLineOperations.register( 'Operation', Operation );
 export default Operation;

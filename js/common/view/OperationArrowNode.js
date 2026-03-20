@@ -17,7 +17,6 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import Operation from '../model/Operation.js';
 import NumberLineOperationNode from './NumberLineOperationNode.js';
 
@@ -394,5 +393,4 @@ class ArrowheadNode extends Path {
   }
 }
 
-numberLineOperations.register( 'OperationArrowNode', OperationArrowNode );
 export default OperationArrowNode;

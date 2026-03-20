@@ -18,7 +18,6 @@ import Path from '../../../../scenery/js/nodes/Path.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../../scenery/js/util/LinearGradient.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const CHIP_RADIUS = 23;
@@ -152,5 +151,4 @@ class ChipStackNode extends Node {
   }
 }
 
-numberLineOperations.register( 'ChipStackNode', ChipStackNode );
 export default ChipStackNode;

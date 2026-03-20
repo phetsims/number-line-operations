@@ -40,7 +40,6 @@ import debt300Value_png from '../../../images/debt300Value_png.js';
 import debt400_png from '../../../images/debt400_png.js';
 import debt400Value_png from '../../../images/debt400Value_png.js';
 import removeEmbeddingMarks from '../../common/view/removeEmbeddingMarks.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -304,5 +303,4 @@ class BalanceSheetItemNode extends Node {
   }
 }
 
-numberLineOperations.register( 'BalanceSheetItemNode', BalanceSheetItemNode );
 export default BalanceSheetItemNode;

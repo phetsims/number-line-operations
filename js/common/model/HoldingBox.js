@@ -9,7 +9,6 @@
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 class HoldingBox {
 
@@ -72,5 +71,4 @@ class HoldingBox {
   }
 }
 
-numberLineOperations.register( 'HoldingBox', HoldingBox );
 export default HoldingBox;

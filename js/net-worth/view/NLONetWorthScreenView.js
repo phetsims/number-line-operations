@@ -19,7 +19,6 @@ import HoldingBoxNode from '../../common/view/HoldingBoxNode.js';
 import OperationTrackingNumberLineNode from '../../common/view/OperationTrackingNumberLineNode.js';
 import TotalValueAccordionBox from '../../common/view/TotalValueAccordionBox.js';
 import TotalValueIndicatorNode from '../../common/view/TotalValueIndicatorNode.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import BalanceSheetItemNode from './BalanceSheetItemNode.js';
 
@@ -117,5 +116,4 @@ class NLONetWorthScreenView extends ScreenView {
   }
 }
 
-numberLineOperations.register( 'NLONetWorthScreenView', NLONetWorthScreenView );
 export default NLONetWorthScreenView;

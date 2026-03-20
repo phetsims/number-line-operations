@@ -21,7 +21,6 @@ import AlignBox from '../../../../scenery/js/layout/nodes/AlignBox.js';
 import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import removeEmbeddingMarks from './removeEmbeddingMarks.js';
 
@@ -134,5 +133,4 @@ class TotalValueIndicatorNode extends Node {
   }
 }
 
-numberLineOperations.register( 'TotalValueIndicatorNode', TotalValueIndicatorNode );
 export default TotalValueIndicatorNode;

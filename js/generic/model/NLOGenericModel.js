@@ -19,7 +19,6 @@ import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const NUMBER_LINE_RANGES = [
@@ -206,5 +205,4 @@ class NLOGenericModel {
 // statics
 NLOGenericModel.NUMBER_LINE_RANGES = NUMBER_LINE_RANGES;
 
-numberLineOperations.register( 'NLOGenericModel', NLOGenericModel );
 export default NLOGenericModel;

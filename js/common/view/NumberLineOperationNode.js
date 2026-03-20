@@ -22,7 +22,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import Operation from '../model/Operation.js';
 import OperationArrowNode from './OperationArrowNode.js';
@@ -396,5 +395,4 @@ class NumberLineOperationNode extends Node {
 // statics
 NumberLineOperationNode.RelativePosition = RelativePosition;
 
-numberLineOperations.register( 'NumberLineOperationNode', NumberLineOperationNode );
 export default NumberLineOperationNode;

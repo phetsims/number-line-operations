@@ -21,7 +21,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Operation from '../../common/model/Operation.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 
 // constants
@@ -308,5 +307,4 @@ class DynamicOperationDescription extends Node {
   }
 }
 
-numberLineOperations.register( 'DynamicOperationDescription', DynamicOperationDescription );
 export default DynamicOperationDescription;

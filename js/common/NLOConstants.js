@@ -10,7 +10,6 @@ import PatternStringProperty from '../../../axon/js/PatternStringProperty.js';
 import Range from '../../../dot/js/Range.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
 import Color from '../../../scenery/js/util/Color.js';
-import numberLineOperations from '../numberLineOperations.js';
 import NumberLineOperationsStrings from '../NumberLineOperationsStrings.js';
 
 const NLOConstants = {
@@ -46,5 +45,4 @@ const NLOConstants = {
   LIGHT_BLUE_POINT_COLOR: new Color( '#64A3FF' )
 };
 
-numberLineOperations.register( 'NLOConstants', NLOConstants );
 export default NLOConstants;

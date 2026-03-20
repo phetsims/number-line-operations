@@ -16,7 +16,6 @@ import Operation from '../../common/model/Operation.js';
 import OperationTrackingNumberLine from '../../common/model/OperationTrackingNumberLine.js';
 import ValueItem from '../../common/model/ValueItem.js';
 import NLOConstants from '../../common/NLOConstants.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const HOLDING_BOX_SIZE = new Dimension2( 122, 300 ); // empirically determined to fit the items that will go in it
@@ -187,5 +186,4 @@ class NLONetWorthModel {
   }
 }
 
-numberLineOperations.register( 'NLONetWorthModel', NLONetWorthModel );
 export default NLONetWorthModel;

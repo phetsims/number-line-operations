@@ -18,7 +18,6 @@ import MathSymbols from '../../../../scenery-phet/js/MathSymbols.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../../sun/js/AccordionBox.js';
-import numberLineOperations from '../../numberLineOperations.js';
 import NumberLineOperationsStrings from '../../NumberLineOperationsStrings.js';
 import removeEmbeddingMarks from './removeEmbeddingMarks.js';
 
@@ -113,5 +112,4 @@ function insertChar( str, char, index ) {
   return str.slice( 0, index ) + char + str.slice( index );
 }
 
-numberLineOperations.register( 'TotalValueAccordionBox', TotalValueAccordionBox );
 export default TotalValueAccordionBox;

@@ -9,7 +9,6 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import merge from '../../../../phet-core/js/merge.js';
-import numberLineOperations from '../../numberLineOperations.js';
 
 // constants
 const RADIUS = 125;
@@ -195,5 +194,4 @@ class HoldingBag {
 HoldingBag.ACCEPT_ONLY_POSITIVE_VALUES = ACCEPT_ONLY_POSITIVE_VALUES;
 HoldingBag.ACCEPT_ONLY_NEGATIVE_VALUES = ACCEPT_ONLY_NEGATIVE_VALUES;
 
-numberLineOperations.register( 'HoldingBag', HoldingBag );
 export default HoldingBag;
